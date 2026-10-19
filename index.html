@@ -38,7 +38,7 @@ body{margin:0;background:var(--bg);color:var(--ink);
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 button,input{font:inherit;color:inherit}
 :focus-visible{outline:3px solid var(--cobalt);outline-offset:2px;border-radius:12px}
-.wrap{max-width:760px;margin:0 auto;padding:0 var(--gr) 0 var(--gl)}
+.wrap{max-width:1440px;margin:0 auto;padding:0 var(--gr) 0 var(--gl)}
 
 /* header */
 header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);}
@@ -97,7 +97,13 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .rail::-webkit-scrollbar{display:none}
 .cat{flex:none;scroll-snap-align:start;display:flex;flex-direction:column;align-items:center;gap:6px;width:76px;background:none;border:0;cursor:pointer;padding:0}
 .cat .blob{width:64px;height:64px;border-radius:22px;display:grid;place-items:center;font-size:30px;border:2px solid transparent;transition:transform .15s}
-.cat span{font-size:13px;font-weight:600}
+.cat > span{font-size:13px;font-weight:600;line-height:1.15;text-align:center}
+.ci{display:inline-block;flex:none;line-height:0}
+.ci svg,.ci img{width:100%;height:100%;display:block}
+.cat .blob .ci{width:42px;height:42px}
+.ticket .ci{width:28px;height:28px;margin-top:6px}
+.detail .hero-band .ci{width:48px;height:48px}
+.cal-day .ci{width:14px;height:14px}
 .cat[aria-pressed="true"] .blob{border-color:var(--ink);transform:rotate(-6deg) scale(1.05);box-shadow:3px 3px 0 var(--ink)}
 
 /* quick filters */
@@ -168,9 +174,52 @@ footer{color:var(--ink-soft);font-size:13px;text-align:center;padding:20px 0}
 .detail p{margin:0;color:var(--ink)}
 .detail .btn{display:block;text-align:center;text-decoration:none;margin-top:18px}
 .notice{background:var(--surface);border:1.5px dashed var(--line);border-radius:18px;padding:16px;color:var(--ink-soft);font-size:14px}
+/* desktop: tutta la larghezza, testi e schede più compatti */
+@media (min-width:900px){
+  :root{--gl:max(36px,env(safe-area-inset-left,0px)); --gr:max(36px,env(safe-area-inset-right,0px))}
+  body{font-size:15px}
+  .logo{font-size:20px}
+  .hero{padding:10px 0 4px}
+  .hero h1{font-size:clamp(34px,3.6vw,50px);margin-bottom:14px}
+  .hero h1 span{display:inline}
+  .hero h1 span+span::before{content:" "}
+  .searchrow{max-width:720px}
+  .search{padding:10px 14px;border-radius:16px}
+  .search input{font-size:15px}
+  .calbtn{width:46px;border-radius:16px}
+  .rail{padding-left:calc(var(--gl) - 10px);scroll-padding-inline:calc(var(--gl) - 10px) var(--gr)}
+  .cat{width:74px}
+  .cat > span{white-space:nowrap}
+  .cat .blob{width:54px;height:54px;border-radius:18px}
+  .cat .blob .ci{width:34px;height:34px}
+  .cat > span{font-size:12px}
+  .pill{padding:6px 12px;font-size:13px}
+  .listhead{margin:10px 0 8px}
+  .listhead h2{font-size:19px}
+  .listhead small{font-size:13px}
+  .cards{grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+  .card{border-radius:16px}
+  .ticket{width:66px;padding:8px 0}
+  .ticket::after{top:8px;bottom:8px}
+  .ticket .wd{font-size:11px}
+  .ticket .d{font-size:24px}
+  .ticket .m{font-size:11px}
+  .ticket .requested{max-width:56px;font-size:11px}
+  .ticket .ci{width:20px;height:20px;margin-top:4px}
+  .body{padding:10px 10px 8px 12px;gap:2px}
+  .body h3{font-size:15px;line-height:1.2}
+  .meta{font-size:12.5px}
+  .row{margin-top:4px}
+  .price{font-size:14px}
+  .badge{font-size:11px}
+  .heart{font-size:17px;padding:4px}
+  .org{padding:20px 22px;border-radius:22px}
+  .org h2{font-size:22px;max-width:none}
+}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><clipPath id="cc-half" clipPathUnits="userSpaceOnUse"><rect x="256" y="0" width="256" height="512"/></clipPath></defs></svg>
 <header class="top">
   <div class="wrap topbar">
     <div class="logo">
@@ -230,18 +279,18 @@ footer{color:var(--ink-soft);font-size:13px;text-align:center;padding:20px 0}
 
 <script>
 const CATS = [
-  {id:"ceramica", label:"Ceramica", em:"🏺", c:"#FF9A6B"},
-  {id:"ricamo", label:"Ricamo", em:"🧵", c:"#FF5FA2"},
-  {id:"pittura", label:"Pittura", em:"🎨", c:"#B79BFF"},
-  {id:"fiori", label:"Fiori", em:"🌸", c:"#FFB3D1"},
-  {id:"stampa", label:"Stampa", em:"🖨️", c:"#7FB2FF"},
-  {id:"gioielli", label:"Gioielli", em:"💍", c:"#FFCF3D"},
-  {id:"tessile", label:"Tessile", em:"🧶", c:"#2FC79B"},
-  {id:"carta", label:"Carta", em:"✂️", c:"#A8E6CF"},
-  {id:"cucina", label:"Cucina", em:"🍝", c:"#FFD08A"},
-  {id:"degustazioni", label:"Degustazioni", em:"🍷", c:"#E3A4FF"},
-  {id:"famiglia", label:"Famiglia", em:"🧸", c:"#FFC4A8"},
-  {id:"altro", label:"Altro", em:"✨", c:"#D7CCFF"}
+  {id:"ceramica", label:"Ceramica", em:"🏺", c:"#FFE2CF"},
+  {id:"ricamo", label:"Ricamo", em:"🧵", c:"#FFD9E8"},
+  {id:"pittura", label:"Pittura", em:"🎨", c:"#E7DEFF"},
+  {id:"fiori", label:"Fiori", em:"🌸", c:"#E2F5D8"},
+  {id:"stampa", label:"Stampa", em:"🖨️", c:"#DCE8FF"},
+  {id:"gioielli", label:"Gioielli", em:"💍", c:"#E0F6F9"},
+  {id:"tessile", label:"Tessile", em:"🧶", c:"#FFEFC7"},
+  {id:"carta", label:"Carta", em:"✂️", c:"#D9F3EA"},
+  {id:"cucina", label:"Cucina", em:"🍝", c:"#FFF0D2"},
+  {id:"degustazioni", label:"Degustazioni", em:"🍷", c:"#F6DDF0"},
+  {id:"famiglia", label:"Per famiglie", em:"🧸", c:"#F4E6DA"},
+  {id:"altro", label:"Altro", em:"✨", c:"#ECE6FF"}
 ];
 const REGIONS = [
   {id:"all", label:"Ovunque", short:"Ovunque", where:""},
@@ -257,6 +306,88 @@ function loadRegion(){ try{ const r=localStorage.getItem("cc-region"); return RE
 function persistRegion(){ try{ localStorage.setItem("cc-region", state.region); }catch(e){} }
 const PRICES = [{v:0,l:"Qualsiasi"},{v:20,l:"Fino a 20 €"},{v:35,l:"Fino a 35 €"},{v:50,l:"Fino a 50 €"},{v:80,l:"Fino a 80 €"}];
 const WHENS = [{v:"all",l:"Tutte le date"},{v:"today",l:"Oggi"},{v:"week",l:"Prossimi 7 giorni"},{v:"weekend",l:"Questo weekend"},{v:"month",l:"Prossimi 30 giorni"}];
+/* icone categorie: stile piatto, metà sinistra chiara e metà destra scura (clip #cc-half).
+   Ogni parte: [markup con %c al posto del colore, colore chiaro, colore scuro] */
+const ICON_IMG = {ceramica:"icons/ceramica.png"};
+const ICONS = {
+  ricamo:[
+    ['<rect x="226" y="34" width="60" height="62" rx="12" fill="%c"/>',"#8B4434","#76362D"],
+    ['<circle cx="256" cy="282" r="196" fill="%c"/>',"#E0A46A","#C98A4F"],
+    ['<circle cx="256" cy="282" r="166" fill="%c"/>',"#FFF3E0","#F2E2CC"],
+    ['<path d="M128 282h34M190 282h34M288 282h34M350 282h34" stroke="%c" stroke-width="10" stroke-linecap="round" fill="none" opacity=".35"/>',"#8B4434","#76362D"],
+    ['<path d="M256 380C150 312 160 210 220 214c20 2 32 15 36 30 4-15 16-28 36-30 60-4 70 98-36 166z" fill="%c"/>',"#FF6B9A","#E84F82"]
+  ],
+  pittura:[
+    ['<path d="M256 62c124 0 214 90 214 190 0 80-60 90-100 80-40-10-60 20-50 60 15 50-20 70-64 70C140 462 42 372 42 257 42 147 140 62 256 62z" fill="%c"/>',"#F2C98A","#E0B171"],
+    ['<circle cx="160" cy="196" r="38" fill="%c"/>',"#FF5A5A","#E84545"],
+    ['<circle cx="256" cy="140" r="38" fill="%c"/>',"#FFD23F","#F5BE1C"],
+    ['<circle cx="352" cy="186" r="38" fill="%c"/>',"#4D8BFF","#3A73E6"],
+    ['<circle cx="134" cy="304" r="38" fill="%c"/>',"#3CC98F","#2CB07A"],
+    ['<circle cx="216" cy="384" r="38" fill="%c"/>',"#A879FF","#9160F0"]
+  ],
+  fiori:[
+    ['<rect x="244" y="250" width="24" height="230" rx="12" fill="%c"/>',"#3CC98F","#2CB07A"],
+    ['<path d="M244 410c-56 0-96-40-106-84 52 0 98 32 106 84zM268 380c56 0 96-40 106-84-52 0-98 32-106 84z" fill="%c"/>',"#3CC98F","#2CB07A"],
+    ['<circle cx="256" cy="104" r="72"/><circle cx="346" cy="170" r="72"/><circle cx="312" cy="276" r="72"/><circle cx="200" cy="276" r="72"/><circle cx="166" cy="170" r="72"/>'.replace(/\/>/g,' fill="%c"/>'),"#FF8FB8","#FF6FA0"],
+    ['<circle cx="256" cy="200" r="58" fill="%c"/>',"#FFD23F","#F5BE1C"]
+  ],
+  stampa:[
+    ['<rect x="76" y="420" width="360" height="44" rx="12" fill="%c"/>',"#4D8BFF","#3A73E6"],
+    ['<rect x="224" y="150" width="64" height="116" fill="%c"/>',"#8B4434","#76362D"],
+    ['<circle cx="256" cy="110" r="64" fill="%c"/>',"#FF5A5A","#E84545"],
+    ['<rect x="96" y="250" width="320" height="96" rx="16" fill="%c"/>',"#FF5A5A","#E84545"],
+    ['<rect x="112" y="346" width="288" height="38" rx="6" fill="%c"/>',"#4A3B6B","#3B2E58"]
+  ],
+  gioielli:[
+    ['<circle cx="256" cy="322" r="124" fill="none" stroke="%c" stroke-width="40"/>',"#FFC83D","#F2AE1C"],
+    ['<path d="M226 186h60l-14 28h-32z" fill="%c"/>',"#FFC83D","#F2AE1C"],
+    ['<path d="M190 116l34-46h64l34 46z" fill="%c"/>',"#B5F1F8","#8BE3EF"],
+    ['<path d="M190 116h132l-66 92z" fill="%c"/>',"#7FE3F0","#4FCFE3"]
+  ],
+  tessile:[
+    ['<path d="M104 104l300 300M408 104L108 404" stroke="%c" stroke-width="20" stroke-linecap="round"/>',"#8B4434","#76362D"],
+    ['<circle cx="104" cy="104" r="24"/><circle cx="408" cy="104" r="24"/>'.replace(/\/>/g,' fill="%c"/>'),"#FF6B9A","#E84F82"],
+    ['<path d="M150 400c-40 40-60 70-96 70" stroke="%c" stroke-width="16" stroke-linecap="round" fill="none"/>',"#3CC98F","#2CB07A"],
+    ['<circle cx="256" cy="280" r="152" fill="%c"/>',"#3CC98F","#2CB07A"],
+    ['<path d="M150 190c80 30 170 110 195 210M120 270c80 0 160 60 180 150M210 140c70 40 150 90 185 160" stroke="%c" stroke-width="14" stroke-linecap="round" fill="none"/>',"#8CE6BE","#6FD6A8"]
+  ],
+  carta:[
+    ['<path d="M226 348L334 66l18 10-90 274zM286 348L178 66l-18 10 90 274z" fill="%c"/>',"#DCE3EE","#BAC3D3"],
+    ['<circle cx="186" cy="396" r="54" fill="none" stroke="%c" stroke-width="32"/><circle cx="326" cy="396" r="54" fill="none" stroke="%c" stroke-width="32"/>',"#FF5A5A","#E84545"],
+    ['<circle cx="256" cy="262" r="16" fill="%c"/>',"#4A3B6B","#3B2E58"]
+  ],
+  cucina:[
+    ['<rect x="38" y="252" width="436" height="34" rx="17" fill="%c"/>',"#8B4434","#76362D"],
+    ['<rect x="96" y="212" width="320" height="226" rx="34" fill="%c"/>',"#FF7A45","#F2602B"],
+    ['<rect x="96" y="300" width="320" height="30" fill="%c"/>',"#FFA27A","#FF8A5C"],
+    ['<path d="M100 200c0-80 312-80 312 0z" fill="%c"/>',"#DCE3EE","#BAC3D3"],
+    ['<rect x="222" y="98" width="68" height="34" rx="14" fill="%c"/>',"#8B4434","#76362D"],
+    ['<rect x="76" y="194" width="360" height="30" rx="15" fill="%c"/>',"#FFA27A","#FF8A5C"]
+  ],
+  degustazioni:[
+    ['<path d="M150 58h212c10 140-30 232-106 242-76-10-116-102-106-242z" fill="%c"/>',"#E6F0FA","#CFDDEC"],
+    ['<path d="M146 150h220c-6 90-46 140-110 146-64-6-104-56-110-146z" fill="%c"/>',"#C2185B","#A3134C"],
+    ['<rect x="242" y="296" width="28" height="134" fill="%c"/><ellipse cx="256" cy="440" rx="112" ry="28" fill="%c"/>',"#E6F0FA","#CFDDEC"]
+  ],
+  famiglia:[
+    ['<circle cx="164" cy="130" r="52"/><circle cx="348" cy="130" r="52"/><circle cx="138" cy="352" r="44"/><circle cx="374" cy="352" r="44"/><circle cx="180" cy="452" r="48"/><circle cx="332" cy="452" r="48"/>'.replace(/\/>/g,' fill="%c"/>'),"#C98A5A","#B07445"],
+    ['<ellipse cx="256" cy="372" rx="132" ry="112" fill="%c"/><circle cx="256" cy="204" r="112" fill="%c"/>',"#C98A5A","#B07445"],
+    ['<circle cx="164" cy="130" r="26"/><circle cx="348" cy="130" r="26"/><ellipse cx="256" cy="386" rx="72" ry="62"/><ellipse cx="256" cy="236" rx="48" ry="38"/><circle cx="180" cy="458" r="24"/><circle cx="332" cy="458" r="24"/>'.replace(/\/>/g,' fill="%c"/>'),"#F2C9A0","#E5B585"],
+    ['<circle cx="214" cy="182" r="13"/><circle cx="298" cy="182" r="13"/><ellipse cx="256" cy="220" rx="17" ry="12"/>'.replace(/\/>/g,' fill="%c"/>'),"#3A2A20","#2A1E17"]
+  ],
+  altro:[
+    ['<path d="M256 40c24 140 76 192 216 216-140 24-192 76-216 216-24-140-76-192-216-216 140-24 192-76 216-216z" fill="%c"/>',"#A879FF","#9160F0"],
+    ['<path d="M404 46c8 40 20 52 50 60-30 8-42 20-50 60-8-40-20-52-50-60 30-8 42-20 50-60zM108 346c8 40 20 52 50 60-30 8-42 20-50 60-8-40-20-52-50-60 30-8 42-20 50-60z" fill="%c"/>',"#FFD23F","#F5BE1C"]
+  ]
+};
+function catIcon(id){
+  const span=document.createElement("span"); span.className="ci"; span.setAttribute("aria-hidden","true");
+  if(ICON_IMG[id]){ span.append(el("img",{src:ICON_IMG[id],alt:""})); return span; }
+  const parts=ICONS[id]||ICONS.altro;
+  const layer=k=>parts.map(p=>p[0].replace(/%c/g,p[k])).join("");
+  span.innerHTML=`<svg viewBox="0 0 512 512">${layer(1)}<g clip-path="url(#cc-half)">${layer(2)}</g></svg>`;
+  return span;
+}
 const catOf = id => CATS.find(c=>c.id===id) || CATS[CATS.length-1];
 
 const state = {all:[], loaded:false, dbOk:true, q:"", cat:null, when:"all", maxPrice:0, tab:"explore", saved:loadSaved(), region:loadRegion()};
@@ -312,7 +443,7 @@ function renderCats(){
   rail.hidden=!ids.size;
   CATS.filter(c=>ids.has(c.id)).forEach(c=>{
     rail.append(el("button",{class:"cat",type:"button","aria-pressed":String(state.cat===c.id),onclick:()=>{state.cat=state.cat===c.id?null:c.id; render();}},
-      el("div",{class:"blob",style:`background:${c.c}`},c.em), el("span",{},c.label)));
+      el("div",{class:"blob",style:`background:${c.c}`},catIcon(c.id)), el("span",{},c.label)));
   });
 }
 
@@ -335,7 +466,7 @@ function card(w){
   return el("div",{class:"card",role:"button",tabindex:"0",onclick:()=>openDetail(w),onkeydown:e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openDetail(w);}}},
     el("div",{class:"ticket",style:`background:${c.c}`},
       d ? [el("span",{class:"wd"},WD[d.getDay()]), el("span",{class:"d"},String(d.getDate())), el("span",{class:"m"},MONTHS[d.getMonth()])] : el("span",{class:"requested"},"data su richiesta"),
-      el("span",{class:"em","aria-hidden":"true"},c.em)),
+      catIcon(c.id)),
     el("div",{class:"body"},
       el("h3",{},w.titolo||"Workshop"),
       el("div",{class:"meta"}, [w.ora_inizio, w.zona].filter(Boolean).join(" · ")),
@@ -441,7 +572,7 @@ function openDetail(w){
   let link=null;
   if(w.link && /^https?:\/\//i.test(w.link)) link=el("a",{class:"btn",href:w.link,target:"_blank",rel:"noopener"},"Prenota sul sito dell’organizzatore");
   openSheet([el("div",{class:"detail"},
-    el("div",{class:"hero-band",style:`background:${c.c}`}, el("span",{class:"em","aria-hidden":"true"},c.em), el("strong",{},c.label)),
+    el("div",{class:"hero-band",style:`background:${c.c}`}, catIcon(c.id), el("strong",{},c.label)),
     el("h3",{id:"sheetTitle"},w.titolo||"Workshop"),
     el("dl",{}, rows.flatMap(([k,v])=>[el("dt",{},k),el("dd",{},v)])),
     w.descrizione? el("p",{},w.descrizione):null,
@@ -491,7 +622,7 @@ function openCalendar(month){
     const label = `${WD_LONG[d.getDay()]} ${n} ${MONTHS_LONG[m.getMonth()]}` + (list.length ? `: ${list.length===1?"1 workshop":list.length+" workshop"}` : "");
     grid.append(el("button",{class:cls,type:"button",disabled:!list.length,"aria-label":label,onclick:()=>openDay(d,list)},
       el("span",{class:"n"},String(n)),
-      list.length ? el("span",{class:"ems","aria-hidden":"true"}, list.slice(0,2).map(w=>el("span",{},catOf(w.categoria).em)), list.length>2 ? el("span",{class:"more"},`+${list.length-2}`) : null) : null));
+      list.length ? el("span",{class:"ems","aria-hidden":"true"}, list.slice(0,2).map(w=>catIcon(catOf(w.categoria).id)), list.length>2 ? el("span",{class:"more"},`+${list.length-2}`) : null) : null));
   }
   let x0 = null;
   grid.addEventListener("touchstart",e=>{ x0 = e.touches[0].clientX; },{passive:true});
