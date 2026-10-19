@@ -569,7 +569,7 @@ function render(){
   let list;
   if(funny){ const q=state.q; state.q=""; list=filtered(); state.q=q; }
   else list=filtered();
-  const noun = state.tipo==="corso" ? (list.length===1?"corso":"corsi") : "workshop";
+  const noun = state.tipo==="corso" ? (list.length===1?"corso":"corsi") : state.tipo==="workshop" ? "workshop" : "attività";
   count.textContent = `${list.length} ${noun}`;
   if(funny) box.append(el("div",{class:"funny"},
     el("strong",{},"Anche se questa settimana vuoi fare schifo, almeno fallo in compagnia."),
@@ -627,14 +627,21 @@ document.addEventListener("keydown",e=>{ if(e.key==="Escape" && sheet.classList.
 function optGroup(items, isOn, onTap){ return el("div",{class:"opts"}, items.map(it=>el("button",{class:"pill",type:"button","aria-pressed":String(isOn(it)),onclick:e=>{onTap(it); e.currentTarget.parentNode.querySelectorAll("button").forEach((b,i)=>b.setAttribute("aria-pressed",String(isOn(items[i]))));}}, it.l||it))); }
 
 function openFilters(){
-  const draft={when:state.when, maxPrice:state.maxPrice};
+  const draft={when:state.when, maxPrice:state.maxPrice, region:state.region, tipo:state.tipo, cats:[...state.cats]};
+  const TIPI=[{v:"",l:"Tutti"},{v:"workshop",l:"Workshop"},{v:"corso",l:"Corsi"}];
+  // tipologie: le categorie che hanno almeno un evento in arrivo, in qualsiasi luogo
+  const usate=new Set(state.all.filter(isUpcoming).map(w=>catOf(w.categoria).id));
+  const tipologie=CATS.filter(c=>usate.has(c.id));
   openSheet([
     el("h3",{id:"sheetTitle"},"Filtri"),
+    el("h4",{},"Luogo"), optGroup(REGIONS.map(r=>({v:r.id,l:r.label})), it=>draft.region===it.v, it=>draft.region=it.v),
     el("h4",{},"Quando"), optGroup(WHENS, it=>draft.when===it.v, it=>draft.when=it.v),
+    el("h4",{},"Formato"), optGroup(TIPI, it=>draft.tipo===it.v, it=>draft.tipo=it.v),
+    el("h4",{},"Tipologia"), optGroup(tipologie.map(c=>({v:c.id,l:c.label})), it=>draft.cats.includes(it.v), it=>{ const i=draft.cats.indexOf(it.v); i>=0?draft.cats.splice(i,1):draft.cats.push(it.v); }),
     el("h4",{},"Prezzo"), optGroup(PRICES, it=>draft.maxPrice===it.v, it=>draft.maxPrice=it.v),
     el("div",{class:"actions"},
       el("button",{class:"ghost",type:"button",onclick:()=>{resetFilters(); closeSheet();}},"Azzera"),
-      el("button",{class:"btn",type:"button",onclick:()=>{Object.assign(state,draft); render(); closeSheet();}},"Mostra risultati"))
+      el("button",{class:"btn",type:"button",onclick:()=>{ if(draft.region!==state.region){ state.tab="explore"; } Object.assign(state,draft); persistRegion(); render(); closeSheet();}},"Mostra risultati"))
   ]);
 }
 
@@ -702,7 +709,7 @@ function openCalendar(month){
     const d = new Date(m.getFullYear(), m.getMonth(), n), key = ymd(d), list = byDay.get(key)||[];
     monthCount += list.length;
     const cls = ["cal-day", list.length?"has":"", +d===t0?"today":"", +d<t0?"past":""].filter(Boolean).join(" ");
-    const label = `${WD_LONG[d.getDay()]} ${n} ${MONTHS_LONG[m.getMonth()]}` + (list.length ? `: ${list.length===1?"1 workshop":list.length+" workshop"}` : "");
+    const label = `${WD_LONG[d.getDay()]} ${n} ${MONTHS_LONG[m.getMonth()]}` + (list.length ? `: ${list.length+" attività"}` : "");
     grid.append(el("button",{class:cls,type:"button",disabled:!list.length,"aria-label":label,onclick:()=>openDay(d,list)},
       el("span",{class:"n"},String(n)),
       list.length ? el("span",{class:"ems","aria-hidden":"true"}, list.slice(0,2).map(w=>catIcon(catOf(w.categoria).id)), list.length>2 ? el("span",{class:"more"},`+${list.length-2}`) : null) : null));
@@ -725,7 +732,7 @@ function openDay(d, list){
   openSheet([
     el("button",{class:"back",type:"button",onclick:()=>openCalendar(calMonth)},"‹ Calendario"),
     el("h3",{id:"sheetTitle"}, `${WD_LONG[d.getDay()][0].toUpperCase()+WD_LONG[d.getDay()].slice(1)} ${d.getDate()} ${MONTHS_LONG[d.getMonth()]}`),
-    el("p",{class:"meta",style:"margin:2px 0 0"}, list.length===1?"1 workshop":`${list.length} workshop`),
+    el("p",{class:"meta",style:"margin:2px 0 0"}, `${list.length} attività`),
     el("div",{class:"daylist"}, list.map(w=>card(w)))
   ]);
 }
