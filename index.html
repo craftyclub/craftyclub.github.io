@@ -87,6 +87,7 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .ticket .wd{font-size:12px;font-weight:600}
 .ticket .d{font-size:34px;font-weight:800;line-height:1;font-stretch:80%}
 .ticket .m{font-size:13px;font-weight:700}
+.ticket .requested{max-width:70px;font-size:12px;font-weight:700;line-height:1.1;text-align:center}
 .ticket .em{font-size:22px;margin-top:6px}
 .body{padding:14px 14px 14px 16px;flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
 .body h3{margin:0;font-size:18px;line-height:1.15;font-weight:700}
@@ -282,7 +283,8 @@ function card(w){
   heart.style.color = saved ? "var(--pink)" : "var(--ink-soft)";
   return el("div",{class:"card",role:"button",tabindex:"0",onclick:()=>openDetail(w),onkeydown:e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openDetail(w);}}},
     el("div",{class:"ticket",style:`background:${c.c}`},
-      el("span",{class:"wd"}, d?WD[d.getDay()]:"date"), el("span",{class:"d"}, d?String(d.getDate()):"su"), el("span",{class:"m"}, d?MONTHS[d.getMonth()]:"richiesta"), el("span",{class:"em","aria-hidden":"true"},c.em)),
+      d ? [el("span",{class:"wd"},WD[d.getDay()]), el("span",{class:"d"},String(d.getDate())), el("span",{class:"m"},MONTHS[d.getMonth()])] : el("span",{class:"requested"},"data su richiesta"),
+      el("span",{class:"em","aria-hidden":"true"},c.em)),
     el("div",{class:"body"},
       el("h3",{},w.titolo||"Workshop"),
       el("div",{class:"meta"}, [w.ora_inizio, w.zona].filter(Boolean).join(" · ")),
