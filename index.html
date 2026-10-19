@@ -105,7 +105,6 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .ticket.photo::before{content:"";position:absolute;inset:0;background:linear-gradient(rgba(42,20,64,.40),rgba(42,20,64,.70))}
 .ticket.photo > *{position:relative}
 .ticket.photo .wd,.ticket.photo .d,.ticket.photo .m,.ticket.photo .requested{text-shadow:0 1px 3px rgba(0,0,0,.45)}
-.ticket.photo::after{border-right-color:rgba(255,255,255,.55)}
 .chip-cat .ci{width:18px;height:18px}
 .cal-day .ci{width:14px;height:14px}
 .cat[aria-pressed="true"] .blob{border-color:var(--ink);transform:rotate(-6deg) scale(1.05);box-shadow:3px 3px 0 var(--ink)}
@@ -124,9 +123,10 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .listhead small{color:var(--ink-soft);font-size:14px}
 .cards{display:grid;gap:14px 12px;grid-template-columns:1fr}
 @media (min-width:640px){.cards{grid-template-columns:1fr 1fr}}
-.card{display:flex;background:var(--surface);border-radius:20px;overflow:hidden;border:2px solid var(--cb,var(--line));box-shadow:4px 4px 0 var(--cb,var(--line));cursor:pointer;text-align:left;padding:0;width:100%}
+.card{display:flex;background:var(--surface);border-radius:20px;overflow:hidden;border:0;cursor:pointer;text-align:left;padding:0;width:100%}
 .ticket{flex:none;width:116px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:#2A1440;position:relative;padding:12px 0}
 .ticket::after{content:"";position:absolute;right:-1px;top:10px;bottom:10px;border-right:2px dashed rgba(42,20,64,.25)}
+.ticket.photo::after{border-right-color:rgba(255,255,255,.55)}
 .ticket .wd{font-size:11px;font-weight:600}
 .ticket .d{font-size:29px;font-weight:800;line-height:1;font-stretch:80%}
 .ticket .m{font-size:12px;font-weight:700}
@@ -141,6 +141,7 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .badge.low{background:var(--sun);color:#2A1440}
 .badge.out{background:var(--line);color:var(--ink-soft)}
 .heart{margin-left:auto;background:none;border:0;padding:6px;cursor:pointer;font-size:20px;line-height:1}
+.bar-t{display:inline-block;width:4px;height:14px;border-radius:2px;margin-right:7px;vertical-align:-1px;background:var(--cb)}
 .empty{text-align:center;padding:40px 18px;color:var(--ink-soft)}
 .empty strong{display:block;color:var(--ink);font-size:18px;margin-bottom:6px}
 .empty button{margin-top:12px}
@@ -170,13 +171,9 @@ footer{color:var(--ink-soft);font-size:13px;text-align:center;padding:20px 0}
 .actions .btn{flex:1}
 .toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:600}
 .toggle input{width:22px;height:22px;accent-color:var(--pink)}
-.detail .cover{position:relative;display:block;width:100%;height:min(54vh,460px);margin:2px 0 14px;padding:0;border:0;border-radius:18px;overflow:hidden;background:#1A0F27;cursor:zoom-in}
+.detail .cover{position:relative;display:block;width:100%;height:min(54vh,460px);margin:2px 0 14px;padding:0;border:0;border-radius:18px;overflow:hidden;background:#1A0F27;cursor:pointer}
 .detail .cover .bg{position:absolute;inset:-24px;background-size:cover;background-position:center;filter:blur(20px) brightness(.65);transform:scale(1.05)}
-.detail .cover img{position:relative;display:block;width:100%;height:100%;object-fit:contain}
-.viewer{position:fixed;inset:0;z-index:30;display:none;place-items:center;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px);background:rgba(10,5,16,.94);cursor:zoom-out}
-.viewer.open{display:grid}
-.viewer img{max-width:100%;max-height:100vh;max-height:100dvh;object-fit:contain}
-.chip-cat{display:inline-flex;align-items:center;gap:6px;margin:2px 0 8px;padding:4px 11px 4px 7px;border:1.5px solid var(--cb);border-radius:999px;font-size:13px;font-weight:700;color:#2A1440}
+.detail .cover img{position:relative;display:block;width:100%;height:100%;object-fit:contain}.chip-cat{display:inline-flex;align-items:center;gap:6px;margin:2px 0 8px;padding:4px 11px 4px 7px;border:1.5px solid var(--cb);border-radius:999px;font-size:13px;font-weight:700;color:#2A1440}
 .detail dl{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;margin:14px 0}
 .detail dt{color:var(--ink-soft);font-size:13px}
 .detail dd{margin:0;font-weight:600;font-size:14.5px}
@@ -285,18 +282,15 @@ footer{color:var(--ink-soft);font-size:13px;text-align:center;padding:20px 0}
 
 <div class="overlay" id="overlay"></div>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"></div>
-<div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Immagine dell’evento (tocca per chiudere)" tabindex="-1"></div>
-
 <script>
 const CATS = [
   {id:"ceramica", label:"Ceramica", em:"🏺", c:"#FFE2CF", b:"#FF9029"},
-  {id:"ricamo", label:"Ricamo", em:"🧵", c:"#FFD9E8", b:"#E84F82"},
   {id:"pittura", label:"Pittura", em:"🎨", c:"#E7DEFF", b:"#9160F0"},
   {id:"fiori", label:"Fiori", em:"🌸", c:"#E2F5D8", b:"#5DBB63"},
   {id:"stampa", label:"Stampa", em:"🖨️", c:"#DCE8FF", b:"#3A73E6"},
   {id:"gioielli", label:"Gioielli", em:"💍", c:"#E0F6F9", b:"#1FB5CC"},
   {id:"tessile", label:"Tessile", em:"🧶", c:"#FFEFC7", b:"#2CB07A"},
-  {id:"carta", label:"Carta", em:"✂️", c:"#D9F3EA", b:"#E84545"},
+  {id:"carta", label:"Carta", em:"📄", c:"#D9F3EA", b:"#3FB58F"},
   {id:"cucina", label:"Cucina", em:"🍝", c:"#FFF0D2", b:"#F2602B"},
   {id:"degustazioni", label:"Degustazioni", em:"🍷", c:"#F6DDF0", b:"#A3134C"},
   {id:"famiglia", label:"Per famiglie", em:"🧸", c:"#F4E6DA", b:"#B07445"},
@@ -320,13 +314,6 @@ const WHENS = [{v:"all",l:"Tutte le date"},{v:"today",l:"Oggi"},{v:"week",l:"Pro
    Ogni parte: [markup con %c al posto del colore, colore chiaro, colore scuro] */
 const ICON_IMG = {ceramica:"icons/ceramica.png"};
 const ICONS = {
-  ricamo:[
-    ['<rect x="226" y="34" width="60" height="62" rx="12" fill="%c"/>',"#8B4434","#76362D"],
-    ['<circle cx="256" cy="282" r="196" fill="%c"/>',"#E0A46A","#C98A4F"],
-    ['<circle cx="256" cy="282" r="166" fill="%c"/>',"#FFF3E0","#F2E2CC"],
-    ['<path d="M128 282h34M190 282h34M288 282h34M350 282h34" stroke="%c" stroke-width="10" stroke-linecap="round" fill="none" opacity=".35"/>',"#8B4434","#76362D"],
-    ['<path d="M256 380C150 312 160 210 220 214c20 2 32 15 36 30 4-15 16-28 36-30 60-4 70 98-36 166z" fill="%c"/>',"#FF6B9A","#E84F82"]
-  ],
   pittura:[
     ['<path d="M256 62c124 0 214 90 214 190 0 80-60 90-100 80-40-10-60 20-50 60 15 50-20 70-64 70C140 462 42 372 42 257 42 147 140 62 256 62z" fill="%c"/>',"#F2C98A","#E0B171"],
     ['<circle cx="160" cy="196" r="38" fill="%c"/>',"#FF5A5A","#E84545"],
@@ -362,9 +349,9 @@ const ICONS = {
     ['<path d="M150 190c80 30 170 110 195 210M120 270c80 0 160 60 180 150M210 140c70 40 150 90 185 160" stroke="%c" stroke-width="14" stroke-linecap="round" fill="none"/>',"#8CE6BE","#6FD6A8"]
   ],
   carta:[
-    ['<path d="M226 348L334 66l18 10-90 274zM286 348L178 66l-18 10 90 274z" fill="%c"/>',"#DCE3EE","#BAC3D3"],
-    ['<circle cx="186" cy="396" r="54" fill="none" stroke="%c" stroke-width="32"/><circle cx="326" cy="396" r="54" fill="none" stroke="%c" stroke-width="32"/>',"#FF5A5A","#E84545"],
-    ['<circle cx="256" cy="262" r="16" fill="%c"/>',"#4A3B6B","#3B2E58"]
+    ['<path d="M124 34h196l100 100v324c0 13-11 24-24 24H124c-13 0-24-11-24-24V58c0-13 11-24 24-24z" fill="%c"/>',"#FFF6E5","#F2E2CC"],
+    ['<path d="M320 34v76c0 13 11 24 24 24h76z" fill="%c"/>',"#E3CFA8","#D2BB8F"],
+    ['<rect x="150" y="196" width="212" height="20" rx="10"/><rect x="150" y="252" width="212" height="20" rx="10"/><rect x="150" y="308" width="212" height="20" rx="10"/><rect x="150" y="364" width="132" height="20" rx="10"/>'.replace(/\/>/g,' fill="%c"/>'),"#7FD3B6","#5CC09E"]
   ],
   cucina:[
     ['<rect x="38" y="252" width="436" height="34" rx="17" fill="%c"/>',"#8B4434","#76362D"],
@@ -471,6 +458,7 @@ const priceLabel = w => (w.prezzo_da && w.prezzo ? "da " : "") + euro(w.prezzo);
 const fotoOf = w => w.foto && /^img\/eventi\/[\w.-]+\.(jpe?g|png|webp)$/i.test(w.foto) ? w.foto : null;
 const fotoGrande = w => { const f=fotoOf(w); return f ? f.replace("img/eventi/","img/eventi/grandi/") : null; };
 
+
 function card(w){
   const c=catOf(w.categoria), d=parseDate(w.data);
   const heart=el("button",{class:"heart",type:"button"});
@@ -478,12 +466,13 @@ function card(w){
   heart.addEventListener("click",e=>{ e.stopPropagation(); state.saved.has(w.id)?state.saved.delete(w.id):state.saved.add(w.id); persistSaved(); paint(); render(); });
   paint();
   const foto = fotoOf(w);
+  const when=[w.ora_inizio, w.zona].filter(Boolean).join(" · ");
   return el("div",{class:"card",role:"button",tabindex:"0",style:`--cb:${c.b}`,onclick:()=>openDetail(w),onkeydown:e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openDetail(w);}}},
     el("div",{class:"ticket"+(foto?" photo":""),style:foto?`background-image:url('${foto}')`:`background:${c.c}`},
       d ? [el("span",{class:"wd"},WD[d.getDay()]), el("span",{class:"d"},String(d.getDate())), el("span",{class:"m"},MONTHS[d.getMonth()])] : el("span",{class:"requested"},"data su richiesta")),
     el("div",{class:"body"},
-      el("h3",{},w.titolo||"Workshop"),
-      el("div",{class:"meta"}, [w.ora_inizio, w.zona].filter(Boolean).join(" · ")),
+      el("h3",{}, el("span",{class:"bar-t",title:c.label,"aria-hidden":"true"}), w.titolo||"Workshop"),
+      el("div",{class:"meta"}, when),
       w.organizzatore? el("div",{class:"meta"}, "con "+w.organizzatore):null,
       el("div",{class:"row"}, el("span",{class:"price"},priceLabel(w)), seatsBadge(w), heart))
   );
@@ -556,20 +545,12 @@ sheet.addEventListener("touchcancel",endDrag);
 // un tocco nello spazio vuoto in alto (maniglia, titolo, margini sopra i comandi) chiude il pannello
 sheet.addEventListener("click",e=>{
   const t=e.target;
+  if(t.closest(".detail .cover")){ closeSheet(); return; }
   if(!(t===sheet || t.classList.contains("grab") || t.id==="sheetTitle" || t.tagName==="H4")) return;
   const first=sheet.querySelector("button, a, input, label");
   if(!first || e.clientY < first.getBoundingClientRect().top) closeSheet();
 });
-// immagine a schermo intero
-const viewer=document.getElementById("viewer");
-function openViewer(src){ viewer.innerHTML=""; viewer.append(el("img",{src,alt:""})); viewer.classList.add("open"); viewer.focus(); }
-function closeViewer(){ viewer.classList.remove("open"); viewer.innerHTML=""; const c=sheet.querySelector(".cover"); c&&c.focus(); }
-viewer.addEventListener("click",closeViewer);
-document.addEventListener("keydown",e=>{
-  if(e.key!=="Escape") return;
-  if(viewer.classList.contains("open")) closeViewer();
-  else if(sheet.classList.contains("open")) closeSheet();
-});
+document.addEventListener("keydown",e=>{ if(e.key==="Escape" && sheet.classList.contains("open")) closeSheet(); });
 
 function optGroup(items, isOn, onTap){ return el("div",{class:"opts"}, items.map(it=>el("button",{class:"pill",type:"button","aria-pressed":String(isOn(it)),onclick:e=>{onTap(it); e.currentTarget.parentNode.querySelectorAll("button").forEach((b,i)=>b.setAttribute("aria-pressed",String(isOn(items[i]))));}}, it.l||it))); }
 
@@ -594,7 +575,7 @@ function openDetail(w){
   let link=null;
   if(w.link && /^https?:\/\//i.test(w.link)) link=el("a",{class:"btn",href:w.link,target:"_blank",rel:"noopener"},"Prenota sul sito dell’organizzatore");
   openSheet([el("div",{class:"detail"},
-    fotoGrande(w) ? el("button",{class:"cover",type:"button","aria-label":"Ingrandisci l’immagine",onclick:()=>openViewer(fotoGrande(w))},
+    fotoGrande(w) ? el("div",{class:"cover"},
       el("span",{class:"bg",style:`background-image:url('${fotoGrande(w)}')`}),
       el("img",{src:fotoGrande(w),alt:"",onerror:e=>{ const im=e.target; if(!im.src.endsWith(fotoOf(w))) im.src=fotoOf(w); else im.closest(".cover").remove(); }})) : null,
     el("span",{class:"chip-cat",style:`--cb:${c.b};background:${c.c}`}, catIcon(c.id), c.label),
@@ -995,7 +976,7 @@ const WORKSHOPS = [
   "id": "pangramma-halloween-kids-2026-10-31"
  },
  {
-  "categoria": "ricamo",
+  "categoria": "tessile",
   "descrizione": "Un gruppo dedicato a ricamo, rammendo e sashiko, la tecnica giapponese di cucitura a punti in vista. Si impara a riparare e decorare i tessuti a mano, in un appuntamento ricorrente alla Casa del Quartiere di San Donato.",
   "fonte": "Instagram @piuspazioquattro",
   "foto": "img/eventi/piuspazioquattro-2026-10-01-4.jpg",
