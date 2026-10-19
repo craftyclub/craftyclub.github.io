@@ -130,7 +130,7 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .ticket .wd{font-size:11px;font-weight:600}
 .ticket .d{font-size:29px;font-weight:800;line-height:1;font-stretch:80%}
 .ticket .m{font-size:12px;font-weight:700}
-.ticket .requested{max-width:70px;font-size:12px;font-weight:700;line-height:1.1;text-align:center}
+.ticket .requested{display:block;width:100%;padding:0 6px;font-size:12px;font-weight:800;line-height:1.15;text-align:center;overflow-wrap:anywhere}
 .ticket .em{font-size:22px;margin-top:6px}
 .body{padding:11px 12px 10px 13px;flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
 .body h3{margin:0;font-size:15.5px;line-height:1.2;font-weight:700}
@@ -143,6 +143,8 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .heart{margin-left:auto;background:none;border:0;padding:6px;cursor:pointer;font-size:20px;line-height:1}
 .bar-t{display:inline-block;width:4px;height:14px;border-radius:2px;margin-right:7px;vertical-align:-1px;background:var(--cb)}
 .empty{text-align:center;padding:40px 18px;color:var(--ink-soft)}
+.funny{grid-column:1/-1;padding:16px 18px;border-radius:18px;background:var(--sun);color:#2A1440;font-size:14px;line-height:1.4}
+.funny strong{display:block;font-size:16px;margin-bottom:4px}
 .empty strong{display:block;color:var(--ink);font-size:18px;margin-bottom:6px}
 .empty button{margin-top:12px}
 
@@ -204,14 +206,14 @@ footer{color:var(--ink-soft);font-size:13px;text-align:center;padding:20px 0}
   .listhead{margin:10px 0 8px}
   .listhead h2{font-size:19px}
   .listhead small{font-size:13px}
-  .cards{grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
   .card{border-radius:16px}
   .ticket{width:92px;padding:8px 0}
   .ticket::after{top:8px;bottom:8px}
   .ticket .wd{font-size:11px}
   .ticket .d{font-size:24px}
   .ticket .m{font-size:11px}
-  .ticket .requested{max-width:56px;font-size:11px}
+  .ticket .requested{font-size:11px;padding:0 4px}
   .body{padding:10px 10px 8px 12px;gap:2px}
   .body h3{font-size:15px;line-height:1.2}
   .meta{font-size:12.5px}
@@ -469,7 +471,7 @@ function card(w){
   const when=[w.ora_inizio, w.zona].filter(Boolean).join(" · ");
   return el("div",{class:"card",role:"button",tabindex:"0",style:`--cb:${c.b}`,onclick:()=>openDetail(w),onkeydown:e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openDetail(w);}}},
     el("div",{class:"ticket"+(foto?" photo":""),style:foto?`background-image:url('${foto}')`:`background:${c.c}`},
-      d ? [el("span",{class:"wd"},WD[d.getDay()]), el("span",{class:"d"},String(d.getDate())), el("span",{class:"m"},MONTHS[d.getMonth()])] : el("span",{class:"requested"},"data su richiesta")),
+      d ? [el("span",{class:"wd"},WD[d.getDay()]), el("span",{class:"d"},String(d.getDate())), el("span",{class:"m"},MONTHS[d.getMonth()])] : el("span",{class:"requested"},"su prenotazione")),
     el("div",{class:"body"},
       el("h3",{}, el("span",{class:"bar-t",title:c.label,"aria-hidden":"true"}), w.titolo||"Workshop"),
       el("div",{class:"meta"}, when),
@@ -500,8 +502,15 @@ function render(){
   document.querySelector('[data-quick="cheap"]').setAttribute("aria-pressed",String(state.maxPrice===30));
   if(!state.dbOk){ count.textContent=""; box.append(el("div",{class:"notice"},"Apri questa pagina da claude.ai per vedere i workshop.")); return; }
   if(!state.loaded){ count.textContent=""; box.append(el("div",{class:"empty"},"Carico i workshop…")); return; }
-  const list=filtered();
+  // easter egg: chi cerca "schifo" riceve una frase scherzosa e tutti i workshop (la ricerca viene ignorata)
+  const funny = norm(state.q).includes("schifo");
+  let list;
+  if(funny){ const q=state.q; state.q=""; list=filtered(); state.q=q; }
+  else list=filtered();
   count.textContent = list.length===1?"1 workshop":`${list.length} workshop`;
+  if(funny) box.append(el("div",{class:"funny"},
+    el("strong",{},"Anche se questa settimana vuoi fare schifo, almeno fallo in compagnia."),
+    "Scegli uno dei workshop qui sotto: nessuno ti giudica, al massimo ti insegnano qualcosa."));
   if(!list.length){
     if(!state.all.length){ box.append(el("div",{class:"empty"}, el("strong",{},"Ancora nessun workshop"), "I primi arrivano a breve.")); return; }
     if(state.tab==="saved"){ box.append(el("div",{class:"empty"}, el("strong",{},"Non hai ancora salvato niente"), "Tocca il cuore su un workshop per ritrovarlo qui.")); return; }
