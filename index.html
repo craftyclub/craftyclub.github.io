@@ -101,7 +101,13 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .ci{display:inline-block;flex:none;line-height:0}
 .ci svg,.ci img{width:100%;height:100%;display:block}
 .cat .blob .ci{width:42px;height:42px}
-.ticket .ci{width:28px;height:28px;margin-top:6px}
+.ticket .tag{width:26px;height:26px;margin-bottom:4px;border-radius:999px;background:rgba(255,255,255,.92);display:grid;place-items:center}
+.ticket .tag .ci{width:17px;height:17px}
+.ticket.photo{background-size:cover;background-position:center;color:#fff}
+.ticket.photo::before{content:"";position:absolute;inset:0;background:linear-gradient(rgba(42,20,64,.40),rgba(42,20,64,.70))}
+.ticket.photo > *{position:relative}
+.ticket.photo .wd,.ticket.photo .d,.ticket.photo .m,.ticket.photo .requested{text-shadow:0 1px 3px rgba(0,0,0,.45)}
+.ticket.photo::after{border-right-color:rgba(255,255,255,.55)}
 .detail .hero-band .ci{width:48px;height:48px}
 .cal-day .ci{width:14px;height:14px}
 .cat[aria-pressed="true"] .blob{border-color:var(--ink);transform:rotate(-6deg) scale(1.05);box-shadow:3px 3px 0 var(--ink)}
@@ -120,7 +126,7 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .listhead small{color:var(--ink-soft);font-size:14px}
 .cards{display:grid;gap:14px;grid-template-columns:1fr}
 @media (min-width:640px){.cards{grid-template-columns:1fr 1fr}}
-.card{display:flex;background:var(--surface);border-radius:22px;overflow:hidden;border:1.5px solid var(--line);cursor:pointer;text-align:left;padding:0;width:100%}
+.card{display:flex;background:var(--surface);border-radius:22px;overflow:hidden;border:2px solid var(--cb,var(--line));cursor:pointer;text-align:left;padding:0;width:100%}
 .ticket{flex:none;width:92px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:#2A1440;position:relative;padding:12px 0}
 .ticket::after{content:"";position:absolute;right:-1px;top:10px;bottom:10px;border-right:2px dashed rgba(42,20,64,.25)}
 .ticket .wd{font-size:12px;font-weight:600}
@@ -176,7 +182,8 @@ footer{color:var(--ink-soft);font-size:13px;text-align:center;padding:20px 0}
 .notice{background:var(--surface);border:1.5px dashed var(--line);border-radius:18px;padding:16px;color:var(--ink-soft);font-size:14px}
 /* desktop: tutta la larghezza, testi e schede più compatti */
 @media (min-width:900px){
-  :root{--gl:max(36px,env(safe-area-inset-left,0px)); --gr:max(36px,env(safe-area-inset-right,0px))}
+  :root{--gl:max(32px,env(safe-area-inset-left,0px)); --gr:max(32px,env(safe-area-inset-right,0px))}
+  .wrap{max-width:1120px}
   body{font-size:15px}
   .logo{font-size:20px}
   .hero{padding:10px 0 4px}
@@ -205,7 +212,8 @@ footer{color:var(--ink-soft);font-size:13px;text-align:center;padding:20px 0}
   .ticket .d{font-size:24px}
   .ticket .m{font-size:11px}
   .ticket .requested{max-width:56px;font-size:11px}
-  .ticket .ci{width:20px;height:20px;margin-top:4px}
+  .ticket .tag{width:22px;height:22px;margin-bottom:3px}
+  .ticket .tag .ci{width:14px;height:14px}
   .body{padding:10px 10px 8px 12px;gap:2px}
   .body h3{font-size:15px;line-height:1.2}
   .meta{font-size:12.5px}
@@ -279,18 +287,18 @@ footer{color:var(--ink-soft);font-size:13px;text-align:center;padding:20px 0}
 
 <script>
 const CATS = [
-  {id:"ceramica", label:"Ceramica", em:"🏺", c:"#FFE2CF"},
-  {id:"ricamo", label:"Ricamo", em:"🧵", c:"#FFD9E8"},
-  {id:"pittura", label:"Pittura", em:"🎨", c:"#E7DEFF"},
-  {id:"fiori", label:"Fiori", em:"🌸", c:"#E2F5D8"},
-  {id:"stampa", label:"Stampa", em:"🖨️", c:"#DCE8FF"},
-  {id:"gioielli", label:"Gioielli", em:"💍", c:"#E0F6F9"},
-  {id:"tessile", label:"Tessile", em:"🧶", c:"#FFEFC7"},
-  {id:"carta", label:"Carta", em:"✂️", c:"#D9F3EA"},
-  {id:"cucina", label:"Cucina", em:"🍝", c:"#FFF0D2"},
-  {id:"degustazioni", label:"Degustazioni", em:"🍷", c:"#F6DDF0"},
-  {id:"famiglia", label:"Per famiglie", em:"🧸", c:"#F4E6DA"},
-  {id:"altro", label:"Altro", em:"✨", c:"#ECE6FF"}
+  {id:"ceramica", label:"Ceramica", em:"🏺", c:"#FFE2CF", b:"#FF9029"},
+  {id:"ricamo", label:"Ricamo", em:"🧵", c:"#FFD9E8", b:"#E84F82"},
+  {id:"pittura", label:"Pittura", em:"🎨", c:"#E7DEFF", b:"#9160F0"},
+  {id:"fiori", label:"Fiori", em:"🌸", c:"#E2F5D8", b:"#5DBB63"},
+  {id:"stampa", label:"Stampa", em:"🖨️", c:"#DCE8FF", b:"#3A73E6"},
+  {id:"gioielli", label:"Gioielli", em:"💍", c:"#E0F6F9", b:"#1FB5CC"},
+  {id:"tessile", label:"Tessile", em:"🧶", c:"#FFEFC7", b:"#2CB07A"},
+  {id:"carta", label:"Carta", em:"✂️", c:"#D9F3EA", b:"#E84545"},
+  {id:"cucina", label:"Cucina", em:"🍝", c:"#FFF0D2", b:"#F2602B"},
+  {id:"degustazioni", label:"Degustazioni", em:"🍷", c:"#F6DDF0", b:"#A3134C"},
+  {id:"famiglia", label:"Per famiglie", em:"🧸", c:"#F4E6DA", b:"#B07445"},
+  {id:"altro", label:"Altro", em:"✨", c:"#ECE6FF", b:"#7B5CE0"}
 ];
 const REGIONS = [
   {id:"all", label:"Ovunque", short:"Ovunque", where:""},
@@ -463,10 +471,11 @@ function card(w){
   const paint=()=>{ const on=state.saved.has(w.id); heart.textContent=on?"♥":"♡"; heart.style.color=on?"var(--pink)":"var(--ink-soft)"; heart.setAttribute("aria-label",on?"Rimuovi dai salvati":"Salva"); };
   heart.addEventListener("click",e=>{ e.stopPropagation(); state.saved.has(w.id)?state.saved.delete(w.id):state.saved.add(w.id); persistSaved(); paint(); render(); });
   paint();
-  return el("div",{class:"card",role:"button",tabindex:"0",onclick:()=>openDetail(w),onkeydown:e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openDetail(w);}}},
-    el("div",{class:"ticket",style:`background:${c.c}`},
-      d ? [el("span",{class:"wd"},WD[d.getDay()]), el("span",{class:"d"},String(d.getDate())), el("span",{class:"m"},MONTHS[d.getMonth()])] : el("span",{class:"requested"},"data su richiesta"),
-      catIcon(c.id)),
+  const foto = w.foto && /^img\/[\w\/.-]+\.(jpe?g|png|webp)$/i.test(w.foto) ? w.foto : null;
+  return el("div",{class:"card",role:"button",tabindex:"0",style:`--cb:${c.b}`,onclick:()=>openDetail(w),onkeydown:e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openDetail(w);}}},
+    el("div",{class:"ticket"+(foto?" photo":""),style:foto?`background-image:url('${foto}')`:`background:${c.c}`},
+      el("span",{class:"tag"},catIcon(c.id)),
+      d ? [el("span",{class:"wd"},WD[d.getDay()]), el("span",{class:"d"},String(d.getDate())), el("span",{class:"m"},MONTHS[d.getMonth()])] : el("span",{class:"requested"},"data su richiesta")),
     el("div",{class:"body"},
       el("h3",{},w.titolo||"Workshop"),
       el("div",{class:"meta"}, [w.ora_inizio, w.zona].filter(Boolean).join(" · ")),
@@ -674,6 +683,7 @@ const WORKSHOPS = [
   "data": "2026-11-14",
   "descrizione": "Un laboratorio che parte da ecofemminismo e saperi situati: si leggono testi insieme e poi si costruisce un grande collage collettivo con ritagli, scritte e disegni. Non serve preparazione né materiale.",
   "fonte": "Instagram @antro_torino",
+  "foto": "img/eventi/antro-torino-2026-10-09-11.jpg",
   "link": "https://www.instagram.com/p/DeRXHB3xVAm/",
   "ora_inizio": "10:30",
   "organizzatore": "Siria Moschella per Antro",
@@ -688,6 +698,7 @@ const WORKSHOPS = [
   "data": "2026-10-24",
   "descrizione": "Tre ore per imparare a usare pennino e inchiostro e prendere confidenza con forme, ritmo e movimento delle lettere. Non serve esperienza e alla fine porti a casa una cartolina scritta da te. Colazione inclusa con specialty coffee di Santa Romero e un cupcake di Tauer Bakery.",
   "fonte": "le-strade.com",
+  "foto": "img/eventi/lestradeditorino-2026-10-07-9.jpg",
   "indirizzo": "Le Strade Creative Studio, Via Cagliari 11",
   "link": "https://docs.google.com/forms/d/e/1FAIpQLSdTYyhTYiT5WnI_2ro6FV4E4wPXTRIW5ONDny_MWVAAu7uAJA/viewform",
   "livello": "Principianti",
@@ -704,6 +715,7 @@ const WORKSHOPS = [
   "categoria": "tessile",
   "descrizione": "Uno spazio settimanale per lavorare a maglia, chiacchierare e stare in compagnia. Si porta il proprio lavoro e ci si siede insieme.",
   "fonte": "Instagram @casadelquartiere",
+  "foto": "img/eventi/casadelquartiere-2026-10-19-1.jpg",
   "indirizzo": "Casa del Quartiere di San Salvario, Via Oddino Morgari 14",
   "link": "https://www.instagram.com/p/DerQM9Oj4iT/",
   "livello": "Tutti",
@@ -721,6 +733,7 @@ const WORKSHOPS = [
   "data": "2026-10-23",
   "descrizione": "Un incontro con degustazione sul vino naturale insieme a due produttrici, Testalonga di Dolceacqua e Cascina Barbàn della Val Borbera. Si parla di cosa significa davvero naturale, dalla vigna alla cantina, assaggiando i loro vini.",
   "fonte": "Instagram @casadelquartiere",
+  "foto": "img/eventi/casadelquartiere-2026-10-13-5.jpg",
   "indirizzo": "Casa del Quartiere di San Salvario, Via Oddino Morgari 14",
   "link": "https://www.instagram.com/p/Debz9_lDdim/",
   "ora_inizio": "19:00",
@@ -736,6 +749,7 @@ const WORKSHOPS = [
   "categoria": "tessile",
   "descrizione": "Un percorso di avvicinamento al mondo dei filati, tra ferri circolari, maglia e uncinetto. Fa parte dei corsi di creatività della Casa del Quartiere di Mirafiori sud.",
   "fonte": "Instagram @casanelparco",
+  "foto": "img/eventi/casanelparco-2026-10-02-15.jpg",
   "link": "https://www.instagram.com/p/Dd_U7ysFOnH/",
   "organizzatore": "Mihaela Mates per Casa nel Parco",
   "prezzo_note": "Prezzo non indicato: vedere il sito di Casa nel Parco",
@@ -749,6 +763,7 @@ const WORKSHOPS = [
   "categoria": "pittura",
   "descrizione": "Laboratorio di pittura a terzo fuoco su porcellana e di pittura su stoffa, aperto anche a chi non ha mai disegnato. Fa parte delle attività di Mirafiori Insieme, dedicate soprattutto alla terza età.",
   "fonte": "Instagram @casanelparco",
+  "foto": "img/eventi/casanelparco-2026-10-03-14.jpg",
   "link": "https://www.instagram.com/p/DeB5xdpj-9L/",
   "livello": "Principianti",
   "organizzatore": "Emilia Cerrato per Casa nel Parco",
@@ -764,6 +779,7 @@ const WORKSHOPS = [
   "data": "2026-11-01",
   "descrizione": "Un laboratorio di riparazione creativa che usa il rammendo come pratica lenta e meditativa. Con la tecnica del visible mending gli strappi non si nascondono ma diventano un dettaglio che rende unico il capo.",
   "fonte": "Instagram @emporium_torino",
+  "foto": "img/eventi/emporium-torino-2026-10-19-1.jpg",
   "indirizzo": "San Salvario Emporium, Piazza Madama Cristina",
   "link": "https://www.instagram.com/p/DerrraXiEan/",
   "ora_fine": "17:00",
@@ -780,6 +796,7 @@ const WORKSHOPS = [
   "data": "2026-10-22",
   "descrizione": "Un pomeriggio di progettazione e composizione guidato dall’illustratrice Beatrice Bandiera, protagonista della mostra in corso in galleria. Partendo dal giardino come luogo d’infanzia e di mistero, sospeso tra ordine e caos, ognuno costruisce la propria piccola scenografia giocando con profondità e colori.",
   "fonte": "Instagram @galleria_caracol",
+  "foto": "img/eventi/galleria-caracol-2026-10-13-2.jpg",
   "indirizzo": "Galleria Caracol, Via San Pio V 20/C",
   "link": "https://www.instagram.com/p/DebpudfNDkB/",
   "ora_fine": "20:00",
@@ -796,6 +813,7 @@ const WORKSHOPS = [
   "data": "2026-10-22",
   "descrizione": "Una serata in stile giapponese per mettere le mani in pasta: si preparano dango a forma di zucca e si decorano biscotti all’hōjichā. Il tutto accompagnato dal tè di Kintsugi.",
   "fonte": "Instagram @kintsugi.torino",
+  "foto": "img/eventi/kintsugi-torino-2026-10-15-3.jpg",
   "indirizzo": "Kintsugi Tea&Cakes, Via Monte di Pietà 17C",
   "link": "https://www.instagram.com/reel/DehN9P8M1XF/",
   "ora_inizio": "19:30",
@@ -811,6 +829,7 @@ const WORKSHOPS = [
   "data": "2026-10-21",
   "descrizione": "Un pomeriggio per imparare i primi passi dell’uncinetto realizzando un cordino personalizzato da usare come porta cellulare o portachiavi, scegliendo i colori che preferisci. Non serve esperienza. Include una merenda preparata da CASO, il bistrot di Spazio Lombroso.",
   "fonte": "le-strade.com",
+  "foto": "img/eventi/lazypear-2026-10-12-3.jpg",
   "indirizzo": "Polo Culturale Lombroso16, Via Cesare Lombroso 16",
   "link": "https://www.instagram.com/p/DeY51x8oiCx/",
   "livello": "Principianti",
@@ -839,6 +858,7 @@ const WORKSHOPS = [
   "categoria": "cucina",
   "descrizione": "Si parte dalla Table aux épices per conoscere le spezie con vista, tatto e olfatto, poi si cucinano tre piatti vegetali di tre Paesi legati da un filo aromatico. Ognuno crea il proprio masala da portare a casa insieme al ricettario.",
   "fonte": "Instagram @masalastudio_torino",
+  "foto": "img/eventi/masalastudio-torino-2026-10-07-1.jpg",
   "link": "https://www.instagram.com/p/DeMM42FgI09/",
   "organizzatore": "Masala Studio",
   "prezzo": 50,
@@ -852,6 +872,7 @@ const WORKSHOPS = [
   "data": "2026-10-19",
   "descrizione": "Durante i Graphic Days il laboratorio resta aperto e chiunque può contribuire a tuftare un tappeto progettato collettivamente. Il disegno nasce da un gioco sul disordine in cui ogni intervento parte da quello precedente.",
   "fonte": "Instagram @nodo.tuftingtorino",
+  "foto": "img/eventi/nodo-tuftingtorino-2026-10-06-2.jpg",
   "indirizzo": "Via Guastalla 6",
   "link": "https://www.instagram.com/p/DeJq1SxDLII/",
   "organizzatore": "Nodo Tufting Torino con Chiara Allione",
@@ -865,6 +886,7 @@ const WORKSHOPS = [
   "categoria": "tessile",
   "descrizione": "Impari a usare la tufting gun e realizzi un tappeto personalizzato con il tuo disegno: lo trasferisci sulla tela, scegli tra 70 colori di filato, tufti in autonomia e poi rifinisci il tappeto con colla, retro antiscivolo, rasoio e forbici. Pensato per principianti, riservato agli adulti. I workshop sono individuali: non si lavora in coppia sullo stesso telaio e non si possono portare accompagnatori. Materiali inclusi; il disegno va inviato via mail qualche giorno prima. Sconto del 15% per studenti under 26.",
   "fonte": "tuftingtorino.it",
+  "foto": "img/eventi/nodo-tuftingtorino-2026-09-30-4.jpg",
   "indirizzo": "Via Guastalla 6",
   "link": "https://tuftingtorino.it/workshop/",
   "livello": "Principianti",
@@ -917,6 +939,7 @@ const WORKSHOPS = [
   "data": "2026-10-31",
   "descrizione": "Un weekend di laboratori per bambini: l’intaglio della zucca, da portare a casa, e la Fabbrica dei Mostri Naturali, dove si compongono creature con elementi naturali e consistenze inattese. Al termine c’è la merenda preparata da Orti Generali, e si viene in maschera.",
   "fonte": "Instagram @ortigenerali",
+  "foto": "img/eventi/ortigenerali-2026-10-16-2.jpg",
   "indirizzo": "Orti Generali, Strada Castello di Mirafiori 38/15",
   "link": "https://www.instagram.com/p/Dei7pKICG2-/",
   "organizzatore": "Orti Generali",
@@ -930,6 +953,7 @@ const WORKSHOPS = [
   "categoria": "ceramica",
   "descrizione": "Si modella a scelta un oggetto in argilla bianca e lo si decora con gli engobbi, le terre colorate. Dopo la cottura il pezzo si ritira in studio.",
   "fonte": "Instagram @ouimiel.ceramics",
+  "foto": "img/eventi/ouimiel-ceramics-2026-10-16-2.jpg",
   "indirizzo": "Ouimiel Studio, Via Porta Palatina 9/F",
   "link": "https://www.instagram.com/p/DekIvilDmIN/",
   "organizzatore": "Ouimiel Studio",
@@ -946,6 +970,7 @@ const WORKSHOPS = [
   "data": "2026-10-31",
   "descrizione": "Un appuntamento speciale del Craft Club, il pomeriggio lento in cui si porta il proprio hobby e si crea in compagnia, questa volta aperto ai bambini e a tema Halloween. I dettagli vanno chiesti direttamente a Pangramma.",
   "fonte": "Instagram @pangramma_",
+  "foto": "img/eventi/pangramma--2026-10-19-1.jpg",
   "link": "https://www.instagram.com/reel/DerbR2Uu1Vk/",
   "organizzatore": "Pangramma",
   "prezzo_note": "Prezzo non indicato: da chiedere a @pangramma_",
@@ -957,6 +982,7 @@ const WORKSHOPS = [
   "categoria": "ricamo",
   "descrizione": "Un gruppo dedicato a ricamo, rammendo e sashiko, la tecnica giapponese di cucitura a punti in vista. Si impara a riparare e decorare i tessuti a mano, in un appuntamento ricorrente alla Casa del Quartiere di San Donato.",
   "fonte": "Instagram @piuspazioquattro",
+  "foto": "img/eventi/piuspazioquattro-2026-10-01-4.jpg",
   "indirizzo": "Più SpazioQuattro, Via Le Chiuse 66",
   "link": "https://www.instagram.com/p/Dd8rEBMgHUz/",
   "ora_fine": "17:30",
@@ -1005,6 +1031,7 @@ const WORKSHOPS = [
   "data": "2026-10-25",
   "descrizione": "Una sessione intensiva di serigrafia durante i Graphic Days, in cui si stampa liberamente sul proprio progetto e su quello degli altri. Si lavora d’istinto, con scelte rapide e contaminazioni, per vedere cosa succede quando il processo creativo accelera.",
   "fonte": "Instagram @printclubtorino",
+  "foto": "img/eventi/printclubtorino-2026-10-09-3.jpg",
   "indirizzo": "Graphic Days, Cantieri Gruppo Building, Via A. Banfo 43 e 16",
   "link": "https://www.instagram.com/p/DeR4z6BiMqS/",
   "ora_fine": "13:30",
@@ -1020,6 +1047,7 @@ const WORKSHOPS = [
   "categoria": "ceramica",
   "descrizione": "Corsi di decorazione ceramica con diverse tecniche: decorazione a pennino, tecnica scandinava e cuerda seca, in cui i colori dello smalto vengono separati da un contorno che ne impedisce la fusione in cottura.",
   "fonte": "Messaggio WhatsApp di Scialabà (19/10/2026)",
+  "foto": "img/eventi/scialaba-jewels-2026-10-05-7.jpg",
   "indirizzo": "Via Goffredo Casalis 61",
   "link": "https://scialabajewels.com/",
   "livello": "Tutti",
@@ -1035,6 +1063,7 @@ const WORKSHOPS = [
   "categoria": "gioielli",
   "descrizione": "Plasmi la porcellana per creare orecchini, anelli e pendenti, scegliendo tra smaltatura lucida o satinata. Gruppi piccoli (4–8 persone), ognuno seguito individualmente.",
   "fonte": "scialabajewels.com",
+  "foto": "img/eventi/scialaba-jewels-2026-09-30-9.jpg",
   "indirizzo": "Via Goffredo Casalis 61",
   "link": "https://scialabajewels.com/products/gioielli-porcellana-argilla",
   "livello": "Tutti",
@@ -1052,6 +1081,7 @@ const WORKSHOPS = [
   "data": "2026-10-23",
   "descrizione": "Un pomeriggio di Halloween da vivere insieme, bambini e adulti: si sceglie se realizzare una decorazione spaventosa o una porticina per gli elfi, da portare a casa. Non manca una merenda a tema.",
   "fonte": "Instagram @scialaba.jewels",
+  "foto": "img/eventi/scialaba-jewels-2026-10-07-6.jpg",
   "indirizzo": "Via Goffredo Casalis 61",
   "link": "https://www.instagram.com/p/DeMfAsbs8qn/",
   "livello": "Tutti",
@@ -1068,6 +1098,7 @@ const WORKSHOPS = [
   "categoria": "ceramica",
   "descrizione": "Corso continuativo di ceramica: lavori a lastra, al tornio o con entrambe le tecniche, ed esplori quella che senti più tua. Impari a preparare l’argilla, costruire le forme, rifinire i dettagli e capire come la cottura trasforma il pezzo. Gruppi piccoli (4–8 persone), ognuno seguito individualmente.",
   "fonte": "scialabajewels.com",
+  "foto": "img/eventi/scialaba-jewels-2026-10-05-7.jpg",
   "indirizzo": "Via Goffredo Casalis 61",
   "link": "https://scialabajewels.com/products/modellazione-manipolazione-ceramica",
   "livello": "Tutti",
@@ -1084,6 +1115,7 @@ const WORKSHOPS = [
   "categoria": "pittura",
   "descrizione": "Corso di pittura su porcellana con tecnica mista. Ogni partecipante è seguito individualmente e sceglie date e orari più comodi.",
   "fonte": "Instagram @scialaba.jewels",
+  "foto": "img/eventi/scialaba-jewels-2026-10-05-7.jpg",
   "indirizzo": "Via Goffredo Casalis 61",
   "link": "https://www.instagram.com/scialaba.jewels",
   "livello": "Tutti",
@@ -1099,6 +1131,7 @@ const WORKSHOPS = [
   "categoria": "ceramica",
   "descrizione": "Impari centratura, modellazione cilindrica e rifinitura per creare tazze, ciotole e forme armoniose al tornio. Gruppi piccoli (4–8 persone), ognuno seguito individualmente.",
   "fonte": "scialabajewels.com",
+  "foto": "img/eventi/scialaba-jewels-2026-10-05-7.jpg",
   "indirizzo": "Via Goffredo Casalis 61",
   "link": "https://scialabajewels.com/products/il-tornio-centratura-e-forme",
   "livello": "Tutti",
@@ -1116,6 +1149,7 @@ const WORKSHOPS = [
   "data": "2026-11-26",
   "descrizione": "Si impara a comporre un bento seguendo equilibrio e stagionalità, come vuole la tradizione giapponese. È la seconda tappa del percorso sulla cucina giapponese realizzato con Tabete Market.",
   "fonte": "Instagram @studiofood33",
+  "foto": "img/eventi/studiofood33-2026-10-03-8.jpg",
   "indirizzo": "STUDIOFOOD33, Via dei Mille 33",
   "link": "https://www.instagram.com/p/DeBlXxgDFZf/",
   "ora_inizio": "19:30",
@@ -1131,6 +1165,7 @@ const WORKSHOPS = [
   "data": "2026-10-20",
   "descrizione": "Lo chef Niraj Shah guida una serata dedicata alla cucina indiana: chana masala, kulcha, aloo paratha, una salsa fresca allo yogurt e il lassi. Tra una preparazione e l’altra c’è anche un breve momento di pausa e meditazione.",
   "fonte": "Instagram @studiofood33",
+  "foto": "img/eventi/studiofood33-2026-10-06-5.jpg",
   "indirizzo": "STUDIOFOOD33, Via dei Mille 33",
   "link": "https://www.instagram.com/p/DeJVyxnEdPu/",
   "ora_inizio": "20:00",
@@ -1146,6 +1181,7 @@ const WORKSHOPS = [
   "data": "2026-11-03",
   "descrizione": "Una serata dedicata all’alta macelleria con lo chef Stefano Buse. Si lavorano tagli pregiati e si preparano filetto alla Wellington, una tagliata fusion e patate Hasselback.",
   "fonte": "Instagram @studiofood33",
+  "foto": "img/eventi/studiofood33-2026-10-16-1.jpg",
   "indirizzo": "STUDIOFOOD33, Via dei Mille 33",
   "link": "https://www.instagram.com/p/DejZFNQDiav/",
   "ora_inizio": "19:30",
@@ -1161,6 +1197,7 @@ const WORKSHOPS = [
   "data": "2026-10-27",
   "descrizione": "Lo chef Stefano Buse insegna a preparare ravioloni e tortelli, dalla sfoglia giusta fino a farce più elaborate. Una serata pratica per imparare la tecnica della pasta fresca ripiena.",
   "fonte": "Instagram @studiofood33",
+  "foto": "img/eventi/studiofood33-2026-09-30-11.jpg",
   "indirizzo": "STUDIOFOOD33, Via dei Mille 33",
   "link": "https://www.instagram.com/p/Dd5zjzfDROK/",
   "ora_inizio": "19:30",
@@ -1176,6 +1213,7 @@ const WORKSHOPS = [
   "data": "2026-10-26",
   "descrizione": "Una lezione pratica sui primi piatti con lo chef Patrik Lisa, tra impasto, cottura e mantecatura. In menu tagliolini con pane, burro e acciughe al limone, risotto alla barbabietola e una mousse al cioccolato.",
   "fonte": "Instagram @studiofood33",
+  "foto": "img/eventi/studiofood33-2026-10-02-9.jpg",
   "indirizzo": "STUDIOFOOD33, Via dei Mille 33",
   "link": "https://www.instagram.com/p/Dd_VRokgLee/",
   "ora_inizio": "19:30",
@@ -1191,6 +1229,7 @@ const WORKSHOPS = [
   "data": "2027-01-21",
   "descrizione": "Si costruisce un ramen partendo dai suoi elementi fondamentali. È la terza tappa del percorso sulla cucina giapponese realizzato con Tabete Market.",
   "fonte": "Instagram @studiofood33",
+  "foto": "img/eventi/studiofood33-2026-10-03-8.jpg",
   "indirizzo": "STUDIOFOOD33, Via dei Mille 33",
   "link": "https://www.instagram.com/p/DeBlXxgDFZf/",
   "ora_inizio": "19:30",
@@ -1206,6 +1245,7 @@ const WORKSHOPS = [
   "data": "2026-10-28",
   "descrizione": "Tre classici della cucina piemontese con lo chef Stefano Buse: roast beef all’inglese, tajarin di pasta fresca e panna cotta. L’idea è mostrare come la tecnica valorizzi ingredienti semplici e di qualità.",
   "fonte": "Instagram @studiofood33",
+  "foto": "img/eventi/studiofood33-2026-10-13-3.jpg",
   "indirizzo": "STUDIOFOOD33, Via dei Mille 33",
   "link": "https://www.instagram.com/p/Debc2xCDbjd/",
   "ora_inizio": "19:30",
@@ -1221,6 +1261,7 @@ const WORKSHOPS = [
   "data": "2026-11-06",
   "descrizione": "Le chef di RosaRegina propongono uno street food tutto vegetale, lontano dagli stereotipi. Si cucinano tortilla di patate con salsa brava piccante, tacos con verdure e kumpir, la patata ripiena turca.",
   "fonte": "Instagram @studiofood33",
+  "foto": "img/eventi/studiofood33-2026-10-10-4.jpg",
   "indirizzo": "STUDIOFOOD33, Via dei Mille 33",
   "link": "https://www.instagram.com/p/DeULRGRm1Lq/",
   "ora_inizio": "19:30",
@@ -1236,6 +1277,7 @@ const WORKSHOPS = [
   "data": "2026-11-02",
   "descrizione": "Una lezione per chi vuole approfondire il sushi: gestione del riso, nigiri come ebi e maguro zuke e futomaki con ripieni preparati da zero. Tra i ripieni ci sono funghi brasati e tamagoyaki.",
   "fonte": "Instagram @studiofood33",
+  "foto": "img/eventi/studiofood33-2026-10-03-8.jpg",
   "indirizzo": "STUDIOFOOD33, Via dei Mille 33",
   "link": "https://www.instagram.com/p/DeBlXxgDFZf/",
   "ora_inizio": "19:30",
@@ -1251,6 +1293,7 @@ const WORKSHOPS = [
   "data": "2026-11-07",
   "descrizione": "Una cooking class dedicata al tartufo bianco d’Alba e alla tradizione delle Langhe. In menu battuta di Fassona con tuorlo fritto e fonduta di Raschera, tajarin ai 40 tuorli e zabaione al Marsala, con vini piemontesi in abbinamento.",
   "fonte": "Instagram @studiofood33",
+  "foto": "img/eventi/studiofood33-2026-10-05-6.jpg",
   "indirizzo": "STUDIOFOOD33, Via dei Mille 33",
   "link": "https://www.instagram.com/p/DeG_cVRjADZ/",
   "ora_inizio": "20:00",
@@ -1266,6 +1309,7 @@ const WORKSHOPS = [
   "data": "2027-01-29",
   "descrizione": "Lo chef Patrik Lisa propone interpretazioni moderne e creative del tartufo nero, lontane dalle ricette classiche. È il secondo capitolo del percorso sul tartufo, dopo la serata dedicata al tartufo bianco.",
   "fonte": "Instagram @studiofood33",
+  "foto": "img/eventi/studiofood33-2026-10-05-6.jpg",
   "indirizzo": "STUDIOFOOD33, Via dei Mille 33",
   "link": "https://www.instagram.com/p/DeG_cVRjADZ/",
   "ora_inizio": "20:00",
@@ -1299,6 +1343,7 @@ const WORKSHOPS = [
   "data": "2026-10-28",
   "descrizione": "Una serata per sperimentare materiali e attività creative senza lezioni e senza l’ansia del risultato perfetto, chiacchierando con un drink in mano. Puoi venire da sola/o o con amici, non serve esperienza.",
   "fonte": "le-strade.com",
+  "foto": "img/eventi/lestradeditorino-2026-10-12-5.jpg",
   "indirizzo": "Le Strade Creative Studio, Via Cagliari 11",
   "link": "https://docs.google.com/forms/d/e/1FAIpQLScO49221GMIJtQeJKsFuAUQqLQshzjHaBahtbFJGLyIWaj-Rg/viewform",
   "livello": "Tutti",
