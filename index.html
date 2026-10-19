@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Crafty Club · Workshop a Torino</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F1FF; --surface:#FFFFFF; --ink:#2A1440; --ink-soft:#6B5A80; --line:#E4DAF5;
+  --pink:#FF5FA2; --sun:#FFCF3D; --mint:#2FC79B; --cobalt:#4A5BFF; --peach:#FF9A6B; --lilac:#B79BFF;
+  --chip:#FFFFFF; --sheet:#FFFFFF; --overlay:rgba(42,20,64,.45);
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#1A0F27; --surface:#26173A; --ink:#F7EEFF; --ink-soft:#B8A6CF; --line:#3B2754;
+    --chip:#2E1D45; --sheet:#24163A; --overlay:rgba(0,0,0,.6);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1A0F27; --surface:#26173A; --ink:#F7EEFF; --ink-soft:#B8A6CF; --line:#3B2754;
+  --chip:#2E1D45; --sheet:#24163A; --overlay:rgba(0,0,0,.6);
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Bricolage Grotesque",ui-rounded,"Segoe UI",system-ui,sans-serif;
+  font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased;padding-bottom:84px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--cobalt);outline-offset:2px;border-radius:12px}
+.wrap{max-width:760px;margin:0 auto;padding:0 18px}
+
+/* header */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+.logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:22px;letter-spacing:-.02em;font-stretch:85%}
+.logo svg{width:30px;height:30px}
+.city{border:2px solid var(--ink);background:var(--surface);border-radius:999px;padding:6px 14px;font-weight:600;font-size:14px}
+
+/* hero */
+.hero{position:relative;padding:18px 0 8px}
+.hero h1{font-size:clamp(32px,9vw,64px);line-height:.95;margin:0 0 18px;font-weight:800;font-stretch:80%;letter-spacing:-.03em}
+.hero h1 span{display:block;white-space:nowrap}
+.sticker{position:absolute;font-weight:700;font-size:13px;padding:6px 12px;border-radius:999px;border:2px solid var(--ink);color:#2A1440;white-space:nowrap}
+.s1{background:var(--sun);right:2px;top:20px;transform:rotate(8deg)}
+.s2{background:var(--mint);right:30px;top:72px;transform:rotate(-6deg)}
+.s3{background:var(--pink);right:0;top:122px;transform:rotate(4deg)}
+@media (max-width:420px){.s2,.s3{display:none}.s1{top:4px}}
+.search{display:flex;align-items:center;gap:10px;background:var(--surface);border:2px solid var(--ink);border-radius:18px;padding:12px 14px;box-shadow:4px 4px 0 var(--ink)}
+.search input{border:0;outline:0;background:transparent;flex:1;font-size:16px;min-width:0}
+.search svg{flex:none}
+
+/* categories */
+.rail{display:flex;gap:10px;overflow-x:auto;padding:18px 18px 6px;margin:0 -18px;scrollbar-width:none;scroll-snap-type:x proximity}
+.rail::-webkit-scrollbar{display:none}
+.cat{flex:none;scroll-snap-align:start;display:flex;flex-direction:column;align-items:center;gap:6px;width:76px;background:none;border:0;cursor:pointer;padding:0}
+.cat .blob{width:64px;height:64px;border-radius:22px;display:grid;place-items:center;font-size:30px;border:2px solid transparent;transition:transform .15s}
+.cat span{font-size:13px;font-weight:600}
+.cat[aria-pressed="true"] .blob{border-color:var(--ink);transform:rotate(-6deg) scale(1.05);box-shadow:3px 3px 0 var(--ink)}
+
+/* quick filters */
+.quick{display:flex;gap:8px;overflow-x:auto;padding:12px 18px;margin:0 -18px;scrollbar-width:none}
+.quick::-webkit-scrollbar{display:none}
+.pill{flex:none;border:2px solid var(--line);background:var(--chip);border-radius:999px;padding:8px 14px;font-size:14px;font-weight:600;cursor:pointer}
+.pill[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.pill.filters{border-color:var(--ink);display:flex;align-items:center;gap:6px}
+.pill .count{background:var(--pink);color:#fff;border-radius:999px;font-size:12px;padding:0 7px}
+
+/* list */
+.listhead{display:flex;justify-content:space-between;align-items:baseline;margin:14px 0 10px}
+.listhead h2{margin:0;font-size:22px;font-stretch:85%;letter-spacing:-.01em}
+.listhead small{color:var(--ink-soft);font-size:14px}
+.cards{display:grid;gap:14px;grid-template-columns:1fr}
+@media (min-width:640px){.cards{grid-template-columns:1fr 1fr}}
+.card{display:flex;background:var(--surface);border-radius:22px;overflow:hidden;border:1.5px solid var(--line);cursor:pointer;text-align:left;padding:0;width:100%}
+.ticket{flex:none;width:92px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:#2A1440;position:relative;padding:12px 0}
+.ticket::after{content:"";position:absolute;right:-1px;top:10px;bottom:10px;border-right:2px dashed rgba(42,20,64,.25)}
+.ticket .wd{font-size:12px;font-weight:600}
+.ticket .d{font-size:34px;font-weight:800;line-height:1;font-stretch:80%}
+.ticket .m{font-size:13px;font-weight:700}
+.ticket .em{font-size:22px;margin-top:6px}
+.body{padding:14px 14px 14px 16px;flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.body h3{margin:0;font-size:18px;line-height:1.15;font-weight:700}
+.meta{color:var(--ink-soft);font-size:14px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:6px}
+.price{font-weight:800;font-size:16px}
+.badge{font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--bg)}
+.badge.low{background:var(--sun);color:#2A1440}
+.badge.out{background:var(--line);color:var(--ink-soft)}
+.heart{margin-left:auto;background:none;border:0;padding:6px;cursor:pointer;font-size:20px;line-height:1}
+.empty{text-align:center;padding:40px 18px;color:var(--ink-soft)}
+.empty strong{display:block;color:var(--ink);font-size:18px;margin-bottom:6px}
+.empty button{margin-top:12px}
+
+/* organizer band */
+.org{margin:34px 0 10px;background:var(--cobalt);color:#fff;border-radius:28px;padding:24px 22px;position:relative;overflow:hidden}
+.org h2{margin:0 0 6px;font-size:26px;font-stretch:80%;line-height:1.05;max-width:16ch}
+.org p{margin:0 0 16px;opacity:.9;max-width:36ch}
+.btn{border:2px solid var(--ink);background:var(--sun);color:#2A1440;font-weight:700;padding:12px 18px;border-radius:14px;cursor:pointer;box-shadow:3px 3px 0 var(--ink)}
+.org .btn{border-color:#2A1440;box-shadow:3px 3px 0 #2A1440}
+.org svg{position:absolute;right:-20px;bottom:-24px;width:150px;opacity:.9}
+footer{color:var(--ink-soft);font-size:13px;text-align:center;padding:20px 0}
+
+/* bottom nav */
+nav.bottom{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--surface);border-top:1.5px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav.bottom .in{max-width:760px;margin:0 auto;display:flex;justify-content:space-around}
+nav.bottom button{background:none;border:0;padding:10px 12px 12px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;font-weight:600;color:var(--ink-soft);cursor:pointer}
+nav.bottom button[aria-current="true"]{color:var(--ink)}
+nav.bottom .ic{font-size:20px}
+
+/* sheet */
+.overlay{position:fixed;inset:0;background:var(--overlay);z-index:20;display:none}
+.overlay.open{display:block}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:21;background:var(--sheet);border-radius:26px 26px 0 0;max-height:88vh;overflow:auto;transform:translateY(105%);transition:transform .28s cubic-bezier(.2,.8,.2,1);padding:10px 20px calc(20px + env(safe-area-inset-bottom,0px));max-width:760px;margin:0 auto}
+.sheet.open{transform:none}
+@media (prefers-reduced-motion:reduce){.sheet{transition:none}.cat .blob{transition:none}}
+.grab{width:44px;height:5px;border-radius:9px;background:var(--line);margin:4px auto 14px}
+.sheet h3{margin:0 0 4px;font-size:24px;font-stretch:85%;line-height:1.1}
+.sheet h4{margin:20px 0 10px;font-size:15px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.sheet .actions{display:flex;gap:10px;margin-top:24px;position:sticky;bottom:0;background:var(--sheet);padding-top:10px}
+.ghost{background:none;border:2px solid var(--line);border-radius:14px;padding:12px 16px;font-weight:700;cursor:pointer}
+.actions .btn{flex:1}
+.toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:600}
+.toggle input{width:22px;height:22px;accent-color:var(--pink)}
+.detail .hero-band{border-radius:20px;padding:18px;color:#2A1440;margin:6px 0 16px;display:flex;align-items:center;gap:14px}
+.detail .hero-band .em{font-size:44px}
+.detail dl{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;margin:14px 0}
+.detail dt{color:var(--ink-soft);font-size:14px}
+.detail dd{margin:0;font-weight:600}
+.detail p{margin:0;color:var(--ink)}
+.detail .btn{display:block;text-align:center;text-decoration:none;margin-top:18px}
+.notice{background:var(--surface);border:1.5px dashed var(--line);border-radius:18px;padding:16px;color:var(--ink-soft);font-size:14px}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap topbar">
+    <div class="logo">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3l4.6 9.4 10.4 1.5-7.5 7.3 1.8 10.3L20 26.6l-9.3 4.9 1.8-10.3L5 13.9l10.4-1.5z" fill="#FF5FA2" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></svg>
+      Crafty Club
+    </div>
+    <button class="city" type="button" aria-label="Città: Torino">Torino</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <h1><span>Cosa facciamo</span><span>questa settimana?</span></h1>
+    <label class="search">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Cerca un workshop, un laboratorio, un quartiere" autocomplete="off">
+    </label>
+  </section>
+
+  <div class="rail" id="cats" role="group" aria-label="Categorie"></div>
+
+  <div class="quick" role="group" aria-label="Filtri rapidi">
+    <button class="pill filters" id="openFilters" type="button">Filtri <span class="count" id="fcount" hidden>0</span></button>
+    <button class="pill" data-when="today" aria-pressed="false" type="button">Stasera</button>
+    <button class="pill" data-when="weekend" aria-pressed="false" type="button">Questo weekend</button>
+    <button class="pill" data-quick="cheap" aria-pressed="false" type="button">Sotto 30 €</button>
+    <button class="pill" data-quick="avail" aria-pressed="false" type="button">Con posti liberi</button>
+  </div>
+
+  <div class="listhead">
+    <h2 id="listTitle">In arrivo a Torino</h2>
+    <small id="listCount"></small>
+  </div>
+  <div class="cards" id="cards"></div>
+
+  <section class="org" id="org">
+    <h2>Organizzi workshop a Torino?</h2>
+    <p>Pubblicali qui gratis e fatti trovare da chi cerca qualcosa di bello da fare.</p>
+    <button class="btn" type="button" id="orgBtn">Pubblica un workshop</button>
+    <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="44" fill="#FFCF3D"/><path d="M30 64c10-18 24-26 40-22s22 18 18 30" fill="none" stroke="#2A1440" stroke-width="5" stroke-linecap="round"/><circle cx="48" cy="52" r="5" fill="#2A1440"/><circle cx="74" cy="52" r="5" fill="#2A1440"/></svg>
+  </section>
+  <footer>Crafty Club · Torino</footer>
+</main>
+
+<nav class="bottom" aria-label="Navigazione">
+  <div class="in">
+    <button type="button" data-tab="explore" aria-current="true"><span class="ic">✦</span>Esplora</button>
+    <button type="button" data-tab="saved" aria-current="false"><span class="ic">♡</span>Salvati</button>
+    <button type="button" data-tab="org" aria-current="false"><span class="ic">✎</span>Organizzi?</button>
+  </div>
+</nav>
+
+<div class="overlay" id="overlay"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"></div>
+
+<script>
+const CATS = [
+  {id:"ceramica", label:"Ceramica", em:"🏺", c:"#FF9A6B"},
+  {id:"ricamo", label:"Ricamo", em:"🧵", c:"#FF5FA2"},
+  {id:"pittura", label:"Pittura", em:"🎨", c:"#B79BFF"},
+  {id:"fiori", label:"Fiori", em:"🌸", c:"#FFB3D1"},
+  {id:"stampa", label:"Stampa", em:"🖨️", c:"#7FB2FF"},
+  {id:"gioielli", label:"Gioielli", em:"💍", c:"#FFCF3D"},
+  {id:"tessile", label:"Tessile", em:"🧶", c:"#2FC79B"},
+  {id:"carta", label:"Carta", em:"✂️", c:"#A8E6CF"},
+  {id:"cucina", label:"Cucina", em:"🍝", c:"#FFD08A"},
+  {id:"degustazioni", label:"Degustazioni", em:"🍷", c:"#E3A4FF"},
+  {id:"altro", label:"Altro", em:"✨", c:"#D7CCFF"}
+];
+const ZONES = ["Centro","Quadrilatero","San Salvario","Vanchiglia","Aurora","San Donato","Crocetta","Borgo Po","Cit Turin","Fuori città"];
+const PRICES = [{v:0,l:"Qualsiasi"},{v:20,l:"Fino a 20 €"},{v:35,l:"Fino a 35 €"},{v:50,l:"Fino a 50 €"},{v:80,l:"Fino a 80 €"}];
+const WHENS = [{v:"all",l:"Tutte le date"},{v:"today",l:"Oggi"},{v:"week",l:"Prossimi 7 giorni"},{v:"weekend",l:"Questo weekend"},{v:"month",l:"Prossimi 30 giorni"}];
+const catOf = id => CATS.find(c=>c.id===id) || CATS[CATS.length-1];
+
+const state = {all:[], loaded:false, dbOk:true, q:"", cat:null, when:"all", zones:[], maxPrice:0, avail:false, tab:"explore", saved:loadSaved()};
+
+function loadSaved(){ try{ return new Set(JSON.parse(localStorage.getItem("cc-saved")||"[]")); }catch(e){ return new Set(); } }
+function persistSaved(){ try{ localStorage.setItem("cc-saved", JSON.stringify([...state.saved])); }catch(e){} }
+
+const MONTHS = ["gen","feb","mar","apr","mag","giu","lug","ago","set","ott","nov","dic"];
+const WD = ["dom","lun","mar","mer","gio","ven","sab"];
+function parseDate(s){ const [y,m,d]=(s||"").split("-").map(Number); return y? new Date(y,m-1,d):null; }
+function today0(){ const t=new Date(); t.setHours(0,0,0,0); return t; }
+function weekendRange(){ const t=today0(); const dow=t.getDay(); let sat=new Date(t); if(dow===0){ sat.setDate(t.getDate()-1);} else sat.setDate(t.getDate()+(6-dow)); const sun=new Date(sat); sun.setDate(sat.getDate()+1); return [dow===0?t:(dow===6?t:sat), sun]; }
+function inWhen(d){
+  const t=today0();
+  if(!d) return false;
+  if(state.when==="all") return d>=t;
+  if(state.when==="today") return +d===+t;
+  if(state.when==="week"){ const e=new Date(t); e.setDate(t.getDate()+7); return d>=t && d<=e; }
+  if(state.when==="month"){ const e=new Date(t); e.setDate(t.getDate()+30); return d>=t && d<=e; }
+  if(state.when==="weekend"){ const [a,b]=weekendRange(); return d>=a && d<=b; }
+  return true;
+}
+const norm = s => (s||"").toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+
+function filtered(){
+  const q = norm(state.q);
+  return state.all.filter(w=>{
+    const d=parseDate(w.data);
+    if(!d && w.su_prenotazione){ if(state.when!=="all") return false; }
+    else if(!inWhen(d)) return false;
+    if(state.tab==="saved" && !state.saved.has(w.id)) return false;
+    if(state.cat && w.categoria!==state.cat) return false;
+    if(state.zones.length && !state.zones.includes(w.zona)) return false;
+    if(state.maxPrice && !(Number(w.prezzo)<=state.maxPrice)) return false;
+    if(state.avail && !(Number(w.posti_disponibili)>0)) return false;
+    if(q){ const hay=norm([w.titolo,w.organizzatore,w.zona,w.descrizione,catOf(w.categoria).label].join(" ")); if(!hay.includes(q)) return false; }
+    return true;
+  }).sort((a,b)=> ((a.data||"9999")+(a.ora_inizio||"")).localeCompare((b.data||"9999")+(b.ora_inizio||"")));
+}
+
+function el(tag, attrs={}, ...kids){ const n=document.createElement(tag); for(const [k,v] of Object.entries(attrs)){ if(k==="class") n.className=v; else if(k.startsWith("on")) n.addEventListener(k.slice(2),v); else if(v!==false && v!=null) n.setAttribute(k,v===true?"":v); } for(const k of kids.flat()){ if(k==null) continue; n.append(k.nodeType?k:document.createTextNode(k)); } return n; }
+
+function renderCats(){
+  const rail=document.getElementById("cats"); rail.innerHTML="";
+  CATS.forEach(c=>{
+    rail.append(el("button",{class:"cat",type:"button","aria-pressed":String(state.cat===c.id),onclick:()=>{state.cat=state.cat===c.id?null:c.id; renderCats(); render();}},
+      el("div",{class:"blob",style:`background:${c.c}`},c.em), el("span",{},c.label)));
+  });
+}
+
+function seatsBadge(w){
+  const n=Number(w.posti_disponibili);
+  if(w.posti_disponibili==null || w.posti_disponibili==="") return null;
+  if(n<=0) return el("span",{class:"badge out"},"Esaurito");
+  if(n<=3) return el("span",{class:"badge low"}, n===1?"Ultimo posto":`Ultimi ${n} posti`);
+  return el("span",{class:"badge"},`${n} posti liberi`);
+}
+const euro = p => (p===0||p==="0") ? "Gratis" : (p!=null && p!=="" ? `${Number(p).toLocaleString("it-IT")} €` : "");
+const priceLabel = w => (w.prezzo_da && w.prezzo ? "da " : "") + euro(w.prezzo);
+
+function card(w){
+  const c=catOf(w.categoria), d=parseDate(w.data);
+  const saved=state.saved.has(w.id);
+  const heart=el("button",{class:"heart",type:"button","aria-label":saved?"Rimuovi dai salvati":"Salva",onclick:e=>{e.stopPropagation(); saved?state.saved.delete(w.id):state.saved.add(w.id); persistSaved(); render();}}, saved?"♥":"♡");
+  heart.style.color = saved ? "var(--pink)" : "var(--ink-soft)";
+  return el("div",{class:"card",role:"button",tabindex:"0",onclick:()=>openDetail(w),onkeydown:e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openDetail(w);}}},
+    el("div",{class:"ticket",style:`background:${c.c}`},
+      el("span",{class:"wd"}, d?WD[d.getDay()]:"date"), el("span",{class:"d"}, d?String(d.getDate()):"su"), el("span",{class:"m"}, d?MONTHS[d.getMonth()]:"richiesta"), el("span",{class:"em","aria-hidden":"true"},c.em)),
+    el("div",{class:"body"},
+      el("h3",{},w.titolo||"Workshop"),
+      el("div",{class:"meta"}, [w.ora_inizio, w.zona].filter(Boolean).join(" · ")),
+      w.organizzatore? el("div",{class:"meta"}, "con "+w.organizzatore):null,
+      el("div",{class:"row"}, el("span",{class:"price"},priceLabel(w)), seatsBadge(w), heart))
+  );
+}
+
+function render(){
+  const box=document.getElementById("cards"); box.innerHTML="";
+  const title=document.getElementById("listTitle"), count=document.getElementById("listCount");
+  title.textContent = state.tab==="saved" ? "I tuoi salvati" : (state.cat ? catOf(state.cat).label+" a Torino" : "In arrivo a Torino");
+  const active = (state.zones.length?1:0)+(state.maxPrice?1:0)+(state.when!=="all"?1:0)+(state.avail?1:0);
+  const fc=document.getElementById("fcount"); fc.hidden=!active; fc.textContent=active;
+  document.querySelectorAll("[data-when]").forEach(b=>b.setAttribute("aria-pressed",String(state.when===b.dataset.when)));
+  document.querySelector('[data-quick="cheap"]').setAttribute("aria-pressed",String(state.maxPrice===30));
+  document.querySelector('[data-quick="avail"]').setAttribute("aria-pressed",String(state.avail));
+  if(!state.dbOk){ count.textContent=""; box.append(el("div",{class:"notice"},"Apri questa pagina da claude.ai per vedere i workshop.")); return; }
+  if(!state.loaded){ count.textContent=""; box.append(el("div",{class:"empty"},"Carico i workshop…")); return; }
+  const list=filtered();
+  count.textContent = list.length===1?"1 workshop":`${list.length} workshop`;
+  if(!list.length){
+    if(!state.all.length){ box.append(el("div",{class:"empty"}, el("strong",{},"Ancora nessun workshop"), "I primi arrivano a breve.")); return; }
+    if(state.tab==="saved"){ box.append(el("div",{class:"empty"}, el("strong",{},"Non hai ancora salvato niente"), "Tocca il cuore su un workshop per ritrovarlo qui.")); return; }
+    box.append(el("div",{class:"empty"}, el("strong",{},"Nessun workshop con questi filtri"), "Prova a togliere un filtro o a cambiare data.", el("br"), el("button",{class:"ghost",type:"button",onclick:resetFilters},"Azzera i filtri")));
+    return;
+  }
+  list.forEach(w=>box.append(card(w)));
+}
+
+function resetFilters(){ Object.assign(state,{q:"",cat:null,when:"all",zones:[],maxPrice:0,avail:false}); document.getElementById("q").value=""; renderCats(); render(); }
+
+/* sheets */
+const sheet=document.getElementById("sheet"), overlay=document.getElementById("overlay");
+let lastFocus=null;
+function openSheet(content){ lastFocus=document.activeElement; sheet.innerHTML=""; sheet.append(el("div",{class:"grab"}), ...content); overlay.classList.add("open"); sheet.classList.add("open"); setTimeout(()=>{const f=sheet.querySelector("button, a, input"); f&&f.focus();},50); }
+function closeSheet(){ overlay.classList.remove("open"); sheet.classList.remove("open"); lastFocus&&lastFocus.focus(); }
+overlay.addEventListener("click",closeSheet);
+document.addEventListener("keydown",e=>{ if(e.key==="Escape" && sheet.classList.contains("open")) closeSheet(); });
+
+function optGroup(items, isOn, onTap){ return el("div",{class:"opts"}, items.map(it=>el("button",{class:"pill",type:"button","aria-pressed":String(isOn(it)),onclick:e=>{onTap(it); e.currentTarget.parentNode.querySelectorAll("button").forEach((b,i)=>b.setAttribute("aria-pressed",String(isOn(items[i]))));}}, it.l||it))); }
+
+function openFilters(){
+  const draft={when:state.when, zones:[...state.zones], maxPrice:state.maxPrice, avail:state.avail};
+  const av=el("input",{type:"checkbox",id:"avail"}); av.checked=draft.avail; av.addEventListener("change",()=>draft.avail=av.checked);
+  openSheet([
+    el("h3",{id:"sheetTitle"},"Filtri"),
+    el("h4",{},"Quando"), optGroup(WHENS, it=>draft.when===it.v, it=>draft.when=it.v),
+    el("h4",{},"Zona"), optGroup(ZONES, z=>draft.zones.includes(z), z=>{ const i=draft.zones.indexOf(z); i>=0?draft.zones.splice(i,1):draft.zones.push(z); }),
+    el("h4",{},"Prezzo"), optGroup(PRICES, it=>draft.maxPrice===it.v, it=>draft.maxPrice=it.v),
+    el("h4",{},"Disponibilità"), el("label",{class:"toggle",for:"avail"},"Solo con posti liberi",av),
+    el("div",{class:"actions"},
+      el("button",{class:"ghost",type:"button",onclick:()=>{resetFilters(); closeSheet();}},"Azzera"),
+      el("button",{class:"btn",type:"button",onclick:()=>{Object.assign(state,draft); render(); closeSheet();}},"Mostra risultati"))
+  ]);
+}
+
+function openDetail(w){
+  const c=catOf(w.categoria), d=parseDate(w.data);
+  const dateStr = d ? `${["domenica","lunedì","martedì","mercoledì","giovedì","venerdì","sabato"][d.getDay()]} ${d.getDate()} ${["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre"][d.getMonth()]}` : "";
+  const time = [w.ora_inizio,w.ora_fine].filter(Boolean).join("–");
+  const when = d ? [[dateStr,time].filter(Boolean).join(", "), w.quando_note].filter(Boolean).join(". ") : (w.su_prenotazione ? ["Su prenotazione", w.quando_note].filter(Boolean).join(". ") : "");
+  const rows=[["Quando",when],["Dove",[w.indirizzo,w.zona].filter(Boolean).join(", ")],["Prezzo",w.prezzo_note||priceLabel(w)],["Posti", w.posti_disponibili!=null&&w.posti_disponibili!==""? (Number(w.posti_disponibili)>0?`${w.posti_disponibili} liberi${w.posti_totali?` su ${w.posti_totali}`:""}`:"Esaurito"):""],["Livello",w.livello],["Organizza",w.organizzatore]].filter(r=>r[1]);
+  let link=null;
+  if(w.link && /^https?:\/\//i.test(w.link)) link=el("a",{class:"btn",href:w.link,target:"_blank",rel:"noopener"},"Prenota sul sito dell’organizzatore");
+  openSheet([el("div",{class:"detail"},
+    el("div",{class:"hero-band",style:`background:${c.c}`}, el("span",{class:"em","aria-hidden":"true"},c.em), el("strong",{},c.label)),
+    el("h3",{id:"sheetTitle"},w.titolo||"Workshop"),
+    el("dl",{}, rows.flatMap(([k,v])=>[el("dt",{},k),el("dd",{},v)])),
+    w.descrizione? el("p",{},w.descrizione):null,
+    link,
+    el("button",{class:"ghost",type:"button",style:"width:100%;margin-top:10px",onclick:closeSheet},"Chiudi")
+  )]);
+}
+
+function openOrg(){
+  openSheet([el("h3",{id:"sheetTitle"},"Area organizzatori"),
+    el("p",{class:"meta",style:"margin:6px 0 0"},"Presto potrai pubblicare i tuoi workshop da qui: date ricorrenti, foto, posti disponibili e link per prenotare. Nel frattempo li inseriamo noi per te."),
+    el("div",{class:"actions"}, el("button",{class:"btn",type:"button",onclick:closeSheet},"Ho capito"))]);
+}
+
+/* events */
+document.getElementById("q").addEventListener("input",e=>{state.q=e.target.value; render();});
+document.getElementById("openFilters").addEventListener("click",openFilters);
+document.querySelectorAll("[data-when]").forEach(b=>b.addEventListener("click",()=>{state.when = state.when===b.dataset.when?"all":b.dataset.when; render();}));
+document.querySelector('[data-quick="cheap"]').addEventListener("click",()=>{state.maxPrice = state.maxPrice===30?0:30; render();});
+document.querySelector('[data-quick="avail"]').addEventListener("click",()=>{state.avail=!state.avail; render();});
+document.getElementById("orgBtn").addEventListener("click",openOrg);
+document.querySelectorAll("nav.bottom button").forEach(b=>b.addEventListener("click",()=>{
+  const t=b.dataset.tab;
+  if(t==="org"){ document.getElementById("org").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"}); return; }
+  state.tab=t; document.querySelectorAll("nav.bottom button").forEach(x=>x.setAttribute("aria-current",String(x.dataset.tab===t)));
+  render(); window.scrollTo({top:document.querySelector(".listhead").offsetTop-70,behavior:"smooth"});
+}));
+
+renderCats(); render();
+
+/* data: aggiornati al 19 ottobre 2026 */
+const WORKSHOPS = [
+ {
+  "categoria": "carta",
+  "data": "2026-10-24",
+  "descrizione": "Tre ore per imparare a usare pennino e inchiostro e prendere confidenza con forme, ritmo e movimento delle lettere. Non serve esperienza e alla fine porti a casa una cartolina scritta da te. Colazione inclusa con specialty coffee di Santa Romero e un cupcake di Tauer Bakery.",
+  "fonte": "le-strade.com",
+  "indirizzo": "Le Strade Creative Studio, Via Cagliari 11",
+  "link": "https://docs.google.com/forms/d/e/1FAIpQLSdTYyhTYiT5WnI_2ro6FV4E4wPXTRIW5ONDny_MWVAAu7uAJA/viewform",
+  "livello": "Principianti",
+  "ora_fine": "13:00",
+  "ora_inizio": "10:00",
+  "organizzatore": "Noemi Venturino per Le Strade Creative Studio",
+  "prezzo": 35,
+  "titolo": "The art of Calligraphy",
+  "zona": "Aurora",
+  "id": "calligrafia-lestrade-2026-10-24"
+ },
+ {
+  "categoria": "tessile",
+  "data": "2026-10-21",
+  "descrizione": "Un pomeriggio per imparare i primi passi dell’uncinetto realizzando un cordino personalizzato da usare come porta cellulare o portachiavi, scegliendo i colori che preferisci. Non serve esperienza. Include una merenda preparata da CASO, il bistrot di Spazio Lombroso.",
+  "fonte": "le-strade.com",
+  "indirizzo": "Polo Culturale Lombroso16, Via Cesare Lombroso 16",
+  "link": "https://www.instagram.com/p/DeY51x8oiCx/",
+  "livello": "Principianti",
+  "ora_inizio": "17:30",
+  "organizzatore": "Lazy Pear",
+  "prezzo_note": "Costo da chiedere a @_lazypear su Instagram",
+  "quando_note": "Prenotazione obbligatoria via Instagram (@_lazypear)",
+  "titolo": "Lazy Workshop: impara l’uncinetto",
+  "zona": "San Salvario",
+  "id": "lazypear-uncinetto-2026-10-21"
+ },
+ {
+  "categoria": "tessile",
+  "descrizione": "Impari a usare la tufting gun e realizzi un tappeto personalizzato con il tuo disegno: lo trasferisci sulla tela, scegli tra 70 colori di filato, tufti in autonomia e poi rifinisci il tappeto con colla, retro antiscivolo, rasoio e forbici. Pensato per principianti, riservato agli adulti. I workshop sono individuali: non si lavora in coppia sullo stesso telaio e non si possono portare accompagnatori. Materiali inclusi; il disegno va inviato via mail qualche giorno prima. Sconto del 15% per studenti under 26.",
+  "fonte": "tuftingtorino.it",
+  "indirizzo": "Via Guastalla 6",
+  "link": "https://tuftingtorino.it/workshop/",
+  "livello": "Principianti",
+  "organizzatore": "Nodo Tufting Torino",
+  "prezzo": 80,
+  "prezzo_da": true,
+  "prezzo_note": "Tappeto S 40x40 cm 80 € (circa 4 ore), M 50x50 cm 95 € (circa 6 ore), L 60x80 cm 175 € (circa 10 ore, divisibile in due giornate)",
+  "quando_note": "Sabato e domenica, in due fasce: 10–14 e 15:30–20. Date ancora libere a ottobre: sabato 24 (solo 15:30–20), domenica 25, sabato 31 (solo 10–14). Si prenota via mail a tuftingtorino@gmail.com indicando data e misura del tappeto",
+  "su_prenotazione": true,
+  "titolo": "Workshop di tufting: crea il tuo tappeto",
+  "zona": "Aurora",
+  "id": "nodo-tufting-workshop"
+ },
+ {
+  "categoria": "stampa",
+  "data": "2026-11-02",
+  "descrizione": "Quattro incontri per imparare l’intero processo della cianotipia: dalla soluzione fotosensibile alla scelta dei supporti, fino a esposizione e sviluppo. Stamperai con oggetti, negativi e materiali naturali su carta, stoffa e legno. Non serve esperienza. Chi segue un corso riceve anche 4 ore di uso gratuito degli spazi (ciclofficina, falegnameria, sartoria) durante le aperture del giovedì. Iscrizione via mail a info.officinecreative@gmail.com.",
+  "fonte": "officinecreativetorino.it",
+  "indirizzo": "Cecchi Point, Via Antonio Cecchi 17",
+  "link": "https://officinecreativetorino.it/cianotipia/",
+  "livello": "Principianti",
+  "ora_fine": "20:30",
+  "ora_inizio": "18:30",
+  "organizzatore": "Officine Creative Torino",
+  "prezzo": 70,
+  "prezzo_note": "70 € per tutto il corso + 10 € di tessera associativa annuale",
+  "quando_note": "4 lezioni il lunedì: 2, 9, 16 e 23 novembre",
+  "titolo": "Corso di cianotipia",
+  "zona": "Aurora",
+  "id": "oct-cianotipia-2026-11"
+ },
+ {
+  "categoria": "stampa",
+  "descrizione": "Un percorso pratico per imparare la serigrafia: preparazione del telaio con i principi della fotosensibilità, creazione del disegno, impressione e stampa con le vernici. Il gruppo realizza un disegno collettivo che ognuno stampa su maglietta o carta. Chi segue un corso riceve anche 4 ore di uso gratuito degli spazi durante le aperture del giovedì.",
+  "fonte": "officinecreativetorino.it",
+  "indirizzo": "Cecchi Point, Via Antonio Cecchi 17",
+  "link": "https://officinecreativetorino.it/corsoserigrafia/",
+  "livello": "Principianti",
+  "organizzatore": "Officine Creative Torino",
+  "prezzo": 90,
+  "prezzo_note": "90 € per tutto il corso + 10 € di tessera associativa annuale",
+  "quando_note": "Prossima edizione con date in definizione: 4 lezioni da 2 ore, una a settimana. Iscrizioni via mail a info.officinecreative@gmail.com",
+  "su_prenotazione": true,
+  "titolo": "Corso di serigrafia",
+  "zona": "Aurora",
+  "id": "oct-serigrafia"
+ },
+ {
+  "categoria": "ceramica",
+  "descrizione": "Corsi di decorazione ceramica con diverse tecniche: decorazione a pennino, tecnica scandinava e cuerda seca, in cui i colori dello smalto vengono separati da un contorno che ne impedisce la fusione in cottura.",
+  "fonte": "Messaggio WhatsApp di Scialabà (19/10/2026)",
+  "indirizzo": "Via Goffredo Casalis 61",
+  "link": "https://scialabajewels.com/",
+  "livello": "Tutti",
+  "organizzatore": "Scialabà",
+  "prezzo_note": "Prezzo da chiedere su WhatsApp al +39 338 4938124",
+  "quando_note": "Lezioni dal martedì al sabato mattina, in tre fasce: 10–12, 15:30–17:30, 18–20. Info e prenotazioni su WhatsApp al +39 338 4938124",
+  "su_prenotazione": true,
+  "titolo": "Decorazione ceramica: pennino, tecnica scandinava e cuerda seca",
+  "zona": "Cit Turin",
+  "id": "scialaba-decorazione"
+ },
+ {
+  "categoria": "gioielli",
+  "descrizione": "Plasmi la porcellana per creare orecchini, anelli e pendenti, scegliendo tra smaltatura lucida o satinata. Gruppi piccoli (4–8 persone), ognuno seguito individualmente.",
+  "fonte": "scialabajewels.com",
+  "indirizzo": "Via Goffredo Casalis 61",
+  "link": "https://scialabajewels.com/products/gioielli-porcellana-argilla",
+  "livello": "Tutti",
+  "organizzatore": "Scialabà",
+  "prezzo": 125,
+  "prezzo_note": "125 € per un modulo di 4 lezioni da 2 ore, materiali e cotture inclusi",
+  "quando_note": "Le date si scelgono scrivendo su WhatsApp al +39 338 4938124",
+  "su_prenotazione": true,
+  "titolo": "Gioielli in porcellana e argilla",
+  "zona": "Cit Turin",
+  "id": "scialaba-gioielli-porcellana"
+ },
+ {
+  "categoria": "ceramica",
+  "descrizione": "Corso continuativo di ceramica: lavori a lastra, al tornio o con entrambe le tecniche, ed esplori quella che senti più tua. Impari a preparare l’argilla, costruire le forme, rifinire i dettagli e capire come la cottura trasforma il pezzo. Gruppi piccoli (4–8 persone), ognuno seguito individualmente.",
+  "fonte": "scialabajewels.com",
+  "indirizzo": "Via Goffredo Casalis 61",
+  "link": "https://scialabajewels.com/products/modellazione-manipolazione-ceramica",
+  "livello": "Tutti",
+  "organizzatore": "Scialabà",
+  "prezzo": 120,
+  "prezzo_note": "120 € per 4 lezioni da 2 ore, materiali e cotture inclusi",
+  "quando_note": "Corso continuativo: inizi quando vuoi. Lezioni dal martedì al sabato mattina, in tre fasce: 10–12, 15:30–17:30, 18–20. Scegli la fascia scrivendo su WhatsApp al +39 338 4938124",
+  "su_prenotazione": true,
+  "titolo": "Corso di ceramica a lastra o al tornio",
+  "zona": "Cit Turin",
+  "id": "scialaba-modellazione"
+ },
+ {
+  "categoria": "pittura",
+  "descrizione": "Corso di pittura su porcellana con tecnica mista. Ogni partecipante è seguito individualmente e sceglie date e orari più comodi.",
+  "fonte": "Instagram @scialaba.jewels",
+  "indirizzo": "Via Goffredo Casalis 61",
+  "link": "https://www.instagram.com/scialaba.jewels",
+  "livello": "Tutti",
+  "organizzatore": "Scialabà",
+  "prezzo_note": "Prezzo da chiedere su WhatsApp al +39 338 4938124",
+  "quando_note": "Lezioni dal martedì al sabato mattina, in tre fasce: 10–12, 15:30–17:30, 18–20. Info e prenotazioni su WhatsApp al +39 338 4938124 o in DM su Instagram",
+  "su_prenotazione": true,
+  "titolo": "Pittura su porcellana con tecnica mista",
+  "zona": "Cit Turin",
+  "id": "scialaba-pittura-porcellana"
+ },
+ {
+  "categoria": "ceramica",
+  "descrizione": "Impari centratura, modellazione cilindrica e rifinitura per creare tazze, ciotole e forme armoniose al tornio. Gruppi piccoli (4–8 persone), ognuno seguito individualmente.",
+  "fonte": "scialabajewels.com",
+  "indirizzo": "Via Goffredo Casalis 61",
+  "link": "https://scialabajewels.com/products/il-tornio-centratura-e-forme",
+  "livello": "Tutti",
+  "organizzatore": "Scialabà",
+  "prezzo": 120,
+  "prezzo_note": "120 € per 4 lezioni da 2 ore, materiali e cotture inclusi. C’è anche una formula combinata tornio + manipolazione",
+  "quando_note": "Corso continuativo: inizi quando vuoi. Lezioni dal martedì al sabato mattina, in tre fasce: 10–12, 15:30–17:30, 18–20. Scegli la fascia scrivendo su WhatsApp al +39 338 4938124",
+  "su_prenotazione": true,
+  "titolo": "Il tornio: centratura e forme",
+  "zona": "Cit Turin",
+  "id": "scialaba-tornio"
+ },
+ {
+  "categoria": "altro",
+  "data": "2026-10-28",
+  "descrizione": "Una serata per sperimentare materiali e attività creative senza lezioni e senza l’ansia del risultato perfetto, chiacchierando con un drink in mano. Puoi venire da sola/o o con amici, non serve esperienza.",
+  "fonte": "le-strade.com",
+  "indirizzo": "Le Strade Creative Studio, Via Cagliari 11",
+  "link": "https://docs.google.com/forms/d/e/1FAIpQLScO49221GMIJtQeJKsFuAUQqLQshzjHaBahtbFJGLyIWaj-Rg/viewform",
+  "livello": "Tutti",
+  "ora_fine": "22:00",
+  "ora_inizio": "18:30",
+  "organizzatore": "Velvet Creative Lab",
+  "prezzo": 8,
+  "prezzo_da": true,
+  "prezzo_note": "15 € Open Studio (materiali, progetto da portare a casa e drink); 8 € Bring Your Own (porti il tuo progetto, drink incluso)",
+  "quando_note": "Due turni da 90 minuti: 18:30–20:00 oppure 20:30–22:00",
+  "titolo": "Velvet Creative Lab: Open Studio",
+  "zona": "Aurora",
+  "id": "velvet-open-studio-2026-10-28"
+ }
+];
+state.all = WORKSHOPS; state.loaded = true; render();
+</script>
+</body>
+</html>
