@@ -132,6 +132,7 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .ticket .wd{font-size:11px;font-weight:600}
 .ticket .d{font-size:29px;font-weight:800;line-height:1;font-stretch:80%}
 .ticket .m{font-size:12px;font-weight:700}
+.ticket .word{font-size:17px;font-weight:800;line-height:1.05;text-align:center;padding:0 6px;font-stretch:85%}
 .ticket .requested{display:block;width:100%;padding:0 6px;font-size:12px;font-weight:800;line-height:1.15;text-align:center;overflow-wrap:anywhere}
 .ticket .em{font-size:22px;margin-top:6px}
 .body{padding:11px 12px 10px 13px;flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
@@ -216,6 +217,7 @@ footer{color:var(--ink-soft);font-size:13px;text-align:center;padding:20px 0}
   .ticket .d{font-size:24px}
   .ticket .m{font-size:11px}
   .ticket .requested{font-size:11px;padding:0 4px}
+  .ticket .word{font-size:14.5px;padding:0 4px}
   .body{padding:10px 10px 8px 12px;gap:2px}
   .body h3{font-size:15px;line-height:1.2}
   .meta{font-size:12.5px}
@@ -466,6 +468,15 @@ const fotoOf = w => w.foto && /^img\/eventi\/[\w.-]+\.(jpe?g|png|webp)$/i.test(w
 const fotoGrande = w => { const f=fotoOf(w); return f ? f.replace("img/eventi/","img/eventi/grandi/") : null; };
 
 
+// senza data: "ogni mercoledì" / "ogni 15 giorni" (campo ricorrenza) oppure "data a scelta", su più righe come la data
+function noDate(w){
+  const r=(w.ricorrenza||"").trim(), n=r.match(/^ogni (\d+) (.+)$/i), g=r.match(/^ogni (.+)$/i);
+  if(n) return [el("span",{class:"wd"},"ogni"), el("span",{class:"d"},n[1]), el("span",{class:"m"},n[2])];
+  if(g) return [el("span",{class:"wd"},"ogni"), el("span",{class:"word"},g[1])];
+  return [el("span",{class:"wd"},"data"), el("span",{class:"word"},"a scelta")];
+}
+const noDateText = w => w.ricorrenza ? w.ricorrenza[0].toUpperCase()+w.ricorrenza.slice(1) : "Data a scelta";
+
 function card(w){
   const c=catOf(w.categoria), d=parseDate(w.data);
   const heart=el("button",{class:"heart",type:"button"});
@@ -476,7 +487,7 @@ function card(w){
   const when=[w.ora_inizio, w.zona].filter(Boolean).join(" · ");
   return el("div",{class:"card",role:"button",tabindex:"0",style:`--cb:${c.b}`,onclick:()=>openDetail(w),onkeydown:e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openDetail(w);}}},
     el("div",{class:"ticket"+(foto?" photo":""),style:foto?`background-image:url('${foto}')`:`background:${c.c}`},
-      d ? [el("span",{class:"wd"},WD[d.getDay()]), el("span",{class:"d"},String(d.getDate())), el("span",{class:"m"},MONTHS[d.getMonth()])] : el("span",{class:"requested"},"su prenotazione")),
+      d ? [el("span",{class:"wd"},WD[d.getDay()]), el("span",{class:"d"},String(d.getDate())), el("span",{class:"m"},MONTHS[d.getMonth()])] : noDate(w)),
     el("div",{class:"body"},
       el("h3",{}, el("span",{class:"bar-t",title:c.label,"aria-hidden":"true"}), w.titolo||"Workshop"),
       el("div",{class:"meta"}, when),
@@ -585,7 +596,7 @@ function openDetail(w){
   const c=catOf(w.categoria), d=parseDate(w.data);
   const dateStr = d ? `${WD_LONG[d.getDay()]} ${d.getDate()} ${MONTHS_LONG[d.getMonth()]}` : "";
   const time = [w.ora_inizio,w.ora_fine].filter(Boolean).join("–");
-  const when = d ? [[dateStr,time].filter(Boolean).join(", "), w.quando_note].filter(Boolean).join(". ") : (w.su_prenotazione ? ["Su prenotazione", w.quando_note].filter(Boolean).join(". ") : "");
+  const when = d ? [[dateStr,time].filter(Boolean).join(", "), w.quando_note].filter(Boolean).join(". ") : (w.su_prenotazione ? [noDateText(w), w.quando_note].filter(Boolean).join(". ") : "");
   const rows=[["Quando",when],["Dove",[w.indirizzo,w.zona].filter(Boolean).join(", ")],["Prezzo",w.prezzo_note||priceLabel(w)],["Posti", w.posti_disponibili!=null&&w.posti_disponibili!==""? (Number(w.posti_disponibili)>0?`${w.posti_disponibili} liberi${w.posti_totali?` su ${w.posti_totali}`:""}`:"Esaurito"):""],["Livello",w.livello],["Organizza",w.organizzatore]].filter(r=>r[1]);
   let link=null;
   if(w.link && /^https?:\/\//i.test(w.link)) link=el("a",{class:"btn",href:w.link,target:"_blank",rel:"noopener"},"Prenota sul sito dell’organizzatore");
@@ -736,6 +747,7 @@ const WORKSHOPS = [
   "organizzatore": "Casa del Quartiere di San Salvario",
   "prezzo_note": "Costo non indicato: chiedere alla Casa del Quartiere",
   "quando_note": "Ogni mercoledì alle 15",
+  "ricorrenza": "ogni mercoledì",
   "su_prenotazione": true,
   "titolo": "Sferruzzo: maglia e chiacchiere",
   "zona": "San Salvario",
@@ -2317,6 +2329,7 @@ const WORKSHOPS = [
   "organizzatore": "orso.objetos per Più SpazioQuattro",
   "prezzo_note": "Prezzo non indicato: da chiedere a theorsotoys@gmail.com",
   "quando_note": "Il giovedì, ogni 15 giorni. Info e iscrizioni: theorsotoys@gmail.com",
+  "ricorrenza": "ogni 15 giorni",
   "su_prenotazione": true,
   "titolo": "Laboratorio di ricamo: rammendo e sashiko",
   "zona": "San Donato",
