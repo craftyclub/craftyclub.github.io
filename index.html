@@ -269,6 +269,7 @@ footer{color:var(--ink-soft);font-size:13px;text-align:center;padding:20px 0}
     <button class="pill filters" id="openFilters" type="button">Filtri <span class="count" id="fcount" hidden>0</span></button>
     <button class="pill" data-when="today" aria-pressed="false" type="button">Stasera</button>
     <button class="pill" data-when="weekend" aria-pressed="false" type="button">Questo weekend</button>
+    <button class="pill" data-when="nextweek" aria-pressed="false" type="button">Prossima settimana</button>
     <button class="pill" data-quick="cheap" aria-pressed="false" type="button">Sotto 30 €</button>
   </div>
 
@@ -300,6 +301,9 @@ const CATS = [
   {id:"carta", label:"Carta", em:"📄", c:"#D9F3EA", b:"#3FB58F"},
   {id:"cucina", label:"Cucina", em:"🍝", c:"#FFF0D2", b:"#F2602B"},
   {id:"degustazioni", label:"Degustazioni", em:"🍷", c:"#F6DDF0", b:"#A3134C"},
+  {id:"musica", label:"Musica", em:"🎵", c:"#E6E2FF", b:"#5B4BE0"},
+  {id:"movimento", label:"Movimento", em:"💃", c:"#EAF5D3", b:"#6E9E16"},
+  {id:"teatro", label:"Teatro", em:"🎭", c:"#FDE1E5", b:"#D93A55"},
   {id:"famiglia", label:"Per famiglie", em:"🧸", c:"#F4E6DA", b:"#B07445"},
   {id:"altro", label:"Altro", em:"✨", c:"#ECE6FF", b:"#7B5CE0"}
 ];
@@ -316,7 +320,7 @@ const inRegion = w => state.region==="all" || regionOf(w)===state.region;
 function loadRegion(){ try{ const r=localStorage.getItem("cc-region"); return REGIONS.some(x=>x.id===r)?r:"to"; }catch(e){ return "to"; } }
 function persistRegion(){ try{ localStorage.setItem("cc-region", state.region); }catch(e){} }
 const PRICES = [{v:0,l:"Qualsiasi"},{v:20,l:"Fino a 20 €"},{v:35,l:"Fino a 35 €"},{v:50,l:"Fino a 50 €"},{v:80,l:"Fino a 80 €"}];
-const WHENS = [{v:"all",l:"Tutte le date"},{v:"today",l:"Oggi"},{v:"week",l:"Prossimi 7 giorni"},{v:"weekend",l:"Questo weekend"},{v:"month",l:"Prossimi 30 giorni"}];
+const WHENS = [{v:"all",l:"Tutte le date"},{v:"today",l:"Oggi"},{v:"week",l:"Prossimi 7 giorni"},{v:"weekend",l:"Questo weekend"},{v:"nextweek",l:"Prossima settimana"},{v:"month",l:"Prossimi 30 giorni"}];
 /* icone categorie: stile piatto, metà sinistra chiara e metà destra scura (clip #cc-half).
    Ogni parte: [markup con %c al posto del colore, colore chiaro, colore scuro] */
 const ICON_IMG = {ceramica:"icons/ceramica.png"};
@@ -373,6 +377,21 @@ const ICONS = {
     ['<path d="M146 150h220c-6 90-46 140-110 146-64-6-104-56-110-146z" fill="%c"/>',"#C2185B","#A3134C"],
     ['<rect x="242" y="296" width="28" height="134" fill="%c"/><ellipse cx="256" cy="440" rx="112" ry="28" fill="%c"/>',"#E6F0FA","#CFDDEC"]
   ],
+  musica:[
+    ['<path d="M196 116l238-46v74l-238 46z" fill="%c"/>',"#7A6BFF","#5B4BE0"],
+    ['<rect x="196" y="140" width="30" height="250" rx="10"/><rect x="404" y="96" width="30" height="250" rx="10"/>'.replace(/\/>/g,' fill="%c"/>'),"#7A6BFF","#5B4BE0"],
+    ['<ellipse cx="156" cy="392" rx="70" ry="54" transform="rotate(-18 156 392)"/><ellipse cx="364" cy="348" rx="70" ry="54" transform="rotate(-18 364 348)"/>'.replace(/\/>/g,' fill="%c"/>'),"#A79CFF","#8C7EFF"]
+  ],
+  movimento:[
+    ['<circle cx="300" cy="96" r="50" fill="%c"/>',"#F2B48A","#E39A6C"],
+    ['<path d="M286 168L240 306M128 196l132 30 118-80M240 306l-92 128M240 306l104 56-16 104" stroke="%c" stroke-width="44" stroke-linecap="round" stroke-linejoin="round" fill="none"/>',"#8DC63F","#6E9E16"]
+  ],
+  teatro:[
+    ['<g transform="translate(150 40) rotate(14 160 200)"><path d="M20 70c0-30 20-44 50-44h180c30 0 50 14 50 44v130c0 120-90 180-140 190C110 380 20 320 20 200z" fill="%c"/></g>',"#FF6B80","#E84357"],
+    ['<g transform="translate(150 40) rotate(14 160 200)"><ellipse cx="110" cy="150" rx="30" ry="20"/><ellipse cx="210" cy="150" rx="30" ry="20"/><path d="M100 290c30-46 90-46 120 0-30-20-90-20-120 0z"/></g>'.replace(/\/>/g,' fill="%c"/>').replace("</g>'.replace","</g>'.replace"),"#5A1F2B","#4A1823"],
+    ['<path d="M50 120c0-30 20-44 50-44h180c30 0 50 14 50 44v130c0 120-90 180-140 190C140 430 50 370 50 250z" fill="%c"/>',"#FFD23F","#F5BE1C"],
+    ['<ellipse cx="140" cy="200" rx="30" ry="22"/><ellipse cx="240" cy="200" rx="30" ry="22"/><path d="M120 300c40 60 100 60 140 0-40 26-100 26-140 0z"/>'.replace(/\/>/g,' fill="%c"/>'),"#5A3A10","#4A300C"]
+  ],
   famiglia:[
     ['<circle cx="164" cy="130" r="52"/><circle cx="348" cy="130" r="52"/><circle cx="138" cy="352" r="44"/><circle cx="374" cy="352" r="44"/><circle cx="180" cy="452" r="48"/><circle cx="332" cy="452" r="48"/>'.replace(/\/>/g,' fill="%c"/>'),"#C98A5A","#B07445"],
     ['<ellipse cx="256" cy="372" rx="132" ry="112" fill="%c"/><circle cx="256" cy="204" r="112" fill="%c"/>',"#C98A5A","#B07445"],
@@ -414,15 +433,25 @@ function inWhen(d){
   if(state.when==="week"){ const e=new Date(t); e.setDate(t.getDate()+7); return d>=t && d<=e; }
   if(state.when==="month"){ const e=new Date(t); e.setDate(t.getDate()+30); return d>=t && d<=e; }
   if(state.when==="weekend"){ const [a,b]=weekendRange(); return d>=a && d<=b; }
+  if(state.when==="nextweek"){ const a=new Date(t); a.setDate(t.getDate()+((8-t.getDay())%7||7)); const b=new Date(a); b.setDate(a.getDate()+6); return d>=a && d<=b; }
   return true;
 }
 const norm = s => (s||"").toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+// corsi "ogni <giorno>": rientrano in un filtro di date se quel giorno della settimana cade nel periodo scelto
+const GIORNI = {"domenica":0,"lunedi":1,"martedi":2,"mercoledi":3,"giovedi":4,"venerdi":5,"sabato":6};
+function recurringInWhen(w){
+  const m = norm(w.ricorrenza||"").match(/^ogni (domenica|lunedi|martedi|mercoledi|giovedi|venerdi|sabato)$/);
+  if(!m) return false;
+  const t=today0();
+  for(let k=0;k<=31;k++){ const d=new Date(t); d.setDate(t.getDate()+k); if(d.getDay()===GIORNI[m[1]] && inWhen(d)) return true; }
+  return false;
+}
 
 function filtered(){
   const q = norm(state.q);
   return state.all.filter(w=>{
     const d=parseDate(w.data);
-    if(!d && w.su_prenotazione){ if(state.when!=="all") return false; }
+    if(!d && w.su_prenotazione){ if(state.when!=="all" && !recurringInWhen(w)) return false; }
     else if(!inWhen(d)) return false;
     if(state.tab==="saved" ? !state.saved.has(w.id) : !inRegion(w)) return false;
     if(state.cats.length && !state.cats.includes(catOf(w.categoria).id)) return false;
@@ -461,7 +490,7 @@ function seatsBadge(w){
   return el("span",{class:"badge"},`${n} posti liberi`);
 }
 const euro = p => (p===0||p==="0") ? "Gratis" : (p!=null && p!=="" ? `${Number(p).toLocaleString("it-IT")} €` : "");
-const priceLabel = w => (w.prezzo_da && w.prezzo ? "da " : "") + euro(w.prezzo);
+const priceLabel = w => (w.prezzo_da && w.prezzo ? "da " : "") + euro(w.prezzo) + (w.prezzo_per && Number(w.prezzo)>0 ? " " + w.prezzo_per : "");
 
 // foto piccola (scheda) in img/eventi/, versione grande non ritagliata in img/eventi/grandi/
 const fotoOf = w => w.foto && /^img\/eventi\/[\w.-]+\.(jpe?g|png|webp)$/i.test(w.foto) ? w.foto : null;
@@ -725,6 +754,24 @@ const WORKSHOPS = [
   "id": "antro-sulle-tracce-dei-corpi-2026-11-14"
  },
  {
+  "categoria": "movimento",
+  "descrizione": "Una disciplina acrobatica di coppia che unisce yoga, acrobatica ed equilibrio: si parte dalle basi del lavoro a due per arrivare a figure semplici, sempre in sicurezza. Non serve esperienza. Abbonamenti da 170 € per 3 mesi, 320 € per 6 e 450 € per 9; la preiscrizione include la tessera UISP. Il corso parte al raggiungimento del numero minimo di iscritti; preiscrizione sul sito del Bunker.",
+  "fonte": "variantebunker.com",
+  "foto": "img/eventi/bunker-acroyoga.jpg",
+  "indirizzo": "Bunker, Via Niccolò Paganini 0/200",
+  "link": "https://variantebunker.com/events/ogni-lunedi-del-mese-corso-di-acroyoga/",
+  "ora_fine": "20:30",
+  "ora_inizio": "19:00",
+  "organizzatore": "Bunker",
+  "prezzo": 15,
+  "prezzo_per": "a lezione",
+  "ricorrenza": "ogni lunedì",
+  "su_prenotazione": true,
+  "titolo": "Corso di acroyoga: equilibri in coppia",
+  "zona": "Barriera di Milano",
+  "id": "bunker-acroyoga"
+ },
+ {
   "categoria": "pittura",
   "descrizione": "Un appuntamento per disegnare senza pressioni con l’illustratrice Malena De Luca, ogni volta con un tema e una tecnica diversi: 21/10 Mondi surreali, 4/11 Impressionismo mash-up, 18/11 Disegno + fotografia, 2/12 Quei matti del Medioevo, 16/12 Linea e pieno. Materiali inclusi; pacchetti da 3 lezioni a 40 € e da 6 a 75 €. Preiscrizione sul sito del Bunker.",
   "fonte": "variantebunker.com",
@@ -735,11 +782,156 @@ const WORKSHOPS = [
   "ora_inizio": "19:00",
   "organizzatore": "Malena De Luca per Bunker",
   "prezzo": 15,
+  "prezzo_per": "a lezione",
   "ricorrenza": "ogni 2 mercoledì",
   "su_prenotazione": true,
   "titolo": "Club di Disegno: illustrazione libera",
   "zona": "Barriera di Milano",
   "id": "bunker-club-di-disegno"
+ },
+ {
+  "categoria": "musica",
+  "descrizione": "Un laboratorio per esplorare la propria voce con il corpo e il gruppo: sperimentazione vocale, improvvisazione, circle singing e polifonie dal mondo. Il trimestre comprende 10 lezioni; l’anno intero costa 400 €. Il corso parte al raggiungimento del numero minimo di iscritti; preiscrizione sul sito del Bunker.",
+  "fonte": "variantebunker.com",
+  "foto": "img/eventi/bunker-corso-canto.jpg",
+  "indirizzo": "Bunker, Via Niccolò Paganini 0/200",
+  "link": "https://variantebunker.com/events/ogni-mercoledi-corso-di-canto/",
+  "ora_fine": "20:15",
+  "ora_inizio": "19:00",
+  "organizzatore": "Bunker",
+  "prezzo": 150,
+  "prezzo_per": "a trimestre",
+  "ricorrenza": "ogni mercoledì",
+  "su_prenotazione": true,
+  "titolo": "Corso di canto: voce e polifonie",
+  "zona": "Barriera di Milano",
+  "id": "bunker-corso-canto"
+ },
+ {
+  "categoria": "musica",
+  "descrizione": "Otto lezioni in due mesi per imparare a usare giradischi, mixer, console e Traktor, partendo da zero e portando la propria musica su chiavetta. L’obiettivo è costruire un primo set e trovare il proprio modo di stare dietro alla console. Il corso parte al raggiungimento del numero minimo di iscritti; preiscrizione sul sito del Bunker.",
+  "fonte": "variantebunker.com",
+  "foto": "img/eventi/bunker-corso-djing.jpg",
+  "indirizzo": "Bunker, Via Niccolò Paganini 0/200",
+  "link": "https://variantebunker.com/events/corso-di-djing-giolla/",
+  "ora_fine": "22:00",
+  "ora_inizio": "20:00",
+  "organizzatore": "Dj Giolla per Bunker",
+  "prezzo": 250,
+  "prezzo_per": "per 8 lezioni",
+  "ricorrenza": "ogni martedì",
+  "su_prenotazione": true,
+  "titolo": "Corso di Djing: dalle basi al set",
+  "zona": "Barriera di Milano",
+  "id": "bunker-corso-djing"
+ },
+ {
+  "categoria": "teatro",
+  "descrizione": "Un laboratorio di teatro aperto a tutti, senza esperienza, tra mimo, clown, commedia dell’arte e lavoro sulla parola. Si costruisce prima il gruppo e poi, se si vuole, una restituzione finale. Il corso parte al raggiungimento del numero minimo di iscritti; preiscrizione sul sito del Bunker.",
+  "fonte": "variantebunker.com",
+  "foto": "img/eventi/bunker-corso-teatro.jpg",
+  "indirizzo": "Bunker, Via Niccolò Paganini 0/200",
+  "link": "https://variantebunker.com/events/ogni-venerdi-corso-di-teatro/",
+  "ora_fine": "21:00",
+  "ora_inizio": "19:30",
+  "organizzatore": "Giulia Ruggiero e Maddalena Sighinolfi per Bunker",
+  "prezzo": 40,
+  "prezzo_per": "al mese",
+  "ricorrenza": "ogni venerdì",
+  "su_prenotazione": true,
+  "titolo": "Corso di teatro: mimo, clown e parola",
+  "zona": "Barriera di Milano",
+  "id": "bunker-corso-teatro"
+ },
+ {
+  "categoria": "movimento",
+  "descrizione": "Un corso introduttivo alla dabka, la danza tradizionale e collettiva del Levante: passi e ritmi di base, insieme alla sua storia e al suo significato. Pensato per principianti. Il corso parte al raggiungimento del numero minimo di iscritti; preiscrizione sul sito del Bunker.",
+  "fonte": "variantebunker.com",
+  "foto": "img/eventi/bunker-dabka.jpg",
+  "indirizzo": "Bunker, Via Niccolò Paganini 0/200",
+  "link": "https://variantebunker.com/events/ogni-mercoledi-corso-di-dabka/",
+  "ora_fine": "22:00",
+  "ora_inizio": "21:00",
+  "organizzatore": "Layall Chamass per Bunker",
+  "prezzo": 50,
+  "prezzo_per": "al mese",
+  "ricorrenza": "ogni mercoledì",
+  "su_prenotazione": true,
+  "titolo": "Corso di dabka: danza del Levante",
+  "zona": "Barriera di Milano",
+  "id": "bunker-dabka"
+ },
+ {
+  "categoria": "movimento",
+  "descrizione": "Un corso di danze rituali del Sud Italia, tra pizziche, tarantelle e tammurriate, con l’artista Valentina Padovan e il Collettivo Occasionale Promiscuo. Il mese comprende 4 lezioni da due ore; 2 lezioni costano 55 €. Il corso parte al raggiungimento del numero minimo di iscritti; preiscrizione sul sito del Bunker.",
+  "fonte": "variantebunker.com",
+  "foto": "img/eventi/bunker-danze-rituali.jpg",
+  "indirizzo": "Bunker, Via Niccolò Paganini 0/200",
+  "link": "https://variantebunker.com/events/danze-rituali-del-sud-italia/",
+  "ora_fine": "20:30",
+  "ora_inizio": "18:30",
+  "organizzatore": "Valentina Padovan per Bunker",
+  "prezzo": 75,
+  "prezzo_per": "al mese",
+  "ricorrenza": "ogni giovedì",
+  "su_prenotazione": true,
+  "titolo": "Danze rituali: pizzica e tarantella",
+  "zona": "Barriera di Milano",
+  "id": "bunker-danze-rituali"
+ },
+ {
+  "categoria": "musica",
+  "descrizione": "Un laboratorio di percussioni e musica d’insieme, due giovedì al mese, per conoscere ritmi, strumenti e tecniche suonando con gli altri. Aperto a tutti, anche a chi parte da zero. Il corso parte al raggiungimento del numero minimo di iscritti; preiscrizione sul sito del Bunker.",
+  "fonte": "variantebunker.com",
+  "foto": "img/eventi/bunker-percussioni.jpg",
+  "indirizzo": "Bunker, Via Niccolò Paganini 0/200",
+  "link": "https://variantebunker.com/events/giovedi-bimensile-corso-di-percussioni-2/",
+  "ora_fine": "21:30",
+  "ora_inizio": "20:00",
+  "organizzatore": "Ivan di Buduo per Bunker",
+  "prezzo": 15,
+  "prezzo_per": "a lezione",
+  "ricorrenza": "ogni 2 giovedì",
+  "su_prenotazione": true,
+  "titolo": "Corso di percussioni: suonare insieme",
+  "zona": "Barriera di Milano",
+  "id": "bunker-percussioni"
+ },
+ {
+  "categoria": "musica",
+  "descrizione": "Un percorso pratico sui ritmi tradizionali dell’Africa occidentale e sul djembe, con il musicista senegalese Cheikh Sadibou Fall. Aperto sia a chi comincia sia a chi suona già; il mese costa 60 €. Il corso parte al raggiungimento del numero minimo di iscritti; preiscrizione sul sito del Bunker.",
+  "fonte": "variantebunker.com",
+  "foto": "img/eventi/bunker-percussioni-afro.jpg",
+  "indirizzo": "Bunker, Via Niccolò Paganini 0/200",
+  "link": "https://variantebunker.com/events/corso-di-percussioni-afro-con-cheikh-sadibou-fall/",
+  "ora_fine": "20:00",
+  "ora_inizio": "18:30",
+  "organizzatore": "Cheikh Sadibou Fall per Bunker",
+  "prezzo": 20,
+  "prezzo_per": "a lezione",
+  "ricorrenza": "ogni giovedì",
+  "su_prenotazione": true,
+  "titolo": "Percussioni afro: djembe e ritmi",
+  "zona": "Barriera di Milano",
+  "id": "bunker-percussioni-afro"
+ },
+ {
+  "categoria": "musica",
+  "descrizione": "Dieci lezioni pratiche per imparare a produrre musica elettronica con Ableton Live: ritmo, sound design, arrangiamento, mix e un primo live set. Non serve esperienza, bastano un computer e delle cuffie. Il corso parte al raggiungimento del numero minimo di iscritti; preiscrizione sul sito del Bunker.",
+  "fonte": "variantebunker.com",
+  "foto": "img/eventi/bunker-produzione-musicale.jpg",
+  "indirizzo": "Bunker, Via Niccolò Paganini 0/200",
+  "link": "https://variantebunker.com/events/mercoledi-produzione-musicale-ableton-live/",
+  "ora_fine": "22:30",
+  "ora_inizio": "21:00",
+  "organizzatore": "Bunker",
+  "prezzo": 250,
+  "prezzo_per": "per 10 lezioni",
+  "ricorrenza": "ogni mercoledì",
+  "su_prenotazione": true,
+  "titolo": "Produzione musicale: Ableton Live da zero",
+  "zona": "Barriera di Milano",
+  "id": "bunker-produzione-musicale"
  },
  {
   "categoria": "carta",
@@ -752,6 +944,7 @@ const WORKSHOPS = [
   "ora_inizio": "18:00",
   "organizzatore": "Bunker",
   "prezzo": 100,
+  "prezzo_per": "per 8 incontri",
   "ricorrenza": "ogni giovedì",
   "su_prenotazione": true,
   "titolo": "Laboratorio di scrittura: il quotidiano",
@@ -769,6 +962,7 @@ const WORKSHOPS = [
   "ora_inizio": "19:00",
   "organizzatore": "Nikka per Bunker",
   "prezzo": 20,
+  "prezzo_per": "a lezione",
   "ricorrenza": "ogni lunedì",
   "su_prenotazione": true,
   "titolo": "Workshop di graffiti: writing urbano",
@@ -2351,7 +2545,7 @@ const WORKSHOPS = [
   "id": "scialaba-decorazione"
  },
  {
-  "categoria": "gioielli",
+  "categoria": "ceramica",
   "descrizione": "Si plasma la porcellana per creare orecchini, anelli e pendenti, con smaltatura lucida o satinata. Il modulo è di 4 lezioni da 2 ore, materiali e cotture inclusi, in gruppi di 4–8 persone. Le date si scelgono su WhatsApp al +39 338 4938124.",
   "fonte": "scialabajewels.com",
   "foto": "img/eventi/scialaba-jewels-2026-09-30-9.jpg",
