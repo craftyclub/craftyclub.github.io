@@ -12,6 +12,7 @@
   --bg:#F6F1FF; --surface:#FFFFFF; --ink:#2A1440; --ink-soft:#6B5A80; --line:#E4DAF5;
   --pink:#FF5FA2; --sun:#FFCF3D; --mint:#2FC79B; --cobalt:#4A5BFF; --peach:#FF9A6B; --lilac:#B79BFF;
   --chip:#FFFFFF; --sheet:#FFFFFF; --overlay:rgba(42,20,64,.45);
+  --gl:max(18px,env(safe-area-inset-left,0px)); --gr:max(18px,env(safe-area-inset-right,0px));
   color-scheme:light;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
@@ -33,18 +34,26 @@
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--ink);
   font-family:"Bricolage Grotesque",ui-rounded,"Segoe UI",system-ui,sans-serif;
-  font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased;padding-bottom:84px}
+  font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 button,input{font:inherit;color:inherit}
 :focus-visible{outline:3px solid var(--cobalt);outline-offset:2px;border-radius:12px}
-.wrap{max-width:760px;margin:0 auto;padding:0 18px}
+.wrap{max-width:760px;margin:0 auto;padding:0 var(--gr) 0 var(--gl)}
 
 /* header */
 header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);}
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
-.logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:22px;letter-spacing:-.02em;font-stretch:85%}
-.logo svg{width:30px;height:30px}
-.city{border:2px solid var(--ink);background:var(--surface);border-radius:999px;padding:6px 14px;font-weight:600;font-size:14px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:12px;padding-bottom:12px}
+.logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:22px;letter-spacing:-.02em;font-stretch:85%;white-space:nowrap;min-width:0}
+.logo svg{width:30px;height:30px;flex:none}
+.top-actions{display:flex;align-items:center;gap:8px;flex:none}
+.icon-btn{position:relative;width:38px;height:38px;flex:none;display:grid;place-items:center;padding:0;border:2px solid var(--ink);background:var(--surface);border-radius:999px;cursor:pointer;color:var(--ink)}
+.icon-btn svg{width:18px;height:18px}
+.icon-btn[aria-pressed="true"]{background:var(--pink);color:#fff}
+.icon-btn .count{position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:var(--pink);color:#fff;border:2px solid var(--bg);font-size:11px;font-weight:700;line-height:14px;text-align:center}
+.icon-btn[aria-pressed="true"] .count{background:var(--ink);color:var(--bg)}
+.city{display:flex;align-items:center;gap:6px;height:38px;border:2px solid var(--ink);background:var(--surface);border-radius:999px;padding:0 12px 0 14px;font-weight:600;font-size:14px;white-space:nowrap;cursor:pointer}
+.city svg{width:12px;height:12px;flex:none}
+@media (max-width:360px){.logo{font-size:19px}.logo svg{width:26px;height:26px}}
 
 /* hero */
 .hero{position:relative;padding:18px 0 8px}
@@ -58,9 +67,33 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .search{display:flex;align-items:center;gap:10px;background:var(--surface);border:2px solid var(--ink);border-radius:18px;padding:12px 14px;box-shadow:4px 4px 0 var(--ink)}
 .search input{border:0;outline:0;background:transparent;flex:1;font-size:16px;min-width:0}
 .search svg{flex:none}
+.searchrow{display:flex;gap:10px;align-items:stretch}
+.searchrow .search{flex:1;min-width:0}
+.calbtn{flex:none;width:52px;padding:0;display:grid;place-items:center;border:2px solid var(--ink);background:var(--sun);color:#2A1440;border-radius:18px;box-shadow:4px 4px 0 var(--ink);cursor:pointer}
+
+/* calendar */
+.cal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.cal-head h3{margin:0}
+.cal-nav{display:flex;gap:8px}
+.cal-nav button{width:38px;height:38px;padding:0;display:grid;place-items:center;border:2px solid var(--ink);background:var(--surface);border-radius:999px;cursor:pointer}
+.cal-nav button:disabled{opacity:.3;cursor:default}
+.cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;touch-action:pan-y}
+.cal-wd{text-align:center;font-size:12px;font-weight:700;color:var(--ink-soft);padding:2px 0 4px}
+.cal-day{min-height:52px;padding:5px 1px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;border:1.5px solid transparent;border-radius:12px;background:none;font-size:14px;font-weight:600;color:var(--ink);min-width:0}
+.cal-day:disabled{cursor:default}
+.cal-day.has{background:var(--bg);border-color:var(--line);cursor:pointer}
+.cal-day.has:hover{border-color:var(--ink)}
+.cal-day.past{opacity:.4}
+.cal-day .n{min-width:24px;line-height:22px;border-radius:999px}
+.cal-day.today .n{background:var(--ink);color:var(--bg)}
+.cal-day .ems{display:flex;align-items:center;justify-content:center;gap:1px;font-size:12px;line-height:1}
+.cal-day .more{font-size:10px;font-weight:700;color:var(--ink-soft)}
+.cal-hint{margin:12px 0 0;color:var(--ink-soft);font-size:14px;text-align:center}
+.daylist{display:grid;gap:12px;margin-top:14px}
+.back{display:inline-flex;align-items:center;gap:6px;background:none;border:0;padding:4px 0;margin-bottom:8px;font-weight:700;color:var(--ink-soft);cursor:pointer}
 
 /* categories */
-.rail{display:flex;gap:10px;overflow-x:auto;padding:18px 18px 6px;margin:0 -18px;scrollbar-width:none;scroll-snap-type:x proximity}
+.rail{display:flex;gap:10px;overflow-x:auto;padding:18px calc(var(--gr) - 6px) 6px calc(var(--gl) - 6px);margin:0 calc(-1 * var(--gr)) 0 calc(-1 * var(--gl));scroll-padding-inline:calc(var(--gl) - 6px) calc(var(--gr) - 6px);scrollbar-width:none;scroll-snap-type:x proximity}
 .rail::-webkit-scrollbar{display:none}
 .cat{flex:none;scroll-snap-align:start;display:flex;flex-direction:column;align-items:center;gap:6px;width:76px;background:none;border:0;cursor:pointer;padding:0}
 .cat .blob{width:64px;height:64px;border-radius:22px;display:grid;place-items:center;font-size:30px;border:2px solid transparent;transition:transform .15s}
@@ -68,7 +101,7 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .cat[aria-pressed="true"] .blob{border-color:var(--ink);transform:rotate(-6deg) scale(1.05);box-shadow:3px 3px 0 var(--ink)}
 
 /* quick filters */
-.quick{display:flex;gap:8px;overflow-x:auto;padding:12px 18px;margin:0 -18px;scrollbar-width:none}
+.quick{display:flex;gap:8px;overflow-x:auto;padding:12px var(--gr) 12px var(--gl);margin:0 calc(-1 * var(--gr)) 0 calc(-1 * var(--gl));scrollbar-width:none}
 .quick::-webkit-scrollbar{display:none}
 .pill{flex:none;border:2px solid var(--line);background:var(--chip);border-radius:999px;padding:8px 14px;font-size:14px;font-weight:600;cursor:pointer}
 .pill[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
@@ -111,13 +144,6 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .org svg{position:absolute;right:-20px;bottom:-24px;width:150px;opacity:.9}
 footer{color:var(--ink-soft);font-size:13px;text-align:center;padding:20px 0}
 
-/* bottom nav */
-nav.bottom{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--surface);border-top:1.5px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
-nav.bottom .in{max-width:760px;margin:0 auto;display:flex;justify-content:space-around}
-nav.bottom button{background:none;border:0;padding:10px 12px 12px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;font-weight:600;color:var(--ink-soft);cursor:pointer}
-nav.bottom button[aria-current="true"]{color:var(--ink)}
-nav.bottom .ic{font-size:20px}
-
 /* sheet */
 .overlay{position:fixed;inset:0;background:var(--overlay);z-index:20;display:none}
 .overlay.open{display:block}
@@ -150,17 +176,28 @@ nav.bottom .ic{font-size:20px}
       <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3l4.6 9.4 10.4 1.5-7.5 7.3 1.8 10.3L20 26.6l-9.3 4.9 1.8-10.3L5 13.9l10.4-1.5z" fill="#FF5FA2" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></svg>
       Crafty Club
     </div>
-    <button class="city" type="button" aria-label="Città: Torino">Torino</button>
+    <div class="top-actions">
+      <button class="icon-btn" id="savedBtn" type="button" aria-pressed="false" aria-label="Salvati">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/></svg>
+        <span class="count" id="savedCount" hidden>0</span>
+      </button>
+      <button class="city" id="regionBtn" type="button"><span id="regionLabel">Torino</span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5L6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
   </div>
 </header>
 
 <main class="wrap">
   <section class="hero">
     <h1><span>Cosa facciamo</span><span>questa settimana?</span></h1>
-    <label class="search">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-      <input id="q" type="search" placeholder="Cerca un workshop, un laboratorio, un quartiere" autocomplete="off">
-    </label>
+    <div class="searchrow">
+      <label class="search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input id="q" type="search" placeholder="Cerca un workshop o un luogo" autocomplete="off">
+      </label>
+      <button class="calbtn" id="calBtn" type="button" aria-label="Calendario dei workshop">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/><circle cx="8.5" cy="14.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="14.5" r="1" fill="currentColor" stroke="none"/><circle cx="15.5" cy="14.5" r="1" fill="currentColor" stroke="none"/></svg>
+      </button>
+    </div>
   </section>
 
   <div class="rail" id="cats" role="group" aria-label="Categorie"></div>
@@ -170,7 +207,6 @@ nav.bottom .ic{font-size:20px}
     <button class="pill" data-when="today" aria-pressed="false" type="button">Stasera</button>
     <button class="pill" data-when="weekend" aria-pressed="false" type="button">Questo weekend</button>
     <button class="pill" data-quick="cheap" aria-pressed="false" type="button">Sotto 30 €</button>
-    <button class="pill" data-quick="avail" aria-pressed="false" type="button">Con posti liberi</button>
   </div>
 
   <div class="listhead">
@@ -188,14 +224,6 @@ nav.bottom .ic{font-size:20px}
   <footer>Crafty Club · Torino</footer>
 </main>
 
-<nav class="bottom" aria-label="Navigazione">
-  <div class="in">
-    <button type="button" data-tab="explore" aria-current="true"><span class="ic">✦</span>Esplora</button>
-    <button type="button" data-tab="saved" aria-current="false"><span class="ic">♡</span>Salvati</button>
-    <button type="button" data-tab="org" aria-current="false"><span class="ic">✎</span>Organizzi?</button>
-  </div>
-</nav>
-
 <div class="overlay" id="overlay"></div>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"></div>
 
@@ -211,20 +239,32 @@ const CATS = [
   {id:"carta", label:"Carta", em:"✂️", c:"#A8E6CF"},
   {id:"cucina", label:"Cucina", em:"🍝", c:"#FFD08A"},
   {id:"degustazioni", label:"Degustazioni", em:"🍷", c:"#E3A4FF"},
+  {id:"famiglia", label:"Famiglia", em:"🧸", c:"#FFC4A8"},
   {id:"altro", label:"Altro", em:"✨", c:"#D7CCFF"}
 ];
-const ZONES = ["Centro","Quadrilatero","San Salvario","Vanchiglia","Aurora","San Donato","Crocetta","Borgo Po","Cit Turin","Barriera di Milano","Mirafiori","Provincia di Torino","Cuneo e provincia","Fuori città"];
+const REGIONS = [
+  {id:"to", label:"Torino", short:"Torino", where:"a Torino"},
+  {id:"pto", label:"Provincia di Torino", short:"Prov. Torino", where:"in provincia di Torino", zona:"Provincia di Torino"},
+  {id:"cn", label:"Cuneo", short:"Cuneo", where:"a Cuneo", zona:"Cuneo"},
+  {id:"pcn", label:"Provincia di Cuneo", short:"Prov. Cuneo", where:"in provincia di Cuneo", zona:"Provincia di Cuneo"}
+];
+const regionOf = w => (REGIONS.find(r=>r.zona && r.zona===w.zona) || REGIONS[0]).id;
+const regionById = id => REGIONS.find(r=>r.id===id) || REGIONS[0];
+function loadRegion(){ try{ const r=localStorage.getItem("cc-region"); return REGIONS.some(x=>x.id===r)?r:"to"; }catch(e){ return "to"; } }
+function persistRegion(){ try{ localStorage.setItem("cc-region", state.region); }catch(e){} }
 const PRICES = [{v:0,l:"Qualsiasi"},{v:20,l:"Fino a 20 €"},{v:35,l:"Fino a 35 €"},{v:50,l:"Fino a 50 €"},{v:80,l:"Fino a 80 €"}];
 const WHENS = [{v:"all",l:"Tutte le date"},{v:"today",l:"Oggi"},{v:"week",l:"Prossimi 7 giorni"},{v:"weekend",l:"Questo weekend"},{v:"month",l:"Prossimi 30 giorni"}];
 const catOf = id => CATS.find(c=>c.id===id) || CATS[CATS.length-1];
 
-const state = {all:[], loaded:false, dbOk:true, q:"", cat:null, when:"all", zones:[], maxPrice:0, avail:false, tab:"explore", saved:loadSaved()};
+const state = {all:[], loaded:false, dbOk:true, q:"", cat:null, when:"all", maxPrice:0, tab:"explore", saved:loadSaved(), region:loadRegion()};
 
 function loadSaved(){ try{ return new Set(JSON.parse(localStorage.getItem("cc-saved")||"[]")); }catch(e){ return new Set(); } }
 function persistSaved(){ try{ localStorage.setItem("cc-saved", JSON.stringify([...state.saved])); }catch(e){} }
 
 const MONTHS = ["gen","feb","mar","apr","mag","giu","lug","ago","set","ott","nov","dic"];
 const WD = ["dom","lun","mar","mer","gio","ven","sab"];
+const MONTHS_LONG = ["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre"];
+const WD_LONG = ["domenica","lunedì","martedì","mercoledì","giovedì","venerdì","sabato"];
 function parseDate(s){ const [y,m,d]=(s||"").split("-").map(Number); return y? new Date(y,m-1,d):null; }
 function today0(){ const t=new Date(); t.setHours(0,0,0,0); return t; }
 function weekendRange(){ const t=today0(); const dow=t.getDay(); let sat=new Date(t); if(dow===0){ sat.setDate(t.getDate()-1);} else sat.setDate(t.getDate()+(6-dow)); const sun=new Date(sat); sun.setDate(sat.getDate()+1); return [dow===0?t:(dow===6?t:sat), sun]; }
@@ -246,11 +286,9 @@ function filtered(){
     const d=parseDate(w.data);
     if(!d && w.su_prenotazione){ if(state.when!=="all") return false; }
     else if(!inWhen(d)) return false;
-    if(state.tab==="saved" && !state.saved.has(w.id)) return false;
+    if(state.tab==="saved" ? !state.saved.has(w.id) : regionOf(w)!==state.region) return false;
     if(state.cat && w.categoria!==state.cat) return false;
-    if(state.zones.length && !state.zones.includes(w.zona)) return false;
     if(state.maxPrice && !(Number(w.prezzo)<=state.maxPrice)) return false;
-    if(state.avail && !(Number(w.posti_disponibili)>0)) return false;
     if(q){ const hay=norm([w.titolo,w.organizzatore,w.zona,w.descrizione,catOf(w.categoria).label].join(" ")); if(!hay.includes(q)) return false; }
     return true;
   }).sort((a,b)=> ((a.data||"9999")+(a.ora_inizio||"")).localeCompare((b.data||"9999")+(b.ora_inizio||"")));
@@ -258,10 +296,19 @@ function filtered(){
 
 function el(tag, attrs={}, ...kids){ const n=document.createElement(tag); for(const [k,v] of Object.entries(attrs)){ if(k==="class") n.className=v; else if(k.startsWith("on")) n.addEventListener(k.slice(2),v); else if(v!==false && v!=null) n.setAttribute(k,v===true?"":v); } for(const k of kids.flat()){ if(k==null) continue; n.append(k.nodeType?k:document.createTextNode(k)); } return n; }
 
+function isUpcoming(w){ const d=parseDate(w.data); return d ? d>=today0() : !!w.su_prenotazione; }
+function activeCats(){
+  const ids=new Set();
+  state.all.forEach(w=>{ if(isUpcoming(w) && (state.tab==="saved" ? state.saved.has(w.id) : regionOf(w)===state.region)) ids.add(catOf(w.categoria).id); });
+  return ids;
+}
 function renderCats(){
   const rail=document.getElementById("cats"); rail.innerHTML="";
-  CATS.forEach(c=>{
-    rail.append(el("button",{class:"cat",type:"button","aria-pressed":String(state.cat===c.id),onclick:()=>{state.cat=state.cat===c.id?null:c.id; renderCats(); render();}},
+  const ids=activeCats();
+  if(state.cat && !ids.has(state.cat)) state.cat=null;
+  rail.hidden=!ids.size;
+  CATS.filter(c=>ids.has(c.id)).forEach(c=>{
+    rail.append(el("button",{class:"cat",type:"button","aria-pressed":String(state.cat===c.id),onclick:()=>{state.cat=state.cat===c.id?null:c.id; render();}},
       el("div",{class:"blob",style:`background:${c.c}`},c.em), el("span",{},c.label)));
   });
 }
@@ -278,9 +325,10 @@ const priceLabel = w => (w.prezzo_da && w.prezzo ? "da " : "") + euro(w.prezzo);
 
 function card(w){
   const c=catOf(w.categoria), d=parseDate(w.data);
-  const saved=state.saved.has(w.id);
-  const heart=el("button",{class:"heart",type:"button","aria-label":saved?"Rimuovi dai salvati":"Salva",onclick:e=>{e.stopPropagation(); saved?state.saved.delete(w.id):state.saved.add(w.id); persistSaved(); render();}}, saved?"♥":"♡");
-  heart.style.color = saved ? "var(--pink)" : "var(--ink-soft)";
+  const heart=el("button",{class:"heart",type:"button"});
+  const paint=()=>{ const on=state.saved.has(w.id); heart.textContent=on?"♥":"♡"; heart.style.color=on?"var(--pink)":"var(--ink-soft)"; heart.setAttribute("aria-label",on?"Rimuovi dai salvati":"Salva"); };
+  heart.addEventListener("click",e=>{ e.stopPropagation(); state.saved.has(w.id)?state.saved.delete(w.id):state.saved.add(w.id); persistSaved(); paint(); render(); });
+  paint();
   return el("div",{class:"card",role:"button",tabindex:"0",onclick:()=>openDetail(w),onkeydown:e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openDetail(w);}}},
     el("div",{class:"ticket",style:`background:${c.c}`},
       d ? [el("span",{class:"wd"},WD[d.getDay()]), el("span",{class:"d"},String(d.getDate())), el("span",{class:"m"},MONTHS[d.getMonth()])] : el("span",{class:"requested"},"data su richiesta"),
@@ -293,15 +341,26 @@ function card(w){
   );
 }
 
+function renderHeader(){
+  const r=regionById(state.region);
+  document.getElementById("regionLabel").textContent=r.short;
+  document.getElementById("regionBtn").setAttribute("aria-label",`Zona: ${r.label}. Cambia zona`);
+  const sb=document.getElementById("savedBtn"), sc=document.getElementById("savedCount");
+  sb.setAttribute("aria-pressed",String(state.tab==="saved"));
+  sb.setAttribute("aria-label", state.tab==="saved" ? "Torna a tutti i workshop" : `Salvati (${state.saved.size})`);
+  sc.hidden=!state.saved.size; sc.textContent=state.saved.size;
+}
+
 function render(){
+  renderHeader(); renderCats();
   const box=document.getElementById("cards"); box.innerHTML="";
   const title=document.getElementById("listTitle"), count=document.getElementById("listCount");
-  title.textContent = state.tab==="saved" ? "I tuoi salvati" : (state.cat ? catOf(state.cat).label+" a Torino" : "In arrivo a Torino");
-  const active = (state.zones.length?1:0)+(state.maxPrice?1:0)+(state.when!=="all"?1:0)+(state.avail?1:0);
+  const where=regionById(state.region).where;
+  title.textContent = state.tab==="saved" ? "I tuoi salvati" : (state.cat ? catOf(state.cat).label+" "+where : "In arrivo "+where);
+  const active = (state.maxPrice?1:0)+(state.when!=="all"?1:0);
   const fc=document.getElementById("fcount"); fc.hidden=!active; fc.textContent=active;
   document.querySelectorAll("[data-when]").forEach(b=>b.setAttribute("aria-pressed",String(state.when===b.dataset.when)));
   document.querySelector('[data-quick="cheap"]').setAttribute("aria-pressed",String(state.maxPrice===30));
-  document.querySelector('[data-quick="avail"]').setAttribute("aria-pressed",String(state.avail));
   if(!state.dbOk){ count.textContent=""; box.append(el("div",{class:"notice"},"Apri questa pagina da claude.ai per vedere i workshop.")); return; }
   if(!state.loaded){ count.textContent=""; box.append(el("div",{class:"empty"},"Carico i workshop…")); return; }
   const list=filtered();
@@ -315,7 +374,7 @@ function render(){
   list.forEach(w=>box.append(card(w)));
 }
 
-function resetFilters(){ Object.assign(state,{q:"",cat:null,when:"all",zones:[],maxPrice:0,avail:false}); document.getElementById("q").value=""; renderCats(); render(); }
+function resetFilters(){ Object.assign(state,{q:"",cat:null,when:"all",maxPrice:0}); document.getElementById("q").value=""; render(); }
 
 /* sheets */
 const sheet=document.getElementById("sheet"), overlay=document.getElementById("overlay");
@@ -323,19 +382,23 @@ let lastFocus=null;
 function openSheet(content){ lastFocus=document.activeElement; sheet.innerHTML=""; sheet.append(el("div",{class:"grab"}), ...content); overlay.classList.add("open"); sheet.classList.add("open"); setTimeout(()=>{const f=sheet.querySelector("button, a, input"); f&&f.focus();},50); }
 function closeSheet(){ overlay.classList.remove("open"); sheet.classList.remove("open"); lastFocus&&lastFocus.focus(); }
 overlay.addEventListener("click",closeSheet);
+// un tocco nello spazio vuoto in alto (maniglia, titolo, margini sopra i comandi) chiude il pannello
+sheet.addEventListener("click",e=>{
+  const t=e.target;
+  if(!(t===sheet || t.classList.contains("grab") || t.id==="sheetTitle" || t.tagName==="H4")) return;
+  const first=sheet.querySelector("button, a, input, label");
+  if(!first || e.clientY < first.getBoundingClientRect().top) closeSheet();
+});
 document.addEventListener("keydown",e=>{ if(e.key==="Escape" && sheet.classList.contains("open")) closeSheet(); });
 
 function optGroup(items, isOn, onTap){ return el("div",{class:"opts"}, items.map(it=>el("button",{class:"pill",type:"button","aria-pressed":String(isOn(it)),onclick:e=>{onTap(it); e.currentTarget.parentNode.querySelectorAll("button").forEach((b,i)=>b.setAttribute("aria-pressed",String(isOn(items[i]))));}}, it.l||it))); }
 
 function openFilters(){
-  const draft={when:state.when, zones:[...state.zones], maxPrice:state.maxPrice, avail:state.avail};
-  const av=el("input",{type:"checkbox",id:"avail"}); av.checked=draft.avail; av.addEventListener("change",()=>draft.avail=av.checked);
+  const draft={when:state.when, maxPrice:state.maxPrice};
   openSheet([
     el("h3",{id:"sheetTitle"},"Filtri"),
     el("h4",{},"Quando"), optGroup(WHENS, it=>draft.when===it.v, it=>draft.when=it.v),
-    el("h4",{},"Zona"), optGroup(ZONES, z=>draft.zones.includes(z), z=>{ const i=draft.zones.indexOf(z); i>=0?draft.zones.splice(i,1):draft.zones.push(z); }),
     el("h4",{},"Prezzo"), optGroup(PRICES, it=>draft.maxPrice===it.v, it=>draft.maxPrice=it.v),
-    el("h4",{},"Disponibilità"), el("label",{class:"toggle",for:"avail"},"Solo con posti liberi",av),
     el("div",{class:"actions"},
       el("button",{class:"ghost",type:"button",onclick:()=>{resetFilters(); closeSheet();}},"Azzera"),
       el("button",{class:"btn",type:"button",onclick:()=>{Object.assign(state,draft); render(); closeSheet();}},"Mostra risultati"))
@@ -344,7 +407,7 @@ function openFilters(){
 
 function openDetail(w){
   const c=catOf(w.categoria), d=parseDate(w.data);
-  const dateStr = d ? `${["domenica","lunedì","martedì","mercoledì","giovedì","venerdì","sabato"][d.getDay()]} ${d.getDate()} ${["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre"][d.getMonth()]}` : "";
+  const dateStr = d ? `${WD_LONG[d.getDay()]} ${d.getDate()} ${MONTHS_LONG[d.getMonth()]}` : "";
   const time = [w.ora_inizio,w.ora_fine].filter(Boolean).join("–");
   const when = d ? [[dateStr,time].filter(Boolean).join(", "), w.quando_note].filter(Boolean).join(". ") : (w.su_prenotazione ? ["Su prenotazione", w.quando_note].filter(Boolean).join(". ") : "");
   const rows=[["Quando",when],["Dove",[w.indirizzo,w.zona].filter(Boolean).join(", ")],["Prezzo",w.prezzo_note||priceLabel(w)],["Posti", w.posti_disponibili!=null&&w.posti_disponibili!==""? (Number(w.posti_disponibili)>0?`${w.posti_disponibili} liberi${w.posti_totali?` su ${w.posti_totali}`:""}`:"Esaurito"):""],["Livello",w.livello],["Organizza",w.organizzatore]].filter(r=>r[1]);
@@ -360,6 +423,74 @@ function openDetail(w){
   )]);
 }
 
+function openRegion(){
+  openSheet([
+    el("h3",{id:"sheetTitle"},"Dove cerchi?"),
+    el("div",{class:"opts",style:"margin-top:14px"}, REGIONS.map(r=>el("button",{class:"pill",type:"button","aria-pressed":String(state.region===r.id),onclick:()=>{
+      state.region=r.id; state.tab="explore"; persistRegion(); render(); closeSheet();
+    }}, r.label)))
+  ]);
+}
+
+/* calendar */
+const ymd = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+const monthStart = d => new Date(d.getFullYear(), d.getMonth(), 1);
+let calMonth = null;
+function workshopsByDay(){
+  const m = new Map();
+  state.all.forEach(w=>{ if(w.data && parseDate(w.data) && regionOf(w)===state.region){ (m.get(w.data)||m.set(w.data,[]).get(w.data)).push(w); } });
+  m.forEach(l=>l.sort((a,b)=>(a.ora_inizio||"").localeCompare(b.ora_inizio||"")));
+  return m;
+}
+function openCalendar(month){
+  const byDay = workshopsByDay();
+  const minM = monthStart(today0());
+  const last = [...byDay.keys()].sort().pop();
+  const maxM = last && parseDate(last) > minM ? monthStart(parseDate(last)) : minM;
+  let m = month || calMonth || minM;
+  if(m < minM) m = minM; if(m > maxM) m = maxM;
+  calMonth = m;
+  const shift = n => { const t = new Date(m.getFullYear(), m.getMonth()+n, 1); if(t>=minM && t<=maxM) openCalendar(t); };
+  const t0 = +today0();
+  const grid = el("div",{class:"cal-grid"}, ["lun","mar","mer","gio","ven","sab","dom"].map(x=>el("div",{class:"cal-wd","aria-hidden":"true"},x)));
+  const lead = (m.getDay()+6)%7;
+  for(let i=0;i<lead;i++) grid.append(el("div"));
+  const days = new Date(m.getFullYear(), m.getMonth()+1, 0).getDate();
+  let monthCount = 0;
+  for(let n=1;n<=days;n++){
+    const d = new Date(m.getFullYear(), m.getMonth(), n), key = ymd(d), list = byDay.get(key)||[];
+    monthCount += list.length;
+    const cls = ["cal-day", list.length?"has":"", +d===t0?"today":"", +d<t0?"past":""].filter(Boolean).join(" ");
+    const label = `${WD_LONG[d.getDay()]} ${n} ${MONTHS_LONG[m.getMonth()]}` + (list.length ? `: ${list.length===1?"1 workshop":list.length+" workshop"}` : "");
+    grid.append(el("button",{class:cls,type:"button",disabled:!list.length,"aria-label":label,onclick:()=>openDay(d,list)},
+      el("span",{class:"n"},String(n)),
+      list.length ? el("span",{class:"ems","aria-hidden":"true"}, list.slice(0,2).map(w=>el("span",{},catOf(w.categoria).em)), list.length>2 ? el("span",{class:"more"},`+${list.length-2}`) : null) : null));
+  }
+  let x0 = null;
+  grid.addEventListener("touchstart",e=>{ x0 = e.touches[0].clientX; },{passive:true});
+  grid.addEventListener("touchend",e=>{ if(x0==null) return; const dx = e.changedTouches[0].clientX - x0; x0 = null; if(Math.abs(dx)>50) shift(dx<0?1:-1); });
+  const arrow = (dir,lbl,dis) => el("button",{type:"button","aria-label":lbl,disabled:dis,onclick:()=>shift(dir)},
+    el("span",{"aria-hidden":"true",style:"font-size:18px;line-height:1"}, dir<0?"‹":"›"));
+  const where = regionById(state.region).where;
+  openSheet([
+    el("div",{class:"cal-head"},
+      el("h3",{id:"sheetTitle"}, `${MONTHS_LONG[m.getMonth()][0].toUpperCase()+MONTHS_LONG[m.getMonth()].slice(1)} ${m.getFullYear()}`),
+      el("div",{class:"cal-nav"}, arrow(-1,"Mese precedente",+m<=+minM), arrow(1,"Mese successivo",+m>=+maxM))),
+    grid,
+    el("p",{class:"cal-hint"}, monthCount ? `Tocca un giorno per vedere i workshop ${where}` : `Nessun workshop con data questo mese ${where}`)
+  ]);
+}
+function openDay(d, list){
+  openSheet([
+    el("button",{class:"back",type:"button",onclick:()=>openCalendar(calMonth)},"‹ Calendario"),
+    el("h3",{id:"sheetTitle"}, `${WD_LONG[d.getDay()][0].toUpperCase()+WD_LONG[d.getDay()].slice(1)} ${d.getDate()} ${MONTHS_LONG[d.getMonth()]}`),
+    el("p",{class:"meta",style:"margin:2px 0 0"}, list.length===1?"1 workshop":`${list.length} workshop`),
+    el("div",{class:"daylist"}, list.map(w=>card(w)))
+  ]);
+}
+
+function scrollToList(){ window.scrollTo({top:document.querySelector(".listhead").offsetTop-70,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"}); }
+
 function openOrg(){
   openSheet([el("h3",{id:"sheetTitle"},"Area organizzatori"),
     el("p",{class:"meta",style:"margin:6px 0 0"},"Presto potrai pubblicare i tuoi workshop da qui: date ricorrenti, foto, posti disponibili e link per prenotare. Nel frattempo li inseriamo noi per te."),
@@ -371,16 +502,12 @@ document.getElementById("q").addEventListener("input",e=>{state.q=e.target.value
 document.getElementById("openFilters").addEventListener("click",openFilters);
 document.querySelectorAll("[data-when]").forEach(b=>b.addEventListener("click",()=>{state.when = state.when===b.dataset.when?"all":b.dataset.when; render();}));
 document.querySelector('[data-quick="cheap"]').addEventListener("click",()=>{state.maxPrice = state.maxPrice===30?0:30; render();});
-document.querySelector('[data-quick="avail"]').addEventListener("click",()=>{state.avail=!state.avail; render();});
 document.getElementById("orgBtn").addEventListener("click",openOrg);
-document.querySelectorAll("nav.bottom button").forEach(b=>b.addEventListener("click",()=>{
-  const t=b.dataset.tab;
-  if(t==="org"){ document.getElementById("org").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"}); return; }
-  state.tab=t; document.querySelectorAll("nav.bottom button").forEach(x=>x.setAttribute("aria-current",String(x.dataset.tab===t)));
-  render(); window.scrollTo({top:document.querySelector(".listhead").offsetTop-70,behavior:"smooth"});
-}));
+document.getElementById("regionBtn").addEventListener("click",openRegion);
+document.getElementById("calBtn").addEventListener("click",()=>openCalendar());
+document.getElementById("savedBtn").addEventListener("click",()=>{ state.tab = state.tab==="saved" ? "explore" : "saved"; render(); scrollToList(); });
 
-renderCats(); render();
+render();
 
 /* data: aggiornati al 19 ottobre 2026 */
 const WORKSHOPS = [
@@ -628,7 +755,7 @@ const WORKSHOPS = [
   "id": "oct-serigrafia"
  },
  {
-  "categoria": "altro",
+  "categoria": "famiglia",
   "data": "2026-10-31",
   "descrizione": "Un weekend di laboratori per bambini: l’intaglio della zucca, da portare a casa, e la Fabbrica dei Mostri Naturali, dove si compongono creature con elementi naturali e consistenze inattese. Al termine c’è la merenda preparata da Orti Generali, e si viene in maschera.",
   "fonte": "Instagram @ortigenerali",
@@ -657,7 +784,7 @@ const WORKSHOPS = [
   "id": "ouimiel-workshop-ceramica-novembre"
  },
  {
-  "categoria": "altro",
+  "categoria": "famiglia",
   "data": "2026-10-31",
   "descrizione": "Un appuntamento speciale del Craft Club, il pomeriggio lento in cui si porta il proprio hobby e si crea in compagnia, questa volta aperto ai bambini e a tema Halloween. I dettagli vanno chiesti direttamente a Pangramma.",
   "fonte": "Instagram @pangramma_",
@@ -763,7 +890,7 @@ const WORKSHOPS = [
   "id": "scialaba-gioielli-porcellana"
  },
  {
-  "categoria": "altro",
+  "categoria": "famiglia",
   "data": "2026-10-23",
   "descrizione": "Un pomeriggio di Halloween da vivere insieme, bambini e adulti: si sceglie se realizzare una decorazione spaventosa o una porticina per gli elfi, da portare a casa. Non manca una merenda a tema.",
   "fonte": "Instagram @scialaba.jewels",
