@@ -160,7 +160,7 @@ footer{color:var(--ink-soft);font-size:13px;text-align:center;padding:20px 0}
 .actions .btn{flex:1}
 .toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:600}
 .toggle input{width:22px;height:22px;accent-color:var(--pink)}
-.detail .hero-band{border-radius:20px;padding:18px;color:#2A1440;margin:6px 0 16px;display:flex;align-items:center;gap:14px}
+.detail .hero-band{border-radius:20px;padding:18px;color:#2A1440;margin:6px 0 16px;display:flex;align-items:center;gap:14px;cursor:pointer}
 .detail .hero-band .em{font-size:44px}
 .detail dl{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;margin:14px 0}
 .detail dt{color:var(--ink-soft);font-size:14px}
@@ -411,6 +411,7 @@ sheet.addEventListener("touchcancel",endDrag);
 // un tocco nello spazio vuoto in alto (maniglia, titolo, margini sopra i comandi) chiude il pannello
 sheet.addEventListener("click",e=>{
   const t=e.target;
+  if(t.closest(".hero-band")){ closeSheet(); return; }
   if(!(t===sheet || t.classList.contains("grab") || t.id==="sheetTitle" || t.tagName==="H4")) return;
   const first=sheet.querySelector("button, a, input, label");
   if(!first || e.clientY < first.getBoundingClientRect().top) closeSheet();
