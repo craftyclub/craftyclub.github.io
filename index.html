@@ -150,7 +150,8 @@ footer{color:var(--ink-soft);font-size:13px;text-align:center;padding:20px 0}
 .sheet{position:fixed;left:0;right:0;bottom:0;z-index:21;background:var(--sheet);border-radius:26px 26px 0 0;max-height:88vh;overflow:auto;transform:translateY(105%);transition:transform .28s cubic-bezier(.2,.8,.2,1);padding:10px 20px calc(20px + env(safe-area-inset-bottom,0px));max-width:760px;margin:0 auto}
 .sheet.open{transform:none}
 @media (prefers-reduced-motion:reduce){.sheet{transition:none}.cat .blob{transition:none}}
-.grab{width:44px;height:5px;border-radius:9px;background:var(--line);margin:4px auto 14px}
+.grab{width:44px;height:5px;border-radius:9px;background:var(--line);margin:4px auto 14px;position:sticky;top:4px;z-index:2}
+.grab::after{content:"";position:absolute;inset:-14px -40px}
 .sheet h3{margin:0 0 4px;font-size:24px;font-stretch:85%;line-height:1.1}
 .sheet h4{margin:20px 0 10px;font-size:15px}
 .opts{display:flex;flex-wrap:wrap;gap:8px}
@@ -243,13 +244,15 @@ const CATS = [
   {id:"altro", label:"Altro", em:"✨", c:"#D7CCFF"}
 ];
 const REGIONS = [
+  {id:"all", label:"Ovunque", short:"Ovunque", where:""},
   {id:"to", label:"Torino", short:"Torino", where:"a Torino"},
   {id:"pto", label:"Provincia di Torino", short:"Prov. Torino", where:"in provincia di Torino", zona:"Provincia di Torino"},
   {id:"cn", label:"Cuneo", short:"Cuneo", where:"a Cuneo", zona:"Cuneo"},
   {id:"pcn", label:"Provincia di Cuneo", short:"Prov. Cuneo", where:"in provincia di Cuneo", zona:"Provincia di Cuneo"}
 ];
-const regionOf = w => (REGIONS.find(r=>r.zona && r.zona===w.zona) || REGIONS[0]).id;
-const regionById = id => REGIONS.find(r=>r.id===id) || REGIONS[0];
+const regionOf = w => (REGIONS.find(r=>r.zona && r.zona===w.zona) || {id:"to"}).id;
+const regionById = id => REGIONS.find(r=>r.id===id) || REGIONS[1];
+const inRegion = w => state.region==="all" || regionOf(w)===state.region;
 function loadRegion(){ try{ const r=localStorage.getItem("cc-region"); return REGIONS.some(x=>x.id===r)?r:"to"; }catch(e){ return "to"; } }
 function persistRegion(){ try{ localStorage.setItem("cc-region", state.region); }catch(e){} }
 const PRICES = [{v:0,l:"Qualsiasi"},{v:20,l:"Fino a 20 €"},{v:35,l:"Fino a 35 €"},{v:50,l:"Fino a 50 €"},{v:80,l:"Fino a 80 €"}];
@@ -286,7 +289,7 @@ function filtered(){
     const d=parseDate(w.data);
     if(!d && w.su_prenotazione){ if(state.when!=="all") return false; }
     else if(!inWhen(d)) return false;
-    if(state.tab==="saved" ? !state.saved.has(w.id) : regionOf(w)!==state.region) return false;
+    if(state.tab==="saved" ? !state.saved.has(w.id) : !inRegion(w)) return false;
     if(state.cat && w.categoria!==state.cat) return false;
     if(state.maxPrice && !(Number(w.prezzo)<=state.maxPrice)) return false;
     if(q){ const hay=norm([w.titolo,w.organizzatore,w.zona,w.descrizione,catOf(w.categoria).label].join(" ")); if(!hay.includes(q)) return false; }
@@ -299,7 +302,7 @@ function el(tag, attrs={}, ...kids){ const n=document.createElement(tag); for(co
 function isUpcoming(w){ const d=parseDate(w.data); return d ? d>=today0() : !!w.su_prenotazione; }
 function activeCats(){
   const ids=new Set();
-  state.all.forEach(w=>{ if(isUpcoming(w) && (state.tab==="saved" ? state.saved.has(w.id) : regionOf(w)===state.region)) ids.add(catOf(w.categoria).id); });
+  state.all.forEach(w=>{ if(isUpcoming(w) && (state.tab==="saved" ? state.saved.has(w.id) : inRegion(w))) ids.add(catOf(w.categoria).id); });
   return ids;
 }
 function renderCats(){
@@ -356,7 +359,7 @@ function render(){
   const box=document.getElementById("cards"); box.innerHTML="";
   const title=document.getElementById("listTitle"), count=document.getElementById("listCount");
   const where=regionById(state.region).where;
-  title.textContent = state.tab==="saved" ? "I tuoi salvati" : (state.cat ? catOf(state.cat).label+" "+where : "In arrivo "+where);
+  title.textContent = state.tab==="saved" ? "I tuoi salvati" : ((state.cat ? catOf(state.cat).label : "In arrivo")+" "+where).trim();
   const active = (state.maxPrice?1:0)+(state.when!=="all"?1:0);
   const fc=document.getElementById("fcount"); fc.hidden=!active; fc.textContent=active;
   document.querySelectorAll("[data-when]").forEach(b=>b.setAttribute("aria-pressed",String(state.when===b.dataset.when)));
@@ -379,9 +382,32 @@ function resetFilters(){ Object.assign(state,{q:"",cat:null,when:"all",maxPrice:
 /* sheets */
 const sheet=document.getElementById("sheet"), overlay=document.getElementById("overlay");
 let lastFocus=null;
-function openSheet(content){ lastFocus=document.activeElement; sheet.innerHTML=""; sheet.append(el("div",{class:"grab"}), ...content); overlay.classList.add("open"); sheet.classList.add("open"); setTimeout(()=>{const f=sheet.querySelector("button, a, input"); f&&f.focus();},50); }
+function openSheet(content){ lastFocus=document.activeElement; sheet.innerHTML=""; sheet.append(el("div",{class:"grab"}), ...content); sheet.scrollTop=0; overlay.classList.add("open"); sheet.classList.add("open"); setTimeout(()=>{const f=sheet.querySelector("button, a, input"); f&&f.focus({preventScroll:true});},50); }
 function closeSheet(){ overlay.classList.remove("open"); sheet.classList.remove("open"); lastFocus&&lastFocus.focus(); }
 overlay.addEventListener("click",closeSheet);
+// trascinando il pannello verso il basso si chiude (solo se il contenuto è già in cima)
+let drag=null;
+sheet.addEventListener("touchstart",e=>{
+  if(e.touches.length!==1){ drag=null; return; }
+  drag={x0:e.touches[0].clientX, y0:e.touches[0].clientY, t0:Date.now(), dy:0, active:false, atTop:sheet.scrollTop<=0 || e.target.classList.contains("grab")};
+},{passive:true});
+sheet.addEventListener("touchmove",e=>{
+  if(!drag || !drag.atTop) return;
+  const dx=e.touches[0].clientX-drag.x0, dy=e.touches[0].clientY-drag.y0;
+  if(!drag.active){
+    if(dy>8 && dy>Math.abs(dx)){ drag.active=true; sheet.style.transition="none"; }
+    else if(Math.abs(dx)>8 || dy<-8){ drag=null; return; }
+    else return;
+  }
+  drag.dy=Math.max(0,dy); sheet.style.transform=`translateY(${drag.dy}px)`; e.preventDefault();
+},{passive:false});
+function endDrag(){
+  if(!drag) return; const d=drag; drag=null; if(!d.active) return;
+  sheet.style.transition=""; sheet.style.transform="";
+  if(d.dy>100 || (d.dy>40 && d.dy/(Date.now()-d.t0)>0.5)) closeSheet();
+}
+sheet.addEventListener("touchend",endDrag);
+sheet.addEventListener("touchcancel",endDrag);
 // un tocco nello spazio vuoto in alto (maniglia, titolo, margini sopra i comandi) chiude il pannello
 sheet.addEventListener("click",e=>{
   const t=e.target;
@@ -438,7 +464,7 @@ const monthStart = d => new Date(d.getFullYear(), d.getMonth(), 1);
 let calMonth = null;
 function workshopsByDay(){
   const m = new Map();
-  state.all.forEach(w=>{ if(w.data && parseDate(w.data) && regionOf(w)===state.region){ (m.get(w.data)||m.set(w.data,[]).get(w.data)).push(w); } });
+  state.all.forEach(w=>{ if(w.data && parseDate(w.data) && inRegion(w)){ (m.get(w.data)||m.set(w.data,[]).get(w.data)).push(w); } });
   m.forEach(l=>l.sort((a,b)=>(a.ora_inizio||"").localeCompare(b.ora_inizio||"")));
   return m;
 }
@@ -477,7 +503,7 @@ function openCalendar(month){
       el("h3",{id:"sheetTitle"}, `${MONTHS_LONG[m.getMonth()][0].toUpperCase()+MONTHS_LONG[m.getMonth()].slice(1)} ${m.getFullYear()}`),
       el("div",{class:"cal-nav"}, arrow(-1,"Mese precedente",+m<=+minM), arrow(1,"Mese successivo",+m>=+maxM))),
     grid,
-    el("p",{class:"cal-hint"}, monthCount ? `Tocca un giorno per vedere i workshop ${where}` : `Nessun workshop con data questo mese ${where}`)
+    el("p",{class:"cal-hint"}, (monthCount ? `Tocca un giorno per vedere i workshop ${where}` : `Nessun workshop con data questo mese ${where}`).trim())
   ]);
 }
 function openDay(d, list){
