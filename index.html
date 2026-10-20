@@ -206,6 +206,13 @@ footer{color:var(--ink-soft);font-size:13px;text-align:center;padding:20px 0}
 .pickcal .cal-day{min-height:40px;justify-content:center}
 .pickcal .cal-day.sel{background:var(--ink);border-color:var(--ink);color:var(--bg)}
 .card.pressing{transform:scale(.97)}
+/* pulsante fluttuante «torna su» */
+.totop{position:fixed;right:max(18px,env(safe-area-inset-right,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:15;width:48px;height:48px;padding:0;display:grid;place-items:center;border:2px solid #2A1440;border-radius:999px;background:var(--sun);color:#2A1440;box-shadow:3px 3px 0 #2A1440;cursor:pointer;opacity:0;transform:translateY(12px);transition:opacity .2s,transform .2s}
+.totop.on{opacity:1;transform:none}
+.totop[hidden]{display:none}
+.totop svg{width:22px;height:22px}
+.totop:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #2A1440}
+@media (min-width:900px){.totop{right:max(32px,calc((100vw - 960px)/2 - 64px))}}
 .share{display:flex;align-items:center;justify-content:center;gap:8px}
 .share svg{display:block}
 .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-weight:600;font-size:14px;z-index:40;transition:opacity .2s,transform .2s;pointer-events:none}
@@ -346,6 +353,7 @@ footer{color:var(--ink-soft);font-size:13px;text-align:center;padding:20px 0}
   <footer>Crafty Club · Torino</footer>
 </main>
 
+<button class="totop" id="toTop" type="button" aria-label="Torna su" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5.5 11.5L12 5l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
 <div class="overlay" id="overlay"></div>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"></div>
 <script>
@@ -930,6 +938,12 @@ document.querySelector('[data-quick="nokids"]').addEventListener("click",()=>{st
 document.querySelector('[data-quick="weekends"]').addEventListener("click",()=>{state.weekends = !state.weekends; render();});
 document.getElementById("orgBtn").addEventListener("click",openOrg);
 // logo: torna alla home con tutti i filtri azzerati (l'area scelta in alto resta)
+// «torna su»: compare dopo aver scrollato un po’ la pagina
+const toTop=document.getElementById("toTop");
+let toTopOn=false;
+function syncToTop(){ const on=window.scrollY>600; if(on===toTopOn) return; toTopOn=on; if(on){ toTop.hidden=false; requestAnimationFrame(()=>toTop.classList.add("on")); } else { toTop.classList.remove("on"); setTimeout(()=>{ if(!toTopOn) toTop.hidden=true; },200); } }
+window.addEventListener("scroll",syncToTop,{passive:true});
+toTop.addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
 document.getElementById("logoHome").addEventListener("click",e=>{ e.preventDefault(); if(sheet.classList.contains("open")) closeSheet(true); state.tab="explore"; resetFilters(); window.scrollTo({top:0,behavior:"smooth"}); });
 document.getElementById("regionBtn").addEventListener("click",openRegion);
 document.getElementById("calBtn").addEventListener("click",()=>openCalendar());
