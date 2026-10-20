@@ -1095,7 +1095,7 @@ document.getElementById("orgBtn").addEventListener("click",openOrg);
       const r=await fetch("https://api.web3forms.com/submit",{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},
         body:JSON.stringify({access_key:"dcbe1e64-d9d3-4a98-9533-c99bc639cff3", subject:"The Crafty Club · "+motivo, from_name:"The Crafty Club", name:nome||"(senza nome)", email, replyto:email, motivo, message:msg})});
       const j=await r.json();
-      if(j.success){ f.reset(); esito.textContent="Grazie! Il messaggio è arrivato, ti rispondiamo presto."; track("scrivici/"+norm(motivo).replace(/ +/g,"-"), motivo); }
+      if(j.success){ f.reset(); esito.textContent="Grazie per averci contattato! Ti risponderemo presto."; track("scrivici/"+norm(motivo).replace(/ +/g,"-"), motivo); }
       else esito.textContent="Non siamo riusciti a inviarlo. Riprova o scrivici a crafty.club.info@gmail.com.";
     }catch(err){ esito.textContent="Non siamo riusciti a inviarlo. Riprova o scrivici a crafty.club.info@gmail.com."; }
     btn.disabled=false; btn.textContent="Invia";
