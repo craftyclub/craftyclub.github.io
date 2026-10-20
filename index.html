@@ -202,10 +202,13 @@ footer{color:var(--ink-soft);font-size:13px;text-align:center;padding:20px 0}
 .sheet h3{margin:0 0 4px;font-size:21px;font-stretch:85%;line-height:1.1}
 .sheet h4{margin:20px 0 10px;font-size:15px}
 .opts{display:flex;flex-wrap:wrap;gap:8px}
-.range{display:flex;gap:10px;margin-top:10px}
-.range[hidden]{display:none}
-.range label{flex:1;display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:600}
-.range input{width:100%;padding:8px 10px;border:2px solid var(--line);border-radius:12px;font:inherit;background:var(--chip);color:var(--ink)}
+.pickcal[hidden]{display:none}
+.pickcal .cal-day{min-height:40px;justify-content:center}
+.pickcal .cal-day.sel{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.share{display:flex;align-items:center;justify-content:center;gap:8px}
+.share svg{display:block}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-weight:600;font-size:14px;z-index:40;transition:opacity .2s,transform .2s;pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
 .sheet .actions{display:flex;gap:10px;margin-top:24px;position:sticky;bottom:0;background:var(--sheet);padding-top:10px}
 .ghost{background:none;border:2px solid var(--line);border-radius:14px;padding:12px 16px;font-weight:700;cursor:pointer}
 .actions .btn{flex:1}
@@ -306,11 +309,11 @@ footer{color:var(--ink-soft);font-size:13px;text-align:center;padding:20px 0}
   <div class="quick" role="group" aria-label="Filtri rapidi">
     <button class="pill reset" id="resetAll" type="button" hidden aria-label="Azzera tutti i filtri">✕ Azzera</button>
     <button class="pill filters" id="openFilters" type="button">Filtri <span class="count" id="fcount" hidden>0</span></button>
-    <button class="pill" data-when="today" aria-pressed="false" type="button">Stasera</button>
     <button class="pill" data-when="weekend" aria-pressed="false" type="button">Questo weekend</button>
     <button class="pill" data-when="nextweek" aria-pressed="false" type="button">Prossima settimana</button>
     <button class="pill" data-quick="cheap" aria-pressed="false" type="button">Sotto 30 €</button>
     <button class="pill" data-quick="nokids" aria-pressed="false" type="button">Escludi per famiglie</button>
+    <button class="pill" data-quick="weekends" aria-pressed="false" type="button">Solo nei weekend</button>
   </div>
 
   <div class="listhead">
@@ -485,7 +488,7 @@ const catOf = id => CATS.find(c=>c.id===id) || CATS[CATS.length-1];
 const catsOf = w => [w.categoria, ...(w.altre_categorie||[])].map(id=>catOf(id).id);
 const inCats = w => state.cats.some(c=>catsOf(w).includes(c));
 
-const state = {all:[], loaded:false, dbOk:true, q:"", cats:[], tipo:"", when:"all", maxPrice:0, noBig:false, noKids:false, from:"", to:"", days:[], tab:"explore", saved:loadSaved(), region:loadRegion()};
+const state = {all:[], loaded:false, dbOk:true, q:"", cats:[], tipo:"", when:"all", maxPrice:0, noBig:false, noKids:false, from:"", to:"", pick:[], weekends:false, tab:"explore", saved:loadSaved(), region:loadRegion()};
 
 function loadSaved(){ try{ return new Set(JSON.parse(localStorage.getItem("cc-saved")||"[]")); }catch(e){ return new Set(); } }
 function persistSaved(){ try{ localStorage.setItem("cc-saved", JSON.stringify([...state.saved])); }catch(e){} }
@@ -497,11 +500,12 @@ const WD_LONG = ["domenica","lunedì","martedì","mercoledì","giovedì","venerd
 function parseDate(s){ const [y,m,d]=(s||"").split("-").map(Number); return y? new Date(y,m-1,d):null; }
 function today0(){ const t=new Date(); t.setHours(0,0,0,0); return t; }
 function weekendRange(){ const t=today0(); const dow=t.getDay(); let sat=new Date(t); if(dow===0){ sat.setDate(t.getDate()-1);} else sat.setDate(t.getDate()+(6-dow)); const sun=new Date(sat); sun.setDate(sat.getDate()+1); return [dow===0?t:(dow===6?t:sat), sun]; }
-// filtro date: periodo scelto (state.when, o "range" con state.from/state.to) e giorni della settimana (state.days)
-const inWhen = d => !!d && inPeriod(d) && (!state.days.length || state.days.includes(d.getDay()));
+// filtro date: periodo (state.when; "range" = dal/al scelti sul calendario, "pick" = giorni scelti uno per uno) e "solo nei weekend"
+const inWhen = d => !!d && inPeriod(d) && (!state.weekends || d.getDay()===0 || d.getDay()===6);
 function inPeriod(d){
   const t=today0();
   if(state.when==="all") return d>=t;
+  if(state.when==="pick") return d>=t && state.pick.includes(ymd(d));
   if(state.when==="range"){ const a=parseDate(state.from), b=parseDate(state.to); return d>=(a && a>t ? a : t) && (!b || d<=b); }
   if(state.when==="today") return +d===+t;
   if(state.when==="week"){ const e=new Date(t); e.setDate(t.getDate()+7); return d>=t && d<=e; }
@@ -528,7 +532,7 @@ function filtered(){
   const q = norm(state.q);
   return state.all.filter(w=>{
     const d=parseDate(w.data);
-    if(!d && w.su_prenotazione){ if((state.when!=="all" || state.days.length) && !recurringInWhen(w)) return false; }
+    if(!d && w.su_prenotazione){ if((state.when!=="all" || state.weekends) && !recurringInWhen(w)) return false; }
     else if(!inWhen(d)) return false;
     // chi cerca qualcosa vede i risultati di tutte le aree, non solo di quella scelta in alto
     if(state.tab==="saved" ? !state.saved.has(w.id) : (!q && !inRegion(w))) return false;
@@ -627,13 +631,14 @@ function render(){
   const title=document.getElementById("listTitle"), count=document.getElementById("listCount");
   const where=regionById(state.region).where;
   title.textContent = state.tab==="saved" ? "I tuoi salvati" : ((state.cats.length===1 ? catOf(state.cats[0]).label : state.cats.length ? state.cats.map(id=>catOf(id).label).join(", ") : state.tipo ? (state.tipo==="corso"?"Corsi":"Workshop") : "In arrivo")+" "+where).trim();
-  const active = (state.maxPrice?1:0)+(state.when!=="all"?1:0)+(state.days.length?1:0)+(state.noBig?1:0);
+  const active = (state.maxPrice?1:0)+(state.when!=="all"?1:0)+(state.weekends?1:0)+(state.noBig?1:0);
   const fc=document.getElementById("fcount"); fc.hidden=!active; fc.textContent=active;
   document.getElementById("resetAll").hidden = !(active || state.cats.length || state.q || state.tipo || state.noKids);
   document.querySelectorAll("[data-tipo]").forEach(b=>b.setAttribute("aria-pressed",String(state.tipo===b.dataset.tipo)));
   document.querySelectorAll("[data-when]").forEach(b=>b.setAttribute("aria-pressed",String(state.when===b.dataset.when)));
   document.querySelector('[data-quick="cheap"]').setAttribute("aria-pressed",String(state.maxPrice===30));
   document.querySelector('[data-quick="nokids"]').setAttribute("aria-pressed",String(state.noKids));
+  document.querySelector('[data-quick="weekends"]').setAttribute("aria-pressed",String(state.weekends));
   if(!state.dbOk){ count.textContent=""; box.append(el("div",{class:"notice"},"Apri questa pagina da claude.ai per vedere i workshop.")); return; }
   if(!state.loaded){ count.textContent=""; box.append(el("div",{class:"empty"},"Carico i workshop…")); return; }
   // easter egg: chi cerca "schifo" riceve una frase scherzosa e tutti i workshop (la ricerca viene ignorata)
@@ -662,7 +667,7 @@ function render(){
   list.forEach(w=>box.append(card(w)));
 }
 
-function resetFilters(){ Object.assign(state,{q:"",cats:[],tipo:"",when:"all",maxPrice:0,noBig:false,noKids:false,from:"",to:"",days:[]}); document.getElementById("q").value=""; render(); }
+function resetFilters(){ Object.assign(state,{q:"",cats:[],tipo:"",when:"all",maxPrice:0,noBig:false,noKids:false,from:"",to:"",pick:[],weekends:false}); document.getElementById("q").value=""; render(); }
 
 /* sheets */
 const sheet=document.getElementById("sheet"), overlay=document.getElementById("overlay");
@@ -670,7 +675,7 @@ let lastFocus=null;
 // pannelli annidati (calendario → giorno → evento): chiudere un pannello riporta a quello da cui si era arrivati
 let sheetBack=null, pendingBack=null, dayCtx=null;
 function openSheet(content){ if(!sheet.classList.contains("open")) lastFocus=document.activeElement; sheetBack=pendingBack; pendingBack=null; sheet.innerHTML=""; sheet.append(el("div",{class:"grab"}), ...content); sheet.scrollTop=0; overlay.classList.add("open"); sheet.classList.add("open"); setTimeout(()=>{const f=sheet.querySelector("button, a, input"); f&&f.focus({preventScroll:true});},50); }
-function closeSheet(force){ if(!force && sheetBack){ const back=sheetBack; sheetBack=null; back(); return; } sheetBack=null; dayCtx=null; overlay.classList.remove("open"); sheet.classList.remove("open"); lastFocus&&lastFocus.focus(); }
+function closeSheet(force){ if(!force && sheetBack){ const back=sheetBack; sheetBack=null; back(); return; } sheetBack=null; dayCtx=null; if(location.hash.startsWith("#evento=")) history.replaceState(null,"",location.pathname+location.search); overlay.classList.remove("open"); sheet.classList.remove("open"); lastFocus&&lastFocus.focus(); }
 overlay.addEventListener("click",()=>closeSheet());
 // trascinando il pannello verso il basso si chiude (solo se il contenuto è già in cima)
 let drag=null;
@@ -708,13 +713,40 @@ document.addEventListener("keydown",e=>{ if(e.key==="Escape" && sheet.classList.
 function optGroup(items, isOn, onTap){ return el("div",{class:"opts"}, items.map(it=>el("button",{class:"pill",type:"button","aria-pressed":String(isOn(it)),onclick:e=>{onTap(it); e.currentTarget.parentNode.querySelectorAll("button").forEach((b,i)=>b.setAttribute("aria-pressed",String(isOn(items[i]))));}}, it.l||it))); }
 
 function openFilters(){
-  const draft={when:state.when, maxPrice:state.maxPrice, region:state.region, tipo:state.tipo, cats:[...state.cats], noBig:state.noBig, from:state.from, to:state.to, days:[...state.days]};
-  const oggi=ymd(today0());
-  const rangeBox=el("div",{class:"range",hidden:draft.when!=="range"},
-    el("label",{},"Dal", el("input",{type:"date",min:oggi,value:draft.from||oggi,onchange:e=>{draft.from=e.target.value;}})),
-    el("label",{},"Al", el("input",{type:"date",min:oggi,value:draft.to||"",onchange:e=>{draft.to=e.target.value;}})));
-  if(draft.when==="range" && !draft.from) draft.from=oggi;
-  const GG=[{v:1,l:"lun"},{v:2,l:"mar"},{v:3,l:"mer"},{v:4,l:"gio"},{v:5,l:"ven"},{v:6,l:"sab"},{v:0,l:"dom"}];
+  const draft={when:state.when, maxPrice:state.maxPrice, region:state.region, tipo:state.tipo, cats:[...state.cats], noBig:state.noBig, from:state.from, to:state.to, pick:[...state.pick]};
+  // "Scegli sul calendario": giorni singoli (pick) oppure un periodo dal/al (range)
+  let calMode = draft.when==="range" ? "range" : "pick";
+  let pm = monthStart(parseDate(draft.when==="range" ? draft.from : draft.pick.slice().sort()[0]) || today0());
+  const calBox=el("div",{class:"pickcal",hidden:!["pick","range"].includes(draft.when)});
+  function drawPick(){
+    calBox.innerHTML="";
+    const t0=today0(), minM=monthStart(t0);
+    const f=parseDate(draft.from), tt=parseDate(draft.to);
+    const grid=el("div",{class:"cal-grid"}, ["lun","mar","mer","gio","ven","sab","dom"].map(x=>el("div",{class:"cal-wd","aria-hidden":"true"},x)));
+    for(let i=0;i<(pm.getDay()+6)%7;i++) grid.append(el("div"));
+    const days=new Date(pm.getFullYear(),pm.getMonth()+1,0).getDate();
+    for(let n=1;n<=days;n++){
+      const d=new Date(pm.getFullYear(),pm.getMonth(),n), k=ymd(d), past=d<t0;
+      const sel = calMode==="pick" ? draft.pick.includes(k) : !!(f && (+d===+f || (tt && d>=f && d<=tt)));
+      grid.append(el("button",{class:["cal-day","has",past?"past":"",sel?"sel":""].filter(Boolean).join(" "),type:"button",disabled:past,"aria-pressed":String(sel),onclick:()=>{
+        if(calMode==="pick"){ const i=draft.pick.indexOf(k); i>=0?draft.pick.splice(i,1):draft.pick.push(k); }
+        else if(!f || tt || d<f){ draft.from=k; draft.to=""; } else draft.to=k;
+        drawPick();
+      }}, el("span",{class:"n"},String(n))));
+    }
+    const nav=(n,lbl,dis)=>el("button",{type:"button","aria-label":lbl,disabled:dis,onclick:()=>{ pm=new Date(pm.getFullYear(),pm.getMonth()+n,1); drawPick(); }}, n<0?"‹":"›");
+    const modes=[{v:"pick",l:"Giorni singoli"},{v:"range",l:"Dal… al…"}];
+    const mese=MONTHS_LONG[pm.getMonth()];
+    const hint = calMode==="pick" ? (draft.pick.length ? (draft.pick.length===1 ? "1 giorno scelto" : draft.pick.length+" giorni scelti") : "Tocca i giorni che ti interessano")
+      : (!f ? "Tocca il primo giorno" : !tt ? "Ora tocca l’ultimo giorno" : "Dal "+f.getDate()+" "+MONTHS_LONG[f.getMonth()]+" al "+tt.getDate()+" "+MONTHS_LONG[tt.getMonth()]);
+    calBox.append(
+      el("div",{class:"opts",style:"margin-top:10px"}, modes.map(m=>el("button",{class:"pill",type:"button","aria-pressed":String(calMode===m.v),onclick:()=>{ calMode=m.v; draft.when=m.v; drawPick(); }}, m.l))),
+      el("div",{class:"cal-head",style:"margin:12px 0 6px"}, el("strong",{}, mese[0].toUpperCase()+mese.slice(1)+" "+pm.getFullYear()),
+        el("div",{class:"cal-nav"}, nav(-1,"Mese precedente",+pm<=+minM), nav(1,"Mese successivo",false))),
+      grid,
+      el("p",{class:"cal-hint",style:"margin-top:6px"}, hint));
+  }
+  drawPick();
   const TIPI=[{v:"",l:"Tutti"},{v:"workshop",l:"Workshop"},{v:"corso",l:"Corsi"}];
   // tipologie: le categorie che hanno almeno un evento in arrivo, in qualsiasi luogo
   const usate=new Set(state.all.filter(isUpcoming).flatMap(catsOf));
@@ -722,18 +754,31 @@ function openFilters(){
   openSheet([
     el("h3",{id:"sheetTitle"},"Filtri"),
     el("h4",{},"Luogo"), optGroup(LUOGHI.map(r=>({v:r.id,l:r.label})), it=>draft.region===it.v, it=>draft.region=it.v),
-    el("h4",{},"Quando"), optGroup([...WHENS,{v:"range",l:"Scegli le date"}], it=>draft.when===it.v, it=>{ draft.when=it.v; rangeBox.hidden=it.v!=="range"; if(it.v==="range" && !draft.from) draft.from=oggi; }), rangeBox,
-    el("h4",{},"Giorni della settimana"), optGroup(GG, it=>draft.days.includes(it.v), it=>{ const i=draft.days.indexOf(it.v); i>=0?draft.days.splice(i,1):draft.days.push(it.v); }),
-    el("h4",{},"Formato"), optGroup(TIPI, it=>draft.tipo===it.v, it=>draft.tipo=it.v),
-    el("h4",{},"Tipologia"), optGroup(tipologie.map(c=>({v:c.id,l:c.label})), it=>draft.cats.includes(it.v), it=>{ const i=draft.cats.indexOf(it.v); i>=0?draft.cats.splice(i,1):draft.cats.push(it.v); }),
+    el("h4",{},"Quando"), optGroup([...WHENS,{v:"cal",l:"Scegli sul calendario"}], it=>it.v==="cal" ? ["pick","range"].includes(draft.when) : draft.when===it.v, it=>{ draft.when = it.v==="cal" ? calMode : it.v; calBox.hidden = it.v!=="cal"; }), calBox,
+    el("h4",{},"Tipologia"), optGroup(TIPI, it=>draft.tipo===it.v, it=>draft.tipo=it.v),
+    el("h4",{},"Categoria"), optGroup(tipologie.map(c=>({v:c.id,l:c.label})), it=>draft.cats.includes(it.v), it=>{ const i=draft.cats.indexOf(it.v); i>=0?draft.cats.splice(i,1):draft.cats.push(it.v); }),
     el("h4",{},"Prezzo"), optGroup(PRICES, it=>draft.maxPrice===it.v, it=>draft.maxPrice=it.v),
     el("h4",{},"Organizzatori"), optGroup([{l:"Escludi grandi aziende"}], ()=>draft.noBig, ()=>draft.noBig=!draft.noBig),
     el("div",{class:"actions"},
       el("button",{class:"ghost",type:"button",onclick:()=>{resetFilters(); closeSheet();}},"Azzera"),
-      el("button",{class:"btn",type:"button",onclick:()=>{ if(draft.region!==state.region){ state.tab="explore"; } Object.assign(state,draft); persistRegion(); render(); closeSheet();}},"Mostra risultati"))
+      el("button",{class:"btn",type:"button",onclick:()=>{ if(draft.when==="pick" && !draft.pick.length || draft.when==="range" && !draft.from) draft.when="all"; if(draft.region!==state.region){ state.tab="explore"; } Object.assign(state,draft); persistRegion(); render(); closeSheet();}},"Mostra risultati"))
   ]);
 }
 
+// link diretto a un evento: craftyclub.github.io/#evento=<id> apre la sua scheda
+const SHARE_SVG='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>';
+const eventUrl = w => location.origin + location.pathname + "#evento=" + encodeURIComponent(w.id);
+function toast(msg){ const t=el("div",{class:"toast",role:"status"},msg); document.body.append(t); setTimeout(()=>t.classList.add("on"),10); setTimeout(()=>{ t.classList.remove("on"); setTimeout(()=>t.remove(),300); },2200); }
+async function shareEvent(w, when){
+  const url=eventUrl(w);
+  if(navigator.share){ try{ await navigator.share({title:w.titolo, text:`${w.titolo}${when?" · "+when:""} – su Crafty Club`, url}); }catch(e){} return; }
+  try{ await navigator.clipboard.writeText(url); toast("Link copiato"); }catch(e){ window.prompt("Copia il link dell’evento", url); }
+}
+function openFromHash(){
+  const m=location.hash.match(/^#evento=(.+)$/); if(!m) return;
+  const id=decodeURIComponent(m[1]), w=state.all.find(x=>x.id===id);
+  if(w) openDetail(w); else { history.replaceState(null,"",location.pathname+location.search); toast("Questo evento non è più in programma"); }
+}
 function openDetail(w){
   // aperto dalla lista di un giorno del calendario: chiudendo si torna a quel giorno
   if(sheet.classList.contains("open") && dayCtx){ const c=dayCtx; pendingBack=()=>openDay(c.d,c.list); }
@@ -761,6 +806,8 @@ function openDetail(w){
     el("dl",{}, rows.flatMap(([k,v])=>[el("dt",{},k),el("dd",{},v)])),
     w.descrizione? el("p",{},w.descrizione):null,
     link,
+    el("button",{class:"ghost share",type:"button",style:"width:100%;margin-top:10px",onclick:()=>shareEvent(w,when)},
+      (()=>{ const i=el("span",{"aria-hidden":"true"}); i.innerHTML=SHARE_SVG; return i; })(), "Condividi l’evento"),
     el("button",{class:"ghost",type:"button",style:"width:100%;margin-top:10px",onclick:()=>closeSheet()},"Chiudi")
   )]);
 }
@@ -778,9 +825,10 @@ function openRegion(){
 const ymd = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 const monthStart = d => new Date(d.getFullYear(), d.getMonth(), 1);
 let calMonth = null;
+// il calendario mostra gli stessi eventi della lista, con tutti i filtri attivi (date comprese)
 function workshopsByDay(){
   const m = new Map();
-  state.all.forEach(w=>{ const okCats = (!state.cats.length || inCats(w)) && (!state.tipo || (w.tipo||"workshop")===state.tipo); if(w.data && parseDate(w.data) && inRegion(w) && okCats && !(state.noKids && w.categoria==="famiglia") && (!w.solo_categoria || (!state.noBig && inCats(w)))){ (m.get(w.data)||m.set(w.data,[]).get(w.data)).push(w); } });
+  filtered().forEach(w=>{ if(w.data && parseDate(w.data)) (m.get(w.data)||m.set(w.data,[]).get(w.data)).push(w); });
   m.forEach(l=>l.sort((a,b)=>(a.ora_inizio||"").localeCompare(b.ora_inizio||"")));
   return m;
 }
@@ -820,7 +868,7 @@ function openCalendar(month){
       el("h3",{id:"sheetTitle"}, `${MONTHS_LONG[m.getMonth()][0].toUpperCase()+MONTHS_LONG[m.getMonth()].slice(1)} ${m.getFullYear()}`),
       el("div",{class:"cal-nav"}, arrow(-1,"Mese precedente",+m<=+minM), arrow(1,"Mese successivo",+m>=+maxM))),
     grid,
-    el("p",{class:"cal-hint"}, (monthCount ? `Tocca un giorno per vedere i workshop ${where}` : `Nessun workshop con data questo mese ${where}`).trim())
+    el("p",{class:"cal-hint"}, (monthCount ? `Tocca un giorno per vedere i workshop ${where}` : `Nessun workshop con data questo mese ${where}`).trim() + (document.getElementById("resetAll").hidden ? "" : " (con i filtri attivi)"))
   ]);
 }
 function openDay(d, list){
@@ -850,6 +898,7 @@ document.querySelectorAll("[data-tipo]").forEach(b=>b.addEventListener("click",(
 document.querySelectorAll("[data-when]").forEach(b=>b.addEventListener("click",()=>{state.when = state.when===b.dataset.when?"all":b.dataset.when; render();}));
 document.querySelector('[data-quick="cheap"]').addEventListener("click",()=>{state.maxPrice = state.maxPrice===30?0:30; render();});
 document.querySelector('[data-quick="nokids"]').addEventListener("click",()=>{state.noKids = !state.noKids; render();});
+document.querySelector('[data-quick="weekends"]').addEventListener("click",()=>{state.weekends = !state.weekends; render();});
 document.getElementById("orgBtn").addEventListener("click",openOrg);
 // logo: torna alla home con tutti i filtri azzerati (l'area scelta in alto resta)
 document.getElementById("logoHome").addEventListener("click",e=>{ e.preventDefault(); if(sheet.classList.contains("open")) closeSheet(true); state.tab="explore"; resetFilters(); window.scrollTo({top:0,behavior:"smooth"}); });
@@ -6667,7 +6716,8 @@ const WORKSHOPS = [
   "id": "zac-laboratorio-riconnessione-2026-10-25"
  }
 ];
-state.all = WORKSHOPS; state.loaded = true; render();
+state.all = WORKSHOPS; state.loaded = true; render(); openFromHash();
+window.addEventListener("hashchange",openFromHash);
 </script>
 </body>
 </html>
