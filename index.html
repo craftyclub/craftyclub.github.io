@@ -394,7 +394,7 @@ footer a{color:inherit;font-weight:600}
       <h3>Scrivici</h3>
       <p>Hai un workshop da segnalare, un suggerimento o una domanda? Ti rispondiamo per mail.</p>
       <div class="opts" role="radiogroup" aria-label="Di cosa si tratta">
-        <button class="pill" type="button" data-motivo="Segnalo un workshop" aria-pressed="true">Segnalo un workshop</button>
+        <button class="pill" type="button" data-motivo="Segnalare un workshop" aria-pressed="true">Segnalare un workshop</button>
         <button class="pill" type="button" data-motivo="Suggerimento" aria-pressed="false">Suggerimento</button>
         <button class="pill" type="button" data-motivo="Altro" aria-pressed="false">Altro</button>
       </div>
@@ -1081,7 +1081,7 @@ document.getElementById("orgBtn").addEventListener("click",openOrg);
 // modulo «Scrivici»: invia il messaggio a crafty.club.info@gmail.com tramite Web3Forms (la chiave è pubblica per natura)
 (function(){
   const f=document.getElementById("scrivici"); if(!f) return;
-  let motivo="Segnalo un workshop";
+  let motivo="Segnalare un workshop";
   f.querySelectorAll("[data-motivo]").forEach(b=>b.addEventListener("click",()=>{ motivo=b.dataset.motivo; f.querySelectorAll("[data-motivo]").forEach(x=>x.setAttribute("aria-pressed",String(x===b))); }));
   const esito=f.querySelector(".esito"), btn=f.querySelector('button[type="submit"]');
   f.addEventListener("submit",async e=>{
