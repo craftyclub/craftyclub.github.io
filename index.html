@@ -207,6 +207,21 @@ footer a{color:inherit;font-weight:600}
 .contact-links{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
 .contact{display:inline-flex;align-items:center;gap:8px;max-width:100%;padding:10px 16px;border:2px solid var(--ink);border-radius:999px;background:var(--surface);color:var(--ink);font-weight:700;font-size:15px;text-decoration:none;box-shadow:3px 3px 0 var(--ink);overflow-wrap:anywhere}
 .contact svg{width:20px;height:20px;flex:none}
+.scrivici{max-width:520px;margin:26px auto 0;padding:20px 18px;text-align:left;background:var(--surface);border-radius:22px}
+.scrivici h3{margin:0 0 4px;font-size:20px}
+.scrivici > p{margin:0 0 12px;color:var(--ink-soft);font-size:14px;max-width:none}
+.scrivici .opts{margin-bottom:12px}
+.scrivici label{display:flex;flex-direction:column;gap:4px;margin:0 0 10px;font-size:13px;font-weight:700}
+.scrivici input,.scrivici textarea{width:100%;padding:10px 12px;border:2px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);font:inherit;font-weight:400;font-size:15px}
+.scrivici input:focus,.scrivici textarea:focus{outline:none;border-color:var(--ink)}
+.scrivici textarea{resize:vertical;min-height:110px}
+.scrivici .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.scrivici .btn{width:100%;margin-top:4px}
+.scrivici .btn:disabled{opacity:.6}
+.scrivici .esito{margin:10px 0 0;font-weight:700;font-size:14px;text-align:center}
+.scrivici .esito:empty{display:none}
+.scrivici .nota{margin:8px 0 0;font-size:12px;color:var(--ink-soft);text-align:center}
+.scrivici .nota a{color:inherit;font-weight:600}
 .contact:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
 
 /* sheet */
@@ -376,6 +391,22 @@ footer a{color:inherit;font-weight:600}
         <span>crafty.club.info@gmail.com</span>
       </a>
     </div>
+    <form class="scrivici" id="scrivici" novalidate>
+      <h3>Scrivici</h3>
+      <p>Hai un workshop da segnalare, un suggerimento o una domanda? Ti rispondiamo per mail.</p>
+      <div class="opts" role="radiogroup" aria-label="Di cosa si tratta">
+        <button class="pill" type="button" data-motivo="Segnalo un workshop" aria-pressed="true">Segnalo un workshop</button>
+        <button class="pill" type="button" data-motivo="Suggerimento" aria-pressed="false">Suggerimento</button>
+        <button class="pill" type="button" data-motivo="Altro" aria-pressed="false">Altro</button>
+      </div>
+      <label>Nome <input name="nome" type="text" autocomplete="name" maxlength="80"></label>
+      <label>La tua mail <input name="email" type="email" autocomplete="email" required maxlength="120"></label>
+      <label>Messaggio <textarea name="messaggio" rows="5" required maxlength="3000" placeholder="Nome del laboratorio, link o profilo Instagram, date…"></textarea></label>
+      <input class="hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="btn" type="submit">Invia</button>
+      <p class="esito" role="status" aria-live="polite"></p>
+      <p class="nota">I dati servono solo per risponderti. <a href="#privacy">Informativa privacy</a>.</p>
+    </form>
   </section>
   <footer>The Crafty Club · Torino<br><a href="#privacy">Privacy e cookie</a> · <a href="#note-legali">Note legali</a></footer>
 </main>
@@ -850,13 +881,13 @@ const LEGAL = {
 <h4>Chi è il titolare</h4>
 <p>The Crafty Club, progetto personale non commerciale. Per qualsiasi richiesta: <a href="mailto:${MAIL}">${MAIL}</a>.</p>
 <h4>Quali dati raccogliamo</h4>
-<p>Il sito non ha account, moduli di iscrizione né pubblicità. Usiamo solo statistiche anonime, descritte qui sotto, che non permettono di identificare chi visita il sito.</p>
+<p>Il sito non ha account, iscrizioni né pubblicità; c’è solo il modulo «Scrivici» per contattarci. Usiamo solo statistiche anonime, descritte qui sotto, che non permettono di identificare chi visita il sito.</p>
 <ul>
 <li><strong>Salvati e area scelta.</strong> I workshop che salvi con il cuore e l’area scelta in alto restano solo nel tuo browser (memoria locale del dispositivo): non arrivano a noi. Puoi cancellarli dalle impostazioni del browser.</li>
 <li><strong>Hosting.</strong> Il sito è ospitato da GitHub Pages (GitHub Inc., USA). Come ogni server, GitHub riceve dati tecnici della connessione (ad esempio indirizzo IP e tipo di browser) per far funzionare e proteggere il servizio. Il trasferimento negli USA avviene nel quadro dell’EU-US Data Privacy Framework. Informativa di GitHub: <a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub Privacy Statement</a>.</li>
 <li><strong>Statistiche anonime.</strong> Per capire quante persone usano il sito e cosa è più utile usiamo <a href="https://www.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>, che conta le pagine e le azioni (ad esempio quali eventi vengono aperti o prenotati, quali categorie e ricerche si usano) in forma aggregata. Non usa cookie, non salva nulla nel tuo browser, non conserva l’indirizzo IP e non permette di identificarti. I dati sono conservati su server in Finlandia e Germania. Base giuridica: il nostro legittimo interesse a migliorare il sito. <a href="https://www.goatcounter.com/help/privacy" target="_blank" rel="noopener">Informativa di GoatCounter</a>.</li>
-<li><strong>Caratteri e immagini.</strong> Caratteri tipografici, immagini e lo script delle statistiche sono ospitati sul sito stesso: aprendo le pagine non ti colleghi a Google o ad altri servizi esterni (solo il conteggio anonimo viene inviato a GoatCounter).</li>
-<li><strong>Se ci scrivi.</strong> Se ci contatti per mail o su Instagram usiamo i tuoi dati (nome, indirizzo, messaggio) solo per risponderti e li conserviamo per il tempo necessario. Instagram tratta i dati secondo la propria informativa.</li>
+<li><strong>Caratteri e immagini.</strong> Caratteri tipografici, immagini e lo script delle statistiche sono ospitati sul sito stesso: aprendo le pagine non ti colleghi a Google o ad altri servizi esterni (solo il conteggio anonimo viene inviato a GoatCounter e, se usi il modulo «Scrivici», il tuo messaggio a Web3Forms).</li>
+<li><strong>Se ci scrivi.</strong> Se ci contatti per mail, su Instagram o con il modulo «Scrivici» usiamo i tuoi dati (nome, mail, messaggio) solo per risponderti e li conserviamo per il tempo necessario. Il modulo è gestito da <a href="https://web3forms.com" target="_blank" rel="noopener">Web3Forms</a> (Web3Creative, India), che inoltra il messaggio alla nostra mail usando server negli USA e può conservarne una copia per un periodo limitato. Instagram tratta i dati secondo la propria informativa.</li>
 </ul>
 <h4>Cookie</h4>
 <p>The Crafty Club non usa cookie, né tecnici né di profilazione, e non usa strumenti di tracciamento: le statistiche sono anonime e senza cookie, per questo non c’è un banner dei cookie. La memoria locale usata per i salvati e per l’area scelta è strettamente necessaria a una funzione che chiedi tu e non richiede consenso.</p>
@@ -1048,6 +1079,29 @@ document.querySelector('[data-quick="nokids"]').addEventListener("click",()=>{st
 document.querySelector('[data-quick="weekends"]').addEventListener("click",()=>{state.weekends = !state.weekends; if(state.weekends) track("filtro/solo-weekend"); render();});
 document.getElementById("orgBtn").addEventListener("click",openOrg);
 // logo: torna alla home con tutti i filtri azzerati (l'area scelta in alto resta)
+// modulo «Scrivici»: invia il messaggio a crafty.club.info@gmail.com tramite Web3Forms (la chiave è pubblica per natura)
+(function(){
+  const f=document.getElementById("scrivici"); if(!f) return;
+  let motivo="Segnalo un workshop";
+  f.querySelectorAll("[data-motivo]").forEach(b=>b.addEventListener("click",()=>{ motivo=b.dataset.motivo; f.querySelectorAll("[data-motivo]").forEach(x=>x.setAttribute("aria-pressed",String(x===b))); }));
+  const esito=f.querySelector(".esito"), btn=f.querySelector('button[type="submit"]');
+  f.addEventListener("submit",async e=>{
+    e.preventDefault();
+    const nome=f.nome.value.trim(), email=f.email.value.trim(), msg=f.messaggio.value.trim();
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ esito.textContent="Scrivi una mail valida, così possiamo risponderti."; f.email.focus(); return; }
+    if(msg.length<5){ esito.textContent="Scrivi il tuo messaggio."; f.messaggio.focus(); return; }
+    if(f.botcheck.checked) return;
+    btn.disabled=true; btn.textContent="Invio…"; esito.textContent="";
+    try{
+      const r=await fetch("https://api.web3forms.com/submit",{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},
+        body:JSON.stringify({access_key:"dcbe1e64-d9d3-4a98-9533-c99bc639cff3", subject:"The Crafty Club · "+motivo, from_name:"The Crafty Club", name:nome||"(senza nome)", email, replyto:email, motivo, message:msg})});
+      const j=await r.json();
+      if(j.success){ f.reset(); esito.textContent="Grazie! Il messaggio è arrivato, ti rispondiamo presto."; track("scrivici/"+norm(motivo).replace(/ +/g,"-"), motivo); }
+      else esito.textContent="Non siamo riusciti a inviarlo. Riprova o scrivici a crafty.club.info@gmail.com.";
+    }catch(err){ esito.textContent="Non siamo riusciti a inviarlo. Riprova o scrivici a crafty.club.info@gmail.com."; }
+    btn.disabled=false; btn.textContent="Invia";
+  });
+})();
 // «torna su»: compare dopo aver scrollato un po’ la pagina
 const toTop=document.getElementById("toTop");
 let toTopOn=false;
