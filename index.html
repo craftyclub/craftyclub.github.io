@@ -504,17 +504,10 @@ function placesWhere(){
   const l=["tc","pto","cc","pcn"].filter(x=>state.places.includes(x)).map(x=>nomi[x]);
   return "a "+l.slice(0,-1).join(", ")+" e "+l[l.length-1];
 }
-const DEFAULT_PLACES=["tc","pto"];
-function loadPlaces(){
-  try{
-    const v=JSON.parse(localStorage.getItem("cc-places")||"null");
-    if(Array.isArray(v)) return v.filter(x=>["tc","pto","cc","pcn"].includes(x));
-    const old=localStorage.getItem("cc-region"), r=REGIONS.find(x=>x.id===old);
-    if(r) return r.id==="all" ? [] : (r.parti ? [...r.parti] : [r.id]);
-  }catch(e){}
-  return [...DEFAULT_PLACES];
-}
-function persistPlaces(){ try{ localStorage.setItem("cc-places", JSON.stringify(state.places)); }catch(e){} }
+// all'apertura nessun filtro di luogo: si vede tutto ("Ovunque"); la scelta non viene ricordata tra una visita e l'altra
+const DEFAULT_PLACES=[];
+function loadPlaces(){ try{ localStorage.removeItem("cc-places"); localStorage.removeItem("cc-region"); }catch(e){} return []; }
+function persistPlaces(){}
 const PRICES = [{v:0,l:"Qualsiasi"},{v:20,l:"Fino a 20 €"},{v:35,l:"Fino a 35 €"},{v:50,l:"Fino a 50 €"},{v:80,l:"Fino a 80 €"}];
 const WHENS = [{v:"all",l:"Tutte le date"},{v:"today",l:"Oggi"},{v:"week",l:"Prossimi 7 giorni"},{v:"weekend",l:"Questo weekend"},{v:"nextweek",l:"Prossima settimana"},{v:"month",l:"Prossimi 30 giorni"}];
 /* icone categorie: stile piatto, metà sinistra chiara e metà destra scura (clip #cc-half).
@@ -787,7 +780,7 @@ function render(){
   title.textContent = state.tab==="saved" ? "I tuoi salvati" : ((state.cats.length===1 ? catOf(state.cats[0]).label : state.cats.length ? state.cats.map(id=>catOf(id).label).join(", ") : state.tipo ? ({corso:"Corsi",workshop:"Workshop",attivita:"Altre attività"}[state.tipo]) : "In arrivo")+" "+where).trim();
   const active = (state.maxPrice?1:0)+(state.when!=="all"?1:0)+(state.weekends?1:0)+(state.noBig?1:0);
   const fc=document.getElementById("fcount"); fc.hidden=!active; fc.textContent=active;
-  document.getElementById("resetAll").hidden = !(active || state.cats.length || state.q || state.tipo || state.noKids || state.places.join()==="tc");
+  document.getElementById("resetAll").hidden = !(active || state.cats.length || state.q || state.tipo || state.noKids || state.places.length>0);
   document.querySelectorAll("[data-tipo]").forEach(b=>b.setAttribute("aria-pressed",String(state.tipo===b.dataset.tipo)));
   document.querySelectorAll("[data-when]").forEach(b=>b.setAttribute("aria-pressed",String(state.when===b.dataset.when)));
   document.querySelector('[data-quick="cheap"]').setAttribute("aria-pressed",String(state.maxPrice===30));
@@ -823,7 +816,7 @@ function render(){
   list.forEach(w=>box.append(card(w)));
 }
 
-function resetFilters(){ Object.assign(state,{q:"",cats:[],tipo:"",when:"all",maxPrice:0,noBig:false,noKids:false,from:"",to:"",pick:[],weekends:false}); if(state.places.join()==="tc"){ state.places=[...DEFAULT_PLACES]; persistPlaces(); } document.getElementById("q").value=""; render(); }
+function resetFilters(){ Object.assign(state,{q:"",cats:[],tipo:"",when:"all",maxPrice:0,noBig:false,noKids:false,from:"",to:"",pick:[],weekends:false}); state.places=[]; document.getElementById("q").value=""; render(); }
 
 /* sheets */
 const sheet=document.getElementById("sheet"), overlay=document.getElementById("overlay");
@@ -1136,7 +1129,7 @@ document.getElementById("openFilters").addEventListener("click",openFilters);
 document.getElementById("resetAll").addEventListener("click",resetFilters);
 document.querySelectorAll("[data-tipo]").forEach(b=>b.addEventListener("click",()=>{ state.tipo = state.tipo===b.dataset.tipo ? "" : b.dataset.tipo; if(state.tipo) track("tipo/"+state.tipo); render(); }));
 document.querySelectorAll("[data-when]").forEach(b=>b.addEventListener("click",()=>{state.when = state.when===b.dataset.when?"all":b.dataset.when; if(state.when!=="all") track("filtro/"+state.when); render();}));
-// «Solo Torino»: solo la città; toccandolo di nuovo si torna a Torino e provincia
+// «Solo Torino»: solo la città; toccandolo di nuovo si torna a «Ovunque»
 document.querySelector('[data-quick="torino"]').addEventListener("click",()=>{ const on=state.places.length===1 && state.places[0]==="tc"; state.places = on ? [...DEFAULT_PLACES] : ["tc"]; state.tab="explore"; persistPlaces(); if(!on) track("filtro/solo-torino"); render(); });
 document.querySelector('[data-quick="cheap"]').addEventListener("click",()=>{state.maxPrice = state.maxPrice===30?0:30; if(state.maxPrice) track("filtro/sotto-30"); render();});
 document.querySelector('[data-quick="nokids"]').addEventListener("click",()=>{state.noKids = !state.noKids; if(state.noKids) track("filtro/escludi-famiglie"); render();});
