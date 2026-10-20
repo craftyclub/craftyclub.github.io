@@ -207,36 +207,30 @@ footer a{color:inherit;font-weight:600}
 .contact-links{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
 .contact{display:inline-flex;align-items:center;gap:8px;max-width:100%;padding:10px 16px;border:2px solid var(--ink);border-radius:999px;background:var(--surface);color:var(--ink);font-weight:700;font-size:15px;text-decoration:none;box-shadow:3px 3px 0 var(--ink);overflow-wrap:anywhere}
 .contact svg{width:20px;height:20px;flex:none}
-.scrivici{max-width:520px;margin:26px auto 0;padding:20px 18px;text-align:left;background:var(--surface);border-radius:22px}
-.scrivici h3{margin:0 0 4px;font-size:20px}
-.scrivici > p{margin:0 0 12px;color:var(--ink-soft);font-size:14px;max-width:none}
-.scrivici .opts{margin-bottom:12px}
-.scrivici label{display:flex;flex-direction:column;gap:4px;margin:0 0 10px;font-size:13px;font-weight:700}
-.scrivici input,.scrivici textarea{width:100%;padding:10px 12px;border:2px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);font:inherit;font-weight:400;font-size:15px}
+.scrivici{max-width:440px;margin:22px auto 0;padding:14px 14px 12px;text-align:left;background:var(--surface);border-radius:22px}
+.scrivici h3{margin:0 0 2px;font-size:16px}
+.scrivici > p{margin:0 0 10px;color:var(--ink-soft);font-size:12.5px;line-height:1.4;max-width:none}
+.scrivici .opts{margin-bottom:10px;gap:6px}
+.scrivici .pill{font-size:12px;padding:4px 10px;border-width:1.5px}
+.scrivici label{display:flex;flex-direction:column;gap:3px;margin:0 0 8px;font-size:12px;font-weight:700}
+.scrivici input,.scrivici textarea{width:100%;padding:7px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:inherit;font-weight:400;font-size:14px}
 .scrivici input:focus,.scrivici textarea:focus{outline:none;border-color:var(--ink)}
-.scrivici textarea{resize:vertical;min-height:110px}
+.scrivici textarea{resize:vertical;min-height:76px}
 .scrivici .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
-.scrivici .btn{width:100%;margin-top:4px}
+.scrivici .btn{width:100%;margin-top:2px;padding:8px 14px;font-size:14px;box-shadow:2px 2px 0 var(--ink)}
 .scrivici .btn:disabled{opacity:.6}
-.scrivici .esito{margin:10px 0 0;font-weight:700;font-size:14px;text-align:center}
+.scrivici .esito{margin:8px 0 0;font-weight:700;font-size:13px;text-align:center}
 .scrivici .esito:empty{display:none}
-.scrivici .nota{margin:8px 0 0;font-size:12px;color:var(--ink-soft);text-align:center}
+.scrivici .nota{margin:6px 0 0;font-size:11px;color:var(--ink-soft);text-align:center}
 .scrivici .nota a{color:inherit;font-weight:600}
 /* computer: contatti a sinistra, modulo «Scrivici» a destra, tutto un po’ più piccolo */
 @media (min-width:900px){
-  .contacts{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);grid-template-rows:auto 1fr;column-gap:32px;align-items:start;text-align:left;margin-top:34px}
+  .contacts{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);grid-template-rows:auto 1fr;column-gap:32px;align-items:start;text-align:left;margin-top:34px}
   .contacts h2{grid-column:1;margin:4px 0 12px;font-size:21px}
   .contacts .contact-links{grid-column:1;align-self:start;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:8px}
   .contacts .contact{font-size:13px;padding:8px 14px}
   .contacts .contact svg{width:18px;height:18px}
-  .contacts .scrivici{grid-column:2;grid-row:1 / span 2;margin:0;max-width:none;padding:16px 18px}
-  .scrivici h3{font-size:17px}
-  .scrivici > p{font-size:13px}
-  .scrivici .pill{font-size:12px;padding:5px 11px}
-  .scrivici label{font-size:12px}
-  .scrivici input,.scrivici textarea{font-size:14px;padding:8px 10px}
-  .scrivici textarea{min-height:90px}
-  .scrivici .btn{padding:9px 16px;font-size:14px}
+  .contacts .scrivici{grid-column:2;grid-row:1 / span 2;margin:0;max-width:460px;justify-self:start}
 }
 .contact:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
 
@@ -416,7 +410,7 @@ footer a{color:inherit;font-weight:600}
       </div>
       <label>Nome <input name="nome" type="text" autocomplete="name" maxlength="80"></label>
       <label>La tua mail <input name="email" type="email" autocomplete="email" required maxlength="120"></label>
-      <label>Messaggio <textarea name="messaggio" rows="5" required maxlength="3000" placeholder="Nome del laboratorio, link o profilo Instagram, date…"></textarea></label>
+      <label>Messaggio <textarea name="messaggio" rows="3" required maxlength="3000" placeholder="Nome del laboratorio, link o profilo Instagram, date…"></textarea></label>
       <input class="hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
       <button class="btn" type="submit">Invia</button>
       <p class="esito" role="status" aria-live="polite"></p>
