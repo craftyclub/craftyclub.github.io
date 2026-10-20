@@ -222,6 +222,22 @@ footer a{color:inherit;font-weight:600}
 .scrivici .esito:empty{display:none}
 .scrivici .nota{margin:8px 0 0;font-size:12px;color:var(--ink-soft);text-align:center}
 .scrivici .nota a{color:inherit;font-weight:600}
+/* computer: contatti a sinistra, modulo «Scrivici» a destra, tutto un po’ più piccolo */
+@media (min-width:900px){
+  .contacts{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);grid-template-rows:auto 1fr;column-gap:32px;align-items:start;text-align:left;margin-top:34px}
+  .contacts h2{grid-column:1;margin:4px 0 12px;font-size:21px}
+  .contacts .contact-links{grid-column:1;align-self:start;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:8px}
+  .contacts .contact{font-size:13px;padding:8px 14px}
+  .contacts .contact svg{width:18px;height:18px}
+  .contacts .scrivici{grid-column:2;grid-row:1 / span 2;margin:0;max-width:none;padding:16px 18px}
+  .scrivici h3{font-size:17px}
+  .scrivici > p{font-size:13px}
+  .scrivici .pill{font-size:12px;padding:5px 11px}
+  .scrivici label{font-size:12px}
+  .scrivici input,.scrivici textarea{font-size:14px;padding:8px 10px}
+  .scrivici textarea{min-height:90px}
+  .scrivici .btn{padding:9px 16px;font-size:14px}
+}
 .contact:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
 
 /* sheet */
