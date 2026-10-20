@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Crafty Club · Workshops a Torino</title>
+<title>The Crafty Club · Workshops a Torino</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='47' fill='%23F6F1FF' stroke='%232A1440' stroke-width='5' stroke-dasharray='10 7.6'/%3E%3Cg stroke='%233B0043' stroke-width='12' stroke-linecap='round'%3E%3Cpath d='M50 14v72M18.8 32l62.4 36M18.8 68l62.4-36'/%3E%3C/g%3E%3Ccircle cx='50' cy='50' r='9' fill='%23FFCF3D' stroke='%232A1440' stroke-width='3'/%3E%3C/svg%3E">
-<meta property="og:title" content="Crafty Club · Workshops a Torino">
+<meta property="og:title" content="The Crafty Club · Workshops a Torino">
 <meta property="og:image" content="https://craftyclub.github.io/img/crafty-club-logo.png">
 <meta name="theme-color" content="#F6F1FF">
 <link rel="preload" href="fonts/bricolage-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -379,7 +379,7 @@ footer a{color:inherit;font-weight:600}
       </a>
     </div>
   </section>
-  <footer>Crafty Club · Torino<br><a href="#privacy">Privacy e cookie</a> · <a href="#note-legali">Note legali</a></footer>
+  <footer>The Crafty Club · Torino<br><a href="#privacy">Privacy e cookie</a> · <a href="#note-legali">Note legali</a></footer>
 </main>
 
 <button class="totop" id="toTop" type="button" aria-label="Torna su" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5.5 11.5L12 5l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -721,7 +721,7 @@ function render(){
     el("strong",{},"Anche se questa settimana vuoi fare schifo, almeno fallo in compagnia."),
     "Scegli uno dei workshop qui sotto: nessuno ti giudica, al massimo ti insegnano qualcosa."));
   if(away) box.append(el("div",{class:"funny"},
-    el("strong",{},`${away} non c’è ancora su Crafty Club, ma ci stiamo lavorando.`),
+    el("strong",{},`${away} non c’è ancora su The Crafty Club, ma ci stiamo lavorando.`),
     "Per ora raccogliamo workshop e corsi a Torino, Cuneo e dintorni: qui sotto trovi cosa c’è. Conosci laboratori, pagine o corsi da aggiungere? Scrivici su ",
     el("a",{href:"https://www.instagram.com/crafty.club.it/",target:"_blank",rel:"noopener"},"@crafty.club.it"),
     " o a ", el("a",{href:"mailto:crafty.club.info@gmail.com"},"crafty.club.info@gmail.com"), "."));
@@ -838,15 +838,15 @@ const eventUrl = w => location.origin + location.pathname + "#evento=" + encodeU
 function toast(msg){ const t=el("div",{class:"toast",role:"status"},msg); document.body.append(t); setTimeout(()=>t.classList.add("on"),10); setTimeout(()=>{ t.classList.remove("on"); setTimeout(()=>t.remove(),300); },2200); }
 async function shareEvent(w, when){
   const url=eventUrl(w);
-  if(navigator.share){ try{ await navigator.share({title:w.titolo, text:`${w.titolo}${when?" · "+when:""} – su Crafty Club`, url}); }catch(e){} return; }
+  if(navigator.share){ try{ await navigator.share({title:w.titolo, text:`${w.titolo}${when?" · "+when:""} – su The Crafty Club`, url}); }catch(e){} return; }
   try{ await navigator.clipboard.writeText(url); toast("Link copiato"); }catch(e){ window.prompt("Copia il link dell’evento", url); }
 }
 const MAIL = "crafty.club.info@gmail.com";
 const LEGAL = {
   privacy: {titolo:"Privacy e cookie", testo:`
-<p>Questa informativa spiega quali dati tratta Crafty Club (craftyclub.github.io), ai sensi del Regolamento UE 2016/679 (GDPR) e del Codice privacy italiano.</p>
+<p>Questa informativa spiega quali dati tratta The Crafty Club (craftyclub.github.io), ai sensi del Regolamento UE 2016/679 (GDPR) e del Codice privacy italiano.</p>
 <h4>Chi è il titolare</h4>
-<p>Crafty Club, progetto personale non commerciale. Per qualsiasi richiesta: <a href="mailto:${MAIL}">${MAIL}</a>.</p>
+<p>The Crafty Club, progetto personale non commerciale. Per qualsiasi richiesta: <a href="mailto:${MAIL}">${MAIL}</a>.</p>
 <h4>Quali dati raccogliamo</h4>
 <p>Il sito non ha account, moduli di iscrizione, pubblicità né strumenti di statistica: non raccogliamo dati personali mentre navighi.</p>
 <ul>
@@ -856,21 +856,21 @@ const LEGAL = {
 <li><strong>Se ci scrivi.</strong> Se ci contatti per mail o su Instagram usiamo i tuoi dati (nome, indirizzo, messaggio) solo per risponderti e li conserviamo per il tempo necessario. Instagram tratta i dati secondo la propria informativa.</li>
 </ul>
 <h4>Cookie</h4>
-<p>Crafty Club non usa cookie, né tecnici né di profilazione, e non usa strumenti di tracciamento: per questo non c’è un banner dei cookie. La memoria locale usata per i salvati e per l’area scelta è strettamente necessaria a una funzione che chiedi tu e non richiede consenso.</p>
+<p>The Crafty Club non usa cookie, né tecnici né di profilazione, e non usa strumenti di tracciamento: per questo non c’è un banner dei cookie. La memoria locale usata per i salvati e per l’area scelta è strettamente necessaria a una funzione che chiedi tu e non richiede consenso.</p>
 <h4>Link esterni</h4>
 <p>Le schede rimandano ai siti degli organizzatori, a piattaforme di prenotazione e a Instagram. Quando li apri valgono le loro regole su privacy e cookie, che non dipendono da noi.</p>
 <h4>I tuoi diritti</h4>
 <p>Puoi chiedere in ogni momento di accedere ai tuoi dati, correggerli, cancellarli, limitarne l’uso od opporti al loro trattamento, scrivendo a <a href="mailto:${MAIL}">${MAIL}</a>. Puoi anche presentare reclamo al <a href="https://www.garanteprivacy.it" target="_blank" rel="noopener">Garante per la protezione dei dati personali</a>.</p>
 <p class="agg">Ultimo aggiornamento: 20 ottobre 2026.</p>`},
   "note-legali": {titolo:"Note legali", testo:`
-<h4>Che cos’è Crafty Club</h4>
-<p>Crafty Club è una raccolta gratuita di workshop, corsi e laboratori organizzati da altri a Torino, Cuneo e dintorni. Non organizziamo gli eventi, non vendiamo biglietti e non raccogliamo prenotazioni o pagamenti: per iscriversi si usa il link o il contatto dell’organizzatore.</p>
+<h4>Che cos’è The Crafty Club</h4>
+<p>The Crafty Club è una raccolta gratuita di workshop, corsi e laboratori organizzati da altri a Torino, Cuneo e dintorni. Non organizziamo gli eventi, non vendiamo biglietti e non raccogliamo prenotazioni o pagamenti: per iscriversi si usa il link o il contatto dell’organizzatore.</p>
 <h4>Informazioni sugli eventi</h4>
-<p>Date, orari, prezzi e descrizioni vengono da fonti pubbliche (siti e profili social degli organizzatori, siti di eventi) e sono riassunti da noi. Possono cambiare o contenere errori: prima di andare controlla sempre con l’organizzatore. Crafty Club non risponde dello svolgimento degli eventi, di cancellazioni o modifiche, né dei contenuti dei siti esterni.</p>
+<p>Date, orari, prezzi e descrizioni vengono da fonti pubbliche (siti e profili social degli organizzatori, siti di eventi) e sono riassunti da noi. Possono cambiare o contenere errori: prima di andare controlla sempre con l’organizzatore. The Crafty Club non risponde dello svolgimento degli eventi, di cancellazioni o modifiche, né dei contenuti dei siti esterni.</p>
 <h4>Nomi, marchi e immagini</h4>
 <p>Nomi, marchi, loghi e immagini degli eventi appartengono ai rispettivi titolari e sono mostrati solo per presentare l’evento, con il rimando alla fonte. Se sei l’organizzatore o il titolare di un’immagine e vuoi correggere una scheda o farla togliere, scrivi a <a href="mailto:${MAIL}">${MAIL}</a>: interveniamo il prima possibile.</p>
 <h4>Uso del sito</h4>
-<p>Il sito è gratuito. Testi, selezione degli eventi, logo e grafica di Crafty Club non possono essere copiati o riutilizzati per scopi commerciali senza il nostro permesso. Condividere i link alle schede è benvenuto.</p>
+<p>Il sito è gratuito. Testi, selezione degli eventi, logo e grafica di The Crafty Club non possono essere copiati o riutilizzati per scopi commerciali senza il nostro permesso. Condividere i link alle schede è benvenuto.</p>
 <h4>Legge applicabile</h4>
 <p>Queste note sono regolate dalla legge italiana.</p>
 <p class="agg">Ultimo aggiornamento: 20 ottobre 2026.</p>`}
@@ -895,7 +895,7 @@ function calTimes(w){
 function addToCalendar(w){
   const t=calTimes(w);
   const luogo=[w.indirizzo, zonaLabel(w)].filter(Boolean).join(", ");
-  const note=[w.descrizione, w.link ? "Prenotazioni: "+w.link : "", "Su Crafty Club: "+eventUrl(w)].filter(Boolean).join("\n\n");
+  const note=[w.descrizione, w.link ? "Prenotazioni: "+w.link : "", "Su The Crafty Club: "+eventUrl(w)].filter(Boolean).join("\n\n");
   const apple=/iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent);
   if(!apple){
     const q=new URLSearchParams({action:"TEMPLATE", text:w.titolo, dates:t.start+"/"+t.end, details:note, location:luogo, ctz:"Europe/Rome"});
@@ -904,7 +904,7 @@ function addToCalendar(w){
   const esc=v=>String(v||"").replace(/\\/g,"\\\\").replace(/([,;])/g,"\\$1").replace(/\r?\n/g,"\\n");
   const dt=(k,v)=>t.allDay ? k+";VALUE=DATE:"+v : k+";TZID=Europe/Rome:"+v;
   const stamp=new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d+/,"");
-  const ics=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Crafty Club//IT","CALSCALE:GREGORIAN","BEGIN:VEVENT",
+  const ics=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//The Crafty Club//IT","CALSCALE:GREGORIAN","BEGIN:VEVENT",
     "UID:"+w.id+"@craftyclub.github.io", "DTSTAMP:"+stamp, dt("DTSTART",t.start), dt("DTEND",t.end),
     "SUMMARY:"+esc(w.titolo), "LOCATION:"+esc(luogo), "DESCRIPTION:"+esc(note), "URL:"+eventUrl(w),
     "END:VEVENT","END:VCALENDAR"].join("\r\n");
