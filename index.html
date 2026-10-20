@@ -401,10 +401,11 @@ footer a{color:inherit;font-weight:600}
   <div class="quick" role="group" aria-label="Filtri rapidi">
     <button class="pill reset" id="resetAll" type="button" hidden aria-label="Azzera tutti i filtri">✕ Azzera</button>
     <button class="pill filters" id="openFilters" type="button">Filtri <span class="count" id="fcount" hidden>0</span></button>
+    <button class="pill" data-quick="torino" aria-pressed="false" type="button">Solo Torino</button>
+    <button class="pill" data-quick="nokids" aria-pressed="false" type="button">Escludi per famiglie</button>
     <button class="pill" data-when="weekend" aria-pressed="false" type="button">Questo weekend</button>
     <button class="pill" data-when="nextweek" aria-pressed="false" type="button">Prossima settimana</button>
     <button class="pill" data-quick="cheap" aria-pressed="false" type="button">Sotto 30 €</button>
-    <button class="pill" data-quick="nokids" aria-pressed="false" type="button">Escludi per famiglie</button>
     <button class="pill" data-quick="weekends" aria-pressed="false" type="button">Solo nei weekend</button>
   </div>
 
@@ -786,12 +787,13 @@ function render(){
   title.textContent = state.tab==="saved" ? "I tuoi salvati" : ((state.cats.length===1 ? catOf(state.cats[0]).label : state.cats.length ? state.cats.map(id=>catOf(id).label).join(", ") : state.tipo ? ({corso:"Corsi",workshop:"Workshop",attivita:"Altre attività"}[state.tipo]) : "In arrivo")+" "+where).trim();
   const active = (state.maxPrice?1:0)+(state.when!=="all"?1:0)+(state.weekends?1:0)+(state.noBig?1:0);
   const fc=document.getElementById("fcount"); fc.hidden=!active; fc.textContent=active;
-  document.getElementById("resetAll").hidden = !(active || state.cats.length || state.q || state.tipo || state.noKids);
+  document.getElementById("resetAll").hidden = !(active || state.cats.length || state.q || state.tipo || state.noKids || state.places.join()==="tc");
   document.querySelectorAll("[data-tipo]").forEach(b=>b.setAttribute("aria-pressed",String(state.tipo===b.dataset.tipo)));
   document.querySelectorAll("[data-when]").forEach(b=>b.setAttribute("aria-pressed",String(state.when===b.dataset.when)));
   document.querySelector('[data-quick="cheap"]').setAttribute("aria-pressed",String(state.maxPrice===30));
   document.querySelector('[data-quick="nokids"]').setAttribute("aria-pressed",String(state.noKids));
   document.querySelector('[data-quick="weekends"]').setAttribute("aria-pressed",String(state.weekends));
+  document.querySelector('[data-quick="torino"]').setAttribute("aria-pressed",String(state.places.length===1 && state.places[0]==="tc"));
   if(!state.dbOk){ count.textContent=""; box.append(el("div",{class:"notice"},"Apri questa pagina da claude.ai per vedere i workshop.")); return; }
   if(!state.loaded){ count.textContent=""; box.append(el("div",{class:"empty"},"Carico i workshop…")); return; }
   // easter egg: chi cerca "schifo" riceve una frase scherzosa e tutti i workshop (la ricerca viene ignorata)
@@ -821,7 +823,7 @@ function render(){
   list.forEach(w=>box.append(card(w)));
 }
 
-function resetFilters(){ Object.assign(state,{q:"",cats:[],tipo:"",when:"all",maxPrice:0,noBig:false,noKids:false,from:"",to:"",pick:[],weekends:false}); document.getElementById("q").value=""; render(); }
+function resetFilters(){ Object.assign(state,{q:"",cats:[],tipo:"",when:"all",maxPrice:0,noBig:false,noKids:false,from:"",to:"",pick:[],weekends:false}); if(state.places.join()==="tc"){ state.places=[...DEFAULT_PLACES]; persistPlaces(); } document.getElementById("q").value=""; render(); }
 
 /* sheets */
 const sheet=document.getElementById("sheet"), overlay=document.getElementById("overlay");
@@ -1134,6 +1136,8 @@ document.getElementById("openFilters").addEventListener("click",openFilters);
 document.getElementById("resetAll").addEventListener("click",resetFilters);
 document.querySelectorAll("[data-tipo]").forEach(b=>b.addEventListener("click",()=>{ state.tipo = state.tipo===b.dataset.tipo ? "" : b.dataset.tipo; if(state.tipo) track("tipo/"+state.tipo); render(); }));
 document.querySelectorAll("[data-when]").forEach(b=>b.addEventListener("click",()=>{state.when = state.when===b.dataset.when?"all":b.dataset.when; if(state.when!=="all") track("filtro/"+state.when); render();}));
+// «Solo Torino»: solo la città; toccandolo di nuovo si torna a Torino e provincia
+document.querySelector('[data-quick="torino"]').addEventListener("click",()=>{ const on=state.places.length===1 && state.places[0]==="tc"; state.places = on ? [...DEFAULT_PLACES] : ["tc"]; state.tab="explore"; persistPlaces(); if(!on) track("filtro/solo-torino"); render(); });
 document.querySelector('[data-quick="cheap"]').addEventListener("click",()=>{state.maxPrice = state.maxPrice===30?0:30; if(state.maxPrice) track("filtro/sotto-30"); render();});
 document.querySelector('[data-quick="nokids"]').addEventListener("click",()=>{state.noKids = !state.noKids; if(state.noKids) track("filtro/escludi-famiglie"); render();});
 document.querySelector('[data-quick="weekends"]').addEventListener("click",()=>{state.weekends = !state.weekends; if(state.weekends) track("filtro/solo-weekend"); render();});
