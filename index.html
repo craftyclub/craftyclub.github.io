@@ -106,6 +106,9 @@ header.top.shrunk .icon-btn{width:32px;height:32px}
 .cal-head h3{margin:0}
 .cal-nav{display:flex;gap:8px}
 .cal-nav button{width:38px;height:38px;padding:0;display:grid;place-items:center;border:2px solid var(--ink);background:var(--surface);border-radius:999px;cursor:pointer}
+.cal-nav .cal-heart{color:var(--ink)}
+.cal-nav .cal-heart[aria-pressed="true"]{color:var(--pink);border-color:var(--pink)}
+.cal-nav .cal-heart svg{width:20px;height:20px}
 .cal-nav button:disabled{opacity:.3;cursor:default}
 .cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;touch-action:pan-y}
 .cal-wd{text-align:center;font-size:12px;font-weight:700;color:var(--ink-soft);padding:2px 0 4px}
@@ -367,10 +370,9 @@ footer a{color:inherit;font-weight:600}
     </a>
     <div class="top-actions">
       <button class="icon-btn" id="savedBtn" type="button" aria-pressed="false" aria-label="Salvati">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/></svg>
+        <svg viewBox="0 1.2 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/></svg>
         <span class="count" id="savedCount" hidden>0</span>
       </button>
-      <button class="city" id="regionBtn" type="button"><span id="regionLabel">Torino</span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5L6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <button class="icon-btn" id="menuBtn" type="button" aria-label="Menu" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>
     </div>
   </div>
@@ -486,7 +488,7 @@ const REGIONS = [
   {id:"pcn", label:"Provincia di Cuneo", short:"Prov. Cuneo", where:"in provincia di Cuneo"}
 ];
 const AREE = REGIONS.filter(r=>["all","to","cn"].includes(r.id));
-const LUOGHI = REGIONS.filter(r=>["all","tc","pto","cc","pcn"].includes(r.id));
+const LUOGHI = ["all","to","tc","pto","cn","cc","pcn"].map(id=>REGIONS.find(r=>r.id===id));
 // luogo preciso dell'evento dal campo zona (qualsiasi altro valore = Torino città)
 const regionOf = w => ({"Provincia di Torino":"pto","Cuneo":"cc","Provincia di Cuneo":"pcn"})[w.zona] || "tc";
 const regionById = id => REGIONS.find(r=>r.id===id) || REGIONS[1];
@@ -708,7 +710,7 @@ function noDate(w){
 }
 const noDateText = w => w.ricorrenza ? w.ricorrenza[0].toUpperCase()+w.ricorrenza.slice(1) : "Data a scelta";
 
-const heartSvg = on => `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z" fill="${on?"currentColor":"none"}" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg>`;
+const heartSvg = on => `<svg viewBox="0 1.2 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z" fill="${on?"currentColor":"none"}" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg>`;
 
 function card(w){
   const c=catOf(w.categoria), d=parseDate(w.data);
@@ -759,8 +761,6 @@ function openShareMenu(w){
 
 function renderHeader(){
   const r=regionById(state.region);
-  document.getElementById("regionLabel").textContent=r.short;
-  document.getElementById("regionBtn").setAttribute("aria-label",`Zona: ${r.label}. Cambia zona`);
   const sb=document.getElementById("savedBtn"), sc=document.getElementById("savedCount");
   sb.setAttribute("aria-pressed",String(state.tab==="saved"));
   sb.querySelector("svg").outerHTML = heartSvg(state.tab==="saved");
@@ -1051,11 +1051,18 @@ const ymd = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-$
 const monthStart = d => new Date(d.getFullYear(), d.getMonth(), 1);
 let calMonth = null;
 // il calendario mostra gli stessi eventi della lista, con tutti i filtri attivi (date comprese)
+let calSaved=false;
 function workshopsByDay(){
   const m = new Map();
-  filtered().forEach(w=>{ if(w.data && parseDate(w.data)) (m.get(w.data)||m.set(w.data,[]).get(w.data)).push(w); });
+  // cuore acceso nel calendario: solo i salvati, ovunque e senza filtri
+  const base = calSaved ? state.all.filter(w=>state.saved.has(w.id) && isUpcoming(w)) : filtered();
+  base.forEach(w=>{ if(w.data && parseDate(w.data)) (m.get(w.data)||m.set(w.data,[]).get(w.data)).push(w); });
   m.forEach(l=>l.sort((a,b)=>(a.ora_inizio||"").localeCompare(b.ora_inizio||"")));
   return m;
+}
+function calHeart(){
+  const b=el("button",{type:"button",class:"cal-heart","aria-pressed":String(calSaved),"aria-label":calSaved?"Mostra tutti i workshop":"Mostra solo i tuoi salvati",onclick:()=>{ calSaved=!calSaved; if(calSaved) track("calendario/solo-salvati"); openCalendar(calMonth); }});
+  b.innerHTML=heartSvg(calSaved); return b;
 }
 function openCalendar(month){
   dayCtx=null;
@@ -1091,9 +1098,9 @@ function openCalendar(month){
   openSheet([
     el("div",{class:"cal-head"},
       el("h3",{id:"sheetTitle"}, `${MONTHS_LONG[m.getMonth()][0].toUpperCase()+MONTHS_LONG[m.getMonth()].slice(1)} ${m.getFullYear()}`),
-      el("div",{class:"cal-nav"}, arrow(-1,"Mese precedente",+m<=+minM), arrow(1,"Mese successivo",+m>=+maxM))),
+      el("div",{class:"cal-nav"}, calHeart(), arrow(-1,"Mese precedente",+m<=+minM), arrow(1,"Mese successivo",+m>=+maxM))),
     grid,
-    el("p",{class:"cal-hint"}, (monthCount ? `Tocca un giorno per vedere i workshop ${where}` : `Nessun workshop con data questo mese ${where}`).trim() + (document.getElementById("resetAll").hidden ? "" : " (con i filtri attivi)"))
+    el("p",{class:"cal-hint"}, calSaved ? (monthCount ? "Solo i tuoi salvati: tocca un giorno per vederli" : (state.saved.size ? "Nessun tuo salvato con data questo mese" : "Non hai ancora salvato niente: tocca il cuore su un workshop")) : (monthCount ? `Tocca un giorno per vedere i workshop ${where}` : `Nessun workshop con data questo mese ${where}`).trim() + (document.getElementById("resetAll").hidden ? "" : " (con i filtri attivi)"))
   ]);
 }
 function openDay(d, list){
@@ -1263,7 +1270,6 @@ function syncToTop(){ const on=window.scrollY>600; if(on===toTopOn) return; toTo
 window.addEventListener("scroll",syncToTop,{passive:true});
 toTop.addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
 document.getElementById("logoHome").addEventListener("click",e=>{ e.preventDefault(); if(sheet.classList.contains("open")) closeSheet(true); state.tab="explore"; resetFilters(); window.scrollTo({top:0,behavior:"smooth"}); });
-document.getElementById("regionBtn").addEventListener("click",openRegion);
 document.getElementById("calBtn").addEventListener("click",()=>{ track("apri/calendario"); openCalendar(); });
 document.getElementById("menuBtn").addEventListener("click",openMenu);
 document.getElementById("savedBtn").addEventListener("click",()=>{ state.tab = state.tab==="saved" ? "explore" : "saved"; render(); scrollToList(); });
