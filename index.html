@@ -655,9 +655,11 @@ function resetFilters(){ Object.assign(state,{q:"",cats:[],tipo:"",when:"all",ma
 /* sheets */
 const sheet=document.getElementById("sheet"), overlay=document.getElementById("overlay");
 let lastFocus=null;
-function openSheet(content){ lastFocus=document.activeElement; sheet.innerHTML=""; sheet.append(el("div",{class:"grab"}), ...content); sheet.scrollTop=0; overlay.classList.add("open"); sheet.classList.add("open"); setTimeout(()=>{const f=sheet.querySelector("button, a, input"); f&&f.focus({preventScroll:true});},50); }
-function closeSheet(){ overlay.classList.remove("open"); sheet.classList.remove("open"); lastFocus&&lastFocus.focus(); }
-overlay.addEventListener("click",closeSheet);
+// pannelli annidati (calendario → giorno → evento): chiudere un pannello riporta a quello da cui si era arrivati
+let sheetBack=null, pendingBack=null, dayCtx=null;
+function openSheet(content){ if(!sheet.classList.contains("open")) lastFocus=document.activeElement; sheetBack=pendingBack; pendingBack=null; sheet.innerHTML=""; sheet.append(el("div",{class:"grab"}), ...content); sheet.scrollTop=0; overlay.classList.add("open"); sheet.classList.add("open"); setTimeout(()=>{const f=sheet.querySelector("button, a, input"); f&&f.focus({preventScroll:true});},50); }
+function closeSheet(force){ if(!force && sheetBack){ const back=sheetBack; sheetBack=null; back(); return; } sheetBack=null; dayCtx=null; overlay.classList.remove("open"); sheet.classList.remove("open"); lastFocus&&lastFocus.focus(); }
+overlay.addEventListener("click",()=>closeSheet());
 // trascinando il pannello verso il basso si chiude (solo se il contenuto è già in cima)
 let drag=null;
 sheet.addEventListener("touchstart",e=>{
@@ -714,6 +716,8 @@ function openFilters(){
 }
 
 function openDetail(w){
+  // aperto dalla lista di un giorno del calendario: chiudendo si torna a quel giorno
+  if(sheet.classList.contains("open") && dayCtx){ const c=dayCtx; pendingBack=()=>openDay(c.d,c.list); }
   const c=catOf(w.categoria), d=parseDate(w.data);
   const dateStr = d ? `${WD_LONG[d.getDay()]} ${d.getDate()} ${MONTHS_LONG[d.getMonth()]}` : "";
   const time = [w.ora_inizio,w.ora_fine].filter(Boolean).join("–");
@@ -738,7 +742,7 @@ function openDetail(w){
     el("dl",{}, rows.flatMap(([k,v])=>[el("dt",{},k),el("dd",{},v)])),
     w.descrizione? el("p",{},w.descrizione):null,
     link,
-    el("button",{class:"ghost",type:"button",style:"width:100%;margin-top:10px",onclick:closeSheet},"Chiudi")
+    el("button",{class:"ghost",type:"button",style:"width:100%;margin-top:10px",onclick:()=>closeSheet()},"Chiudi")
   )]);
 }
 
@@ -762,6 +766,7 @@ function workshopsByDay(){
   return m;
 }
 function openCalendar(month){
+  dayCtx=null;
   const byDay = workshopsByDay();
   const minM = monthStart(today0());
   const last = [...byDay.keys()].sort().pop();
@@ -800,12 +805,14 @@ function openCalendar(month){
   ]);
 }
 function openDay(d, list){
+  pendingBack=()=>openCalendar(calMonth);
   openSheet([
-    el("button",{class:"back",type:"button",onclick:()=>openCalendar(calMonth)},"‹ Calendario"),
+    el("button",{class:"back",type:"button",onclick:()=>closeSheet()},"‹ Calendario"),
     el("h3",{id:"sheetTitle"}, `${WD_LONG[d.getDay()][0].toUpperCase()+WD_LONG[d.getDay()].slice(1)} ${d.getDate()} ${MONTHS_LONG[d.getMonth()]}`),
     el("p",{class:"meta",style:"margin:2px 0 0"}, `${list.length} attività`),
     el("div",{class:"daylist"}, list.map(w=>card(w)))
   ]);
+  dayCtx={d,list};
 }
 
 function scrollToList(){ window.scrollTo({top:document.querySelector(".listhead").offsetTop-70,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"}); }
@@ -813,7 +820,7 @@ function scrollToList(){ window.scrollTo({top:document.querySelector(".listhead"
 function openOrg(){
   openSheet([el("h3",{id:"sheetTitle"},"Area organizzatori"),
     el("p",{class:"meta",style:"margin:6px 0 0"},"Presto potrai pubblicare i tuoi workshop da qui: date ricorrenti, foto, posti disponibili e link per prenotare. Nel frattempo li inseriamo noi per te."),
-    el("div",{class:"actions"}, el("button",{class:"btn",type:"button",onclick:closeSheet},"Ho capito"))]);
+    el("div",{class:"actions"}, el("button",{class:"btn",type:"button",onclick:()=>closeSheet()},"Ho capito"))]);
 }
 
 /* events */
@@ -825,7 +832,7 @@ document.querySelectorAll("[data-when]").forEach(b=>b.addEventListener("click",(
 document.querySelector('[data-quick="cheap"]').addEventListener("click",()=>{state.maxPrice = state.maxPrice===30?0:30; render();});
 document.getElementById("orgBtn").addEventListener("click",openOrg);
 // logo: torna alla home con tutti i filtri azzerati (l'area scelta in alto resta)
-document.getElementById("logoHome").addEventListener("click",e=>{ e.preventDefault(); if(sheet.classList.contains("open")) closeSheet(); state.tab="explore"; resetFilters(); window.scrollTo({top:0,behavior:"smooth"}); });
+document.getElementById("logoHome").addEventListener("click",e=>{ e.preventDefault(); if(sheet.classList.contains("open")) closeSheet(true); state.tab="explore"; resetFilters(); window.scrollTo({top:0,behavior:"smooth"}); });
 document.getElementById("regionBtn").addEventListener("click",openRegion);
 document.getElementById("calBtn").addEventListener("click",()=>openCalendar());
 document.getElementById("savedBtn").addEventListener("click",()=>{ state.tab = state.tab==="saved" ? "explore" : "saved"; render(); scrollToList(); });
