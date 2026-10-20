@@ -115,8 +115,10 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 /* icone delle categorie senza riquadro colorato, in entrambi i temi */
 .cat .blob{background:none}
 /* tema scuro: schede senza foto ed etichetta della categoria con lo stesso colore, ma molto più scuro */
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) :is(.ticket:not(.photo),.chip-cat){background:color-mix(in srgb,var(--cc) 22%,#21142f)}}
-:root[data-theme="dark"] :is(.ticket:not(.photo),.chip-cat){background:color-mix(in srgb,var(--cc) 22%,#21142f)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .chip-cat{background:color-mix(in srgb,var(--cc) 22%,#21142f)}
+  :root:not([data-theme="light"]) .ticket:not(.photo){background:color-mix(in srgb,var(--cb) 70%,#21142f);color:#fff}}
+:root[data-theme="dark"] .chip-cat{background:color-mix(in srgb,var(--cc) 22%,#21142f)}
+:root[data-theme="dark"] .ticket:not(.photo){background:color-mix(in srgb,var(--cb) 70%,#21142f);color:#fff}
 .cat .blob{width:64px;height:64px;border-radius:22px;display:grid;place-items:center;font-size:30px;border:2px solid transparent;transition:transform .15s}
 .cat > span{font-size:12px;font-weight:600;line-height:1.15;text-align:center}
 .ci{display:inline-block;flex:none;line-height:0}
@@ -200,6 +202,10 @@ footer{color:var(--ink-soft);font-size:13px;text-align:center;padding:20px 0}
 .sheet h3{margin:0 0 4px;font-size:21px;font-stretch:85%;line-height:1.1}
 .sheet h4{margin:20px 0 10px;font-size:15px}
 .opts{display:flex;flex-wrap:wrap;gap:8px}
+.range{display:flex;gap:10px;margin-top:10px}
+.range[hidden]{display:none}
+.range label{flex:1;display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:600}
+.range input{width:100%;padding:8px 10px;border:2px solid var(--line);border-radius:12px;font:inherit;background:var(--chip);color:var(--ink)}
 .sheet .actions{display:flex;gap:10px;margin-top:24px;position:sticky;bottom:0;background:var(--sheet);padding-top:10px}
 .ghost{background:none;border:2px solid var(--line);border-radius:14px;padding:12px 16px;font-weight:700;cursor:pointer}
 .actions .btn{flex:1}
@@ -304,6 +310,7 @@ footer{color:var(--ink-soft);font-size:13px;text-align:center;padding:20px 0}
     <button class="pill" data-when="weekend" aria-pressed="false" type="button">Questo weekend</button>
     <button class="pill" data-when="nextweek" aria-pressed="false" type="button">Prossima settimana</button>
     <button class="pill" data-quick="cheap" aria-pressed="false" type="button">Sotto 30 €</button>
+    <button class="pill" data-quick="nokids" aria-pressed="false" type="button">Escludi per famiglie</button>
   </div>
 
   <div class="listhead">
@@ -478,7 +485,7 @@ const catOf = id => CATS.find(c=>c.id===id) || CATS[CATS.length-1];
 const catsOf = w => [w.categoria, ...(w.altre_categorie||[])].map(id=>catOf(id).id);
 const inCats = w => state.cats.some(c=>catsOf(w).includes(c));
 
-const state = {all:[], loaded:false, dbOk:true, q:"", cats:[], tipo:"", when:"all", maxPrice:0, noBig:false, tab:"explore", saved:loadSaved(), region:loadRegion()};
+const state = {all:[], loaded:false, dbOk:true, q:"", cats:[], tipo:"", when:"all", maxPrice:0, noBig:false, noKids:false, from:"", to:"", days:[], tab:"explore", saved:loadSaved(), region:loadRegion()};
 
 function loadSaved(){ try{ return new Set(JSON.parse(localStorage.getItem("cc-saved")||"[]")); }catch(e){ return new Set(); } }
 function persistSaved(){ try{ localStorage.setItem("cc-saved", JSON.stringify([...state.saved])); }catch(e){} }
@@ -490,10 +497,12 @@ const WD_LONG = ["domenica","lunedì","martedì","mercoledì","giovedì","venerd
 function parseDate(s){ const [y,m,d]=(s||"").split("-").map(Number); return y? new Date(y,m-1,d):null; }
 function today0(){ const t=new Date(); t.setHours(0,0,0,0); return t; }
 function weekendRange(){ const t=today0(); const dow=t.getDay(); let sat=new Date(t); if(dow===0){ sat.setDate(t.getDate()-1);} else sat.setDate(t.getDate()+(6-dow)); const sun=new Date(sat); sun.setDate(sat.getDate()+1); return [dow===0?t:(dow===6?t:sat), sun]; }
-function inWhen(d){
+// filtro date: periodo scelto (state.when, o "range" con state.from/state.to) e giorni della settimana (state.days)
+const inWhen = d => !!d && inPeriod(d) && (!state.days.length || state.days.includes(d.getDay()));
+function inPeriod(d){
   const t=today0();
-  if(!d) return false;
   if(state.when==="all") return d>=t;
+  if(state.when==="range"){ const a=parseDate(state.from), b=parseDate(state.to); return d>=(a && a>t ? a : t) && (!b || d<=b); }
   if(state.when==="today") return +d===+t;
   if(state.when==="week"){ const e=new Date(t); e.setDate(t.getDate()+7); return d>=t && d<=e; }
   if(state.when==="month"){ const e=new Date(t); e.setDate(t.getDate()+30); return d>=t && d<=e; }
@@ -511,7 +520,7 @@ function recurringInWhen(w){
   const m = norm(w.ricorrenza||"").match(/^ogni (domenica|lunedi|martedi|mercoledi|giovedi|venerdi|sabato)$/);
   if(!m) return false;
   const t=today0();
-  for(let k=0;k<=31;k++){ const d=new Date(t); d.setDate(t.getDate()+k); if(d.getDay()===GIORNI[m[1]] && inWhen(d)) return true; }
+  for(let k=0;k<=180;k++){ const d=new Date(t); d.setDate(t.getDate()+k); if(d.getDay()===GIORNI[m[1]] && inWhen(d)) return true; }
   return false;
 }
 
@@ -519,7 +528,7 @@ function filtered(){
   const q = norm(state.q);
   return state.all.filter(w=>{
     const d=parseDate(w.data);
-    if(!d && w.su_prenotazione){ if(state.when!=="all" && !recurringInWhen(w)) return false; }
+    if(!d && w.su_prenotazione){ if((state.when!=="all" || state.days.length) && !recurringInWhen(w)) return false; }
     else if(!inWhen(d)) return false;
     // chi cerca qualcosa vede i risultati di tutte le aree, non solo di quella scelta in alto
     if(state.tab==="saved" ? !state.saved.has(w.id) : (!q && !inRegion(w))) return false;
@@ -529,6 +538,8 @@ function filtered(){
     if(w.solo_categoria && state.tab!=="saved" && !q && !inCats(w)) return false;
     // filtro "Escludi grandi aziende": toglie le grandi aziende (Eataly, StudioFood33, GetYourGuide = solo_categoria)
     if(state.noBig && w.solo_categoria) return false;
+    // filtro veloce "Escludi per famiglie": toglie gli eventi per bambini
+    if(state.noKids && w.categoria==="famiglia") return false;
     if(state.maxPrice && !(Number(w.prezzo)<=state.maxPrice)) return false;
     if(q){ const hay=norm([w.titolo,w.organizzatore,w.zona,w.comune,w.descrizione,catOf(w.categoria).label].join(" ")); if(!hay.includes(q)) return false; }
     return true;
@@ -616,12 +627,13 @@ function render(){
   const title=document.getElementById("listTitle"), count=document.getElementById("listCount");
   const where=regionById(state.region).where;
   title.textContent = state.tab==="saved" ? "I tuoi salvati" : ((state.cats.length===1 ? catOf(state.cats[0]).label : state.cats.length ? state.cats.map(id=>catOf(id).label).join(", ") : state.tipo ? (state.tipo==="corso"?"Corsi":"Workshop") : "In arrivo")+" "+where).trim();
-  const active = (state.maxPrice?1:0)+(state.when!=="all"?1:0)+(state.noBig?1:0);
+  const active = (state.maxPrice?1:0)+(state.when!=="all"?1:0)+(state.days.length?1:0)+(state.noBig?1:0);
   const fc=document.getElementById("fcount"); fc.hidden=!active; fc.textContent=active;
-  document.getElementById("resetAll").hidden = !(active || state.cats.length || state.q || state.tipo);
+  document.getElementById("resetAll").hidden = !(active || state.cats.length || state.q || state.tipo || state.noKids);
   document.querySelectorAll("[data-tipo]").forEach(b=>b.setAttribute("aria-pressed",String(state.tipo===b.dataset.tipo)));
   document.querySelectorAll("[data-when]").forEach(b=>b.setAttribute("aria-pressed",String(state.when===b.dataset.when)));
   document.querySelector('[data-quick="cheap"]').setAttribute("aria-pressed",String(state.maxPrice===30));
+  document.querySelector('[data-quick="nokids"]').setAttribute("aria-pressed",String(state.noKids));
   if(!state.dbOk){ count.textContent=""; box.append(el("div",{class:"notice"},"Apri questa pagina da claude.ai per vedere i workshop.")); return; }
   if(!state.loaded){ count.textContent=""; box.append(el("div",{class:"empty"},"Carico i workshop…")); return; }
   // easter egg: chi cerca "schifo" riceve una frase scherzosa e tutti i workshop (la ricerca viene ignorata)
@@ -650,7 +662,7 @@ function render(){
   list.forEach(w=>box.append(card(w)));
 }
 
-function resetFilters(){ Object.assign(state,{q:"",cats:[],tipo:"",when:"all",maxPrice:0,noBig:false}); document.getElementById("q").value=""; render(); }
+function resetFilters(){ Object.assign(state,{q:"",cats:[],tipo:"",when:"all",maxPrice:0,noBig:false,noKids:false,from:"",to:"",days:[]}); document.getElementById("q").value=""; render(); }
 
 /* sheets */
 const sheet=document.getElementById("sheet"), overlay=document.getElementById("overlay");
@@ -696,7 +708,13 @@ document.addEventListener("keydown",e=>{ if(e.key==="Escape" && sheet.classList.
 function optGroup(items, isOn, onTap){ return el("div",{class:"opts"}, items.map(it=>el("button",{class:"pill",type:"button","aria-pressed":String(isOn(it)),onclick:e=>{onTap(it); e.currentTarget.parentNode.querySelectorAll("button").forEach((b,i)=>b.setAttribute("aria-pressed",String(isOn(items[i]))));}}, it.l||it))); }
 
 function openFilters(){
-  const draft={when:state.when, maxPrice:state.maxPrice, region:state.region, tipo:state.tipo, cats:[...state.cats], noBig:state.noBig};
+  const draft={when:state.when, maxPrice:state.maxPrice, region:state.region, tipo:state.tipo, cats:[...state.cats], noBig:state.noBig, from:state.from, to:state.to, days:[...state.days]};
+  const oggi=ymd(today0());
+  const rangeBox=el("div",{class:"range",hidden:draft.when!=="range"},
+    el("label",{},"Dal", el("input",{type:"date",min:oggi,value:draft.from||oggi,onchange:e=>{draft.from=e.target.value;}})),
+    el("label",{},"Al", el("input",{type:"date",min:oggi,value:draft.to||"",onchange:e=>{draft.to=e.target.value;}})));
+  if(draft.when==="range" && !draft.from) draft.from=oggi;
+  const GG=[{v:1,l:"lun"},{v:2,l:"mar"},{v:3,l:"mer"},{v:4,l:"gio"},{v:5,l:"ven"},{v:6,l:"sab"},{v:0,l:"dom"}];
   const TIPI=[{v:"",l:"Tutti"},{v:"workshop",l:"Workshop"},{v:"corso",l:"Corsi"}];
   // tipologie: le categorie che hanno almeno un evento in arrivo, in qualsiasi luogo
   const usate=new Set(state.all.filter(isUpcoming).flatMap(catsOf));
@@ -704,7 +722,8 @@ function openFilters(){
   openSheet([
     el("h3",{id:"sheetTitle"},"Filtri"),
     el("h4",{},"Luogo"), optGroup(LUOGHI.map(r=>({v:r.id,l:r.label})), it=>draft.region===it.v, it=>draft.region=it.v),
-    el("h4",{},"Quando"), optGroup(WHENS, it=>draft.when===it.v, it=>draft.when=it.v),
+    el("h4",{},"Quando"), optGroup([...WHENS,{v:"range",l:"Scegli le date"}], it=>draft.when===it.v, it=>{ draft.when=it.v; rangeBox.hidden=it.v!=="range"; if(it.v==="range" && !draft.from) draft.from=oggi; }), rangeBox,
+    el("h4",{},"Giorni della settimana"), optGroup(GG, it=>draft.days.includes(it.v), it=>{ const i=draft.days.indexOf(it.v); i>=0?draft.days.splice(i,1):draft.days.push(it.v); }),
     el("h4",{},"Formato"), optGroup(TIPI, it=>draft.tipo===it.v, it=>draft.tipo=it.v),
     el("h4",{},"Tipologia"), optGroup(tipologie.map(c=>({v:c.id,l:c.label})), it=>draft.cats.includes(it.v), it=>{ const i=draft.cats.indexOf(it.v); i>=0?draft.cats.splice(i,1):draft.cats.push(it.v); }),
     el("h4",{},"Prezzo"), optGroup(PRICES, it=>draft.maxPrice===it.v, it=>draft.maxPrice=it.v),
@@ -761,7 +780,7 @@ const monthStart = d => new Date(d.getFullYear(), d.getMonth(), 1);
 let calMonth = null;
 function workshopsByDay(){
   const m = new Map();
-  state.all.forEach(w=>{ const okCats = (!state.cats.length || inCats(w)) && (!state.tipo || (w.tipo||"workshop")===state.tipo); if(w.data && parseDate(w.data) && inRegion(w) && okCats && (!w.solo_categoria || (!state.noBig && inCats(w)))){ (m.get(w.data)||m.set(w.data,[]).get(w.data)).push(w); } });
+  state.all.forEach(w=>{ const okCats = (!state.cats.length || inCats(w)) && (!state.tipo || (w.tipo||"workshop")===state.tipo); if(w.data && parseDate(w.data) && inRegion(w) && okCats && !(state.noKids && w.categoria==="famiglia") && (!w.solo_categoria || (!state.noBig && inCats(w)))){ (m.get(w.data)||m.set(w.data,[]).get(w.data)).push(w); } });
   m.forEach(l=>l.sort((a,b)=>(a.ora_inizio||"").localeCompare(b.ora_inizio||"")));
   return m;
 }
@@ -830,6 +849,7 @@ document.getElementById("resetAll").addEventListener("click",resetFilters);
 document.querySelectorAll("[data-tipo]").forEach(b=>b.addEventListener("click",()=>{ state.tipo = state.tipo===b.dataset.tipo ? "" : b.dataset.tipo; render(); }));
 document.querySelectorAll("[data-when]").forEach(b=>b.addEventListener("click",()=>{state.when = state.when===b.dataset.when?"all":b.dataset.when; render();}));
 document.querySelector('[data-quick="cheap"]').addEventListener("click",()=>{state.maxPrice = state.maxPrice===30?0:30; render();});
+document.querySelector('[data-quick="nokids"]').addEventListener("click",()=>{state.noKids = !state.noKids; render();});
 document.getElementById("orgBtn").addEventListener("click",openOrg);
 // logo: torna alla home con tutti i filtri azzerati (l'area scelta in alto resta)
 document.getElementById("logoHome").addEventListener("click",e=>{ e.preventDefault(); if(sheet.classList.contains("open")) closeSheet(true); state.tab="explore"; resetFilters(); window.scrollTo({top:0,behavior:"smooth"}); });
