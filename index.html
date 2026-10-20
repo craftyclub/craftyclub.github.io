@@ -8,6 +8,9 @@
 <meta property="og:title" content="The Crafty Club · Workshops a Torino">
 <meta property="og:image" content="https://craftyclub.github.io/img/crafty-club-logo.png">
 <script data-goatcounter="https://craftyclub.goatcounter.com/count" async src="js/count.js"></script>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Crafty Club">
 <meta name="theme-color" content="#F6F1FF">
 <link rel="preload" href="fonts/bricolage-latin.woff2" as="font" type="font/woff2" crossorigin>
 <style>
@@ -230,8 +233,35 @@ footer a{color:inherit;font-weight:600}
   .contacts .contact-links{grid-column:1;align-self:start;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:8px}
   .contacts .contact{font-size:13px;padding:8px 14px}
   .contacts .contact svg{width:18px;height:18px}
-  .contacts .scrivici{grid-column:2;grid-row:1 / span 2;margin:0;max-width:460px;justify-self:start}
+  .contacts .scrivici{grid-column:2;grid-row:1 / span 3;margin:0;max-width:460px;justify-self:start}
 }
+#contatti,#scrivici,#installa{scroll-margin-top:72px}
+/* menu (☰) */
+.menu-list{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:4px}
+.menu-item{width:100%;display:flex;align-items:center;gap:12px;padding:12px 10px;border:0;border-radius:14px;background:none;color:var(--ink);font:inherit;font-size:16px;font-weight:700;text-align:left;cursor:pointer}
+.menu-item:hover,.menu-item:focus-visible{background:var(--bg)}
+.menu-item svg{width:22px;height:22px;flex:none}
+.menu-item .presto{margin-left:auto;font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;background:var(--sun);color:#2A1440}
+.menu-item .sub{display:block;font-size:12px;font-weight:500;color:var(--ink-soft);margin-top:2px}
+.menu-note{margin:2px 10px 6px 44px;font-size:13px;line-height:1.4;color:var(--ink-soft)}
+.menu-note[hidden]{display:none}
+.menu-sep{height:1px;background:var(--line);margin:6px 4px}
+/* «Installa l'app» */
+.install{display:flex;align-items:center;gap:12px;max-width:440px;margin:16px auto 0;padding:10px 12px;border:2px solid var(--ink);border-radius:18px;background:var(--surface);text-align:left;box-shadow:3px 3px 0 var(--ink)}
+.install[hidden]{display:none}
+.install-ico img{display:block;width:44px;height:44px;border-radius:12px}
+.install-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.install-txt strong{font-size:14px}
+.install-txt span{font-size:12px;color:var(--ink-soft);line-height:1.35}
+.install .btn{flex:none;padding:7px 14px;font-size:13px;box-shadow:2px 2px 0 var(--ink)}
+@media (min-width:900px){ .contacts .install{grid-column:1;margin:16px 0 0;max-width:340px;align-self:start} .contacts{grid-template-rows:auto auto 1fr} }
+.ig-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.ig-step{display:flex;align-items:center;gap:14px;padding:14px;border:2px solid var(--line);border-radius:18px;background:var(--bg)}
+.ig-ico{flex:none;width:48px;height:48px;display:grid;place-items:center;border:2px solid var(--ink);border-radius:14px;background:var(--surface);color:var(--pink)}
+.ig-ico svg{width:24px;height:24px}
+.ig-step strong{display:flex;align-items:flex-start;gap:8px;font-size:15px;line-height:1.3}
+.ig-n{flex:none;width:22px;height:22px;border-radius:999px;background:var(--pink);color:#fff;font-size:12px;display:grid;place-items:center;margin-top:-1px}
+.ig-d{display:block;margin:4px 0 0 30px;font-size:13px;line-height:1.4;color:var(--ink-soft)}
 .contact:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
 
 /* sheet */
@@ -341,6 +371,7 @@ footer a{color:inherit;font-weight:600}
         <span class="count" id="savedCount" hidden>0</span>
       </button>
       <button class="city" id="regionBtn" type="button"><span id="regionLabel">Torino</span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5L6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="icon-btn" id="menuBtn" type="button" aria-label="Menu" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>
     </div>
   </div>
 </header>
@@ -388,7 +419,7 @@ footer a{color:inherit;font-weight:600}
     <button class="btn" type="button" id="orgBtn">Pubblica un workshop</button>
     <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="44" fill="#FFCF3D"/><path d="M30 64c10-18 24-26 40-22s22 18 18 30" fill="none" stroke="#2A1440" stroke-width="5" stroke-linecap="round"/><circle cx="48" cy="52" r="5" fill="#2A1440"/><circle cx="74" cy="52" r="5" fill="#2A1440"/></svg>
   </section>
-  <section class="contacts" aria-labelledby="contactsTitle">
+  <section class="contacts" id="contatti" aria-labelledby="contactsTitle">
     <h2 id="contactsTitle">Contatti</h2>
     <div class="contact-links">
       <a class="contact" href="https://www.instagram.com/crafty.club.it/" target="_blank" rel="noopener">
@@ -399,6 +430,11 @@ footer a{color:inherit;font-weight:600}
         <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M3.5 7l8.5 6.5L20.5 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg>
         <span>crafty.club.info@gmail.com</span>
       </a>
+    </div>
+    <div class="install" id="installa" hidden>
+      <div class="install-ico" aria-hidden="true"><img src="icons/app-192.png" alt="" width="44" height="44"></div>
+      <div class="install-txt"><strong>Aggiungi alla schermata Home</strong><span id="installHint">Tieni The Crafty Club sul telefono e aprilo con un tocco, come un’app.</span></div>
+      <button class="btn" type="button" id="installBtn">Aggiungi</button>
     </div>
     <form class="scrivici" id="scrivici" novalidate>
       <h3>Scrivici</h3>
@@ -782,7 +818,7 @@ const sheet=document.getElementById("sheet"), overlay=document.getElementById("o
 let lastFocus=null;
 // pannelli annidati (calendario → giorno → evento): chiudere un pannello riporta a quello da cui si era arrivati
 let sheetBack=null, pendingBack=null, dayCtx=null;
-function openSheet(content){ if(!sheet.classList.contains("open")) lastFocus=document.activeElement; sheetBack=pendingBack; pendingBack=null; sheet.innerHTML=""; sheet.append(el("div",{class:"grab"}), ...content); sheet.scrollTop=0; overlay.classList.add("open"); sheet.classList.add("open"); setTimeout(()=>{const f=sheet.querySelector("button, a, input"); f&&f.focus({preventScroll:true});},50); }
+function openSheet(content){ if(!sheet.classList.contains("open")) lastFocus=document.activeElement; sheetBack=pendingBack; pendingBack=null; sheet.innerHTML=""; sheet.append(el("div",{class:"grab"}), ...content.filter(Boolean)); sheet.scrollTop=0; overlay.classList.add("open"); sheet.classList.add("open"); setTimeout(()=>{const f=sheet.querySelector("button, a, input"); f&&f.focus({preventScroll:true});},50); }
 function closeSheet(force){ if(!force && sheetBack){ const back=sheetBack; sheetBack=null; back(); return; } sheetBack=null; dayCtx=null; if(location.hash.startsWith("#evento=") || location.hash==="#privacy" || location.hash==="#note-legali") history.replaceState(null,"",location.pathname+location.search); overlay.classList.remove("open"); sheet.classList.remove("open"); lastFocus&&lastFocus.focus(); }
 overlay.addEventListener("click",()=>closeSheet());
 // trascinando il pannello verso il basso si chiude (solo se il contenuto è già in cima)
@@ -918,10 +954,12 @@ const LEGAL = {
 <p>Queste note sono regolate dalla legge italiana.</p>
 <p class="agg">Ultimo aggiornamento: 20 ottobre 2026.</p>`}
 };
-function openLegal(k){
+// aperta dal menu: freccia «‹ Menu» in alto e, chiudendo, si torna al menu
+function openLegal(k, fromMenu){
   const L=LEGAL[k]; if(!L) return;
   const box=el("div",{class:"legal"}); box.innerHTML=L.testo;
-  openSheet([el("h3",{id:"sheetTitle"},L.titolo), box]);
+  if(fromMenu) pendingBack=openMenu;
+  openSheet([fromMenu ? el("button",{class:"back",type:"button",onclick:()=>closeSheet()},"‹ Menu") : null, el("h3",{id:"sheetTitle"},L.titolo), box]);
 }
 // «Aggiungi al calendario»: su iPhone/iPad/Mac un file .ics (si apre il Calendario), altrove Google Calendar
 const CAL_SVG='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4M12 13v5M9.5 15.5h5"/></svg>';
@@ -1111,6 +1149,110 @@ document.getElementById("orgBtn").addEventListener("click",openOrg);
     btn.disabled=false; btn.textContent="Invia";
   });
 })();
+// menu ☰: le voci non ancora pronte restano nel menu e spiegano che arriveranno presto
+const MENU_ICONS = {
+  home:'<path d="M4 11l8-7 8 7v8a1.5 1.5 0 0 1-1.5 1.5H15v-6H9v6H5.5A1.5 1.5 0 0 1 4 19z"/>',
+  account:'<circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20.5c1.2-3.9 4.2-5.8 7.5-5.8s6.3 1.9 7.5 5.8"/>',
+  saved:'<path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z"/>',
+  cal:'<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
+  write:'<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>',
+  mail:'<rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="M3.5 7l8.5 6.5L20.5 7"/>',
+  shield:'<path d="M12 3l7.5 3v5.5c0 4.6-3.2 8.2-7.5 9.5-4.3-1.3-7.5-4.9-7.5-9.5V6z"/>',
+  phone:'<rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 18.5h3"/>',
+  doc:'<path d="M7 3h7l5 5v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>'
+};
+const menuSvg = k => `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${MENU_ICONS[k]}</svg>`;
+function goToSection(id){ closeSheet(true); state.tab="explore"; render(); setTimeout(()=>{ const el2=document.getElementById(id); if(el2) el2.scrollIntoView({behavior:"smooth",block:"start"}); },60); }
+function openMenu(){
+  track("apri/menu");
+  const item=(icon,label,onclick,extra)=>{ const b=el("button",{class:"menu-item",type:"button",onclick}); b.innerHTML=menuSvg(icon); b.append(el("span",{},label, extra && extra.sub ? el("span",{class:"sub"},extra.sub) : null)); if(extra && extra.presto) b.append(el("span",{class:"presto"},"Presto disponibile")); return b; };
+  const accNote=el("p",{class:"menu-note",hidden:true},"Gli account arriveranno presto: potrai iscriverti come cliente, per salvare i workshop su tutti i dispositivi e ricevere le novità, oppure come organizzatore, per pubblicare e gestire i tuoi workshop e corsi.");
+  const nSaved=state.saved.size;
+  openSheet([
+    el("h3",{id:"sheetTitle"},"Menu"),
+    el("div",{class:"menu-list"},
+      item("home","Home",()=>{ closeSheet(true); state.tab="explore"; resetFilters(); window.scrollTo({top:0,behavior:"smooth"}); }),
+      item("account","Account",()=>{ accNote.hidden=!accNote.hidden; track("menu/account"); },{presto:true, sub:"Cliente o organizzatore"}),
+      accNote,
+      item("saved","I tuoi salvati",()=>{ closeSheet(true); state.tab="saved"; render(); scrollToList(); },{sub: nSaved ? (nSaved===1?"1 attività salvata":nSaved+" attività salvate") : "Tocca il cuore su un workshop per salvarlo"}),
+      item("cal","Calendario",()=>{ closeSheet(true); openCalendar(); }),
+      el("div",{class:"menu-sep"}),
+      item("write","Scrivici",()=>goToSection("scrivici")),
+      item("mail","Contatti",()=>goToSection("contatti")),
+      (isStandalone() || !isMobile()) ? null : item("phone","Aggiungi alla schermata Home",()=>startInstall(true),{sub:"Apri The Crafty Club con un tocco, come un’app"}),
+      el("div",{class:"menu-sep"}),
+      item("shield","Privacy e cookie",()=>openLegal("privacy",true)),
+      item("doc","Note legali",()=>openLegal("note-legali",true)))
+  ]);
+}
+// «Installa l'app»: su Android/Chrome/Edge usa il prompt del browser, su iPhone spiega come aggiungerla alla Home
+let installEvt=null;
+const isStandalone = () => window.matchMedia("(display-mode: standalone)").matches || navigator.standalone===true;
+// solo telefoni (non computer né tablet)
+const isMobile = () => /iPhone|iPod/.test(navigator.userAgent) || /Android.*Mobile|Mobile.*Android/.test(navigator.userAgent);
+const isIOS = () => /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform==="MacIntel" && navigator.maxTouchPoints>1);
+// guida passo passo per installare l'app quando il browser non ha il pulsante automatico (come fa livoevents.com)
+const IG = {
+  dots:'<circle cx="12" cy="5.5" r="1.8" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.8" fill="currentColor" stroke="none"/><circle cx="12" cy="18.5" r="1.8" fill="currentColor" stroke="none"/>',
+  bars:'<path d="M5 7h14M5 12h14M5 17h14"/>',
+  share:'<path d="M12 15V3.5M7.5 8L12 3.5 16.5 8"/><path d="M6 11.5v7A1.5 1.5 0 0 0 7.5 20h9a1.5 1.5 0 0 0 1.5-1.5v-7"/>',
+  plus:'<rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8.5v7M8.5 12h7"/>',
+  check:'<path d="M6 12.5l4 4 8-9"/>',
+  install:'<path d="M12 4v10M8 10.5l4 4 4-4"/><path d="M5 18.5h14"/>'
+};
+function installSteps(){
+  const ua=navigator.userAgent, nome="The Crafty Club";
+  const fine={icon:"check", t:"Tocca «Aggiungi»", d:nome+" sarà sulla tua schermata Home come un’app."};
+  if(isIOS()){
+    if(/CriOS|FxiOS|EdgiOS/.test(ua)) return {browser:"del browser", steps:[
+      {icon:"share", t:"Tocca il pulsante Condividi", d:"È il quadrato con la freccia, nella barra dell’indirizzo."},
+      {icon:"plus", t:"Scegli «Aggiungi alla schermata Home»", d:"Se non la vedi, scorri l’elenco verso il basso."}, fine]};
+    return {browser:"di Safari", steps:[
+      {icon:"share", t:"Tocca il pulsante Condividi", d:"È il quadrato con la freccia, nella barra in basso."},
+      {icon:"plus", t:"Scegli «Aggiungi alla schermata Home»", d:"Scorri l’elenco verso il basso per trovare la voce."},
+      {icon:"check", t:"Tocca «Aggiungi»", d:"In alto a destra. "+nome+" sarà sulla tua schermata Home come un’app."}]};
+  }
+  if(/SamsungBrowser/.test(ua)) return {browser:"di Samsung Internet", steps:[
+    {icon:"bars", t:"Tocca le tre righe in basso a destra", d:"Apri il menu di Samsung Internet."},
+    {icon:"plus", t:"Scegli «Aggiungi pagina a» → «Schermata Home»", d:"Se non la vedi, scorri il menu o tocca «Altro»."}, fine]};
+  if(/Firefox|FxiOS/.test(ua)) return {browser:"di Firefox", steps:[
+    {icon:"dots", t:"Tocca i tre puntini ⋮", d:"Apri il menu di Firefox: è in alto o in basso a destra."},
+    {icon:"plus", t:"Scegli «Aggiungi a schermata Home»", d:"Se non la vedi, scorri il menu verso il basso o tocca «Altro»."}, fine]};
+  if(/Android/.test(ua)) return {browser:"del browser", steps:[
+    {icon:"dots", t:"Tocca i tre puntini ⋮ in alto a destra", d:"Apri il menu del browser."},
+    {icon:"plus", t:"Scegli «Aggiungi a schermata Home»", d:"Se non la vedi, scorri il menu verso il basso o tocca «Altro»."}, fine]};
+  return null;
+}
+function openInstallGuide(fromMenu){
+  const g=installSteps(); if(!g) return;
+  if(fromMenu) pendingBack=openMenu;
+  track("installa/guida");
+  const svg=k=>{ const i=el("span",{class:"ig-ico","aria-hidden":"true"}); i.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${IG[k]}</svg>`; return i; };
+  openSheet([
+    fromMenu ? el("button",{class:"back",type:"button",onclick:()=>closeSheet()},"‹ Menu") : null,
+    el("h3",{id:"sheetTitle"},"Installa The Crafty Club"),
+    el("p",{class:"meta",style:"margin:4px 0 14px"},`Apri il menu ${g.browser} per installare The Crafty Club.`),
+    el("ol",{class:"ig-steps"}, g.steps.map((st,i)=>el("li",{class:"ig-step"}, svg(st.icon),
+      el("div",{}, el("strong",{}, el("span",{class:"ig-n","aria-hidden":"true"},String(i+1)), st.t), el("span",{class:"ig-d"},st.d))))),
+    el("button",{class:"btn",type:"button",style:"width:100%;margin-top:14px",onclick:()=>closeSheet(true)},"✓ Ho capito")
+  ]);
+}
+// installa: pulsante automatico del browser se c'è, altrimenti la guida passo passo
+async function startInstall(fromMenu){
+  track("installa/tocco");
+  if(installEvt){ if(fromMenu) closeSheet(true); installEvt.prompt(); const r=await installEvt.userChoice.catch(()=>null); if(r && r.outcome==="accepted"){ track("installa/fatto"); const b=document.getElementById("installa"); if(b) b.hidden=true; } installEvt=null; return; }
+  openInstallGuide(fromMenu);
+}
+function setupInstall(){
+  const box=document.getElementById("installa"), btn=document.getElementById("installBtn"), hint=document.getElementById("installHint");
+  if(!box || isStandalone() || !isMobile()) return;
+  box.hidden=false;
+  btn.addEventListener("click",()=>startInstall(false));
+}
+window.addEventListener("beforeinstallprompt",e=>{ e.preventDefault(); installEvt=e; });
+window.addEventListener("appinstalled",()=>{ const b=document.getElementById("installa"); if(b) b.hidden=true; });
+if("serviceWorker" in navigator && location.protocol==="https:") navigator.serviceWorker.register("sw.js").catch(()=>{});
+setupInstall();
 // «torna su»: compare dopo aver scrollato un po’ la pagina
 const toTop=document.getElementById("toTop");
 let toTopOn=false;
@@ -1123,6 +1265,7 @@ toTop.addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
 document.getElementById("logoHome").addEventListener("click",e=>{ e.preventDefault(); if(sheet.classList.contains("open")) closeSheet(true); state.tab="explore"; resetFilters(); window.scrollTo({top:0,behavior:"smooth"}); });
 document.getElementById("regionBtn").addEventListener("click",openRegion);
 document.getElementById("calBtn").addEventListener("click",()=>{ track("apri/calendario"); openCalendar(); });
+document.getElementById("menuBtn").addEventListener("click",openMenu);
 document.getElementById("savedBtn").addEventListener("click",()=>{ state.tab = state.tab==="saved" ? "explore" : "saved"; render(); scrollToList(); });
 
 render();
