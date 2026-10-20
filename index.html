@@ -214,6 +214,7 @@ footer a{color:inherit;font-weight:600}
 .contact{display:inline-flex;align-items:center;gap:8px;max-width:100%;padding:10px 16px;border:2px solid var(--ink);border-radius:999px;background:var(--surface);color:var(--ink);font-weight:700;font-size:15px;text-decoration:none;box-shadow:3px 3px 0 var(--ink);overflow-wrap:anywhere}
 .contact svg{width:20px;height:20px;flex:none}
 .scrivici{max-width:440px;margin:22px auto 0;padding:14px 14px 12px;text-align:left;background:var(--surface);border-radius:22px}
+.sheet .scrivici{max-width:none;margin:6px 0 0;padding:0;background:none}
 .scrivici h3{margin:0 0 2px;font-size:16px}
 .scrivici > p{margin:0 0 10px;color:var(--ink-soft);font-size:12.5px;line-height:1.4;max-width:none}
 .scrivici .opts{margin-bottom:10px;gap:6px}
@@ -229,14 +230,11 @@ footer a{color:inherit;font-weight:600}
 .scrivici .esito:empty{display:none}
 .scrivici .nota{margin:6px 0 0;font-size:11px;color:var(--ink-soft);text-align:center}
 .scrivici .nota a{color:inherit;font-weight:600}
-/* computer: contatti a sinistra, modulo «Scrivici» a destra, tutto un po’ più piccolo */
+/* computer: contatti un po’ più piccoli (il modulo «Scrivici» si apre dal menu) */
 @media (min-width:900px){
-  .contacts{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);grid-template-rows:auto 1fr;column-gap:32px;align-items:start;text-align:left;margin-top:34px}
-  .contacts h2{grid-column:1;margin:4px 0 12px;font-size:21px}
-  .contacts .contact-links{grid-column:1;align-self:start;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:8px}
+  .contacts h2{font-size:21px}
   .contacts .contact{font-size:13px;padding:8px 14px}
   .contacts .contact svg{width:18px;height:18px}
-  .contacts .scrivici{grid-column:2;grid-row:1 / span 3;margin:0;max-width:460px;justify-self:start}
 }
 #contatti,#scrivici,#installa{scroll-margin-top:72px}
 /* menu (☰) */
@@ -257,7 +255,6 @@ footer a{color:inherit;font-weight:600}
 .install-txt strong{font-size:14px}
 .install-txt span{font-size:12px;color:var(--ink-soft);line-height:1.35}
 .install .btn{flex:none;padding:7px 14px;font-size:13px;box-shadow:2px 2px 0 var(--ink)}
-@media (min-width:900px){ .contacts .install{grid-column:1;margin:16px 0 0;max-width:340px;align-self:start} .contacts{grid-template-rows:auto auto 1fr} }
 .ig-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
 .ig-step{display:flex;align-items:center;gap:14px;padding:14px;border:2px solid var(--line);border-radius:18px;background:var(--bg)}
 .ig-ico{flex:none;width:48px;height:48px;display:grid;place-items:center;border:2px solid var(--ink);border-radius:14px;background:var(--surface);color:var(--pink)}
@@ -369,10 +366,6 @@ footer a{color:inherit;font-weight:600}
       <span class="wm" aria-hidden="true"><span class="the">The</span> crafty<span class="club">club</span></span>
     </a>
     <div class="top-actions">
-      <button class="icon-btn" id="savedBtn" type="button" aria-pressed="false" aria-label="Salvati">
-        <svg viewBox="0 1.2 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/></svg>
-        <span class="count" id="savedCount" hidden>0</span>
-      </button>
       <button class="icon-btn" id="menuBtn" type="button" aria-label="Menu" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>
     </div>
   </div>
@@ -433,8 +426,13 @@ footer a{color:inherit;font-weight:600}
         <span>crafty.club.info@gmail.com</span>
       </a>
     </div>
-    <form class="scrivici" id="scrivici" novalidate>
-      <h3>Scrivici</h3>
+  </section>
+  <footer>The Crafty Club · Torino<br><a href="#privacy">Privacy e cookie</a> · <a href="#note-legali">Note legali</a></footer>
+</main>
+
+<button class="totop" id="toTop" type="button" aria-label="Torna su" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5.5 11.5L12 5l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+<template id="tplScrivici">
+    <form class="scrivici" novalidate>
       <p>Hai un workshop da segnalare, un suggerimento o una domanda? Ti rispondiamo per mail.</p>
       <div class="opts" role="radiogroup" aria-label="Di cosa si tratta">
         <button class="pill" type="button" data-motivo="Segnalare un workshop" aria-pressed="true">Segnalare un workshop</button>
@@ -449,11 +447,7 @@ footer a{color:inherit;font-weight:600}
       <p class="esito" role="status" aria-live="polite"></p>
       <p class="nota">I dati servono solo per risponderti. <a href="#privacy">Informativa privacy</a>.</p>
     </form>
-  </section>
-  <footer>The Crafty Club · Torino<br><a href="#privacy">Privacy e cookie</a> · <a href="#note-legali">Note legali</a></footer>
-</main>
-
-<button class="totop" id="toTop" type="button" aria-label="Torna su" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5.5 11.5L12 5l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+</template>
 <div class="overlay" id="overlay"></div>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"></div>
 <script>
@@ -756,11 +750,6 @@ function openShareMenu(w){
 
 function renderHeader(){
   const r=regionById(state.region);
-  const sb=document.getElementById("savedBtn"), sc=document.getElementById("savedCount");
-  sb.setAttribute("aria-pressed",String(state.tab==="saved"));
-  sb.querySelector("svg").outerHTML = heartSvg(state.tab==="saved");
-  sb.setAttribute("aria-label", state.tab==="saved" ? "Torna a tutti i workshop" : `Salvati (${state.saved.size})`);
-  sc.hidden=!state.saved.size; sc.textContent=state.saved.size;
 }
 
 function render(){
@@ -1128,9 +1117,8 @@ document.querySelector('[data-quick="nokids"]').addEventListener("click",()=>{st
 document.querySelector('[data-quick="weekends"]').addEventListener("click",()=>{state.weekends = !state.weekends; if(state.weekends) track("filtro/solo-weekend"); render();});
 document.getElementById("orgBtn").addEventListener("click",openOrg);
 // logo: torna alla home con tutti i filtri azzerati (l'area scelta in alto resta)
-// modulo «Scrivici»: invia il messaggio a crafty.club.info@gmail.com tramite Web3Forms (la chiave è pubblica per natura)
-(function(){
-  const f=document.getElementById("scrivici"); if(!f) return;
+// modulo «Scrivici» (si apre dal menu): invia il messaggio a crafty.club.info@gmail.com tramite Web3Forms (la chiave è pubblica per natura)
+function bindScrivici(f){
   let motivo="Segnalare un workshop";
   f.querySelectorAll("[data-motivo]").forEach(b=>b.addEventListener("click",()=>{ motivo=b.dataset.motivo; f.querySelectorAll("[data-motivo]").forEach(x=>x.setAttribute("aria-pressed",String(x===b))); }));
   const esito=f.querySelector(".esito"), btn=f.querySelector('button[type="submit"]');
@@ -1150,7 +1138,14 @@ document.getElementById("orgBtn").addEventListener("click",openOrg);
     }catch(err){ esito.textContent="Non siamo riusciti a inviarlo. Riprova o scrivici a crafty.club.info@gmail.com."; }
     btn.disabled=false; btn.textContent="Invia";
   });
-})();
+}
+function openScrivici(fromMenu){
+  const f=document.getElementById("tplScrivici").content.firstElementChild.cloneNode(true);
+  bindScrivici(f);
+  if(fromMenu) pendingBack=openMenu;
+  openSheet([fromMenu ? el("button",{class:"back",type:"button",onclick:()=>closeSheet()},"‹ Menu") : null, el("h3",{id:"sheetTitle"},"Scrivici"), f]);
+  track("apri/scrivici");
+}
 // menu ☰: le voci non ancora pronte restano nel menu e spiegano che arriveranno presto
 const MENU_ICONS = {
   home:'<path d="M4 11l8-7 8 7v8a1.5 1.5 0 0 1-1.5 1.5H15v-6H9v6H5.5A1.5 1.5 0 0 1 4 19z"/>',
@@ -1179,7 +1174,7 @@ function openMenu(){
       item("saved","I tuoi salvati",()=>{ closeSheet(true); state.tab="saved"; render(); scrollToList(); },{sub: nSaved ? (nSaved===1?"1 attività salvata":nSaved+" attività salvate") : "Tocca il cuore su un workshop per salvarlo"}),
       item("cal","Calendario",()=>{ closeSheet(true); openCalendar(); }),
       el("div",{class:"menu-sep"}),
-      item("write","Scrivici",()=>goToSection("scrivici")),
+      item("write","Scrivici",()=>openScrivici(true)),
       item("mail","Contatti",()=>goToSection("contatti")),
       (isStandalone() || !isMobile()) ? null : item("phone","App",()=>startInstall(true),{sub:"Aggiungi alla schermata Home"}),
       el("div",{class:"menu-sep"}),
@@ -1267,7 +1262,6 @@ toTop.addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
 document.getElementById("logoHome").addEventListener("click",e=>{ e.preventDefault(); if(sheet.classList.contains("open")) closeSheet(true); state.tab="explore"; resetFilters(); window.scrollTo({top:0,behavior:"smooth"}); });
 document.getElementById("calBtn").addEventListener("click",()=>{ track("apri/calendario"); openCalendar(); });
 document.getElementById("menuBtn").addEventListener("click",openMenu);
-document.getElementById("savedBtn").addEventListener("click",()=>{ state.tab = state.tab==="saved" ? "explore" : "saved"; render(); scrollToList(); });
 
 render();
 
