@@ -52,8 +52,12 @@ button,input{font:inherit;color:inherit}
 /* header */
 header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:12px;padding-bottom:12px}
-.logo{--mark:#3B0043;color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px;white-space:nowrap;min-width:0;padding:0 20px 16px 0}
-.logo svg{width:38px;height:38px;flex:none;margin-top:12px}
+/* logo: immagine originale (img/logo.png, e img/logo-dark.png per il tema scuro) */
+.logo-img{display:block;height:62px;width:auto;transition:height .2s}
+header.top.shrunk .logo-img{height:44px}
+@media (max-width:360px){.logo-img{height:54px}}
+.logo{--mark:#3B0043;color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px;white-space:nowrap;min-width:0;padding:0}
+.logo svg{width:44px;height:44px;flex:none;margin-top:4px}
 .logo .wm{position:relative;isolation:isolate;font-weight:650;font-size:38px;line-height:.85;letter-spacing:-.03em;font-stretch:75%;font-variation-settings:"opsz" 96}
 .logo .club{position:absolute;z-index:-1;right:-18px;bottom:-22px;font-size:15px;line-height:1;letter-spacing:-.02em;padding:2px 8px 3px;color:#2A1440;background:var(--sun);border:2px solid #2A1440;border-radius:999px;box-shadow:1.5px 2.5px 0 #2A1440;transform:rotate(-4deg)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .logo{--mark:#E9D8FF}}
@@ -68,15 +72,15 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 /* barra in alto più compatta quando si scorre la pagina */
 .topbar,.logo,.logo svg,.logo .wm,.logo .club,.city{transition:padding .2s,font-size .2s,width .2s,height .2s,margin .2s,right .2s,bottom .2s}
 header.top.shrunk .topbar{padding-top:6px;padding-bottom:6px}
-header.top.shrunk .logo{padding:0 14px 10px 0;gap:8px}
-header.top.shrunk .logo svg{width:28px;height:28px;margin-top:8px}
+header.top.shrunk .logo{padding:0}
+header.top.shrunk .logo svg{width:34px;height:34px;margin-top:3px}
 header.top.shrunk .logo .wm{font-size:32px}
 header.top.shrunk .logo .club{font-size:11px;right:-13px;bottom:-15px;padding:1px 6px 2px}
 header.top.shrunk .city{height:32px;font-size:13px}
 header.top.shrunk .icon-btn{width:32px;height:32px}
 .city{display:flex;align-items:center;gap:6px;height:38px;border:2px solid var(--ink);background:var(--surface);border-radius:999px;padding:0 12px 0 14px;font-weight:600;font-size:14px;white-space:nowrap;cursor:pointer}
 .city svg{width:12px;height:12px;flex:none}
-@media (max-width:360px){.logo .wm{font-size:33px}.logo svg{width:32px;height:32px}}
+@media (max-width:360px){.logo .wm{font-size:33px}.logo svg{width:38px;height:38px}}
 
 /* hero */
 .hero{position:relative;padding:18px 0 8px}
@@ -362,8 +366,10 @@ footer a{color:inherit;font-weight:600}
 <header class="top">
   <div class="wrap topbar">
     <a class="logo" href="./" id="logoHome" aria-label="The Crafty Club, torna alla home">
-      <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="4.5" stroke-dasharray="10 7.6" stroke-linecap="round"/><g stroke="var(--mark)" stroke-width="11" stroke-linecap="round"><path d="M50 14v72M18.8 32l62.4 36M18.8 68l62.4-36"/></g><circle cx="50" cy="50" r="8" fill="#FFCF3D" stroke="#2A1440" stroke-width="3"/></svg>
-      <span class="wm" aria-hidden="true"><span class="the">The</span> crafty<span class="club">club</span></span>
+      <picture>
+        <source srcset="img/logo-dark.png" media="(prefers-color-scheme: dark)">
+        <img class="logo-img" src="img/logo.png" alt="The Crafty Club" width="523" height="180">
+      </picture>
     </a>
     <div class="top-actions">
       <button class="icon-btn" id="menuBtn" type="button" aria-label="Menu" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>
@@ -410,8 +416,8 @@ footer a{color:inherit;font-weight:600}
 
   <section class="org" id="org">
     <h2>Organizzi workshop o corsi?</h2>
-    <p>Pubblicali qui e fatti trovare da chi cerca qualcosa di bello da fare.</p>
-    <button class="btn" type="button" id="orgBtn">Pubblica un workshop</button>
+    <p>Vuoi far conoscere il tuo evento e farti trovare da chi cerca qualcosa di bello da fare?</p>
+    <button class="btn" type="button" id="orgBtn">Scrivici</button>
     <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="44" fill="#FFCF3D"/><path d="M30 64c10-18 24-26 40-22s22 18 18 30" fill="none" stroke="#2A1440" stroke-width="5" stroke-linecap="round"/><circle cx="48" cy="52" r="5" fill="#2A1440"/><circle cx="74" cy="52" r="5" fill="#2A1440"/></svg>
   </section>
   <section class="contacts" id="contatti" aria-labelledby="contactsTitle">
@@ -435,6 +441,7 @@ footer a{color:inherit;font-weight:600}
     <form class="scrivici" novalidate>
       <p>Hai un workshop da segnalare, un suggerimento o una domanda? Ti rispondiamo per mail.</p>
       <div class="opts" role="radiogroup" aria-label="Di cosa si tratta">
+        <button class="pill" type="button" data-motivo="Partnership" aria-pressed="false">Partnership</button>
         <button class="pill" type="button" data-motivo="Segnalare un workshop" aria-pressed="true">Segnalare un workshop</button>
         <button class="pill" type="button" data-motivo="Suggerimento" aria-pressed="false">Suggerimento</button>
         <button class="pill" type="button" data-motivo="Altro" aria-pressed="false">Altro</button>
@@ -466,7 +473,7 @@ const CATS = [
   {id:"famiglia", label:"Per famiglie", em:"🧸", c:"#F4E6DA", b:"#B07445"},
   {id:"altro", label:"Altro", em:"✨", c:"#ECE6FF", b:"#7B5CE0"}
 ];
-// in alto a destra: tre aree (AREE); nel pannello Filtri il luogo si può scegliere più in dettaglio (LUOGHI)
+// luoghi: nel pannello Filtri si scelgono uno o più tra Torino, Provincia di Torino, Cuneo, Provincia di Cuneo (nessuno = ovunque)
 const REGIONS = [
   {id:"all", label:"Ovunque", short:"Ovunque", where:""},
   {id:"to", label:"Torino e provincia", short:"Torino", where:"a Torino e provincia", parti:["tc","pto"]},
@@ -477,16 +484,36 @@ const REGIONS = [
   {id:"pcn", label:"Provincia di Cuneo", short:"Prov. Cuneo", where:"in provincia di Cuneo"}
 ];
 const AREE = REGIONS.filter(r=>["all","to","cn"].includes(r.id));
-const LUOGHI = ["all","to","tc","pto","cn","cc","pcn"].map(id=>REGIONS.find(r=>r.id===id));
+const LUOGHI = ["all","tc","pto","cc","pcn"].map(id=>REGIONS.find(r=>r.id===id));
 // luogo preciso dell'evento dal campo zona (qualsiasi altro valore = Torino città)
 const regionOf = w => ({"Provincia di Torino":"pto","Cuneo":"cc","Provincia di Cuneo":"pcn"})[w.zona] || "tc";
 const regionById = id => REGIONS.find(r=>r.id===id) || REGIONS[1];
 // etichetta del luogo: "San Salvario (TO)", "Cuneo (CN)", in provincia il comune: "Pinerolo (TO)", "Fossano (CN)"
 const SIGLA = {"Provincia di Torino":"TO","Cuneo":"CN","Provincia di Cuneo":"CN"};
 const zonaLabel = w => !w.zona ? "" : w.zona==="Torino" ? "Torino" : SIGLA[w.zona] ? `${w.zona==="Cuneo" ? "Cuneo" : (w.comune||w.zona)} (${SIGLA[w.zona]})` : `${w.zona} (TO)`;
-const inRegion = w => { const r=regionById(state.region); return r.id==="all" || (r.parti ? r.parti.includes(regionOf(w)) : regionOf(w)===r.id); };
-function loadRegion(){ try{ const r=localStorage.getItem("cc-region"); return REGIONS.some(x=>x.id===r)?r:"to"; }catch(e){ return "to"; } }
-function persistRegion(){ try{ localStorage.setItem("cc-region", state.region); }catch(e){} }
+const inRegion = w => !state.places.length || state.places.includes(regionOf(w));
+// testo per il titolo della lista: "a Torino e provincia", "a Cuneo", "nelle zone scelte"…
+function placesWhere(){
+  const P=[...state.places].sort().join(",");
+  if(!P || P==="cc,pcn,pto,tc") return "";
+  const map={"pto,tc":"a Torino e provincia","cc,pcn":"a Cuneo e provincia"};
+  if(map[P]) return map[P];
+  if(state.places.length===1) return regionById(state.places[0]).where;
+  const nomi={tc:"Torino",pto:"provincia di Torino",cc:"Cuneo",pcn:"provincia di Cuneo"};
+  const l=["tc","pto","cc","pcn"].filter(x=>state.places.includes(x)).map(x=>nomi[x]);
+  return "a "+l.slice(0,-1).join(", ")+" e "+l[l.length-1];
+}
+const DEFAULT_PLACES=["tc","pto"];
+function loadPlaces(){
+  try{
+    const v=JSON.parse(localStorage.getItem("cc-places")||"null");
+    if(Array.isArray(v)) return v.filter(x=>["tc","pto","cc","pcn"].includes(x));
+    const old=localStorage.getItem("cc-region"), r=REGIONS.find(x=>x.id===old);
+    if(r) return r.id==="all" ? [] : (r.parti ? [...r.parti] : [r.id]);
+  }catch(e){}
+  return [...DEFAULT_PLACES];
+}
+function persistPlaces(){ try{ localStorage.setItem("cc-places", JSON.stringify(state.places)); }catch(e){} }
 const PRICES = [{v:0,l:"Qualsiasi"},{v:20,l:"Fino a 20 €"},{v:35,l:"Fino a 35 €"},{v:50,l:"Fino a 50 €"},{v:80,l:"Fino a 80 €"}];
 const WHENS = [{v:"all",l:"Tutte le date"},{v:"today",l:"Oggi"},{v:"week",l:"Prossimi 7 giorni"},{v:"weekend",l:"Questo weekend"},{v:"nextweek",l:"Prossima settimana"},{v:"month",l:"Prossimi 30 giorni"}];
 /* icone categorie: stile piatto, metà sinistra chiara e metà destra scura (clip #cc-half).
@@ -591,7 +618,7 @@ const catOf = id => CATS.find(c=>c.id===id) || CATS[CATS.length-1];
 const catsOf = w => [w.categoria, ...(w.altre_categorie||[])].map(id=>catOf(id).id);
 const inCats = w => state.cats.some(c=>catsOf(w).includes(c));
 
-const state = {all:[], loaded:false, dbOk:true, q:"", cats:[], tipo:"", when:"all", maxPrice:0, noBig:false, noKids:false, from:"", to:"", pick:[], weekends:false, tab:"explore", saved:loadSaved(), region:loadRegion()};
+const state = {all:[], loaded:false, dbOk:true, q:"", cats:[], tipo:"", when:"all", maxPrice:0, noBig:false, noKids:false, from:"", to:"", pick:[], weekends:false, tab:"explore", saved:loadSaved(), places:loadPlaces()};
 
 function loadSaved(){ try{ return new Set(JSON.parse(localStorage.getItem("cc-saved")||"[]")); }catch(e){ return new Set(); } }
 function persistSaved(){ try{ localStorage.setItem("cc-saved", JSON.stringify([...state.saved])); }catch(e){} }
@@ -749,14 +776,13 @@ function openShareMenu(w){
 }
 
 function renderHeader(){
-  const r=regionById(state.region);
 }
 
 function render(){
   renderHeader(); renderCats();
   const box=document.getElementById("cards"); box.innerHTML="";
   const title=document.getElementById("listTitle"), count=document.getElementById("listCount");
-  const where=regionById(state.region).where;
+  const where=placesWhere();
   title.textContent = state.tab==="saved" ? "I tuoi salvati" : ((state.cats.length===1 ? catOf(state.cats[0]).label : state.cats.length ? state.cats.map(id=>catOf(id).label).join(", ") : state.tipo ? ({corso:"Corsi",workshop:"Workshop",attivita:"Altre attività"}[state.tipo]) : "In arrivo")+" "+where).trim();
   const active = (state.maxPrice?1:0)+(state.when!=="all"?1:0)+(state.weekends?1:0)+(state.noBig?1:0);
   const fc=document.getElementById("fcount"); fc.hidden=!active; fc.textContent=active;
@@ -841,7 +867,7 @@ document.addEventListener("keydown",e=>{ if(e.key==="Escape" && sheet.classList.
 function optGroup(items, isOn, onTap){ return el("div",{class:"opts"}, items.map(it=>el("button",{class:"pill",type:"button","aria-pressed":String(isOn(it)),onclick:e=>{onTap(it); e.currentTarget.parentNode.querySelectorAll("button").forEach((b,i)=>b.setAttribute("aria-pressed",String(isOn(items[i]))));}}, it.l||it))); }
 
 function openFilters(){
-  const draft={when:state.when, maxPrice:state.maxPrice, region:state.region, tipo:state.tipo, cats:[...state.cats], noBig:state.noBig, from:state.from, to:state.to, pick:[...state.pick]};
+  const draft={when:state.when, maxPrice:state.maxPrice, places:[...state.places], tipo:state.tipo, cats:[...state.cats], noBig:state.noBig, from:state.from, to:state.to, pick:[...state.pick]};
   // "Scegli sul calendario": giorni singoli (pick) oppure un periodo dal/al (range)
   let calMode = draft.when==="range" ? "range" : "pick";
   let pm = monthStart(parseDate(draft.when==="range" ? draft.from : draft.pick.slice().sort()[0]) || today0());
@@ -881,7 +907,11 @@ function openFilters(){
   const tipologie=CATS.filter(c=>usate.has(c.id));
   openSheet([
     el("h3",{id:"sheetTitle"},"Filtri"),
-    el("h4",{},"Luogo"), optGroup(LUOGHI.map(r=>({v:r.id,l:r.label})), it=>draft.region===it.v, it=>draft.region=it.v),
+    el("h4",{},"Luogo"), optGroup(LUOGHI.map(r=>({v:r.id,l:r.label})), it=>it.v==="all" ? !draft.places.length : draft.places.includes(it.v), it=>{
+      if(it.v==="all"){ draft.places=[]; return; }
+      const i=draft.places.indexOf(it.v); i>=0 ? draft.places.splice(i,1) : draft.places.push(it.v);
+      if(draft.places.length===4) draft.places=[];
+    }),
     el("h4",{},"Quando"), optGroup([...WHENS,{v:"cal",l:"Scegli sul calendario"}], it=>it.v==="cal" ? ["pick","range"].includes(draft.when) : draft.when===it.v, it=>{ draft.when = it.v==="cal" ? calMode : it.v; calBox.hidden = it.v!=="cal"; }), calBox,
     el("h4",{},"Tipologia"), optGroup(TIPI, it=>draft.tipo===it.v, it=>draft.tipo=it.v),
     el("h4",{},"Categoria"), optGroup(tipologie.map(c=>({v:c.id,l:c.label})), it=>draft.cats.includes(it.v), it=>{ const i=draft.cats.indexOf(it.v); i>=0?draft.cats.splice(i,1):draft.cats.push(it.v); }),
@@ -889,7 +919,7 @@ function openFilters(){
     el("h4",{},"Organizzatori"), optGroup([{l:"Escludi grandi aziende"}], ()=>draft.noBig, ()=>draft.noBig=!draft.noBig),
     el("div",{class:"actions"},
       el("button",{class:"ghost",type:"button",onclick:()=>{resetFilters(); closeSheet();}},"Azzera"),
-      el("button",{class:"btn",type:"button",onclick:()=>{ if(draft.when==="pick" && !draft.pick.length || draft.when==="range" && !draft.from) draft.when="all"; if(draft.region!==state.region){ state.tab="explore"; } Object.assign(state,draft); persistRegion(); render(); closeSheet();}},"Mostra risultati"))
+      el("button",{class:"btn",type:"button",onclick:()=>{ if(draft.when==="pick" && !draft.pick.length || draft.when==="range" && !draft.from) draft.when="all"; if(draft.places.join()!==state.places.join()){ state.tab="explore"; track("luogo/"+(draft.places.join("+")||"ovunque")); } Object.assign(state,draft); persistPlaces(); render(); closeSheet();}},"Mostra risultati"))
   ]);
 }
 
@@ -1021,14 +1051,6 @@ function openDetail(w){
   )]);
 }
 
-function openRegion(){
-  openSheet([
-    el("h3",{id:"sheetTitle"},"Dove cerchi?"),
-    el("div",{class:"opts",style:"margin-top:14px"}, AREE.map(r=>el("button",{class:"pill",type:"button","aria-pressed":String(state.region===r.id),onclick:()=>{
-      state.region=r.id; state.tab="explore"; persistRegion(); track("area/"+r.id, r.label); render(); closeSheet();
-    }}, r.label)))
-  ]);
-}
 
 /* calendar */
 const ymd = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
@@ -1078,7 +1100,7 @@ function openCalendar(month){
   grid.addEventListener("touchend",e=>{ if(x0==null) return; const dx = e.changedTouches[0].clientX - x0; x0 = null; if(Math.abs(dx)>50) shift(dx<0?1:-1); });
   const arrow = (dir,lbl,dis) => el("button",{type:"button","aria-label":lbl,disabled:dis,onclick:()=>shift(dir)},
     el("span",{"aria-hidden":"true",style:"font-size:18px;line-height:1"}, dir<0?"‹":"›"));
-  const where = regionById(state.region).where;
+  const where = placesWhere();
   openSheet([
     el("div",{class:"cal-head"},
       el("h3",{id:"sheetTitle"}, `${MONTHS_LONG[m.getMonth()][0].toUpperCase()+MONTHS_LONG[m.getMonth()].slice(1)} ${m.getFullYear()}`),
@@ -1115,7 +1137,7 @@ document.querySelectorAll("[data-when]").forEach(b=>b.addEventListener("click",(
 document.querySelector('[data-quick="cheap"]').addEventListener("click",()=>{state.maxPrice = state.maxPrice===30?0:30; if(state.maxPrice) track("filtro/sotto-30"); render();});
 document.querySelector('[data-quick="nokids"]').addEventListener("click",()=>{state.noKids = !state.noKids; if(state.noKids) track("filtro/escludi-famiglie"); render();});
 document.querySelector('[data-quick="weekends"]').addEventListener("click",()=>{state.weekends = !state.weekends; if(state.weekends) track("filtro/solo-weekend"); render();});
-document.getElementById("orgBtn").addEventListener("click",openOrg);
+document.getElementById("orgBtn").addEventListener("click",()=>{ track("apri/organizzatori"); openScrivici(false); });
 // logo: torna alla home con tutti i filtri azzerati (l'area scelta in alto resta)
 // modulo «Scrivici» (si apre dal menu): invia il messaggio a crafty.club.info@gmail.com tramite Web3Forms (la chiave è pubblica per natura)
 function bindScrivici(f){
