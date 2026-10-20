@@ -111,11 +111,17 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .rail{display:flex;gap:10px;overflow-x:auto;padding:18px calc(var(--gr) - 6px) 6px calc(var(--gl) - 6px);margin:0 calc(-1 * var(--gr)) 0 calc(-1 * var(--gl));scroll-padding-inline:calc(var(--gl) - 6px) calc(var(--gr) - 6px);scrollbar-width:none;scroll-snap-type:x proximity}
 .rail::-webkit-scrollbar{display:none}
 .cat{flex:none;scroll-snap-align:start;display:flex;flex-direction:column;align-items:center;gap:6px;width:76px;background:none;border:0;cursor:pointer;padding:0}
+.cat .blob,.ticket:not(.photo),.chip-cat{background:var(--cc)}
+/* tema chiaro: icone delle categorie senza riquadro colorato */
+.cat .blob{background:none}
+/* tema scuro: dietro alle icone e alle schede senza foto lo stesso colore, ma molto più scuro */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) :is(.cat .blob,.ticket:not(.photo),.chip-cat){background:color-mix(in srgb,var(--cc) 22%,#21142f)}}
+:root[data-theme="dark"] :is(.cat .blob,.ticket:not(.photo),.chip-cat){background:color-mix(in srgb,var(--cc) 22%,#21142f)}
 .cat .blob{width:64px;height:64px;border-radius:22px;display:grid;place-items:center;font-size:30px;border:2px solid transparent;transition:transform .15s}
 .cat > span{font-size:12px;font-weight:600;line-height:1.15;text-align:center}
 .ci{display:inline-block;flex:none;line-height:0}
 .ci svg,.ci img{width:100%;height:100%;display:block}
-.cat .blob .ci{width:42px;height:42px}
+.cat .blob .ci{width:50px;height:50px}
 .ticket.photo{background-size:cover;background-position:center;color:#fff}
 .ticket.photo::before{content:"";position:absolute;inset:0;background:linear-gradient(rgba(42,20,64,.28),rgba(42,20,64,.58))}
 .ticket.photo > *{position:relative}
@@ -224,9 +230,9 @@ footer{color:var(--ink-soft);font-size:13px;text-align:center;padding:20px 0}
   .calbtn{width:46px;border-radius:16px}
   .rail{padding-left:calc(var(--gl) - 10px);scroll-padding-inline:calc(var(--gl) - 10px) var(--gr)}
   .cat{width:74px}
-  .cat > span{white-space:nowrap}
+  .cat > span{white-space:normal}
   .cat .blob{width:54px;height:54px;border-radius:18px}
-  .cat .blob .ci{width:34px;height:34px}
+  .cat .blob .ci{width:42px;height:42px}
   .cat > span{font-size:12px}
   .pill{padding:6px 12px;font-size:13px}
   .listhead{margin:10px 0 8px}
@@ -341,9 +347,8 @@ const CATS = [
   {id:"tessile", label:"Tessile", em:"🧶", c:"#FFEFC7", b:"#2CB07A"},
   {id:"cucina", label:"Cucina", em:"🍝", c:"#FFF0D2", b:"#F2602B"},
   {id:"degustazioni", label:"Degustazioni", em:"🍷", c:"#F6DDF0", b:"#A3134C"},
-  {id:"musica", label:"Musica", em:"🎵", c:"#E6E2FF", b:"#5B4BE0"},
+  {id:"musica", label:"Musica e teatro", em:"🎵", c:"#E6E2FF", b:"#5B4BE0"},
   {id:"movimento", label:"Movimento", em:"💃", c:"#EAF5D3", b:"#6E9E16"},
-  {id:"teatro", label:"Teatro", em:"🎭", c:"#FDE1E5", b:"#D93A55"},
   {id:"giochi", label:"Giochi", em:"🎲", c:"#DCEEFF", b:"#2F80C9"},
   {id:"famiglia", label:"Per famiglie", em:"🧸", c:"#F4E6DA", b:"#B07445"},
   {id:"altro", label:"Altro", em:"✨", c:"#ECE6FF", b:"#7B5CE0"}
@@ -376,18 +381,21 @@ const WHENS = [{v:"all",l:"Tutte le date"},{v:"today",l:"Oggi"},{v:"week",l:"Pro
 const ICON_IMG = {ceramica:"icons/ceramica.png"};
 const ICONS = {
   pittura:[
-    ['<path d="M256 62c124 0 214 90 214 190 0 80-60 90-100 80-40-10-60 20-50 60 15 50-20 70-64 70C140 462 42 372 42 257 42 147 140 62 256 62z" fill="%c"/>',"#F2C98A","#E0B171"],
-    ['<circle cx="160" cy="196" r="38" fill="%c"/>',"#FF5A5A","#E84545"],
-    ['<circle cx="256" cy="140" r="38" fill="%c"/>',"#FFD23F","#F5BE1C"],
-    ['<circle cx="352" cy="186" r="38" fill="%c"/>',"#4D8BFF","#3A73E6"],
-    ['<circle cx="134" cy="304" r="38" fill="%c"/>',"#3CC98F","#2CB07A"],
-    ['<circle cx="216" cy="384" r="38" fill="%c"/>',"#A879FF","#9160F0"]
+    ['<g transform="translate(8 34) scale(.8)"><path d="M256 62c124 0 214 90 214 190 0 80-60 90-100 80-40-10-60 20-50 60 15 50-20 70-64 70C140 462 42 372 42 257 42 147 140 62 256 62z" fill="%c"/></g>',"#F2C98A","#E0B171"],
+    ['<g transform="translate(8 34) scale(.8)"><circle cx="160" cy="196" r="38" fill="%c"/></g>',"#FF5A5A","#E84545"],
+    ['<g transform="translate(8 34) scale(.8)"><circle cx="256" cy="140" r="38" fill="%c"/></g>',"#FFD23F","#F5BE1C"],
+    ['<g transform="translate(8 34) scale(.8)"><circle cx="352" cy="186" r="38" fill="%c"/></g>',"#4D8BFF","#3A73E6"],
+    ['<g transform="translate(8 34) scale(.8)"><circle cx="134" cy="304" r="38" fill="%c"/></g>',"#3CC98F","#2CB07A"],
+    ['<g transform="translate(386 296) rotate(35)"><rect x="-30" y="-150" width="60" height="214" rx="8" fill="%c"/></g>',"#A879FF","#9160F0"],
+    ['<g transform="translate(386 296) rotate(35)"><rect x="-30" y="-184" width="60" height="40" rx="12" fill="%c"/></g>',"#FF8FB8","#FF6FA0"],
+    ['<g transform="translate(386 296) rotate(35)"><path d="M-30 62h60l-30 66z" fill="%c"/></g>',"#F2C98A","#E0B171"],
+    ['<g transform="translate(386 296) rotate(35)"><path d="M-11 104h22l-11 24z" fill="%c"/></g>',"#3B2E58","#2A1E40"]
   ],
   fiori:[
-    ['<rect x="244" y="250" width="24" height="230" rx="12" fill="%c"/>',"#3CC98F","#2CB07A"],
-    ['<path d="M244 410c-56 0-96-40-106-84 52 0 98 32 106 84zM268 380c56 0 96-40 106-84-52 0-98 32-106 84z" fill="%c"/>',"#3CC98F","#2CB07A"],
-    ['<circle cx="256" cy="104" r="72"/><circle cx="346" cy="170" r="72"/><circle cx="312" cy="276" r="72"/><circle cx="200" cy="276" r="72"/><circle cx="166" cy="170" r="72"/>'.replace(/\/>/g,' fill="%c"/>'),"#FF8FB8","#FF6FA0"],
-    ['<circle cx="256" cy="200" r="58" fill="%c"/>',"#FFD23F","#F5BE1C"]
+    ['<rect x="244" y="176" width="24" height="140" rx="12" fill="%c"/>',"#3C9E4F","#2E8540"],
+    ['<path d="M252 250C176 254 118 204 108 128c80-8 140 40 144 122zM260 214c66 2 124-46 134-126-78-6-132 40-134 126z" fill="%c"/>',"#5DCB6A","#45B354"],
+    ['<path d="M150 336h212l-26 142H176z" fill="%c"/>',"#E08A5A","#C9703F"],
+    ['<rect x="128" y="300" width="256" height="50" rx="14" fill="%c"/>',"#F0A070","#D9844F"]
   ],
   stampa:[
     ['<rect x="76" y="420" width="360" height="44" rx="12" fill="%c"/>',"#4D8BFF","#3A73E6"],
@@ -466,6 +474,9 @@ function catIcon(id){
   return span;
 }
 const catOf = id => CATS.find(c=>c.id===id) || CATS[CATS.length-1];
+// categorie di un evento: la principale più quelle del campo altre_categorie (es. una casa del quartiere con corsi di tipo diverso)
+const catsOf = w => [w.categoria, ...(w.altre_categorie||[])].map(id=>catOf(id).id);
+const inCats = w => state.cats.some(c=>catsOf(w).includes(c));
 
 const state = {all:[], loaded:false, dbOk:true, q:"", cats:[], tipo:"", when:"all", maxPrice:0, noBig:false, tab:"explore", saved:loadSaved(), region:loadRegion()};
 
@@ -512,10 +523,10 @@ function filtered(){
     else if(!inWhen(d)) return false;
     // chi cerca qualcosa vede i risultati di tutte le aree, non solo di quella scelta in alto
     if(state.tab==="saved" ? !state.saved.has(w.id) : (!q && !inRegion(w))) return false;
-    if(state.cats.length && !state.cats.includes(catOf(w.categoria).id)) return false;
+    if(state.cats.length && !inCats(w)) return false;
     if(state.tipo && (w.tipo||"workshop")!==state.tipo) return false;
     // grandi scuole di cucina (campo solo_categoria): non nella lista generale, solo se la loro categoria è selezionata o si cerca
-    if(w.solo_categoria && state.tab!=="saved" && !q && !state.cats.includes(catOf(w.categoria).id)) return false;
+    if(w.solo_categoria && state.tab!=="saved" && !q && !inCats(w)) return false;
     // filtro "Escludi grandi aziende": toglie le grandi aziende (Eataly, StudioFood33, GetYourGuide = solo_categoria)
     if(state.noBig && w.solo_categoria) return false;
     if(state.maxPrice && !(Number(w.prezzo)<=state.maxPrice)) return false;
@@ -529,7 +540,7 @@ function el(tag, attrs={}, ...kids){ const n=document.createElement(tag); for(co
 function isUpcoming(w){ const d=parseDate(w.data); return d ? d>=today0() : !!w.su_prenotazione; }
 function activeCats(){
   const ids=new Set();
-  state.all.forEach(w=>{ if(isUpcoming(w) && (state.tab==="saved" ? state.saved.has(w.id) : inRegion(w))) ids.add(catOf(w.categoria).id); });
+  state.all.forEach(w=>{ if(isUpcoming(w) && (state.tab==="saved" ? state.saved.has(w.id) : inRegion(w))) catsOf(w).forEach(id=>ids.add(id)); });
   return ids;
 }
 function renderCats(){
@@ -539,7 +550,7 @@ function renderCats(){
   rail.hidden=!ids.size;
   CATS.filter(c=>ids.has(c.id)).forEach(c=>{
     rail.append(el("button",{class:"cat",type:"button","aria-pressed":String(state.cats.includes(c.id)),onclick:()=>{ const i=state.cats.indexOf(c.id); i>=0?state.cats.splice(i,1):state.cats.push(c.id); render(); }},
-      el("div",{class:"blob",style:`background:${c.c}`},catIcon(c.id)), el("span",{},c.label)));
+      el("div",{class:"blob",style:`--cc:${c.c}`},catIcon(c.id)), el("span",{},c.label)));
   });
 }
 
@@ -578,7 +589,7 @@ function card(w){
   const foto = fotoOf(w);
   const when=[w.ora_inizio, zonaLabel(w)].filter(Boolean).join(" · ");
   return el("div",{class:"card",role:"button",tabindex:"0",style:`--cb:${c.b}`,onclick:()=>openDetail(w),onkeydown:e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openDetail(w);}}},
-    el("div",{class:"ticket"+(foto?" photo":""),style:foto?`background-image:url('${foto}')`:`background:${c.c}`},
+    el("div",{class:"ticket"+(foto?" photo":""),style:foto?`background-image:url('${foto}')`:`--cc:${c.c}`},
       d ? [el("span",{class:"wd"},w.tipo==="corso"?"dal":WD[d.getDay()]), el("span",{class:"d"},String(d.getDate())), el("span",{class:"m"},MONTHS[d.getMonth()])] : noDate(w)),
     el("div",{class:"body"},
       el("h3",{}, el("span",{class:"bar-t",title:c.label,"aria-hidden":"true"}), w.titolo||"Workshop"),
@@ -686,7 +697,7 @@ function openFilters(){
   const draft={when:state.when, maxPrice:state.maxPrice, region:state.region, tipo:state.tipo, cats:[...state.cats], noBig:state.noBig};
   const TIPI=[{v:"",l:"Tutti"},{v:"workshop",l:"Workshop"},{v:"corso",l:"Corsi"}];
   // tipologie: le categorie che hanno almeno un evento in arrivo, in qualsiasi luogo
-  const usate=new Set(state.all.filter(isUpcoming).map(w=>catOf(w.categoria).id));
+  const usate=new Set(state.all.filter(isUpcoming).flatMap(catsOf));
   const tipologie=CATS.filter(c=>usate.has(c.id));
   openSheet([
     el("h3",{id:"sheetTitle"},"Filtri"),
@@ -722,7 +733,7 @@ function openDetail(w){
     fotoGrande(w) ? el("div",{class:"cover"},
       el("span",{class:"bg",style:`background-image:url('${fotoGrande(w)}')`}),
       el("img",{src:fotoGrande(w),alt:"",onerror:e=>{ const im=e.target; if(!im.src.endsWith(fotoOf(w))) im.src=fotoOf(w); else im.closest(".cover").remove(); }})) : null,
-    el("span",{class:"chip-cat",style:`--cb:${c.b};background:${c.c}`}, catIcon(c.id), c.label),
+    el("span",{class:"chip-cat",style:`--cb:${c.b};--cc:${c.c}`}, catIcon(c.id), c.label),
     el("h3",{id:"sheetTitle"},w.titolo||"Workshop"),
     el("dl",{}, rows.flatMap(([k,v])=>[el("dt",{},k),el("dd",{},v)])),
     w.descrizione? el("p",{},w.descrizione):null,
@@ -746,7 +757,7 @@ const monthStart = d => new Date(d.getFullYear(), d.getMonth(), 1);
 let calMonth = null;
 function workshopsByDay(){
   const m = new Map();
-  state.all.forEach(w=>{ const inCats = (!state.cats.length || state.cats.includes(catOf(w.categoria).id)) && (!state.tipo || (w.tipo||"workshop")===state.tipo); if(w.data && parseDate(w.data) && inRegion(w) && inCats && (!w.solo_categoria || (!state.noBig && state.cats.includes(catOf(w.categoria).id)))){ (m.get(w.data)||m.set(w.data,[]).get(w.data)).push(w); } });
+  state.all.forEach(w=>{ const okCats = (!state.cats.length || inCats(w)) && (!state.tipo || (w.tipo||"workshop")===state.tipo); if(w.data && parseDate(w.data) && inRegion(w) && okCats && (!w.solo_categoria || (!state.noBig && inCats(w)))){ (m.get(w.data)||m.set(w.data,[]).get(w.data)).push(w); } });
   m.forEach(l=>l.sort((a,b)=>(a.ora_inizio||"").localeCompare(b.ora_inizio||"")));
   return m;
 }
@@ -893,6 +904,9 @@ const WORKSHOPS = [
   "id": "aperipods-bag-bar-2026-10-27"
  },
  {
+  "altre_categorie": [
+   "pittura"
+  ],
   "categoria": "cucina",
   "contatto": "@aperi_pods in DM",
   "data": "2026-11-14",
@@ -1477,7 +1491,7 @@ const WORKSHOPS = [
   "id": "bunker-corso-djing"
  },
  {
-  "categoria": "teatro",
+  "categoria": "musica",
   "descrizione": "Un laboratorio di teatro aperto a tutti, senza esperienza, tra mimo, clown, commedia dell’arte e lavoro sulla parola. Si costruisce prima il gruppo e poi, se si vuole, una restituzione finale. Il corso parte al raggiungimento del numero minimo di iscritti; preiscrizione sul sito del Bunker.",
   "fonte": "variantebunker.com",
   "foto": "img/eventi/bunker-corso-teatro.jpg",
@@ -1744,6 +1758,15 @@ const WORKSHOPS = [
   "id": "casanelparco-pittura-porcellana-stoffa"
  },
  {
+  "altre_categorie": [
+   "pittura",
+   "tessile",
+   "ceramica",
+   "musica",
+   "movimento",
+   "giochi",
+   "famiglia"
+  ],
   "categoria": "altro",
   "contatto": "cascinaroccafranca.it",
   "descrizione": "La casa del quartiere ospita decine di corsi settimanali tenuti da associazioni e insegnanti: pittura, pasta di sale, maglia, sartoria, argilla, illustrazione, art journal, fotografia, scrittura, teatro e improvvisazione, danze (orientale, afro, folk, country, lindy hop, pizzica), chitarra, fisarmonica e giochi da tavolo, anche per bambini. Ognuno ha il suo giorno e il suo contatto: l’elenco completo è nel volantino sul sito della Cascina.",
@@ -1758,7 +1781,7 @@ const WORKSHOPS = [
   "id": "cascina-roccafranca-corsi"
  },
  {
-  "categoria": "teatro",
+  "categoria": "musica",
   "comune": "Bernezzo",
   "data": "2026-10-24",
   "descrizione": "Laboratorio all’aperto nei castagneti di Borgata Morena: partendo dalla raccolta delle castagne si fanno esercizi ispirati al teatro e alla danza su corpo, movimento ed espressione personale. Gratuito su prenotazione, durante la Sagra della Castagna.",
@@ -3904,6 +3927,9 @@ const WORKSHOPS = [
   "id": "leumannhub-facciamo-un-libro-2026-11-01"
  },
  {
+  "altre_categorie": [
+   "pittura"
+  ],
   "categoria": "cucina",
   "contatto": "Limaco’s su WhatsApp, +39 379 3959873",
   "data": "2026-10-22",
@@ -3919,6 +3945,9 @@ const WORKSHOPS = [
   "id": "limaco-cake-chill-2026-10-22"
  },
  {
+  "altre_categorie": [
+   "pittura"
+  ],
   "categoria": "cucina",
   "contatto": "Limaco’s su WhatsApp, +39 379 3959873",
   "data": "2026-10-27",
@@ -4019,6 +4048,10 @@ const WORKSHOPS = [
   "id": "magazzinitessili-acchiappasogni-2026-10-31"
  },
  {
+  "altre_categorie": [
+   "tessile",
+   "pittura"
+  ],
   "categoria": "altro",
   "contatto": "Magazzini Tessili, 333 284 4989",
   "descrizione": "Laboratori per la casa: tappezzare una sedia portata da casa (220 €, giornata intera), rivestire un pouf (150 €) o un paralume (200 €), rinnovare (200 €) o colorare (120 €) un mobile in legno, collage creativo (20 €). Materiali e pause incluse; date a scelta sul sito o al 333 284 4989.",
@@ -4053,7 +4086,7 @@ const WORKSHOPS = [
   "id": "magazzinitessili-corsi-cucito"
  },
  {
-  "categoria": "altro",
+  "categoria": "pittura",
   "contatto": "Ilaria Marracci su Facebook",
   "data": "2026-10-24",
   "descrizione": "Una mattinata per sole donne sul tema del lasciar andare: una chiacchierata con la psicoterapeuta Silvia Ferrero, una pausa tisana e un’ora di laboratorio di arteterapia con Ilaria Marracci, poi la condivisione finale. Costa 55 €.",
@@ -4527,7 +4560,7 @@ const WORKSHOPS = [
   "id": "nikin-aperipaint-halloween-2026-10-25"
  },
  {
-  "categoria": "altro",
+  "categoria": "pittura",
   "comune": "Borgaro Torinese",
   "contatto": "@nikin_house in DM",
   "data": "2026-11-04",
@@ -4595,6 +4628,9 @@ const WORKSHOPS = [
   "id": "nodo-tufting-workshop"
  },
  {
+  "altre_categorie": [
+   "famiglia"
+  ],
   "categoria": "pittura",
   "contatto": "novelacademy.it",
   "descrizione": "Corsi di 12 lezioni di due ore: disegno (lunedì o martedì), pittura ad acrilico e olio (mercoledì o venerdì), acquerello (giovedì) e calligrafia (mercoledì), pomeriggio o sera, con iscrizioni sempre aperte e prima lezione gratuita. Il sabato pomeriggio c’è il corso per bambini dai 6 ai 13 anni (30 € a lezione) e ogni tanto la domenica il disegno dal vero con modella (40 €).",
@@ -4802,6 +4838,9 @@ const WORKSHOPS = [
   "id": "orso-stampa-botanica-colore-2026-11-15"
  },
  {
+  "altre_categorie": [
+   "gioielli"
+  ],
   "categoria": "ceramica",
   "contatto": "@orso.objetos in DM",
   "data": "2026-10-25",
@@ -5270,6 +5309,9 @@ const WORKSHOPS = [
   "id": "printclub-work-in-progress-2026-10-25"
  },
  {
+  "altre_categorie": [
+   "famiglia"
+  ],
   "categoria": "movimento",
   "contatto": "progetto.slip@gmail.com o WhatsApp +39 351 757 1214",
   "descrizione": "Corsi di circo contemporaneo per principianti ed esperti: tessuti aerei, cerchio, corda, cinghie, trapezio, palo cinese, acrobatica e flessibilità, la sera dal lunedì al giovedì; per bambini e ragazzi dai 6 ai 15 anni nel tardo pomeriggio. L’abbonamento annuale parte da 190 € per una lezione a settimana, più tessera (12 €) e certificato medico. L’anno è iniziato a fine settembre: chiedere se si può entrare a corso iniziato.",
@@ -5496,6 +5538,9 @@ const WORKSHOPS = [
   "id": "scialaba-decorazione"
  },
  {
+  "altre_categorie": [
+   "gioielli"
+  ],
   "categoria": "ceramica",
   "descrizione": "Si plasma la porcellana per creare orecchini, anelli e pendenti, con smaltatura lucida o satinata. Il modulo è di 4 lezioni da 2 ore, materiali e cotture inclusi, in gruppi di 4–8 persone. Le date si scelgono su WhatsApp al +39 338 4938124.",
   "fonte": "scialabajewels.com",
@@ -5644,7 +5689,11 @@ const WORKSHOPS = [
   "id": "sorelle-collana-tessuto"
  },
  {
-  "categoria": "teatro",
+  "altre_categorie": [
+   "movimento",
+   "famiglia"
+  ],
+  "categoria": "musica",
   "contatto": "splitteatro@gmail.com o +39 375 709 9069",
   "descrizione": "Corsi annuali di recitazione per adulti dai 17 anni (base, intermedio e avanzato, 19–21 dal martedì al giovedì), musical per adulti, teen e junior, e poi danza musical, tip tap, heels, bollywood e canto. Da ottobre a gennaio si lavora su corpo e voce, poi si prepara uno spettacolo. Prezzi da chiedere a splitteatro@gmail.com.",
   "fonte": "splitteatro.it (via Le Strade)",
@@ -5675,6 +5724,9 @@ const WORKSHOPS = [
   "id": "studio17-archivio-fantasma-2026-10-31"
  },
  {
+  "altre_categorie": [
+   "famiglia"
+  ],
   "categoria": "movimento",
   "contatto": "studio21sds@gmail.com o +39 340 404 1035",
   "descrizione": "Una scuola di danze urbane con corsi settimanali di hip hop (anche per adulti 30+), breakdance, afrodance, dancehall, house, popping, waacking, k-pop e choreography, divisi per livelli dal lunedì al venerdì sera. Ci sono corsi per bambini e ragazzi dai 5 ai 14 anni e una open class di heels una volta al mese. Prezzi da chiedere a studio21sds@gmail.com.",
