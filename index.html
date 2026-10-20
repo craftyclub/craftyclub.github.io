@@ -49,8 +49,11 @@ button,input{font:inherit;color:inherit}
 header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:12px;padding-bottom:12px}
 .logo{--mark:#3B0043;color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px;white-space:nowrap;min-width:0;padding:0 20px 16px 0}
-.logo svg{width:38px;height:38px;flex:none;margin-top:14px}
-.logo .wm{position:relative;isolation:isolate;font-weight:650;font-size:46px;line-height:.85;letter-spacing:-.03em;font-stretch:75%;font-variation-settings:"opsz" 96}
+.logo svg{width:44px;height:44px;flex:none;margin-top:12px}
+.logo .wm{position:relative;isolation:isolate;font-weight:650;font-size:40px;line-height:.85;letter-spacing:-.03em;font-stretch:75%;font-variation-settings:"opsz" 96}
+/* in cima: «The» sopra «crafty»; scorrendo: «The crafty» su una riga */
+.logo .the{display:block;margin-bottom:-.04em}
+header.top.shrunk .logo .the{display:inline;margin:0}
 .logo .club{position:absolute;z-index:-1;right:-18px;bottom:-22px;font-size:15px;line-height:1;letter-spacing:-.02em;padding:2px 8px 3px;color:#2A1440;background:var(--sun);border:2px solid #2A1440;border-radius:999px;box-shadow:1.5px 2.5px 0 #2A1440}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .logo{--mark:#E9D8FF}}
 :root[data-theme="dark"] .logo{--mark:#E9D8FF}
@@ -94,7 +97,7 @@ header.top.shrunk .icon-btn{width:32px;height:32px}
 .tipo-seg button + button{border-left:2px solid var(--ink)}
 .tipo-seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
 @media (max-width:559px){.tipo-seg button{font-size:13px;padding:0 4px;line-height:1.1}}
-@media (min-width:560px){.searchrow{flex-wrap:nowrap}.searchrow .search{flex:1 1 auto}.searchrow .calbtn{height:auto}.tipo-seg{flex:0 0 auto;height:auto}.tipo-seg button{padding:0 16px;min-width:92px}}
+@media (min-width:560px){.searchrow{flex-wrap:nowrap}.searchrow .search{flex:1 1 auto}.searchrow .calbtn{height:auto}.tipo-seg{flex:0 0 auto;height:auto}.tipo-seg button{padding:0 16px;min-width:92px;white-space:nowrap}}
 .calbtn{flex:none;width:52px;padding:0;display:grid;place-items:center;border:2px solid var(--ink);background:var(--sun);color:#2A1440;border-radius:18px;box-shadow:4px 4px 0 var(--ink);cursor:pointer}
 
 /* calendar */
@@ -305,9 +308,9 @@ footer a{color:inherit;font-weight:600}
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><clipPath id="cc-half" clipPathUnits="userSpaceOnUse"><rect x="256" y="0" width="256" height="512"/></clipPath></defs></svg>
 <header class="top">
   <div class="wrap topbar">
-    <a class="logo" href="./" id="logoHome" aria-label="Crafty Club, torna alla home">
+    <a class="logo" href="./" id="logoHome" aria-label="The Crafty Club, torna alla home">
       <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="4.5" stroke-dasharray="10 7.6" stroke-linecap="round"/><g stroke="var(--mark)" stroke-width="11" stroke-linecap="round"><path d="M50 14v72M18.8 32l62.4 36M18.8 68l62.4-36"/></g><circle cx="50" cy="50" r="8" fill="#FFCF3D" stroke="#2A1440" stroke-width="3"/></svg>
-      <span class="wm" aria-hidden="true">crafty<span class="club">club</span></span>
+      <span class="wm" aria-hidden="true"><span class="the">The</span> crafty<span class="club">club</span></span>
     </a>
     <div class="top-actions">
       <button class="icon-btn" id="savedBtn" type="button" aria-pressed="false" aria-label="Salvati">
