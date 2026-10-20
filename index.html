@@ -93,6 +93,7 @@ header.top.shrunk .icon-btn{width:32px;height:32px}
 .tipo-seg button{flex:1;min-width:0;border:0;background:none;font-weight:700;font-size:14px;cursor:pointer;color:var(--ink);padding:0 8px}
 .tipo-seg button + button{border-left:2px solid var(--ink)}
 .tipo-seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+@media (max-width:559px){.tipo-seg button{font-size:13px;padding:0 4px;line-height:1.1}}
 @media (min-width:560px){.searchrow{flex-wrap:nowrap}.searchrow .search{flex:1 1 auto}.searchrow .calbtn{height:auto}.tipo-seg{flex:0 0 auto;height:auto}.tipo-seg button{padding:0 16px;min-width:92px}}
 .calbtn{flex:none;width:52px;padding:0;display:grid;place-items:center;border:2px solid var(--ink);background:var(--sun);color:#2A1440;border-radius:18px;box-shadow:4px 4px 0 var(--ink);cursor:pointer}
 
@@ -229,6 +230,14 @@ footer a{color:inherit;font-weight:600}
 .totop svg{width:22px;height:22px}
 .totop:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #2A1440}
 @media (min-width:900px){.totop{right:max(32px,calc((100vw - 960px)/2 - 64px))}}
+.titlerow{display:flex;align-items:flex-start;gap:10px}
+.titlerow h3{flex:1;min-width:0}
+.addcal{flex:none;width:40px;height:40px;margin-top:2px;padding:0;display:grid;place-items:center;border:2px solid var(--ink);border-radius:12px;background:var(--surface);color:var(--ink);cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+.addcal[aria-expanded="true"]{background:var(--sun);color:#2A1440;border-color:#2A1440;box-shadow:2px 2px 0 #2A1440}
+.calinfo{margin:4px 0 12px;padding:12px 14px;border-radius:16px;background:var(--bg);border:2px solid var(--line)}
+.calinfo[hidden]{display:none}
+.calinfo p{margin:0 0 10px;font-size:14px;line-height:1.45}
+.calinfo .btn{width:100%}
 .share{display:flex;align-items:center;justify-content:center;gap:8px}
 .share svg{display:block}
 .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-weight:600;font-size:14px;z-index:40;transition:opacity .2s,transform .2s;pointer-events:none}
@@ -321,9 +330,10 @@ footer a{color:inherit;font-weight:600}
       <button class="calbtn" id="calBtn" type="button" aria-label="Calendario dei workshop">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/><circle cx="8.5" cy="14.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="14.5" r="1" fill="currentColor" stroke="none"/><circle cx="15.5" cy="14.5" r="1" fill="currentColor" stroke="none"/></svg>
       </button>
-      <div class="tipo-seg" role="group" aria-label="Workshop o corsi">
+      <div class="tipo-seg" role="group" aria-label="Workshop, corsi o altre attività">
         <button type="button" data-tipo="workshop" aria-pressed="false">Workshop</button>
         <button type="button" data-tipo="corso" aria-pressed="false">Corsi</button>
+        <button type="button" data-tipo="attivita" aria-pressed="false">Altre attività</button>
       </div>
     </div>
   </section>
@@ -683,7 +693,7 @@ function render(){
   const box=document.getElementById("cards"); box.innerHTML="";
   const title=document.getElementById("listTitle"), count=document.getElementById("listCount");
   const where=regionById(state.region).where;
-  title.textContent = state.tab==="saved" ? "I tuoi salvati" : ((state.cats.length===1 ? catOf(state.cats[0]).label : state.cats.length ? state.cats.map(id=>catOf(id).label).join(", ") : state.tipo ? (state.tipo==="corso"?"Corsi":"Workshop") : "In arrivo")+" "+where).trim();
+  title.textContent = state.tab==="saved" ? "I tuoi salvati" : ((state.cats.length===1 ? catOf(state.cats[0]).label : state.cats.length ? state.cats.map(id=>catOf(id).label).join(", ") : state.tipo ? ({corso:"Corsi",workshop:"Workshop",attivita:"Altre attività"}[state.tipo]) : "In arrivo")+" "+where).trim();
   const active = (state.maxPrice?1:0)+(state.when!=="all"?1:0)+(state.weekends?1:0)+(state.noBig?1:0);
   const fc=document.getElementById("fcount"); fc.hidden=!active; fc.textContent=active;
   document.getElementById("resetAll").hidden = !(active || state.cats.length || state.q || state.tipo || state.noKids);
@@ -702,6 +712,7 @@ function render(){
   if(funny || away){ const q=state.q; state.q=""; list=filtered(); state.q=q; }
   else list=filtered();
   const noun = state.tipo==="corso" ? (list.length===1?"corso":"corsi") : state.tipo==="workshop" ? "workshop" : "attività";
+  // tipo "attivita" = altre attività: giochi, ballo, escursioni, degustazioni, open day…
   count.textContent = `${list.length} ${noun}`;
   if(funny) box.append(el("div",{class:"funny"},
     el("strong",{},"Anche se questa settimana vuoi fare schifo, almeno fallo in compagnia."),
@@ -800,7 +811,7 @@ function openFilters(){
       el("p",{class:"cal-hint",style:"margin-top:6px"}, hint));
   }
   drawPick();
-  const TIPI=[{v:"",l:"Tutti"},{v:"workshop",l:"Workshop"},{v:"corso",l:"Corsi"}];
+  const TIPI=[{v:"",l:"Tutti"},{v:"workshop",l:"Workshop"},{v:"corso",l:"Corsi"},{v:"attivita",l:"Altre attività"}];
   // tipologie: le categorie che hanno almeno un evento in arrivo, in qualsiasi luogo
   const usate=new Set(state.all.filter(isUpcoming).flatMap(catsOf));
   const tipologie=CATS.filter(c=>usate.has(c.id));
@@ -864,8 +875,37 @@ const LEGAL = {
 function openLegal(k){
   const L=LEGAL[k]; if(!L) return;
   const box=el("div",{class:"legal"}); box.innerHTML=L.testo;
-  openSheet([el("h3",{id:"sheetTitle"},L.titolo), box,
-    el("button",{class:"ghost",type:"button",style:"width:100%;margin-top:16px",onclick:()=>closeSheet()},"Chiudi")]);
+  openSheet([el("h3",{id:"sheetTitle"},L.titolo), box]);
+}
+// «Aggiungi al calendario»: su iPhone/iPad/Mac un file .ics (si apre il Calendario), altrove Google Calendar
+const CAL_SVG='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4M12 13v5M9.5 15.5h5"/></svg>';
+function calTimes(w){
+  const pad=n=>String(n).padStart(2,"0"), dd=w.data.replace(/-/g,"");
+  if(!w.ora_inizio){ const e=parseDate(w.data); e.setDate(e.getDate()+1); return {allDay:true, start:dd, end:ymd(e).replace(/-/g,"")}; }
+  const [h,m]=w.ora_inizio.split(":").map(Number);
+  let h2, m2;
+  if(w.ora_fine){ [h2,m2]=w.ora_fine.split(":").map(Number); } else { h2=h+2; m2=m; }
+  const endDay=parseDate(w.data);
+  if(h2>23 || h2*60+m2<=h*60+m){ endDay.setDate(endDay.getDate()+1); h2=h2%24; }
+  return {allDay:false, start:`${dd}T${pad(h)}${pad(m)}00`, end:`${ymd(endDay).replace(/-/g,"")}T${pad(h2)}${pad(m2)}00`};
+}
+function addToCalendar(w){
+  const t=calTimes(w);
+  const luogo=[w.indirizzo, zonaLabel(w)].filter(Boolean).join(", ");
+  const note=[w.descrizione, w.link ? "Prenotazioni: "+w.link : "", "Su Crafty Club: "+eventUrl(w)].filter(Boolean).join("\n\n");
+  const apple=/iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent);
+  if(!apple){
+    const q=new URLSearchParams({action:"TEMPLATE", text:w.titolo, dates:t.start+"/"+t.end, details:note, location:luogo, ctz:"Europe/Rome"});
+    window.open("https://calendar.google.com/calendar/render?"+q.toString(),"_blank","noopener"); return;
+  }
+  const esc=v=>String(v||"").replace(/\\/g,"\\\\").replace(/([,;])/g,"\\$1").replace(/\r?\n/g,"\\n");
+  const dt=(k,v)=>t.allDay ? k+";VALUE=DATE:"+v : k+";TZID=Europe/Rome:"+v;
+  const stamp=new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d+/,"");
+  const ics=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Crafty Club//IT","CALSCALE:GREGORIAN","BEGIN:VEVENT",
+    "UID:"+w.id+"@craftyclub.github.io", "DTSTAMP:"+stamp, dt("DTSTART",t.start), dt("DTEND",t.end),
+    "SUMMARY:"+esc(w.titolo), "LOCATION:"+esc(luogo), "DESCRIPTION:"+esc(note), "URL:"+eventUrl(w),
+    "END:VEVENT","END:VCALENDAR"].join("\r\n");
+  location.href="data:text/calendar;charset=utf-8,"+encodeURIComponent(ics);
 }
 function openFromHash(){
   const lk=location.hash.slice(1); if(LEGAL[lk]){ openLegal(lk); return; }
@@ -889,6 +929,11 @@ function openDetail(w){
   const esaurito = w.posti_disponibili!=null && w.posti_disponibili!=="" && Number(w.posti_disponibili)<=0;
   const prezzo = (w.prezzo!=null && w.prezzo!=="") ? priceLabel(w) + (esaurito ? " · esaurito" : "") : ask;
   const rows=[["Quando",when],["Dove",dove],["Prezzo",prezzo],["Organizzatore",w.organizzatore]].filter(r=>r[1]);
+  const calInfo=el("div",{class:"calinfo",hidden:true},
+    el("p",{}, "Salva questo evento nel calendario del tuo telefono o in Google Calendar, con data, orario, luogo e link per prenotare."),
+    el("button",{class:"btn",type:"button",onclick:()=>{ addToCalendar(w); calInfo.hidden=true; }},"Aggiungi al calendario"));
+  const calBtn=el("button",{class:"addcal",type:"button","aria-label":"Aggiungi al calendario","aria-expanded":"false",onclick:()=>{ calInfo.hidden=!calInfo.hidden; calBtn.setAttribute("aria-expanded",String(!calInfo.hidden)); }});
+  calBtn.innerHTML=CAL_SVG;
   let link=null;
   if(w.link && /^https?:\/\//i.test(w.link)) link=el("a",{class:"btn",href:w.link,target:"_blank",rel:"noopener"},"Prenota sul sito dell’organizzatore");
   openSheet([el("div",{class:"detail"},
@@ -896,13 +941,13 @@ function openDetail(w){
       el("span",{class:"bg",style:`background-image:url('${fotoGrande(w)}')`}),
       el("img",{src:fotoGrande(w),alt:"",onerror:e=>{ const im=e.target; if(!im.src.endsWith(fotoOf(w))) im.src=fotoOf(w); else im.closest(".cover").remove(); }})) : null,
     el("span",{class:"chip-cat",style:`--cb:${c.b};--cc:${c.c}`}, catIcon(c.id), c.label),
-    el("h3",{id:"sheetTitle"},w.titolo||"Workshop"),
+    el("div",{class:"titlerow"}, el("h3",{id:"sheetTitle"},w.titolo||"Workshop"), d ? calBtn : null),
+    d ? calInfo : null,
     el("dl",{}, rows.flatMap(([k,v])=>[el("dt",{},k),el("dd",{},v)])),
     w.descrizione? el("p",{},w.descrizione):null,
     link,
     el("button",{class:"ghost share",type:"button",style:"width:100%;margin-top:10px",onclick:()=>shareEvent(w,when)},
-      (()=>{ const i=el("span",{"aria-hidden":"true"}); i.innerHTML=SHARE_SVG; return i; })(), "Condividi l’evento"),
-    el("button",{class:"ghost",type:"button",style:"width:100%;margin-top:10px",onclick:()=>closeSheet()},"Chiudi")
+      (()=>{ const i=el("span",{"aria-hidden":"true"}); i.innerHTML=SHARE_SVG; return i; })(), "Condividi l’evento")
   )]);
 }
 
@@ -1026,7 +1071,7 @@ const WORKSHOPS = [
   "ora_fine": "12:00",
   "ora_inizio": "10:00",
   "organizzatore": "Agri Baby Parking La Fattoria",
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Open day in fattoria: animali per bambini",
   "zona": "Provincia di Torino",
   "id": "agribaby-open-day-2026-10-24"
@@ -1260,7 +1305,7 @@ const WORKSHOPS = [
   "ora_inizio": "18:30",
   "organizzatore": "Arcade",
   "prezzo": 0,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Torneo di briscola: serata amichevole",
   "zona": "Lingotto",
   "id": "arcade-briscola-2026-10-21"
@@ -1277,7 +1322,7 @@ const WORKSHOPS = [
   "ora_inizio": "20:00",
   "organizzatore": "Arcade",
   "prezzo": 20,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Cena con delitto: Halloween",
   "zona": "Lingotto",
   "id": "arcade-cena-con-delitto-2026-11-13"
@@ -1294,7 +1339,7 @@ const WORKSHOPS = [
   "ora_inizio": "20:00",
   "organizzatore": "Arcade",
   "prezzo": 0,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Game Night: tre giochi da tavolo a punti",
   "zona": "Lingotto",
   "id": "arcade-game-night-2026-10-23"
@@ -1311,7 +1356,7 @@ const WORKSHOPS = [
   "ora_inizio": "20:30",
   "organizzatore": "Arcade",
   "prezzo": 0,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Magic Night: torneo Commander",
   "zona": "Lingotto",
   "id": "arcade-magic-2026-10-28"
@@ -1328,7 +1373,7 @@ const WORKSHOPS = [
   "ora_inizio": "20:00",
   "organizzatore": "Arcade",
   "prezzo": 0,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Masterland Night: gioco con gli autori",
   "zona": "Lingotto",
   "id": "arcade-masterland-2026-10-22"
@@ -1345,7 +1390,7 @@ const WORKSHOPS = [
   "ora_inizio": "19:30",
   "organizzatore": "Arcade",
   "prezzo": 0,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Chess Night: torneo di scacchi",
   "zona": "Lingotto",
   "id": "arcade-scacchi-2026-10-29"
@@ -1363,7 +1408,7 @@ const WORKSHOPS = [
   "ora_inizio": "17:00",
   "organizzatore": "Rossana Delmastro (Samar Academy) per BallaTorino",
   "prezzo": 0,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "La magia del cerchio: danza fusion al parco",
   "zona": "San Salvario",
   "id": "ballatorino-magia-del-cerchio-2026-10-23"
@@ -1379,7 +1424,7 @@ const WORKSHOPS = [
   "indirizzo": "Area Sportiva La Turna",
   "link": "https://www.instagram.com/p/DeeiiZrjewv/",
   "organizzatore": "Baltea Bike Experience",
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Tour in bici: Forte di Bard e vigneti",
   "zona": "Provincia di Torino",
   "id": "balteabike-forte-di-bard-2026-10-25"
@@ -1395,7 +1440,7 @@ const WORKSHOPS = [
   "indirizzo": "Lago di Meugliano",
   "link": "https://www.instagram.com/p/DewrkmojWvq/",
   "organizzatore": "Baltea Bike Experience",
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Tour in bici: la Valchiusella",
   "zona": "Provincia di Torino",
   "id": "balteabike-valchiusella-2026-10-31"
@@ -1413,7 +1458,7 @@ const WORKSHOPS = [
   "ora_inizio": "15:30",
   "organizzatore": "Barburin",
   "prezzo": 15,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Il sortilegio della strega: caccia al tesoro",
   "zona": "Centro",
   "id": "barburin-sortilegio-strega-2026-10-31"
@@ -1516,7 +1561,7 @@ const WORKSHOPS = [
   "ora_inizio": "16:30",
   "organizzatore": "Biblioteca civica di Bra con il Circolo Damistico Bartoloni",
   "prezzo": 0,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Giochi in biblioteca: impariamo la dama",
   "zona": "Provincia di Cuneo",
   "id": "bibliobra-dama-2026-10-22"
@@ -1570,7 +1615,7 @@ const WORKSHOPS = [
   "ora_inizio": "10:30",
   "organizzatore": "BlaBla Photowalk Events",
   "prezzo": 2,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Photowalk: passeggiata fotografica in gruppo",
   "zona": "Quadrilatero",
   "id": "blabla-photowalk-2026-12-26"
@@ -1588,7 +1633,7 @@ const WORKSHOPS = [
   "ora_inizio": "10:00",
   "organizzatore": "Revelsh Blind Beholders",
   "prezzo": 0,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Gioco di ruolo dal vivo: caccia al killer",
   "zona": "Provincia di Torino",
   "id": "blindbeholders-gdr-live-2026-10-25"
@@ -1903,7 +1948,7 @@ const WORKSHOPS = [
   "ora_inizio": "19:00",
   "organizzatore": "Casa del Quartiere di San Salvario con Augusta Fiera del Vino",
   "prezzo": 7,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Vino e vino: degustazione di vini naturali",
   "zona": "San Salvario",
   "id": "casadelquartiere-vino-e-vino-2026-10-23"
@@ -2007,7 +2052,7 @@ const WORKSHOPS = [
   "prezzo_da": true,
   "solo_categoria": true,
   "su_prenotazione": true,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Degustazione di cioccolato fine",
   "zona": "Centro",
   "id": "chocolate7-degustazione"
@@ -2042,7 +2087,7 @@ const WORKSHOPS = [
   "ora_inizio": "20:00",
   "organizzatore": "Cibo & Trash",
   "prezzo": 10,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Torneo di ping pong: in coppia 2 contro 2",
   "zona": "San Salvario",
   "id": "ciboetrash-ping-pong-2026-10-20"
@@ -2127,7 +2172,7 @@ const WORKSHOPS = [
   "ora_inizio": "10:30",
   "organizzatore": "Dafne Carli per Unione Induista Italiana",
   "prezzo": 0,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Danza indiana: laboratorio aperto per Diwali",
   "zona": "Quadrilatero",
   "id": "diwali-danza-indiana-2026-10-25"
@@ -2141,7 +2186,7 @@ const WORKSHOPS = [
   "foto": "img/eventi/dustyjazz-school-days-2027-01-23.jpg",
   "link": "https://linktr.ee/dustyjazz",
   "organizzatore": "Dusty Jazz",
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "School Days: workshop di swing e musicalità",
   "zona": "Torino",
   "id": "dustyjazz-school-days-2027-01-23"
@@ -2159,7 +2204,7 @@ const WORKSHOPS = [
   "ora_inizio": "17:00",
   "organizzatore": "Dusty Jazz con BallaTorino",
   "prezzo": 0,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Jazz Street Dance: si balla sotto i portici",
   "zona": "Centro",
   "id": "dustyjazz-street-dance-2026-10-23"
@@ -2249,7 +2294,7 @@ const WORKSHOPS = [
   "organizzatore": "Eataly Torino Lingotto con Fontanafredda",
   "prezzo": 18,
   "solo_categoria": true,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Barolo After Hours: aperitivo in enoteca",
   "zona": "Lingotto",
   "id": "eataly-barolo-after-hours-aperitivo-in-enoteca-2026-11-05"
@@ -2304,7 +2349,7 @@ const WORKSHOPS = [
   "posti_disponibili": 0,
   "prezzo": 45,
   "solo_categoria": true,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Bollicine fuori dagli schemi: degustazione",
   "zona": "Lingotto",
   "id": "eataly-bollicine-fuori-dagli-schemi-degustazion-2026-12-14"
@@ -2740,7 +2785,7 @@ const WORKSHOPS = [
   "organizzatore": "Eataly Torino Lingotto",
   "prezzo": 35,
   "solo_categoria": true,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Degustazione di birra: le birre di Natale",
   "zona": "Lingotto",
   "id": "eataly-degustazione-di-birra-le-birre-di-natale-2026-12-01"
@@ -2758,7 +2803,7 @@ const WORKSHOPS = [
   "organizzatore": "Eataly Torino Lingotto",
   "prezzo": 35,
   "solo_categoria": true,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Degustazione di olio: conoscere l’olio",
   "zona": "Lingotto",
   "id": "eataly-degustazione-di-olio-conoscere-lolio-2026-11-14"
@@ -2776,7 +2821,7 @@ const WORKSHOPS = [
   "organizzatore": "Eataly Torino Lingotto con Roberta Poloniato",
   "prezzo": 150,
   "solo_categoria": true,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Degustazione di vino: l’approfondimento",
   "zona": "Lingotto",
   "id": "eataly-degustazione-di-vino-lapprofondimento-2026-11-16"
@@ -2794,7 +2839,7 @@ const WORKSHOPS = [
   "organizzatore": "Eataly Torino Lingotto",
   "prezzo": 120,
   "solo_categoria": true,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Degustazione di vino: le basi",
   "zona": "Lingotto",
   "id": "eataly-degustazione-di-vino-le-basi-2026-11-06"
@@ -2939,7 +2984,7 @@ const WORKSHOPS = [
   "organizzatore": "Eataly Torino Lingotto",
   "prezzo": 45,
   "solo_categoria": true,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Italia segreta: vitigni quasi scomparsi",
   "zona": "Lingotto",
   "id": "eataly-italia-segreta-vitigni-quasi-scomparsi-2026-12-21"
@@ -3011,7 +3056,7 @@ const WORKSHOPS = [
   "organizzatore": "Eataly Torino Lingotto",
   "prezzo": 45,
   "solo_categoria": true,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Le anime del Nebbiolo: degustazione",
   "zona": "Lingotto",
   "id": "eataly-le-anime-del-nebbiolo-degustazione-2027-01-22"
@@ -3029,7 +3074,7 @@ const WORKSHOPS = [
   "organizzatore": "Eataly Torino Lingotto",
   "prezzo": 120,
   "solo_categoria": true,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Master Birra: degustazione di birre",
   "zona": "Lingotto",
   "id": "eataly-master-birra-degustazione-di-birre-2027-01-18"
@@ -3102,7 +3147,7 @@ const WORKSHOPS = [
   "organizzatore": "Eataly Torino Lingotto",
   "prezzo": 45,
   "solo_categoria": true,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Palestra sensoriale: allenare il gusto",
   "zona": "Lingotto",
   "id": "eataly-palestra-sensoriale-allenare-il-gusto-2026-10-30"
@@ -3286,7 +3331,7 @@ const WORKSHOPS = [
   "posti_disponibili": 0,
   "prezzo": 45,
   "solo_categoria": true,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Vini e sapori autunnali: degustazione",
   "zona": "Lingotto",
   "id": "eataly-vini-e-sapori-autunnali-degustazione-2026-10-26"
@@ -3304,7 +3349,7 @@ const WORKSHOPS = [
   "organizzatore": "Eataly Torino Lingotto",
   "prezzo": 45,
   "solo_categoria": true,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Wine Club: giro del mondo in 4 bottiglie",
   "zona": "Lingotto",
   "id": "eataly-wine-club-giro-del-mondo-in-4-bottiglie-2026-11-04"
@@ -3322,7 +3367,7 @@ const WORKSHOPS = [
   "organizzatore": "Eataly Torino Lingotto",
   "prezzo": 35,
   "solo_categoria": true,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Wine Club: i vitigni aromatici",
   "zona": "Lingotto",
   "id": "eataly-wine-club-i-vitigni-aromatici-2026-12-04"
@@ -3682,7 +3727,7 @@ const WORKSHOPS = [
   "link": "https://forms.gle/tS6mPQZsvq9RvedC7",
   "ora_inizio": "15:00",
   "organizzatore": "Feel Good Swing",
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Saturday Hop: lindy hop e social dance",
   "zona": "Aurora",
   "id": "feelgoodswing-saturday-hop-2026-10-24"
@@ -3770,7 +3815,7 @@ const WORKSHOPS = [
   "ora_fine": "20:00",
   "ora_inizio": "15:00",
   "organizzatore": "Fortango con Michael «El Gato» Nadtochi ed Elvira Lambo",
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Fortango Extra: workshop di tango",
   "zona": "Aurora",
   "id": "fortango-extra-2026-11-21"
@@ -3857,7 +3902,7 @@ const WORKSHOPS = [
   "ora_inizio": "21:00",
   "organizzatore": "Proyecto Gricel",
   "prezzo": 15,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Milonga Gricel: lezione e serata di tango",
   "zona": "Parella",
   "id": "gricel-milonga-lezione-2026-11-06"
@@ -3891,7 +3936,7 @@ const WORKSHOPS = [
   "ora_inizio": "09:00",
   "organizzatore": "Hiking Taste Tour",
   "prezzo": 249,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Trekking nelle Langhe: foliage tra le vigne",
   "zona": "Provincia di Cuneo",
   "id": "hikingtaste-langhe-foliage-2026-11-14"
@@ -3991,7 +4036,7 @@ const WORKSHOPS = [
   "ora_inizio": "14:30",
   "organizzatore": "Turismo in Langa con Langa Silvatica",
   "prezzo": 0,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Trekking a Cerretto Langhe: impollinatori",
   "zona": "Provincia di Cuneo",
   "id": "langasilvatica-trekking-cerretto-2026-11-07"
@@ -4028,7 +4073,7 @@ const WORKSHOPS = [
   "prezzo": 25,
   "prezzo_da": true,
   "su_prenotazione": true,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Vino e pietra: visita in cantina e assaggio",
   "zona": "Provincia di Cuneo",
   "id": "lautin-cantina-barge"
@@ -4048,7 +4093,7 @@ const WORKSHOPS = [
   "organizzatore": "L’Autin",
   "posti_disponibili": 0,
   "prezzo": 75,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Vini in miniera: visita e degustazione",
   "zona": "Provincia di Torino",
   "id": "lautin-miniera-degustazione-2026-10-24"
@@ -4467,7 +4512,7 @@ const WORKSHOPS = [
   "organizzatore": "Minime Differenze",
   "prezzo": 29,
   "prezzo_da": true,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Ghost Exploration: caccia al tesoro",
   "zona": "Aurora",
   "id": "minimedifferenze-ghost-exploration-2026-10-31"
@@ -4484,7 +4529,7 @@ const WORKSHOPS = [
   "ora_inizio": "11:00",
   "organizzatore": "Mio Mao Fiumi di Culture",
   "prezzo": 0,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Garba: danze tradizionali indiane",
   "zona": "Centro",
   "id": "miomao-garba-workshop-2026-10-24"
@@ -4556,7 +4601,7 @@ const WORKSHOPS = [
   "organizzatore": "Mulino Sambuy OdV",
   "prezzo": 22,
   "prezzo_da": true,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Passeggiata e polenta in collina",
   "zona": "Provincia di Torino",
   "id": "mulinosambuy-passeggiata-polenta-2026-11-15"
@@ -4574,7 +4619,7 @@ const WORKSHOPS = [
   "ora_inizio": "18:30",
   "organizzatore": "Museo Egizio con Goblin",
   "prezzo": 6,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Dungeon Egizio: D&D al museo",
   "zona": "Centro",
   "id": "museoegizio-dungeon-egizio-2026-10-23"
@@ -4867,7 +4912,7 @@ const WORKSHOPS = [
   "prezzo_da": true,
   "solo_categoria": true,
   "su_prenotazione": true,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Degustazione di olio, vino e formaggi",
   "zona": "Centro",
   "id": "oliodieva-degustazione"
@@ -5256,7 +5301,7 @@ const WORKSHOPS = [
   "ora_inizio": "09:00",
   "organizzatore": "Parco del Monviso",
   "prezzo": 0,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Gita in bici: il Bosco del Merlino",
   "zona": "Provincia di Cuneo",
   "id": "parcomonviso-bici-racconigi-2026-11-15"
@@ -5275,7 +5320,7 @@ const WORKSHOPS = [
   "organizzatore": "Parco del Monviso",
   "posti_disponibili": 0,
   "prezzo": 0,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Obiettivo foliage: foto in Val Varaita",
   "zona": "Provincia di Cuneo",
   "id": "parcomonviso-obiettivo-foliage-2026-11-08"
@@ -5537,7 +5582,7 @@ const WORKSHOPS = [
   "indirizzo": "Il Giardino di Rosero",
   "link": "https://www.giardinodirosero.it",
   "organizzatore": "Il Giardino di Rosero",
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Pumpkin patch: intaglia e dipingi la zucca",
   "zona": "Provincia di Torino",
   "id": "rosero-pumpkin-patch-2026-10-24"
@@ -5553,7 +5598,7 @@ const WORKSHOPS = [
   "indirizzo": "Il Giardino di Rosero",
   "link": "https://www.giardinodirosero.it",
   "organizzatore": "Il Giardino di Rosero",
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Pumpkin patch: intaglia e dipingi la zucca",
   "zona": "Provincia di Torino",
   "id": "rosero-pumpkin-patch-2026-10-25"
@@ -5609,7 +5654,7 @@ const WORKSHOPS = [
   "ora_inizio": "09:00",
   "organizzatore": "Irene Rubiano",
   "prezzo": 0,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Sguardi itineranti: fotografare camminando",
   "zona": "Provincia di Cuneo",
   "id": "rubiano-sguardi-itineranti-2026-10-24"
@@ -5644,7 +5689,7 @@ const WORKSHOPS = [
   "ora_inizio": "15:00",
   "organizzatore": "Ruthvi Deev",
   "prezzo": 25,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Stage di Garba: danza in cerchio",
   "zona": "Centro",
   "id": "ruthvi-garba-stage-2026-11-07"
@@ -5678,7 +5723,7 @@ const WORKSHOPS = [
   "ora_inizio": "18:00",
   "organizzatore": "Salone dell’Aperitivo con Dennis Zoppi",
   "prezzo": 0,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Cocktail torinesi: masterclass con Zoppi",
   "zona": "Aurora",
   "id": "salone-aperitivo-zoppi-2026-10-25"
@@ -5696,7 +5741,7 @@ const WORKSHOPS = [
   "prezzo_da": true,
   "solo_categoria": true,
   "su_prenotazione": true,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Degustazione di caffè specialty",
   "zona": "Aurora",
   "id": "santaromero-degustazione-caffe"
@@ -5808,7 +5853,7 @@ const WORKSHOPS = [
   "ora_inizio": "15:30",
   "organizzatore": "Slow Town Blues con Dexter Santos",
   "prezzo": 60,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Blues dance: workshop con Dexter Santos",
   "zona": "San Salvario",
   "id": "slowtownblues-dexter-santos-2026-11-21"
@@ -5845,7 +5890,7 @@ const WORKSHOPS = [
   "posti_disponibili": 0,
   "prezzo": 29,
   "prezzo_da": true,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "In canoa sul Po: speciale Halloween",
   "zona": "Centro",
   "id": "somewhere-canoa-halloween-2026-10-31"
@@ -6453,7 +6498,7 @@ const WORKSHOPS = [
   "ora_inizio": "08:30",
   "organizzatore": "Tassobarbasso, guide ambientali",
   "prezzo": 20,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Escursione: il cammino degli Invincibili",
   "zona": "Provincia di Torino",
   "id": "tassobarbasso-invincibili-2026-10-25"
@@ -6470,7 +6515,7 @@ const WORKSHOPS = [
   "ora_inizio": "16:00",
   "organizzatore": "Tedacà con la Compagnie Choryphée",
   "prezzo": 0,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Dansez ensemble: danza contemporanea",
   "zona": "Pozzo Strada",
   "id": "tedaca-dansez-ensemble-2026-10-24"
@@ -6576,7 +6621,7 @@ const WORKSHOPS = [
   "ora_inizio": "16:00",
   "organizzatore": "Turin Cats",
   "prezzo": 0,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Aperiswing: lezione open e social dance",
   "zona": "Aurora",
   "id": "turincats-aperiswing-2026-10-25"
@@ -6593,7 +6638,7 @@ const WORKSHOPS = [
   "ora_inizio": "10:30",
   "organizzatore": "Urban Desires 2026 con Collettivo Zeroscena",
   "prezzo": 0,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Hackerare Monopoly: la città in gioco",
   "zona": "San Salvario",
   "id": "urbandesires-monopoly-2026-11-07"
@@ -6611,7 +6656,7 @@ const WORKSHOPS = [
   "organizzatore": "Velvet Creative Lab",
   "prezzo": 8,
   "prezzo_da": true,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Open Studio: serata creativa libera",
   "zona": "Aurora",
   "id": "velvet-open-studio-2026-10-28"
@@ -6628,7 +6673,7 @@ const WORKSHOPS = [
   "organizzatore": "Il Villaggio della Zucca",
   "prezzo": 15,
   "su_prenotazione": true,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Villaggio della Zucca: dipingi la tua zucca",
   "zona": "Provincia di Torino",
   "id": "villaggio-zucca-favria"
@@ -6644,7 +6689,7 @@ const WORKSHOPS = [
   "ora_fine": "17:30",
   "ora_inizio": "16:30",
   "organizzatore": "Vitadasingle.net",
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "CioccolaTIAMO: degustazione per single",
   "zona": "Torino",
   "id": "vitadasingle-cioccolatiamo-2026-11-14"
@@ -6679,7 +6724,7 @@ const WORKSHOPS = [
   "organizzatore": "Winelivery Bar & Enoteca",
   "prezzo": 34,
   "su_prenotazione": true,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Degustazione di vermouth in enoteca",
   "zona": "Centro",
   "id": "winelivery-vermouth"
@@ -6695,7 +6740,7 @@ const WORKSHOPS = [
   "organizzatore": "Winelivery Bar & Enoteca",
   "prezzo": 34,
   "su_prenotazione": true,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Degustazione di vini piemontesi",
   "zona": "Centro",
   "id": "winelivery-vini-regionali"
@@ -6747,7 +6792,7 @@ const WORKSHOPS = [
   "link": "https://www.instagram.com/p/Dee8PDmG1Ub/",
   "ora_inizio": "09:30",
   "organizzatore": "ZAC! con Part collettivo",
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Lavori pubblici: cura del Movicentro",
   "zona": "Provincia di Torino",
   "id": "zac-cantiere-movicentro-2026-10-24"
@@ -6763,7 +6808,7 @@ const WORKSHOPS = [
   "link": "https://www.instagram.com/p/DeL8tcBEduF/",
   "organizzatore": "ZAC! con La Source Winefarm",
   "prezzo": 20,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Degustazione: i vini di La Source",
   "zona": "Provincia di Torino",
   "id": "zac-degustazione-la-source-2026-12-04"
@@ -6779,7 +6824,7 @@ const WORKSHOPS = [
   "link": "https://www.instagram.com/p/DeL8tcBEduF/",
   "organizzatore": "ZAC! con Vini Stefano Rossotto",
   "prezzo": 20,
-  "tipo": "workshop",
+  "tipo": "attivita",
   "titolo": "Degustazione: i vini di Stefano Rossotto",
   "zona": "Provincia di Torino",
   "id": "zac-degustazione-rossotto-2026-11-06"
