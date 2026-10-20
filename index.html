@@ -85,7 +85,23 @@ header.top.shrunk .icon-btn{width:32px;height:32px}
 /* hero */
 .hero{position:relative;padding:18px 0 8px}
 .hero h1{font-size:clamp(28px,8vw,56px);line-height:.95;margin:0 0 14px;font-weight:800;font-stretch:80%;letter-spacing:-.03em}
-.hero h1 span{display:block;white-space:nowrap}
+.hero h1 > span{display:block;white-space:nowrap}
+/* zona nel titolo: parola sottolineata, toccandola si sceglie Torino, Cuneo o Piemonte */
+.area-wrap{position:relative;display:inline-block}
+.area-pick{display:inline;padding:0;border:0;background:none;color:color-mix(in srgb,var(--ink) 72%,var(--lilac));transition:color .15s;font:inherit;letter-spacing:inherit;cursor:pointer;text-decoration:underline;text-decoration-thickness:.08em;text-underline-offset:.1em;text-decoration-color:var(--pink)}
+.area-pick:hover,.area-pick[aria-expanded="true"]{color:var(--ink)}
+.area-pick:focus-visible{outline:2px solid var(--pink);outline-offset:3px;border-radius:6px}
+/* menu della zona: stesso stile dei riquadri del sito (bordo scuro e ombra piena) */
+.area-menu{position:absolute;left:0;top:calc(100% + 10px);z-index:20;display:flex;flex-direction:column;gap:4px;min-width:220px;padding:6px;border:2px solid var(--ink);border-radius:18px;background:var(--surface);box-shadow:4px 4px 0 var(--ink);font-size:15px;font-weight:600;font-stretch:100%;letter-spacing:0;line-height:1.25;white-space:normal;animation:areaIn .14s ease-out}
+.area-menu[hidden]{display:none}
+@keyframes areaIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.area-menu button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;padding:10px 40px 10px 14px;border:0;border-radius:12px;background:none;color:var(--ink);font:inherit;text-align:left;cursor:pointer;position:relative}
+.area-menu button:hover,.area-menu button:focus-visible{background:var(--bg);outline:none}
+.area-menu b{font-size:17px;font-weight:800}
+.area-menu small{font-size:12px;font-weight:500;color:var(--ink-soft)}
+.area-menu button[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+.area-menu button[aria-selected="true"] small{color:var(--bg);opacity:.75}
+.area-menu button[aria-selected="true"]::after{content:"";position:absolute;right:14px;top:50%;width:18px;height:18px;margin-top:-9px;border-radius:999px;background:var(--pink) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/12px no-repeat}
 .sticker{position:absolute;font-weight:700;font-size:13px;padding:6px 12px;border-radius:999px;border:2px solid var(--ink);color:#2A1440;white-space:nowrap}
 .s1{background:var(--sun);right:2px;top:20px;transform:rotate(8deg)}
 .s2{background:var(--mint);right:30px;top:72px;transform:rotate(-6deg)}
@@ -323,8 +339,8 @@ footer a{color:inherit;font-weight:600}
   body{font-size:15px}
   .hero{padding:10px 0 4px}
   .hero h1{font-size:clamp(34px,3.6vw,50px);margin-bottom:14px}
-  .hero h1 span{display:inline}
-  .hero h1 span+span::before{content:" "}
+  .hero h1 > span{display:inline}
+  .hero h1 > span+span::before{content:" "}
   .searchrow{max-width:820px}
   .tipo-seg{border-radius:16px}.tipo-seg button{font-size:13px}
   .search{padding:10px 14px;border-radius:16px}
@@ -379,7 +395,7 @@ footer a{color:inherit;font-weight:600}
 
 <main class="wrap">
   <section class="hero">
-    <h1><span>Cosa facciamo</span><span>questa settimana?</span></h1>
+    <h1><span>Cosa facciamo</span><span>questa settimana</span><span><span id="areaPrep">a</span> <span class="area-wrap"><button type="button" class="area-pick" id="areaBtn" aria-haspopup="listbox" aria-expanded="false" aria-controls="areaMenu" aria-label="Scegli la zona"><span id="areaLabel">Torino</span></button><span class="area-menu" id="areaMenu" role="listbox" aria-label="Zona" hidden><button type="button" role="option" data-area="to"><b>Torino</b><small>Città e provincia</small></button><button type="button" role="option" data-area="cn"><b>Cuneo</b><small>Città e provincia</small></button><button type="button" role="option" data-area="pie"><b>Piemonte</b><small>Tutte le zone</small></button></span></span>?</span></h1>
     <div class="searchrow">
       <label class="search">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
@@ -504,9 +520,18 @@ function placesWhere(){
   const l=["tc","pto","cc","pcn"].filter(x=>state.places.includes(x)).map(x=>nomi[x]);
   return "a "+l.slice(0,-1).join(", ")+" e "+l[l.length-1];
 }
-// all'apertura nessun filtro di luogo: si vede tutto ("Ovunque"); la scelta non viene ricordata tra una visita e l'altra
-const DEFAULT_PLACES=[];
-function loadPlaces(){ try{ localStorage.removeItem("cc-places"); localStorage.removeItem("cc-region"); }catch(e){} return []; }
+// all'apertura la zona è Torino (città e provincia); la scelta non viene ricordata tra una visita e l'altra
+const DEFAULT_PLACES=["tc","pto"];
+function loadPlaces(){ try{ localStorage.removeItem("cc-places"); localStorage.removeItem("cc-region"); }catch(e){} return [...DEFAULT_PLACES]; }
+const samePlaces = (a,b) => [...a].sort().join()===[...b].sort().join();
+// zona del titolo ricavata dai luoghi scelti: solo Torino e/o provincia = Torino, solo Cuneo e/o provincia = Cuneo, altrimenti Piemonte
+const AREA_PLACES = {to:["tc","pto"], cn:["cc","pcn"], pie:[]};
+function areaOf(){
+  const P=state.places;
+  if(P.length && P.every(x=>x==="tc"||x==="pto")) return "to";
+  if(P.length && P.every(x=>x==="cc"||x==="pcn")) return "cn";
+  return "pie";
+}
 function persistPlaces(){}
 const PRICES = [{v:0,l:"Qualsiasi"},{v:20,l:"Fino a 20 €"},{v:35,l:"Fino a 35 €"},{v:50,l:"Fino a 50 €"},{v:80,l:"Fino a 80 €"}];
 const WHENS = [{v:"all",l:"Tutte le date"},{v:"today",l:"Oggi"},{v:"week",l:"Prossimi 7 giorni"},{v:"weekend",l:"Questo weekend"},{v:"nextweek",l:"Prossima settimana"},{v:"month",l:"Prossimi 30 giorni"}];
@@ -780,13 +805,20 @@ function render(){
   title.textContent = state.tab==="saved" ? "I tuoi salvati" : ((state.cats.length===1 ? catOf(state.cats[0]).label : state.cats.length ? state.cats.map(id=>catOf(id).label).join(", ") : state.tipo ? ({corso:"Corsi",workshop:"Workshop",attivita:"Altre attività"}[state.tipo]) : "In arrivo")+" "+where).trim();
   const active = (state.maxPrice?1:0)+(state.when!=="all"?1:0)+(state.weekends?1:0)+(state.noBig?1:0);
   const fc=document.getElementById("fcount"); fc.hidden=!active; fc.textContent=active;
-  document.getElementById("resetAll").hidden = !(active || state.cats.length || state.q || state.tipo || state.noKids || state.places.length>0);
+  document.getElementById("resetAll").hidden = !(active || state.cats.length || state.q || state.tipo || state.noKids || !samePlaces(state.places,DEFAULT_PLACES));
   document.querySelectorAll("[data-tipo]").forEach(b=>b.setAttribute("aria-pressed",String(state.tipo===b.dataset.tipo)));
   document.querySelectorAll("[data-when]").forEach(b=>b.setAttribute("aria-pressed",String(state.when===b.dataset.when)));
   document.querySelector('[data-quick="cheap"]').setAttribute("aria-pressed",String(state.maxPrice===30));
   document.querySelector('[data-quick="nokids"]').setAttribute("aria-pressed",String(state.noKids));
   document.querySelector('[data-quick="weekends"]').setAttribute("aria-pressed",String(state.weekends));
-  document.querySelector('[data-quick="torino"]').setAttribute("aria-pressed",String(state.places.length===1 && state.places[0]==="tc"));
+  // titolo «… a Torino? / a Cuneo? / in Piemonte?» e filtro rapido «Solo Torino» / «Solo Cuneo» (nascosto con Piemonte)
+  const area=areaOf(), city={to:"tc",cn:"cc"}[area];
+  document.querySelectorAll("#areaMenu [data-area]").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.area===area)));
+  document.getElementById("areaLabel").textContent={to:"Torino",cn:"Cuneo",pie:"Piemonte"}[area];
+  document.getElementById("areaPrep").textContent= area==="pie" ? "in" : "a";
+  const solo=document.querySelector('[data-quick="torino"]');
+  solo.hidden=!city; solo.textContent= area==="cn" ? "Solo Cuneo" : "Solo Torino";
+  solo.setAttribute("aria-pressed",String(!!city && state.places.length===1 && state.places[0]===city));
   if(!state.dbOk){ count.textContent=""; box.append(el("div",{class:"notice"},"Apri questa pagina da claude.ai per vedere i workshop.")); return; }
   if(!state.loaded){ count.textContent=""; box.append(el("div",{class:"empty"},"Carico i workshop…")); return; }
   // easter egg: chi cerca "schifo" riceve una frase scherzosa e tutti i workshop (la ricerca viene ignorata)
@@ -816,7 +848,7 @@ function render(){
   list.forEach(w=>box.append(card(w)));
 }
 
-function resetFilters(){ Object.assign(state,{q:"",cats:[],tipo:"",when:"all",maxPrice:0,noBig:false,noKids:false,from:"",to:"",pick:[],weekends:false}); state.places=[]; document.getElementById("q").value=""; render(); }
+function resetFilters(){ Object.assign(state,{q:"",cats:[],tipo:"",when:"all",maxPrice:0,noBig:false,noKids:false,from:"",to:"",pick:[],weekends:false}); state.places=[...DEFAULT_PLACES]; document.getElementById("q").value=""; render(); }
 
 /* sheets */
 const sheet=document.getElementById("sheet"), overlay=document.getElementById("overlay");
@@ -1129,8 +1161,23 @@ document.getElementById("openFilters").addEventListener("click",openFilters);
 document.getElementById("resetAll").addEventListener("click",resetFilters);
 document.querySelectorAll("[data-tipo]").forEach(b=>b.addEventListener("click",()=>{ state.tipo = state.tipo===b.dataset.tipo ? "" : b.dataset.tipo; if(state.tipo) track("tipo/"+state.tipo); render(); }));
 document.querySelectorAll("[data-when]").forEach(b=>b.addEventListener("click",()=>{state.when = state.when===b.dataset.when?"all":b.dataset.when; if(state.when!=="all") track("filtro/"+state.when); render();}));
-// «Solo Torino»: solo la città; toccandolo di nuovo si torna a «Ovunque»
-document.querySelector('[data-quick="torino"]').addEventListener("click",()=>{ const on=state.places.length===1 && state.places[0]==="tc"; state.places = on ? [...DEFAULT_PLACES] : ["tc"]; state.tab="explore"; persistPlaces(); if(!on) track("filtro/solo-torino"); render(); });
+// zona nel titolo: Torino (città e provincia), Cuneo (città e provincia) o Piemonte (tutto)
+(function(){
+  const btn=document.getElementById("areaBtn"), menu=document.getElementById("areaMenu"), opts=[...menu.querySelectorAll("[data-area]")];
+  const close=(focus)=>{ if(menu.hidden) return; menu.hidden=true; btn.setAttribute("aria-expanded","false"); if(focus) btn.focus(); };
+  const open=()=>{ menu.hidden=false; btn.setAttribute("aria-expanded","true"); (opts.find(o=>o.getAttribute("aria-selected")==="true")||opts[0]).focus(); };
+  btn.addEventListener("click",e=>{ e.stopPropagation(); menu.hidden ? open() : close(); });
+  opts.forEach(o=>o.addEventListener("click",e=>{ e.stopPropagation(); const a=o.dataset.area; close(true); if(samePlaces(state.places,AREA_PLACES[a])) return; state.places=[...AREA_PLACES[a]]; state.tab="explore"; persistPlaces(); track("area/"+a); render(); }));
+  menu.addEventListener("keydown",e=>{ const i=opts.indexOf(document.activeElement);
+    if(e.key==="ArrowDown"){ e.preventDefault(); opts[(i+1)%opts.length].focus(); }
+    else if(e.key==="ArrowUp"){ e.preventDefault(); opts[(i-1+opts.length)%opts.length].focus(); }
+    else if(e.key==="Escape"){ e.preventDefault(); close(true); }
+    else if(e.key==="Tab") close(false); });
+  document.addEventListener("click",e=>{ if(!menu.contains(e.target)) close(false); });
+  window.addEventListener("scroll",()=>close(false),{passive:true});
+})();
+// «Solo Torino» / «Solo Cuneo»: solo la città; toccandolo di nuovo si torna a città e provincia
+document.querySelector('[data-quick="torino"]').addEventListener("click",()=>{ const area=areaOf(), city={to:"tc",cn:"cc"}[area]; if(!city) return; const on=state.places.length===1 && state.places[0]===city; state.places = on ? [...AREA_PLACES[area]] : [city]; state.tab="explore"; persistPlaces(); if(!on) track("filtro/solo-"+(area==="cn"?"cuneo":"torino")); render(); });
 document.querySelector('[data-quick="cheap"]').addEventListener("click",()=>{state.maxPrice = state.maxPrice===30?0:30; if(state.maxPrice) track("filtro/sotto-30"); render();});
 document.querySelector('[data-quick="nokids"]').addEventListener("click",()=>{state.noKids = !state.noKids; if(state.noKids) track("filtro/escludi-famiglie"); render();});
 document.querySelector('[data-quick="weekends"]').addEventListener("click",()=>{state.weekends = !state.weekends; if(state.weekends) track("filtro/solo-weekend"); render();});
