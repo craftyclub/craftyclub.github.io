@@ -435,7 +435,7 @@ footer a{color:inherit;font-weight:600}
     </div>
     <div class="install" id="installa" hidden>
       <div class="install-ico" aria-hidden="true"><img src="icons/app-192.png" alt="" width="44" height="44"></div>
-      <div class="install-txt"><strong>Aggiungi alla schermata Home</strong><span id="installHint">Tieni The Crafty Club sul telefono e aprilo con un tocco, come un’app.</span></div>
+      <div class="install-txt"><strong>App</strong><span id="installHint">Aggiungi The Crafty Club alla schermata Home e aprilo con un tocco.</span></div>
       <button class="btn" type="button" id="installBtn">Aggiungi</button>
     </div>
     <form class="scrivici" id="scrivici" novalidate>
@@ -1186,7 +1186,7 @@ function openMenu(){
       el("div",{class:"menu-sep"}),
       item("write","Scrivici",()=>goToSection("scrivici")),
       item("mail","Contatti",()=>goToSection("contatti")),
-      (isStandalone() || !isMobile()) ? null : item("phone","Aggiungi alla schermata Home",()=>startInstall(true),{sub:"Apri The Crafty Club con un tocco, come un’app"}),
+      (isStandalone() || !isMobile()) ? null : item("phone","App",()=>startInstall(true),{sub:"Aggiungi The Crafty Club alla schermata Home"}),
       el("div",{class:"menu-sep"}),
       item("shield","Privacy e cookie",()=>openLegal("privacy",true)),
       item("doc","Note legali",()=>openLegal("note-legali",true)))
