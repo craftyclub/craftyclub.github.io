@@ -639,8 +639,7 @@ function openShareMenu(w){
     el("h3",{id:"sheetTitle"}, w.titolo||"Workshop"),
     el("p",{class:"meta",style:"margin:2px 0 14px"}, [when, zonaLabel(w)].filter(Boolean).join(" · ")),
     el("button",{class:"btn share",type:"button",style:"width:100%",onclick:()=>{ shareEvent(w,when); closeSheet(); }}, icon(), "Condividi l’evento"),
-    el("button",{class:"ghost",type:"button",style:"width:100%;margin-top:10px",onclick:()=>openDetail(w)},"Apri l’evento"),
-    el("button",{class:"ghost",type:"button",style:"width:100%;margin-top:10px",onclick:()=>closeSheet()},"Annulla")
+    el("button",{class:"ghost",type:"button",style:"width:100%;margin-top:10px",onclick:()=>openDetail(w)},"Apri l’evento")
   ]);
 }
 
