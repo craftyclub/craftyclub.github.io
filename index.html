@@ -148,7 +148,7 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .listhead small{color:var(--ink-soft);font-size:14px}
 .cards{display:grid;gap:14px 12px;grid-template-columns:1fr}
 @media (min-width:640px){.cards{grid-template-columns:1fr 1fr}}
-.card{display:flex;background:var(--surface);border-radius:20px;overflow:hidden;border:0;cursor:pointer;text-align:left;padding:0;width:100%}
+.card{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;transition:transform .15s;display:flex;background:var(--surface);border-radius:20px;overflow:hidden;border:0;cursor:pointer;text-align:left;padding:0;width:100%}
 .ticket{flex:none;width:116px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:#2A1440;position:relative;padding:12px 0}
 .ticket .wd{font-size:11px;font-weight:600}
 .ticket .d{font-size:29px;font-weight:800;line-height:1;font-stretch:80%}
@@ -205,6 +205,7 @@ footer{color:var(--ink-soft);font-size:13px;text-align:center;padding:20px 0}
 .pickcal[hidden]{display:none}
 .pickcal .cal-day{min-height:40px;justify-content:center}
 .pickcal .cal-day.sel{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.card.pressing{transform:scale(.97)}
 .share{display:flex;align-items:center;justify-content:center;gap:8px}
 .share svg{display:block}
 .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-weight:600;font-size:14px;z-index:40;transition:opacity .2s,transform .2s;pointer-events:none}
@@ -603,7 +604,7 @@ function card(w){
   paint();
   const foto = fotoOf(w);
   const when=[w.ora_inizio, zonaLabel(w)].filter(Boolean).join(" · ");
-  return el("div",{class:"card",role:"button",tabindex:"0",style:`--cb:${c.b}`,onclick:()=>openDetail(w),onkeydown:e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openDetail(w);}}},
+  const box = el("div",{class:"card",role:"button",tabindex:"0",style:`--cb:${c.b}`,onclick:()=>openDetail(w),onkeydown:e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openDetail(w);}}},
     el("div",{class:"ticket"+(foto?" photo":""),style:foto?`background-image:url('${foto}')`:`--cc:${c.c}`},
       d ? [el("span",{class:"wd"},w.tipo==="corso"?"dal":WD[d.getDay()]), el("span",{class:"d"},String(d.getDate())), el("span",{class:"m"},MONTHS[d.getMonth()])] : noDate(w)),
     el("div",{class:"body"},
@@ -612,6 +613,23 @@ function card(w){
       w.organizzatore? el("div",{class:"meta"}, "con "+w.organizzatore):null,
       el("div",{class:"row"}, el("span",{class:"price"},priceLabel(w)), seatsBadge(w), heart))
   );
+  longPressShare(box, w);
+  return box;
+}
+// tenendo premuta una scheda (mezzo secondo) si apre la condivisione dell’evento, senza aprirne il dettaglio.
+// La condivisione parte quando si alza il dito: il browser la permette solo dopo un gesto completo.
+function longPressShare(box, w){
+  let timer=null, long=false, x0=0, y0=0;
+  const stop=()=>{ clearTimeout(timer); timer=null; box.classList.remove("pressing"); };
+  box.addEventListener("touchstart",e=>{
+    if(e.touches.length!==1 || e.target.closest(".heart")) return;
+    long=false; x0=e.touches[0].clientX; y0=e.touches[0].clientY;
+    timer=setTimeout(()=>{ long=true; box.classList.add("pressing"); if(navigator.vibrate) navigator.vibrate(15); },500);
+  },{passive:true});
+  box.addEventListener("touchmove",e=>{ if(timer && (Math.abs(e.touches[0].clientX-x0)>10 || Math.abs(e.touches[0].clientY-y0)>10)){ stop(); long=false; } },{passive:true});
+  box.addEventListener("touchend",e=>{ stop(); if(long){ e.preventDefault(); long=false; const d=parseDate(w.data); shareEvent(w, d ? `${WD_LONG[d.getDay()]} ${d.getDate()} ${MONTHS_LONG[d.getMonth()]}` : noDateText(w)); } });
+  box.addEventListener("touchcancel",()=>{ stop(); long=false; });
+  box.addEventListener("contextmenu",e=>{ if(long || box.classList.contains("pressing")) e.preventDefault(); });
 }
 
 function renderHeader(){
