@@ -112,11 +112,11 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .rail::-webkit-scrollbar{display:none}
 .cat{flex:none;scroll-snap-align:start;display:flex;flex-direction:column;align-items:center;gap:6px;width:76px;background:none;border:0;cursor:pointer;padding:0}
 .cat .blob,.ticket:not(.photo),.chip-cat{background:var(--cc)}
-/* tema chiaro: icone delle categorie senza riquadro colorato */
+/* icone delle categorie senza riquadro colorato, in entrambi i temi */
 .cat .blob{background:none}
-/* tema scuro: dietro alle icone e alle schede senza foto lo stesso colore, ma molto più scuro */
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) :is(.cat .blob,.ticket:not(.photo),.chip-cat){background:color-mix(in srgb,var(--cc) 22%,#21142f)}}
-:root[data-theme="dark"] :is(.cat .blob,.ticket:not(.photo),.chip-cat){background:color-mix(in srgb,var(--cc) 22%,#21142f)}
+/* tema scuro: schede senza foto ed etichetta della categoria con lo stesso colore, ma molto più scuro */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) :is(.ticket:not(.photo),.chip-cat){background:color-mix(in srgb,var(--cc) 22%,#21142f)}}
+:root[data-theme="dark"] :is(.ticket:not(.photo),.chip-cat){background:color-mix(in srgb,var(--cc) 22%,#21142f)}
 .cat .blob{width:64px;height:64px;border-radius:22px;display:grid;place-items:center;font-size:30px;border:2px solid transparent;transition:transform .15s}
 .cat > span{font-size:12px;font-weight:600;line-height:1.15;text-align:center}
 .ci{display:inline-block;flex:none;line-height:0}
