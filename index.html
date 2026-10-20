@@ -616,20 +616,32 @@ function card(w){
   longPressShare(box, w);
   return box;
 }
-// tenendo premuta una scheda (mezzo secondo) si apre la condivisione dell’evento, senza aprirne il dettaglio.
-// La condivisione parte quando si alza il dito: il browser la permette solo dopo un gesto completo.
+// tenendo premuta una scheda (mezzo secondo) si apre un piccolo menu con «Condividi l’evento».
+// Il menu serve perché i telefoni aprono la condivisione solo dopo un tocco vero su un pulsante.
 function longPressShare(box, w){
   let timer=null, long=false, x0=0, y0=0;
   const stop=()=>{ clearTimeout(timer); timer=null; box.classList.remove("pressing"); };
   box.addEventListener("touchstart",e=>{
     if(e.touches.length!==1 || e.target.closest(".heart")) return;
     long=false; x0=e.touches[0].clientX; y0=e.touches[0].clientY;
-    timer=setTimeout(()=>{ long=true; box.classList.add("pressing"); if(navigator.vibrate) navigator.vibrate(15); },500);
+    box.classList.add("pressing");
+    timer=setTimeout(()=>{ timer=null; long=true; box.classList.remove("pressing"); if(navigator.vibrate) navigator.vibrate(15); openShareMenu(w); },500);
   },{passive:true});
-  box.addEventListener("touchmove",e=>{ if(timer && (Math.abs(e.touches[0].clientX-x0)>10 || Math.abs(e.touches[0].clientY-y0)>10)){ stop(); long=false; } },{passive:true});
-  box.addEventListener("touchend",e=>{ stop(); if(long){ e.preventDefault(); long=false; const d=parseDate(w.data); shareEvent(w, d ? `${WD_LONG[d.getDay()]} ${d.getDate()} ${MONTHS_LONG[d.getMonth()]}` : noDateText(w)); } });
-  box.addEventListener("touchcancel",()=>{ stop(); long=false; });
-  box.addEventListener("contextmenu",e=>{ if(long || box.classList.contains("pressing")) e.preventDefault(); });
+  box.addEventListener("touchmove",e=>{ if(timer && (Math.abs(e.touches[0].clientX-x0)>10 || Math.abs(e.touches[0].clientY-y0)>10)) stop(); },{passive:true});
+  box.addEventListener("touchend",e=>{ stop(); if(long){ e.preventDefault(); long=false; } });
+  box.addEventListener("touchcancel",stop);
+  box.addEventListener("contextmenu",e=>{ if(long || timer) e.preventDefault(); });
+}
+function openShareMenu(w){
+  const d=parseDate(w.data), when = d ? `${WD_LONG[d.getDay()]} ${d.getDate()} ${MONTHS_LONG[d.getMonth()]}` : noDateText(w);
+  const icon=()=>{ const i=el("span",{"aria-hidden":"true"}); i.innerHTML=SHARE_SVG; return i; };
+  openSheet([
+    el("h3",{id:"sheetTitle"}, w.titolo||"Workshop"),
+    el("p",{class:"meta",style:"margin:2px 0 14px"}, [when, zonaLabel(w)].filter(Boolean).join(" · ")),
+    el("button",{class:"btn share",type:"button",style:"width:100%",onclick:()=>{ shareEvent(w,when); closeSheet(); }}, icon(), "Condividi l’evento"),
+    el("button",{class:"ghost",type:"button",style:"width:100%;margin-top:10px",onclick:()=>openDetail(w)},"Apri l’evento"),
+    el("button",{class:"ghost",type:"button",style:"width:100%;margin-top:10px",onclick:()=>closeSheet()},"Annulla")
+  ]);
 }
 
 function renderHeader(){
