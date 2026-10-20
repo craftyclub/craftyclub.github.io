@@ -47,7 +47,7 @@ button,input{font:inherit;color:inherit}
 /* header */
 header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:12px;padding-bottom:12px}
-.logo{--mark:#3B0043;display:flex;align-items:center;gap:10px;white-space:nowrap;min-width:0;padding:0 20px 16px 0}
+.logo{--mark:#3B0043;color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px;white-space:nowrap;min-width:0;padding:0 20px 16px 0}
 .logo svg{width:38px;height:38px;flex:none;margin-top:14px}
 .logo .wm{position:relative;isolation:isolate;font-weight:650;font-size:46px;line-height:.85;letter-spacing:-.03em;font-stretch:75%;font-variation-settings:"opsz" 96}
 .logo .club{position:absolute;z-index:-1;right:-18px;bottom:-22px;font-size:15px;line-height:1;letter-spacing:-.02em;padding:2px 8px 3px;color:#2A1440;background:var(--sun);border:2px solid #2A1440;border-radius:999px;box-shadow:1.5px 2.5px 0 #2A1440}
@@ -257,10 +257,10 @@ footer{color:var(--ink-soft);font-size:13px;text-align:center;padding:20px 0}
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><clipPath id="cc-half" clipPathUnits="userSpaceOnUse"><rect x="256" y="0" width="256" height="512"/></clipPath></defs></svg>
 <header class="top">
   <div class="wrap topbar">
-    <div class="logo" role="img" aria-label="Crafty Club">
+    <a class="logo" href="./" id="logoHome" aria-label="Crafty Club, torna alla home">
       <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="4.5" stroke-dasharray="10 7.6" stroke-linecap="round"/><g stroke="var(--mark)" stroke-width="11" stroke-linecap="round"><path d="M50 14v72M18.8 32l62.4 36M18.8 68l62.4-36"/></g><circle cx="50" cy="50" r="8" fill="#FFCF3D" stroke="#2A1440" stroke-width="3"/></svg>
       <span class="wm" aria-hidden="true">crafty<span class="club">club</span></span>
-    </div>
+    </a>
     <div class="top-actions">
       <button class="icon-btn" id="savedBtn" type="button" aria-pressed="false" aria-label="Salvati">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/></svg>
@@ -349,19 +349,25 @@ const CATS = [
   {id:"famiglia", label:"Per famiglie", em:"🧸", c:"#F4E6DA", b:"#B07445"},
   {id:"altro", label:"Altro", em:"✨", c:"#ECE6FF", b:"#7B5CE0"}
 ];
+// in alto a destra: tre aree (AREE); nel pannello Filtri il luogo si può scegliere più in dettaglio (LUOGHI)
 const REGIONS = [
   {id:"all", label:"Ovunque", short:"Ovunque", where:""},
-  {id:"to", label:"Torino", short:"Torino", where:"a Torino"},
-  {id:"pto", label:"Provincia di Torino", short:"Prov. Torino", where:"in provincia di Torino", zona:"Provincia di Torino"},
-  {id:"cn", label:"Cuneo", short:"Cuneo", where:"a Cuneo", zona:"Cuneo"},
-  {id:"pcn", label:"Provincia di Cuneo", short:"Prov. Cuneo", where:"in provincia di Cuneo", zona:"Provincia di Cuneo"}
+  {id:"to", label:"Torino e provincia", short:"Torino e prov.", where:"a Torino e provincia", parti:["tc","pto"]},
+  {id:"cn", label:"Cuneo e provincia", short:"Cuneo e prov.", where:"a Cuneo e provincia", parti:["cc","pcn"]},
+  {id:"tc", label:"Torino", short:"Torino", where:"a Torino"},
+  {id:"pto", label:"Provincia di Torino", short:"Prov. Torino", where:"in provincia di Torino"},
+  {id:"cc", label:"Cuneo", short:"Cuneo", where:"a Cuneo"},
+  {id:"pcn", label:"Provincia di Cuneo", short:"Prov. Cuneo", where:"in provincia di Cuneo"}
 ];
-const regionOf = w => (REGIONS.find(r=>r.zona && r.zona===w.zona) || {id:"to"}).id;
+const AREE = REGIONS.filter(r=>["all","to","cn"].includes(r.id));
+const LUOGHI = REGIONS.filter(r=>["all","tc","pto","cc","pcn"].includes(r.id));
+// luogo preciso dell'evento dal campo zona (qualsiasi altro valore = Torino città)
+const regionOf = w => ({"Provincia di Torino":"pto","Cuneo":"cc","Provincia di Cuneo":"pcn"})[w.zona] || "tc";
 const regionById = id => REGIONS.find(r=>r.id===id) || REGIONS[1];
 // etichetta del luogo: "San Salvario (TO)", "Cuneo (CN)", in provincia il comune: "Pinerolo (TO)", "Fossano (CN)"
 const SIGLA = {"Provincia di Torino":"TO","Cuneo":"CN","Provincia di Cuneo":"CN"};
 const zonaLabel = w => !w.zona ? "" : w.zona==="Torino" ? "Torino" : SIGLA[w.zona] ? `${w.zona==="Cuneo" ? "Cuneo" : (w.comune||w.zona)} (${SIGLA[w.zona]})` : `${w.zona} (TO)`;
-const inRegion = w => state.region==="all" || regionOf(w)===state.region;
+const inRegion = w => { const r=regionById(state.region); return r.id==="all" || (r.parti ? r.parti.includes(regionOf(w)) : regionOf(w)===r.id); };
 function loadRegion(){ try{ const r=localStorage.getItem("cc-region"); return REGIONS.some(x=>x.id===r)?r:"to"; }catch(e){ return "to"; } }
 function persistRegion(){ try{ localStorage.setItem("cc-region", state.region); }catch(e){} }
 const PRICES = [{v:0,l:"Qualsiasi"},{v:20,l:"Fino a 20 €"},{v:35,l:"Fino a 35 €"},{v:50,l:"Fino a 50 €"},{v:80,l:"Fino a 80 €"}];
@@ -685,7 +691,7 @@ function openFilters(){
   const tipologie=CATS.filter(c=>usate.has(c.id));
   openSheet([
     el("h3",{id:"sheetTitle"},"Filtri"),
-    el("h4",{},"Luogo"), optGroup(REGIONS.map(r=>({v:r.id,l:r.label})), it=>draft.region===it.v, it=>draft.region=it.v),
+    el("h4",{},"Luogo"), optGroup(LUOGHI.map(r=>({v:r.id,l:r.label})), it=>draft.region===it.v, it=>draft.region=it.v),
     el("h4",{},"Quando"), optGroup(WHENS, it=>draft.when===it.v, it=>draft.when=it.v),
     el("h4",{},"Formato"), optGroup(TIPI, it=>draft.tipo===it.v, it=>draft.tipo=it.v),
     el("h4",{},"Tipologia"), optGroup(tipologie.map(c=>({v:c.id,l:c.label})), it=>draft.cats.includes(it.v), it=>{ const i=draft.cats.indexOf(it.v); i>=0?draft.cats.splice(i,1):draft.cats.push(it.v); }),
@@ -729,7 +735,7 @@ function openDetail(w){
 function openRegion(){
   openSheet([
     el("h3",{id:"sheetTitle"},"Dove cerchi?"),
-    el("div",{class:"opts",style:"margin-top:14px"}, REGIONS.map(r=>el("button",{class:"pill",type:"button","aria-pressed":String(state.region===r.id),onclick:()=>{
+    el("div",{class:"opts",style:"margin-top:14px"}, AREE.map(r=>el("button",{class:"pill",type:"button","aria-pressed":String(state.region===r.id),onclick:()=>{
       state.region=r.id; state.tab="explore"; persistRegion(); render(); closeSheet();
     }}, r.label)))
   ]);
@@ -808,6 +814,8 @@ document.querySelectorAll("[data-tipo]").forEach(b=>b.addEventListener("click",(
 document.querySelectorAll("[data-when]").forEach(b=>b.addEventListener("click",()=>{state.when = state.when===b.dataset.when?"all":b.dataset.when; render();}));
 document.querySelector('[data-quick="cheap"]').addEventListener("click",()=>{state.maxPrice = state.maxPrice===30?0:30; render();});
 document.getElementById("orgBtn").addEventListener("click",openOrg);
+// logo: torna alla home con tutti i filtri azzerati (l'area scelta in alto resta)
+document.getElementById("logoHome").addEventListener("click",e=>{ e.preventDefault(); if(sheet.classList.contains("open")) closeSheet(); state.tab="explore"; resetFilters(); window.scrollTo({top:0,behavior:"smooth"}); });
 document.getElementById("regionBtn").addEventListener("click",openRegion);
 document.getElementById("calBtn").addEventListener("click",()=>openCalendar());
 document.getElementById("savedBtn").addEventListener("click",()=>{ state.tab = state.tab==="saved" ? "explore" : "saved"; render(); scrollToList(); });
