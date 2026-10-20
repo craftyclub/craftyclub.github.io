@@ -162,6 +162,7 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .empty{text-align:center;padding:40px 18px;color:var(--ink-soft)}
 .funny{grid-column:1/-1;padding:16px 18px;border-radius:18px;background:var(--sun);color:#2A1440;font-size:14px;line-height:1.4}
 .funny strong{display:block;font-size:16px;margin-bottom:4px}
+.funny a{color:inherit;font-weight:700}
 .empty strong{display:block;color:var(--ink);font-size:18px;margin-bottom:6px}
 .empty button{margin-top:12px}
 
@@ -480,6 +481,9 @@ function inWhen(d){
   return true;
 }
 const norm = s => (s||"").toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+// città fuori dal Piemonte: se si cercano, compare l’avviso «non c’è ancora»
+const OTHER_CITIES = ["Milano","Roma","Napoli","Firenze","Bologna","Venezia","Genova","Verona","Padova","Trieste","Bari","Palermo","Catania","Cagliari","Bergamo","Brescia","Monza","Pavia","Varese","Parma","Modena","Reggio Emilia","Rimini","Ravenna","Ferrara","Pisa","Lucca","Siena","Livorno","Perugia","Ancona","Pescara","Lecce","Salerno","Trento","Bolzano","Udine","Vicenza","Treviso","Aosta","Sanremo","Savona","La Spezia","Piacenza","Cremona","Mantova","Lecco","Sassari","Messina","Reggio Calabria","Taranto","Foggia","Rovigo","Londra","Parigi","Berlino","Barcellona","Madrid","Lisbona","Amsterdam","Vienna","Zurigo","Ginevra","Nizza","Lione","New York"];
+const otherCity = q => { const n=" "+norm(q).replace(/[^a-z ]/g," ").replace(/\s+/g," ").trim()+" "; return n.trim() ? OTHER_CITIES.find(c=>n.includes(" "+norm(c)+" ")) || "" : ""; };
 // corsi "ogni <giorno>": rientrano in un filtro di date se quel giorno della settimana cade nel periodo scelto
 const GIORNI = {"domenica":0,"lunedi":1,"martedi":2,"mercoledi":3,"giovedi":4,"venerdi":5,"sabato":6};
 function recurringInWhen(w){
@@ -599,14 +603,21 @@ function render(){
   if(!state.loaded){ count.textContent=""; box.append(el("div",{class:"empty"},"Carico i workshop…")); return; }
   // easter egg: chi cerca "schifo" riceve una frase scherzosa e tutti i workshop (la ricerca viene ignorata)
   const funny = norm(state.q).includes("schifo");
+  // chi cerca una città fuori dal Piemonte vede un avviso e tutte le attività (la ricerca viene ignorata)
+  const away = !funny && otherCity(state.q);
   let list;
-  if(funny){ const q=state.q; state.q=""; list=filtered(); state.q=q; }
+  if(funny || away){ const q=state.q; state.q=""; list=filtered(); state.q=q; }
   else list=filtered();
   const noun = state.tipo==="corso" ? (list.length===1?"corso":"corsi") : state.tipo==="workshop" ? "workshop" : "attività";
   count.textContent = `${list.length} ${noun}`;
   if(funny) box.append(el("div",{class:"funny"},
     el("strong",{},"Anche se questa settimana vuoi fare schifo, almeno fallo in compagnia."),
     "Scegli uno dei workshop qui sotto: nessuno ti giudica, al massimo ti insegnano qualcosa."));
+  if(away) box.append(el("div",{class:"funny"},
+    el("strong",{},`${away} non c’è ancora su Crafty Club, ma ci stiamo lavorando.`),
+    "Per ora raccogliamo workshop e corsi a Torino, Cuneo e dintorni: qui sotto trovi cosa c’è. Conosci laboratori, pagine o corsi da aggiungere? Scrivici su ",
+    el("a",{href:"https://www.instagram.com/crafty.club.it/",target:"_blank",rel:"noopener"},"@crafty.club.it"),
+    " o a ", el("a",{href:"mailto:crafty.club.info@gmail.com"},"crafty.club.info@gmail.com"), "."));
   if(!list.length){
     if(!state.all.length){ box.append(el("div",{class:"empty"}, el("strong",{},"Ancora nessun workshop"), "I primi arrivano a breve.")); return; }
     if(state.tab==="saved"){ box.append(el("div",{class:"empty"}, el("strong",{},"Non hai ancora salvato niente"), "Tocca il cuore su un workshop per ritrovarlo qui.")); return; }
