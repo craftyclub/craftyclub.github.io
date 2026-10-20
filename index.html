@@ -8,10 +8,11 @@
 <meta property="og:title" content="Crafty Club · Workshops a Torino">
 <meta property="og:image" content="https://craftyclub.github.io/img/crafty-club-logo.png">
 <meta name="theme-color" content="#F6F1FF">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&display=swap" rel="stylesheet">
+<link rel="preload" href="fonts/bricolage-latin.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+/* Bricolage Grotesque (licenza SIL Open Font License), ospitato sul sito: nessuna richiesta a server esterni */
+@font-face{font-family:"Bricolage Grotesque";font-style:normal;font-weight:400 800;font-stretch:75% 100%;font-display:swap;src:url(fonts/bricolage-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Bricolage Grotesque";font-style:normal;font-weight:400 800;font-stretch:75% 100%;font-display:swap;src:url(fonts/bricolage-latin.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 :root{
   --bg:#F6F1FF; --surface:#FFFFFF; --ink:#2A1440; --ink-soft:#6B5A80; --line:#E4DAF5;
   --pink:#FF5FA2; --sun:#FFCF3D; --mint:#2FC79B; --cobalt:#4A5BFF; --peach:#FF9A6B; --lilac:#B79BFF;
@@ -190,7 +191,13 @@ header.top.shrunk .icon-btn{width:32px;height:32px}
 .btn{border:2px solid var(--ink);background:var(--sun);color:#2A1440;font-weight:700;padding:12px 18px;border-radius:14px;cursor:pointer;box-shadow:3px 3px 0 var(--ink)}
 .org .btn{border-color:#2A1440;box-shadow:3px 3px 0 #2A1440}
 .org svg{position:absolute;right:-20px;bottom:-24px;width:150px;opacity:.9}
-footer{color:var(--ink-soft);font-size:13px;text-align:center;padding:20px 0}
+footer{color:var(--ink-soft);font-size:13px;text-align:center;padding:20px 0;line-height:1.8}
+footer a{color:inherit;font-weight:600}
+.legal h4{margin:18px 0 4px}
+.legal p,.legal li{font-size:14px;line-height:1.5;color:var(--ink)}
+.legal ul{padding-left:18px;margin:4px 0}
+.legal a{color:inherit;font-weight:600}
+.legal .agg{color:var(--ink-soft);font-size:12px}
 /* contatti */
 .contacts{margin:26px 0 0;text-align:center}
 .contacts h2{margin:0 0 4px;font-size:24px;font-stretch:80%}
@@ -359,7 +366,7 @@ footer{color:var(--ink-soft);font-size:13px;text-align:center;padding:20px 0}
       </a>
     </div>
   </section>
-  <footer>Crafty Club · Torino</footer>
+  <footer>Crafty Club · Torino<br><a href="#privacy">Privacy e cookie</a> · <a href="#note-legali">Note legali</a></footer>
 </main>
 
 <button class="totop" id="toTop" type="button" aria-label="Torna su" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5.5 11.5L12 5l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -721,7 +728,7 @@ let lastFocus=null;
 // pannelli annidati (calendario → giorno → evento): chiudere un pannello riporta a quello da cui si era arrivati
 let sheetBack=null, pendingBack=null, dayCtx=null;
 function openSheet(content){ if(!sheet.classList.contains("open")) lastFocus=document.activeElement; sheetBack=pendingBack; pendingBack=null; sheet.innerHTML=""; sheet.append(el("div",{class:"grab"}), ...content); sheet.scrollTop=0; overlay.classList.add("open"); sheet.classList.add("open"); setTimeout(()=>{const f=sheet.querySelector("button, a, input"); f&&f.focus({preventScroll:true});},50); }
-function closeSheet(force){ if(!force && sheetBack){ const back=sheetBack; sheetBack=null; back(); return; } sheetBack=null; dayCtx=null; if(location.hash.startsWith("#evento=")) history.replaceState(null,"",location.pathname+location.search); overlay.classList.remove("open"); sheet.classList.remove("open"); lastFocus&&lastFocus.focus(); }
+function closeSheet(force){ if(!force && sheetBack){ const back=sheetBack; sheetBack=null; back(); return; } sheetBack=null; dayCtx=null; if(location.hash.startsWith("#evento=") || location.hash==="#privacy" || location.hash==="#note-legali") history.replaceState(null,"",location.pathname+location.search); overlay.classList.remove("open"); sheet.classList.remove("open"); lastFocus&&lastFocus.focus(); }
 overlay.addEventListener("click",()=>closeSheet());
 // trascinando il pannello verso il basso si chiude (solo se il contenuto è già in cima)
 let drag=null;
@@ -820,7 +827,48 @@ async function shareEvent(w, when){
   if(navigator.share){ try{ await navigator.share({title:w.titolo, text:`${w.titolo}${when?" · "+when:""} – su Crafty Club`, url}); }catch(e){} return; }
   try{ await navigator.clipboard.writeText(url); toast("Link copiato"); }catch(e){ window.prompt("Copia il link dell’evento", url); }
 }
+const MAIL = "crafty.club.info@gmail.com";
+const LEGAL = {
+  privacy: {titolo:"Privacy e cookie", testo:`
+<p>Questa informativa spiega quali dati tratta Crafty Club (craftyclub.github.io), ai sensi del Regolamento UE 2016/679 (GDPR) e del Codice privacy italiano.</p>
+<h4>Chi è il titolare</h4>
+<p>Crafty Club, progetto personale non commerciale. Per qualsiasi richiesta: <a href="mailto:${MAIL}">${MAIL}</a>.</p>
+<h4>Quali dati raccogliamo</h4>
+<p>Il sito non ha account, moduli di iscrizione, pubblicità né strumenti di statistica: non raccogliamo dati personali mentre navighi.</p>
+<ul>
+<li><strong>Salvati e area scelta.</strong> I workshop che salvi con il cuore e l’area scelta in alto restano solo nel tuo browser (memoria locale del dispositivo): non arrivano a noi. Puoi cancellarli dalle impostazioni del browser.</li>
+<li><strong>Hosting.</strong> Il sito è ospitato da GitHub Pages (GitHub Inc., USA). Come ogni server, GitHub riceve dati tecnici della connessione (ad esempio indirizzo IP e tipo di browser) per far funzionare e proteggere il servizio. Il trasferimento negli USA avviene nel quadro dell’EU-US Data Privacy Framework. Informativa di GitHub: <a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub Privacy Statement</a>.</li>
+<li><strong>Caratteri e immagini.</strong> Caratteri tipografici e immagini sono ospitati sul sito stesso: aprendo le pagine non ti colleghi a Google o ad altri servizi esterni.</li>
+<li><strong>Se ci scrivi.</strong> Se ci contatti per mail o su Instagram usiamo i tuoi dati (nome, indirizzo, messaggio) solo per risponderti e li conserviamo per il tempo necessario. Instagram tratta i dati secondo la propria informativa.</li>
+</ul>
+<h4>Cookie</h4>
+<p>Crafty Club non usa cookie, né tecnici né di profilazione, e non usa strumenti di tracciamento: per questo non c’è un banner dei cookie. La memoria locale usata per i salvati e per l’area scelta è strettamente necessaria a una funzione che chiedi tu e non richiede consenso.</p>
+<h4>Link esterni</h4>
+<p>Le schede rimandano ai siti degli organizzatori, a piattaforme di prenotazione e a Instagram. Quando li apri valgono le loro regole su privacy e cookie, che non dipendono da noi.</p>
+<h4>I tuoi diritti</h4>
+<p>Puoi chiedere in ogni momento di accedere ai tuoi dati, correggerli, cancellarli, limitarne l’uso od opporti al loro trattamento, scrivendo a <a href="mailto:${MAIL}">${MAIL}</a>. Puoi anche presentare reclamo al <a href="https://www.garanteprivacy.it" target="_blank" rel="noopener">Garante per la protezione dei dati personali</a>.</p>
+<p class="agg">Ultimo aggiornamento: 20 ottobre 2026.</p>`},
+  "note-legali": {titolo:"Note legali", testo:`
+<h4>Che cos’è Crafty Club</h4>
+<p>Crafty Club è una raccolta gratuita di workshop, corsi e laboratori organizzati da altri a Torino, Cuneo e dintorni. Non organizziamo gli eventi, non vendiamo biglietti e non raccogliamo prenotazioni o pagamenti: per iscriversi si usa il link o il contatto dell’organizzatore.</p>
+<h4>Informazioni sugli eventi</h4>
+<p>Date, orari, prezzi e descrizioni vengono da fonti pubbliche (siti e profili social degli organizzatori, siti di eventi) e sono riassunti da noi. Possono cambiare o contenere errori: prima di andare controlla sempre con l’organizzatore. Crafty Club non risponde dello svolgimento degli eventi, di cancellazioni o modifiche, né dei contenuti dei siti esterni.</p>
+<h4>Nomi, marchi e immagini</h4>
+<p>Nomi, marchi, loghi e immagini degli eventi appartengono ai rispettivi titolari e sono mostrati solo per presentare l’evento, con il rimando alla fonte. Se sei l’organizzatore o il titolare di un’immagine e vuoi correggere una scheda o farla togliere, scrivi a <a href="mailto:${MAIL}">${MAIL}</a>: interveniamo il prima possibile.</p>
+<h4>Uso del sito</h4>
+<p>Il sito è gratuito. Testi, selezione degli eventi, logo e grafica di Crafty Club non possono essere copiati o riutilizzati per scopi commerciali senza il nostro permesso. Condividere i link alle schede è benvenuto.</p>
+<h4>Legge applicabile</h4>
+<p>Queste note sono regolate dalla legge italiana.</p>
+<p class="agg">Ultimo aggiornamento: 20 ottobre 2026.</p>`}
+};
+function openLegal(k){
+  const L=LEGAL[k]; if(!L) return;
+  const box=el("div",{class:"legal"}); box.innerHTML=L.testo;
+  openSheet([el("h3",{id:"sheetTitle"},L.titolo), box,
+    el("button",{class:"ghost",type:"button",style:"width:100%;margin-top:16px",onclick:()=>closeSheet()},"Chiudi")]);
+}
 function openFromHash(){
+  const lk=location.hash.slice(1); if(LEGAL[lk]){ openLegal(lk); return; }
   const m=location.hash.match(/^#evento=(.+)$/); if(!m) return;
   const id=decodeURIComponent(m[1]), w=state.all.find(x=>x.id===id);
   if(w) openDetail(w); else { history.replaceState(null,"",location.pathname+location.search); toast("Questo evento non è più in programma"); }
