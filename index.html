@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Crafty Club · Workshops a Torino</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='47' fill='%23F6F1FF' stroke='%232A1440' stroke-width='5' stroke-dasharray='10 7.6'/%3E%3Cg stroke='%233B0043' stroke-width='12' stroke-linecap='round'%3E%3Cpath d='M50 14v72M18.8 32l62.4 36M18.8 68l62.4-36'/%3E%3C/g%3E%3Ccircle cx='50' cy='50' r='9' fill='%23FFCF3D' stroke='%232A1440' stroke-width='3'/%3E%3C/svg%3E">
+<meta property="og:title" content="Crafty Club · Workshops a Torino">
+<meta property="og:image" content="https://craftyclub.github.io/img/crafty-club-logo.png">
+<meta name="theme-color" content="#F6F1FF">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&display=swap" rel="stylesheet">
@@ -43,8 +47,12 @@ button,input{font:inherit;color:inherit}
 /* header */
 header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:12px;padding-bottom:12px}
-.logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:22px;letter-spacing:-.02em;font-stretch:85%;white-space:nowrap;min-width:0}
-.logo svg{width:30px;height:30px;flex:none}
+.logo{--mark:#3B0043;display:flex;align-items:center;gap:10px;white-space:nowrap;min-width:0;padding:0 20px 16px 0}
+.logo svg{width:38px;height:38px;flex:none;margin-top:14px}
+.logo .wm{position:relative;isolation:isolate;font-weight:800;font-size:46px;line-height:.85;letter-spacing:-.045em;font-stretch:75%;font-variation-settings:"opsz" 96}
+.logo .club{position:absolute;z-index:-1;right:-18px;bottom:-22px;font-size:15px;line-height:1;letter-spacing:-.02em;padding:2px 8px 3px;color:#2A1440;background:var(--sun);border:2px solid #2A1440;border-radius:999px;box-shadow:1.5px 2.5px 0 #2A1440}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .logo{--mark:#E9D8FF}}
+:root[data-theme="dark"] .logo{--mark:#E9D8FF}
 .top-actions{display:flex;align-items:center;gap:8px;flex:none}
 .icon-btn{position:relative;width:38px;height:38px;flex:none;display:grid;place-items:center;padding:0;border:0;background:none;border-radius:999px;cursor:pointer;color:var(--ink)}
 .icon-btn svg{width:24px;height:24px}
@@ -54,7 +62,7 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .icon-btn .count{top:-2px;right:-4px}
 .city{display:flex;align-items:center;gap:6px;height:38px;border:2px solid var(--ink);background:var(--surface);border-radius:999px;padding:0 12px 0 14px;font-weight:600;font-size:14px;white-space:nowrap;cursor:pointer}
 .city svg{width:12px;height:12px;flex:none}
-@media (max-width:360px){.logo{font-size:19px}.logo svg{width:26px;height:26px}}
+@media (max-width:360px){.logo .wm{font-size:40px}.logo svg{width:34px;height:34px}}
 
 /* hero */
 .hero{position:relative;padding:18px 0 8px}
@@ -196,7 +204,6 @@ footer{color:var(--ink-soft);font-size:13px;text-align:center;padding:20px 0}
   :root{--gl:max(32px,env(safe-area-inset-left,0px)); --gr:max(32px,env(safe-area-inset-right,0px))}
   .wrap{max-width:960px}
   body{font-size:15px}
-  .logo{font-size:20px}
   .hero{padding:10px 0 4px}
   .hero h1{font-size:clamp(34px,3.6vw,50px);margin-bottom:14px}
   .hero h1 span{display:inline}
@@ -241,9 +248,9 @@ footer{color:var(--ink-soft);font-size:13px;text-align:center;padding:20px 0}
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><clipPath id="cc-half" clipPathUnits="userSpaceOnUse"><rect x="256" y="0" width="256" height="512"/></clipPath></defs></svg>
 <header class="top">
   <div class="wrap topbar">
-    <div class="logo">
-      <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3l4.6 9.4 10.4 1.5-7.5 7.3 1.8 10.3L20 26.6l-9.3 4.9 1.8-10.3L5 13.9l10.4-1.5z" fill="#FF5FA2" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></svg>
-      Crafty Club
+    <div class="logo" role="img" aria-label="Crafty Club">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="4.5" stroke-dasharray="10 7.6" stroke-linecap="round"/><g stroke="var(--mark)" stroke-width="11" stroke-linecap="round"><path d="M50 14v72M18.8 32l62.4 36M18.8 68l62.4-36"/></g><circle cx="50" cy="50" r="8" fill="#FFCF3D" stroke="#2A1440" stroke-width="3"/></svg>
+      <span class="wm" aria-hidden="true">crafty<span class="club">club</span></span>
     </div>
     <div class="top-actions">
       <button class="icon-btn" id="savedBtn" type="button" aria-pressed="false" aria-label="Salvati">
@@ -327,6 +334,9 @@ const REGIONS = [
 ];
 const regionOf = w => (REGIONS.find(r=>r.zona && r.zona===w.zona) || {id:"to"}).id;
 const regionById = id => REGIONS.find(r=>r.id===id) || REGIONS[1];
+// etichetta del luogo: "San Salvario (TO)", "Cuneo (CN)", in provincia il comune: "Pinerolo (TO)", "Fossano (CN)"
+const SIGLA = {"Provincia di Torino":"TO","Cuneo":"CN","Provincia di Cuneo":"CN"};
+const zonaLabel = w => !w.zona ? "" : SIGLA[w.zona] ? `${w.zona==="Cuneo" ? "Cuneo" : (w.comune||w.zona)} (${SIGLA[w.zona]})` : `${w.zona} (TO)`;
 const inRegion = w => state.region==="all" || regionOf(w)===state.region;
 function loadRegion(){ try{ const r=localStorage.getItem("cc-region"); return REGIONS.some(x=>x.id===r)?r:"to"; }catch(e){ return "to"; } }
 function persistRegion(){ try{ localStorage.setItem("cc-region", state.region); }catch(e){} }
@@ -464,13 +474,14 @@ function filtered(){
     const d=parseDate(w.data);
     if(!d && w.su_prenotazione){ if(state.when!=="all" && !recurringInWhen(w)) return false; }
     else if(!inWhen(d)) return false;
-    if(state.tab==="saved" ? !state.saved.has(w.id) : !inRegion(w)) return false;
+    // chi cerca qualcosa vede i risultati di tutte le aree, non solo di quella scelta in alto
+    if(state.tab==="saved" ? !state.saved.has(w.id) : (!q && !inRegion(w))) return false;
     if(state.cats.length && !state.cats.includes(catOf(w.categoria).id)) return false;
     if(state.tipo && (w.tipo||"workshop")!==state.tipo) return false;
     // grandi scuole di cucina (campo solo_categoria): non nella lista generale, solo se la loro categoria è selezionata o si cerca
     if(w.solo_categoria && state.tab!=="saved" && !q && !state.cats.includes(catOf(w.categoria).id)) return false;
     if(state.maxPrice && !(Number(w.prezzo)<=state.maxPrice)) return false;
-    if(q){ const hay=norm([w.titolo,w.organizzatore,w.zona,w.descrizione,catOf(w.categoria).label].join(" ")); if(!hay.includes(q)) return false; }
+    if(q){ const hay=norm([w.titolo,w.organizzatore,w.zona,w.comune,w.descrizione,catOf(w.categoria).label].join(" ")); if(!hay.includes(q)) return false; }
     return true;
   }).sort((a,b)=> ((a.data||"9999")+(a.ora_inizio||"")).localeCompare((b.data||"9999")+(b.ora_inizio||"")));
 }
@@ -527,7 +538,7 @@ function card(w){
   heart.addEventListener("click",e=>{ e.stopPropagation(); state.saved.has(w.id)?state.saved.delete(w.id):state.saved.add(w.id); persistSaved(); paint(); render(); });
   paint();
   const foto = fotoOf(w);
-  const when=[w.ora_inizio, w.zona].filter(Boolean).join(" · ");
+  const when=[w.ora_inizio, zonaLabel(w)].filter(Boolean).join(" · ");
   return el("div",{class:"card",role:"button",tabindex:"0",style:`--cb:${c.b}`,onclick:()=>openDetail(w),onkeydown:e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openDetail(w);}}},
     el("div",{class:"ticket"+(foto?" photo":""),style:foto?`background-image:url('${foto}')`:`background:${c.c}`},
       d ? [el("span",{class:"wd"},w.tipo==="corso"?"dal":WD[d.getDay()]), el("span",{class:"d"},String(d.getDate())), el("span",{class:"m"},MONTHS[d.getMonth()])] : noDate(w)),
@@ -653,7 +664,7 @@ function openDetail(w){
   // corsi con data: la data è l’inizio del percorso ("da mercoledì 4 novembre, ogni mercoledì")
   const when = [d ? (w.tipo==="corso" ? "da " : "") + dateStr : noDateText(w), d && w.tipo==="corso" ? w.ricorrenza : "", time].filter(Boolean).join(", ");
   const ask = "Non indicato" + (w.contatto ? `: chiedere a ${w.contatto}` : "");
-  const dove = [w.indirizzo,w.zona].filter(Boolean).join(", ") || ask;
+  const dove = [w.indirizzo,zonaLabel(w)].filter(Boolean).join(", ") || ask;
   const esaurito = w.posti_disponibili!=null && w.posti_disponibili!=="" && Number(w.posti_disponibili)<=0;
   const prezzo = (w.prezzo!=null && w.prezzo!=="") ? priceLabel(w) + (esaurito ? " · esaurito" : "") : ask;
   const rows=[["Quando",when],["Dove",dove],["Prezzo",prezzo],["Organizzatore",w.organizzatore]].filter(r=>r[1]);
@@ -2742,12 +2753,13 @@ const WORKSHOPS = [
  },
  {
   "categoria": "famiglia",
+  "comune": "Borgaro Torinese",
   "contatto": "Limaco’s, +39 320 57 47 024",
   "data": "2026-10-31",
   "descrizione": "Un pomeriggio per piccoli pasticceri: ogni bambino decora la sua tortina a tema Halloween e la porta a casa. Si svolge da Nikin House a Borgaro; posti limitati, info e prenotazioni al 320 57 47 024.",
   "fonte": "Instagram @limacostorino",
   "foto": "img/eventi/limaco-halloween-cake-bambini-2026-10-31.jpg",
-  "indirizzo": "Nikin House, Piazza Europa 15, Borgaro Torinese",
+  "indirizzo": "Nikin House, Piazza Europa 15",
   "link": "https://www.instagram.com/p/DeoNoaGCFcj/",
   "ora_fine": "17:30",
   "ora_inizio": "15:30",
@@ -2791,7 +2803,7 @@ const WORKSHOPS = [
   "descrizione": "Un laboratorio di cucina per bambini dai 6 anni: otto martedì, dal 20 ottobre al 15 dicembre, per conoscere gli ingredienti e mettere le mani in pasta. Iscrizioni sul portale ilmelogranoscs.segresta.it, allo 0171 697955 o a labs@ilmelogranocuneo.it.",
   "fonte": "Instagram @il_melograno_cuneo",
   "foto": "img/eventi/melograno-barbachef-cuneo-2026-10-20.jpg",
-  "indirizzo": "Take5!, Via Barbaroux 1, Cuneo",
+  "indirizzo": "Take5!, Via Barbaroux 1",
   "link": "https://www.instagram.com/p/Dd_XqTUiLE9/",
   "ora_fine": "18:30",
   "ora_inizio": "17:30",
@@ -2805,12 +2817,13 @@ const WORKSHOPS = [
  },
  {
   "categoria": "famiglia",
+  "comune": "Mondovì",
   "contatto": "labs@ilmelogranocuneo.it o allo 0171 697955",
   "data": "2026-11-12",
   "descrizione": "Il laboratorio di cucina per bambini arriva a Mondovì: quattro giovedì, dal 12 novembre al 3 dicembre, per sperimentare ricette, impasti e creazioni golose. Iscrizioni sul portale ilmelogranoscs.segresta.it, allo 0171 697955 o a labs@ilmelogranocuneo.it.",
   "fonte": "Instagram @il_melograno_cuneo",
   "foto": "img/eventi/melograno-barbachef-mondovi-2026-11-12.jpg",
-  "indirizzo": "Officina111, Piazza Maggiore 3, Mondovì Piazza",
+  "indirizzo": "Officina111, Piazza Maggiore 3 (Mondovì Piazza)",
   "link": "https://www.instagram.com/p/DeetMJPDfJW/",
   "ora_fine": "18:30",
   "ora_inizio": "17:30",
@@ -2827,7 +2840,7 @@ const WORKSHOPS = [
   "descrizione": "Una mattinata per creare le proprie candele con colori e profumi d’autunno, insieme a Nura.it. Posti limitati. Iscrizioni sul portale ilmelogranoscs.segresta.it, allo 0171 697955 o a labs@ilmelogranocuneo.it.",
   "fonte": "Instagram @il_melograno_cuneo",
   "foto": "img/eventi/melograno-candele-2026-10-24.jpg",
-  "indirizzo": "Take5!, Via Barbaroux 1, Cuneo",
+  "indirizzo": "Take5!, Via Barbaroux 1",
   "link": "https://www.instagram.com/p/DeRhMSCCLZ_/",
   "ora_fine": "11:30",
   "ora_inizio": "09:00",
@@ -2839,12 +2852,13 @@ const WORKSHOPS = [
  },
  {
   "categoria": "famiglia",
+  "comune": "Mondovì",
   "contatto": "labs@ilmelogranocuneo.it o allo 0171 697955",
   "data": "2026-11-04",
   "descrizione": "Un corso di fumetti per bambini dagli 8 anni, tra disegno, personaggi e storie da inventare: sei mercoledì, dal 4 novembre al 9 dicembre. Iscrizioni sul portale ilmelogranoscs.segresta.it, allo 0171 697955 o a labs@ilmelogranocuneo.it.",
   "fonte": "Instagram @il_melograno_cuneo",
   "foto": "img/eventi/melograno-fumettiamo-2026-11-04.jpg",
-  "indirizzo": "Officina111, Piazza Maggiore 3, Mondovì Piazza",
+  "indirizzo": "Officina111, Piazza Maggiore 3 (Mondovì Piazza)",
   "link": "https://www.instagram.com/p/DeMJhyjCLEW/",
   "ora_fine": "18:30",
   "ora_inizio": "16:30",
@@ -2863,7 +2877,7 @@ const WORKSHOPS = [
   "descrizione": "Un pomeriggio di lavoretti a tema Halloween per bambini dai 6 ai 10 anni, tra colori e fantasia. C’è anche una data mercoledì 28 ottobre a Mondovì; posti limitati. Iscrizioni sul portale ilmelogranoscs.segresta.it, allo 0171 697955 o a labs@ilmelogranocuneo.it.",
   "fonte": "Instagram @il_melograno_cuneo",
   "foto": "img/eventi/melograno-halloween-cuneo-2026-10-30.jpg",
-  "indirizzo": "Casa delle Generazioni, Via Valle Po 210, Madonna dell’Olmo (Cuneo)",
+  "indirizzo": "Casa delle Generazioni, Via Valle Po 210, Madonna dell’Olmo",
   "link": "https://www.instagram.com/p/DebeTRyiB0Y/",
   "organizzatore": "Cooperativa Il Melograno",
   "prezzo": 5,
@@ -2874,12 +2888,13 @@ const WORKSHOPS = [
  },
  {
   "categoria": "famiglia",
+  "comune": "Mondovì",
   "contatto": "labs@ilmelogranocuneo.it o allo 0171 697955",
   "data": "2026-10-28",
   "descrizione": "Un pomeriggio di lavoretti a tema Halloween per bambini dai 6 ai 10 anni, tra colori e fantasia. C’è una seconda data venerdì 30 ottobre a Madonna dell’Olmo; posti limitati. Iscrizioni sul portale ilmelogranoscs.segresta.it, allo 0171 697955 o a labs@ilmelogranocuneo.it.",
   "fonte": "Instagram @il_melograno_cuneo",
   "foto": "img/eventi/melograno-halloween-mondovi-2026-10-28.jpg",
-  "indirizzo": "Officina111, Piazza Maggiore 3, Mondovì Piazza",
+  "indirizzo": "Officina111, Piazza Maggiore 3 (Mondovì Piazza)",
   "link": "https://www.instagram.com/p/DebeTRyiB0Y/",
   "organizzatore": "Cooperativa Il Melograno",
   "prezzo": 5,
@@ -2895,7 +2910,7 @@ const WORKSHOPS = [
   "descrizione": "Un laboratorio ludico-musicale per bambini da 0 a 36 mesi insieme a un genitore, per scoprire suoni, ritmo e movimento. Quattro venerdì dal 13 novembre al 4 dicembre: 16:45–17:30 per 0–12 mesi, 17:45–18:30 per 12–36 mesi. Iscrizioni sul portale ilmelogranoscs.segresta.it, allo 0171 697955 o a labs@ilmelogranocuneo.it.",
   "fonte": "Instagram @il_melograno_cuneo",
   "foto": "img/eventi/melograno-lalababy-2026-11-13.jpg",
-  "indirizzo": "Take5!, Via Barbaroux 1, Cuneo",
+  "indirizzo": "Take5!, Via Barbaroux 1",
   "link": "https://www.instagram.com/p/Deq2AvGiNLa/",
   "ora_fine": "17:30",
   "ora_inizio": "16:45",
@@ -2912,7 +2927,7 @@ const WORKSHOPS = [
   "descrizione": "Un laboratorio di pasticceria per bambini dai 6 anni: quattro martedì, dal 17 novembre al 15 dicembre (escluso l’8 dicembre), per impastare e decorare dolci. Iscrizioni sul portale ilmelogranoscs.segresta.it, allo 0171 697955 o a labs@ilmelogranocuneo.it.",
   "fonte": "Instagram @il_melograno_cuneo",
   "foto": "img/eventi/melograno-pastrychef-2026-11-17.jpg",
-  "indirizzo": "Casa delle Generazioni, Via Valle Po 210, Madonna dell’Olmo (Cuneo)",
+  "indirizzo": "Casa delle Generazioni, Via Valle Po 210, Madonna dell’Olmo",
   "link": "https://www.instagram.com/p/Ded9Pjfjcil/",
   "ora_fine": "18:30",
   "ora_inizio": "17:30",
@@ -2926,12 +2941,13 @@ const WORKSHOPS = [
  },
  {
   "categoria": "famiglia",
+  "comune": "Pinerolo",
   "contatto": "Nanù Lab su WhatsApp, +39 327 1350715",
   "data": "2026-11-14",
   "descrizione": "Un laboratorio per bambini per decorare la borsa della spesa da regalare a mamma o papà, nella ludoteca 123 Stella di Pinerolo. Costa 20 € con merenda inclusa; posti limitati, si prenota con acconto al 327 1350715.",
   "fonte": "Instagram @nanulab.pinerolo",
   "foto": "img/eventi/nanulab-borsa-spesa-2026-11-14.jpg",
-  "indirizzo": "Ludoteca 123 Stella, Via Ettore Bignone 83/c, Pinerolo",
+  "indirizzo": "Ludoteca 123 Stella, Via Ettore Bignone 83/c",
   "link": "https://www.instagram.com/p/DeluyGiDXwu/",
   "ora_fine": "11:30",
   "ora_inizio": "10:00",
@@ -2944,12 +2960,13 @@ const WORKSHOPS = [
  },
  {
   "categoria": "famiglia",
+  "comune": "Pinerolo",
   "contatto": "Nanù Lab su WhatsApp, +39 327 1350715",
   "data": "2026-11-28",
   "descrizione": "Un laboratorio natalizio per bambini: si dipinge la porta dell’elfo e si spedisce la letterina a Babbo Natale, nella ludoteca 123 Stella di Pinerolo. Costa 20 € con merenda inclusa; posti limitati, si prenota con acconto al 327 1350715.",
   "fonte": "Instagram @nanulab.pinerolo",
   "foto": "img/eventi/nanulab-porta-elfo-2026-11-28.jpg",
-  "indirizzo": "Ludoteca 123 Stella, Via Ettore Bignone 83/c, Pinerolo",
+  "indirizzo": "Ludoteca 123 Stella, Via Ettore Bignone 83/c",
   "link": "https://www.instagram.com/p/DeluyGiDXwu/",
   "ora_fine": "11:30",
   "ora_inizio": "10:00",
@@ -2962,12 +2979,13 @@ const WORKSHOPS = [
  },
  {
   "categoria": "pittura",
+  "comune": "Borgaro Torinese",
   "contatto": "Nikin House, +39 324 045 2244",
   "data": "2026-10-25",
   "descrizione": "Una serata di pittura a tema Halloween con un calice in mano, pensata anche per chi non ha mai dipinto. Costa 35 € con materiali e aperitivo inclusi; posti limitati, prenotazione obbligatoria al 324 045 2244.",
   "fonte": "Instagram @nikin_house",
   "foto": "img/eventi/nikin-aperipaint-halloween-2026-10-25.jpg",
-  "indirizzo": "Nikin House, Piazza Europa 15, Borgaro Torinese",
+  "indirizzo": "Nikin House, Piazza Europa 15",
   "link": "https://www.instagram.com/p/DerDFx7MFP3/",
   "ora_inizio": "18:30",
   "organizzatore": "Nikin House",
@@ -2979,12 +2997,13 @@ const WORKSHOPS = [
  },
  {
   "categoria": "altro",
+  "comune": "Borgaro Torinese",
   "contatto": "@nikin_house in DM",
   "data": "2026-11-04",
   "descrizione": "Un percorso di arteterapia in sei incontri, un cerchio di donne per fermarsi, creare e raccontarsi con immagini, materiali e parole. Non serve saper disegnare. Ogni mercoledì dal 4 novembre; posti limitati, per informazioni e iscrizioni si scrive in DM a @nikin_house.",
   "fonte": "Instagram @nikin_house",
   "foto": "img/eventi/nikin-filo-di-arianna-2026-11-04.jpg",
-  "indirizzo": "Nikin House, Piazza Europa 15, Borgaro Torinese",
+  "indirizzo": "Nikin House, Piazza Europa 15",
   "link": "https://www.instagram.com/p/DejVIvejEiJ/",
   "ora_inizio": "18:30",
   "organizzatore": "Nikin House",
@@ -2996,12 +3015,13 @@ const WORKSHOPS = [
  },
  {
   "categoria": "famiglia",
+  "comune": "Borgaro Torinese",
   "contatto": "Nikin House, +39 348 493 1428",
   "data": "2026-10-25",
   "descrizione": "Una mattinata di laboratori creativi a tema Halloween per bambini, con giochi e sorprese. Costa 15 € a bambino con merenda inclusa; posti limitati, prenotazione obbligatoria al 348 493 1428.",
   "fonte": "Instagram @nikin_house",
   "foto": "img/eventi/nikin-halloween-bambini-2026-10-25.jpg",
-  "indirizzo": "Nikin House, Piazza Europa 15, Borgaro Torinese",
+  "indirizzo": "Nikin House, Piazza Europa 15",
   "link": "https://www.instagram.com/p/DerC58_sxK2/",
   "ora_fine": "14:00",
   "ora_inizio": "10:00",
@@ -3331,12 +3351,13 @@ const WORKSHOPS = [
  },
  {
   "categoria": "famiglia",
+  "comune": "Fossano",
   "contatto": "0171 444501 o eventi.parcofluviale@comune.cuneo.it",
   "data": "2026-10-24",
   "descrizione": "Un laboratorio naturalistico per famiglie con bambini dai 5 ai 10 anni: si impara a riconoscere le foglie e si crea un piccolo paesaggio autunnale in un barattolo. Bisogna portare un barattolo da casa. Costa 5 € a persona, da pagare sul posto; prenotazione obbligatoria sul sito del Parco.",
   "fonte": "Instagram @parcofluvialegessostura",
   "foto": "img/eventi/parcogessostura-magie-autunno-2026-10-24.jpg",
-  "indirizzo": "Coop. Serena, Via della Cartiera 50, Fossano",
+  "indirizzo": "Coop. Serena, Via della Cartiera 50",
   "link": "https://www.parcofluvialegessostura.it",
   "ora_fine": "16:30",
   "ora_inizio": "15:00",
