@@ -60,6 +60,15 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .icon-btn .count{position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:var(--pink);color:#fff;border:2px solid var(--bg);font-size:11px;font-weight:700;line-height:14px;text-align:center}
 .icon-btn[aria-pressed="true"] .count{background:var(--ink);color:var(--bg)}
 .icon-btn .count{top:-2px;right:-4px}
+/* barra in alto più compatta quando si scorre la pagina */
+.topbar,.logo,.logo svg,.logo .wm,.logo .club,.city{transition:padding .2s,font-size .2s,width .2s,height .2s,margin .2s,right .2s,bottom .2s}
+header.top.shrunk .topbar{padding-top:6px;padding-bottom:6px}
+header.top.shrunk .logo{padding:0 14px 10px 0;gap:8px}
+header.top.shrunk .logo svg{width:28px;height:28px;margin-top:8px}
+header.top.shrunk .logo .wm{font-size:32px}
+header.top.shrunk .logo .club{font-size:11px;right:-13px;bottom:-15px;padding:1px 6px 2px}
+header.top.shrunk .city{height:32px;font-size:13px}
+header.top.shrunk .icon-btn{width:32px;height:32px}
 .city{display:flex;align-items:center;gap:6px;height:38px;border:2px solid var(--ink);background:var(--surface);border-radius:999px;padding:0 12px 0 14px;font-weight:600;font-size:14px;white-space:nowrap;cursor:pointer}
 .city svg{width:12px;height:12px;flex:none}
 @media (max-width:360px){.logo .wm{font-size:40px}.logo svg{width:34px;height:34px}}
@@ -941,6 +950,9 @@ document.getElementById("orgBtn").addEventListener("click",openOrg);
 // «torna su»: compare dopo aver scrollato un po’ la pagina
 const toTop=document.getElementById("toTop");
 let toTopOn=false;
+// barra compatta: si rimpicciolisce oltre 60 px e torna grande sotto i 10 (soglie diverse per non farla "ballare")
+const topHeader=document.querySelector("header.top");
+window.addEventListener("scroll",()=>{ const y=window.scrollY; if(y>60) topHeader.classList.add("shrunk"); else if(y<10) topHeader.classList.remove("shrunk"); },{passive:true});
 function syncToTop(){ const on=window.scrollY>600; if(on===toTopOn) return; toTopOn=on; if(on){ toTop.hidden=false; requestAnimationFrame(()=>toTop.classList.add("on")); } else { toTop.classList.remove("on"); setTimeout(()=>{ if(!toTopOn) toTop.hidden=true; },200); } }
 window.addEventListener("scroll",syncToTop,{passive:true});
 toTop.addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
