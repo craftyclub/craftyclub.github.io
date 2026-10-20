@@ -7,6 +7,7 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='47' fill='%23F6F1FF' stroke='%232A1440' stroke-width='5' stroke-dasharray='10 7.6'/%3E%3Cg stroke='%233B0043' stroke-width='12' stroke-linecap='round'%3E%3Cpath d='M50 14v72M18.8 32l62.4 36M18.8 68l62.4-36'/%3E%3C/g%3E%3Ccircle cx='50' cy='50' r='9' fill='%23FFCF3D' stroke='%232A1440' stroke-width='3'/%3E%3C/svg%3E">
 <meta property="og:title" content="The Crafty Club · Workshops a Torino">
 <meta property="og:image" content="https://craftyclub.github.io/img/crafty-club-logo.png">
+<script data-goatcounter="https://craftyclub.goatcounter.com/count" async src="js/count.js"></script>
 <meta name="theme-color" content="#F6F1FF">
 <link rel="preload" href="fonts/bricolage-latin.woff2" as="font" type="font/woff2" crossorigin>
 <style>
@@ -550,6 +551,9 @@ function inPeriod(d){
   return true;
 }
 const norm = s => (s||"").toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+// statistiche anonime (GoatCounter, senza cookie): conta le azioni, non le persone
+function track(path, title){ try{ if(window.goatcounter && window.goatcounter.count) window.goatcounter.count({path:path, title:title||path, event:true}); }catch(e){} }
+let searchTimer=null;
 // città fuori dal Piemonte: se si cercano, compare l’avviso «non c’è ancora»
 const OTHER_CITIES = ["Milano","Roma","Napoli","Firenze","Bologna","Venezia","Genova","Verona","Padova","Trieste","Bari","Palermo","Catania","Cagliari","Bergamo","Brescia","Monza","Pavia","Varese","Parma","Modena","Reggio Emilia","Rimini","Ravenna","Ferrara","Pisa","Lucca","Siena","Livorno","Perugia","Ancona","Pescara","Lecce","Salerno","Trento","Bolzano","Udine","Vicenza","Treviso","Aosta","Sanremo","Savona","La Spezia","Piacenza","Cremona","Mantova","Lecco","Sassari","Messina","Reggio Calabria","Taranto","Foggia","Rovigo","Londra","Parigi","Berlino","Barcellona","Madrid","Lisbona","Amsterdam","Vienna","Zurigo","Ginevra","Nizza","Lione","New York"];
 const otherCity = q => { const n=" "+norm(q).replace(/[^a-z ]/g," ").replace(/\s+/g," ").trim()+" "; return n.trim() ? OTHER_CITIES.find(c=>n.includes(" "+norm(c)+" ")) || "" : ""; };
@@ -599,7 +603,7 @@ function renderCats(){
   state.cats = state.cats.filter(id=>ids.has(id));
   rail.hidden=!ids.size;
   CATS.filter(c=>ids.has(c.id)).forEach(c=>{
-    rail.append(el("button",{class:"cat",type:"button","aria-pressed":String(state.cats.includes(c.id)),onclick:()=>{ const i=state.cats.indexOf(c.id); i>=0?state.cats.splice(i,1):state.cats.push(c.id); render(); }},
+    rail.append(el("button",{class:"cat",type:"button","aria-pressed":String(state.cats.includes(c.id)),onclick:()=>{ const i=state.cats.indexOf(c.id); if(i>=0) state.cats.splice(i,1); else { state.cats.push(c.id); track("categoria/"+c.id, c.label); } render(); }},
       el("div",{class:"blob",style:`--cc:${c.c}`},catIcon(c.id)), el("span",{},c.label)));
   });
 }
@@ -634,7 +638,7 @@ function card(w){
   const c=catOf(w.categoria), d=parseDate(w.data);
   const heart=el("button",{class:"heart",type:"button"});
   const paint=()=>{ const on=state.saved.has(w.id); heart.innerHTML=heartSvg(on); heart.style.color=on?"var(--pink)":"var(--ink-soft)"; heart.setAttribute("aria-label",on?"Rimuovi dai salvati":"Salva"); };
-  heart.addEventListener("click",e=>{ e.stopPropagation(); state.saved.has(w.id)?state.saved.delete(w.id):state.saved.add(w.id); persistSaved(); paint(); render(); });
+  heart.addEventListener("click",e=>{ e.stopPropagation(); if(state.saved.has(w.id)) state.saved.delete(w.id); else { state.saved.add(w.id); track("salva/"+w.id, w.titolo); } persistSaved(); paint(); render(); });
   paint();
   const foto = fotoOf(w);
   const when=[w.ora_inizio, zonaLabel(w)].filter(Boolean).join(" · ");
@@ -834,6 +838,7 @@ const SHARE_SVG='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" str
 const eventUrl = w => location.origin + location.pathname + "#evento=" + encodeURIComponent(w.id);
 function toast(msg){ const t=el("div",{class:"toast",role:"status"},msg); document.body.append(t); setTimeout(()=>t.classList.add("on"),10); setTimeout(()=>{ t.classList.remove("on"); setTimeout(()=>t.remove(),300); },2200); }
 async function shareEvent(w, when){
+  track("condividi/"+w.id, w.titolo);
   const url=eventUrl(w);
   if(navigator.share){ try{ await navigator.share({title:w.titolo, text:`${w.titolo}${when?" · "+when:""} – su The Crafty Club`, url}); }catch(e){} return; }
   try{ await navigator.clipboard.writeText(url); toast("Link copiato"); }catch(e){ window.prompt("Copia il link dell’evento", url); }
@@ -845,20 +850,21 @@ const LEGAL = {
 <h4>Chi è il titolare</h4>
 <p>The Crafty Club, progetto personale non commerciale. Per qualsiasi richiesta: <a href="mailto:${MAIL}">${MAIL}</a>.</p>
 <h4>Quali dati raccogliamo</h4>
-<p>Il sito non ha account, moduli di iscrizione, pubblicità né strumenti di statistica: non raccogliamo dati personali mentre navighi.</p>
+<p>Il sito non ha account, moduli di iscrizione né pubblicità. Usiamo solo statistiche anonime, descritte qui sotto, che non permettono di identificare chi visita il sito.</p>
 <ul>
 <li><strong>Salvati e area scelta.</strong> I workshop che salvi con il cuore e l’area scelta in alto restano solo nel tuo browser (memoria locale del dispositivo): non arrivano a noi. Puoi cancellarli dalle impostazioni del browser.</li>
 <li><strong>Hosting.</strong> Il sito è ospitato da GitHub Pages (GitHub Inc., USA). Come ogni server, GitHub riceve dati tecnici della connessione (ad esempio indirizzo IP e tipo di browser) per far funzionare e proteggere il servizio. Il trasferimento negli USA avviene nel quadro dell’EU-US Data Privacy Framework. Informativa di GitHub: <a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub Privacy Statement</a>.</li>
-<li><strong>Caratteri e immagini.</strong> Caratteri tipografici e immagini sono ospitati sul sito stesso: aprendo le pagine non ti colleghi a Google o ad altri servizi esterni.</li>
+<li><strong>Statistiche anonime.</strong> Per capire quante persone usano il sito e cosa è più utile usiamo <a href="https://www.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>, che conta le pagine e le azioni (ad esempio quali eventi vengono aperti o prenotati, quali categorie e ricerche si usano) in forma aggregata. Non usa cookie, non salva nulla nel tuo browser, non conserva l’indirizzo IP e non permette di identificarti. I dati sono conservati su server in Finlandia e Germania. Base giuridica: il nostro legittimo interesse a migliorare il sito. <a href="https://www.goatcounter.com/help/privacy" target="_blank" rel="noopener">Informativa di GoatCounter</a>.</li>
+<li><strong>Caratteri e immagini.</strong> Caratteri tipografici, immagini e lo script delle statistiche sono ospitati sul sito stesso: aprendo le pagine non ti colleghi a Google o ad altri servizi esterni (solo il conteggio anonimo viene inviato a GoatCounter).</li>
 <li><strong>Se ci scrivi.</strong> Se ci contatti per mail o su Instagram usiamo i tuoi dati (nome, indirizzo, messaggio) solo per risponderti e li conserviamo per il tempo necessario. Instagram tratta i dati secondo la propria informativa.</li>
 </ul>
 <h4>Cookie</h4>
-<p>The Crafty Club non usa cookie, né tecnici né di profilazione, e non usa strumenti di tracciamento: per questo non c’è un banner dei cookie. La memoria locale usata per i salvati e per l’area scelta è strettamente necessaria a una funzione che chiedi tu e non richiede consenso.</p>
+<p>The Crafty Club non usa cookie, né tecnici né di profilazione, e non usa strumenti di tracciamento: le statistiche sono anonime e senza cookie, per questo non c’è un banner dei cookie. La memoria locale usata per i salvati e per l’area scelta è strettamente necessaria a una funzione che chiedi tu e non richiede consenso.</p>
 <h4>Link esterni</h4>
 <p>Le schede rimandano ai siti degli organizzatori, a piattaforme di prenotazione e a Instagram. Quando li apri valgono le loro regole su privacy e cookie, che non dipendono da noi.</p>
 <h4>I tuoi diritti</h4>
 <p>Puoi chiedere in ogni momento di accedere ai tuoi dati, correggerli, cancellarli, limitarne l’uso od opporti al loro trattamento, scrivendo a <a href="mailto:${MAIL}">${MAIL}</a>. Puoi anche presentare reclamo al <a href="https://www.garanteprivacy.it" target="_blank" rel="noopener">Garante per la protezione dei dati personali</a>.</p>
-<p class="agg">Ultimo aggiornamento: 20 ottobre 2026.</p>`},
+<p class="agg">Ultimo aggiornamento: 20 ottobre 2026 (aggiunte le statistiche anonime).</p>`},
   "note-legali": {titolo:"Note legali", testo:`
 <h4>Che cos’è The Crafty Club</h4>
 <p>The Crafty Club è una raccolta gratuita di workshop, corsi e laboratori organizzati da altri a Torino, Cuneo e dintorni. Non organizziamo gli eventi, non vendiamo biglietti e non raccogliamo prenotazioni o pagamenti: per iscriversi si usa il link o il contatto dell’organizzatore.</p>
@@ -890,6 +896,7 @@ function calTimes(w){
   return {allDay:false, start:`${dd}T${pad(h)}${pad(m)}00`, end:`${ymd(endDay).replace(/-/g,"")}T${pad(h2)}${pad(m2)}00`};
 }
 function addToCalendar(w){
+  track("calendario/"+w.id, w.titolo);
   const t=calTimes(w);
   const luogo=[w.indirizzo, zonaLabel(w)].filter(Boolean).join(", ");
   const note=[w.descrizione, w.link ? "Prenotazioni: "+w.link : "", "Su The Crafty Club: "+eventUrl(w)].filter(Boolean).join("\n\n");
@@ -914,6 +921,7 @@ function openFromHash(){
   if(w) openDetail(w); else { history.replaceState(null,"",location.pathname+location.search); toast("Questo evento non è più in programma"); }
 }
 function openDetail(w){
+  track("evento/"+w.id, w.titolo);
   // aperto dalla lista di un giorno del calendario: chiudendo si torna a quel giorno
   if(sheet.classList.contains("open") && dayCtx){ const c=dayCtx; pendingBack=()=>openDay(c.d,c.list); }
   const c=catOf(w.categoria), d=parseDate(w.data);
@@ -935,7 +943,7 @@ function openDetail(w){
   const calBtn=el("button",{class:"addcal",type:"button","aria-label":"Aggiungi al calendario","aria-expanded":"false",onclick:()=>{ calInfo.hidden=!calInfo.hidden; calBtn.setAttribute("aria-expanded",String(!calInfo.hidden)); }});
   calBtn.innerHTML=CAL_SVG;
   let link=null;
-  if(w.link && /^https?:\/\//i.test(w.link)) link=el("a",{class:"btn",href:w.link,target:"_blank",rel:"noopener"},"Prenota sul sito dell’organizzatore");
+  if(w.link && /^https?:\/\//i.test(w.link)) link=el("a",{class:"btn",href:w.link,target:"_blank",rel:"noopener",onclick:()=>track("prenota/"+w.id, w.titolo+" · "+(w.organizzatore||""))},"Prenota sul sito dell’organizzatore");
   openSheet([el("div",{class:"detail"},
     fotoGrande(w) ? el("div",{class:"cover"},
       el("span",{class:"bg",style:`background-image:url('${fotoGrande(w)}')`}),
@@ -955,7 +963,7 @@ function openRegion(){
   openSheet([
     el("h3",{id:"sheetTitle"},"Dove cerchi?"),
     el("div",{class:"opts",style:"margin-top:14px"}, AREE.map(r=>el("button",{class:"pill",type:"button","aria-pressed":String(state.region===r.id),onclick:()=>{
-      state.region=r.id; state.tab="explore"; persistRegion(); render(); closeSheet();
+      state.region=r.id; state.tab="explore"; persistRegion(); track("area/"+r.id, r.label); render(); closeSheet();
     }}, r.label)))
   ]);
 }
@@ -1030,14 +1038,14 @@ function openOrg(){
 }
 
 /* events */
-document.getElementById("q").addEventListener("input",e=>{state.q=e.target.value; render();});
+document.getElementById("q").addEventListener("input",e=>{state.q=e.target.value; render(); clearTimeout(searchTimer); const t=norm(state.q).trim(); if(t.length>=3) searchTimer=setTimeout(()=>track("cerca/"+t.replace(/[^a-z0-9 ]/g,"").replace(/ +/g,"-"), "Ricerca: "+t),1500);});
 document.getElementById("openFilters").addEventListener("click",openFilters);
 document.getElementById("resetAll").addEventListener("click",resetFilters);
-document.querySelectorAll("[data-tipo]").forEach(b=>b.addEventListener("click",()=>{ state.tipo = state.tipo===b.dataset.tipo ? "" : b.dataset.tipo; render(); }));
-document.querySelectorAll("[data-when]").forEach(b=>b.addEventListener("click",()=>{state.when = state.when===b.dataset.when?"all":b.dataset.when; render();}));
-document.querySelector('[data-quick="cheap"]').addEventListener("click",()=>{state.maxPrice = state.maxPrice===30?0:30; render();});
-document.querySelector('[data-quick="nokids"]').addEventListener("click",()=>{state.noKids = !state.noKids; render();});
-document.querySelector('[data-quick="weekends"]').addEventListener("click",()=>{state.weekends = !state.weekends; render();});
+document.querySelectorAll("[data-tipo]").forEach(b=>b.addEventListener("click",()=>{ state.tipo = state.tipo===b.dataset.tipo ? "" : b.dataset.tipo; if(state.tipo) track("tipo/"+state.tipo); render(); }));
+document.querySelectorAll("[data-when]").forEach(b=>b.addEventListener("click",()=>{state.when = state.when===b.dataset.when?"all":b.dataset.when; if(state.when!=="all") track("filtro/"+state.when); render();}));
+document.querySelector('[data-quick="cheap"]').addEventListener("click",()=>{state.maxPrice = state.maxPrice===30?0:30; if(state.maxPrice) track("filtro/sotto-30"); render();});
+document.querySelector('[data-quick="nokids"]').addEventListener("click",()=>{state.noKids = !state.noKids; if(state.noKids) track("filtro/escludi-famiglie"); render();});
+document.querySelector('[data-quick="weekends"]').addEventListener("click",()=>{state.weekends = !state.weekends; if(state.weekends) track("filtro/solo-weekend"); render();});
 document.getElementById("orgBtn").addEventListener("click",openOrg);
 // logo: torna alla home con tutti i filtri azzerati (l'area scelta in alto resta)
 // «torna su»: compare dopo aver scrollato un po’ la pagina
@@ -1051,7 +1059,7 @@ window.addEventListener("scroll",syncToTop,{passive:true});
 toTop.addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
 document.getElementById("logoHome").addEventListener("click",e=>{ e.preventDefault(); if(sheet.classList.contains("open")) closeSheet(true); state.tab="explore"; resetFilters(); window.scrollTo({top:0,behavior:"smooth"}); });
 document.getElementById("regionBtn").addEventListener("click",openRegion);
-document.getElementById("calBtn").addEventListener("click",()=>openCalendar());
+document.getElementById("calBtn").addEventListener("click",()=>{ track("apri/calendario"); openCalendar(); });
 document.getElementById("savedBtn").addEventListener("click",()=>{ state.tab = state.tab==="saved" ? "explore" : "saved"; render(); scrollToList(); });
 
 render();
