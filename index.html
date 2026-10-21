@@ -690,10 +690,20 @@ function recurringInWhen(w){
   return false;
 }
 
+// corsi già iniziati con data_fine non ancora passata: restano visibili fino all’ultimo incontro.
+// Per i filtri di date contano dal prossimo giorno del corso ("ogni martedì") o, se non si sa, da oggi.
+function effDate(w){
+  const d=parseDate(w.data); if(!d || !w.data_fine) return d;
+  const t=today0(); if(d>=t) return d;
+  const f=parseDate(w.data_fine); if(!f || f<t) return d;
+  const m=norm(w.ricorrenza||"").match(/^ogni (domenica|lunedi|martedi|mercoledi|giovedi|venerdi|sabato)/);
+  if(m){ const n=new Date(t); n.setDate(t.getDate()+((GIORNI[m[1]]-t.getDay()+7)%7)); if(n<=f) return n; }
+  return t;
+}
 function filtered(){
   const q = norm(state.q);
   return state.all.filter(w=>{
-    const d=parseDate(w.data);
+    const d=effDate(w);
     if(!d && w.su_prenotazione){ if((state.when!=="all" || state.weekends) && !recurringInWhen(w)) return false; }
     else if(!inWhen(d)) return false;
     // chi cerca qualcosa vede i risultati di tutte le aree, non solo di quella scelta in alto
@@ -709,12 +719,12 @@ function filtered(){
     if(state.maxPrice && !(Number(w.prezzo)<=state.maxPrice)) return false;
     if(q){ const hay=norm([w.titolo,w.organizzatore,w.zona,w.comune,w.descrizione,catOf(w.categoria).label].join(" ")); if(!hay.includes(q)) return false; }
     return true;
-  }).sort((a,b)=> ((a.data||"9999")+(a.ora_inizio||"")).localeCompare((b.data||"9999")+(b.ora_inizio||"")));
+  }).sort((a,b)=>{ const k=w=>{ const d=effDate(w); return (d ? ymd(d) : "9999")+(w.ora_inizio||""); }; return k(a).localeCompare(k(b)); });
 }
 
 function el(tag, attrs={}, ...kids){ const n=document.createElement(tag); for(const [k,v] of Object.entries(attrs)){ if(k==="class") n.className=v; else if(k.startsWith("on")) n.addEventListener(k.slice(2),v); else if(v!==false && v!=null) n.setAttribute(k,v===true?"":v); } for(const k of kids.flat()){ if(k==null) continue; n.append(k.nodeType?k:document.createTextNode(k)); } return n; }
 
-function isUpcoming(w){ const d=parseDate(w.data); return d ? d>=today0() : !!w.su_prenotazione; }
+function isUpcoming(w){ const d=effDate(w); return d ? d>=today0() : !!w.su_prenotazione; }
 function activeCats(){
   const ids=new Set();
   state.all.forEach(w=>{ if(isUpcoming(w) && (state.tab==="saved" ? state.saved.has(w.id) : inRegion(w))) catsOf(w).forEach(id=>ids.add(id)); });
@@ -1077,8 +1087,11 @@ function openDetail(w){
   const dateStr = d ? `${WD_LONG[d.getDay()]} ${d.getDate()} ${MONTHS_LONG[d.getMonth()]}` : "";
   const time = [w.ora_inizio,w.ora_fine].filter(Boolean).join("–");
   // dettaglio: solo Quando, Dove, Prezzo, Organizzatore; tutto il resto è nella descrizione
-  // corsi con data: la data è l’inizio del percorso ("da mercoledì 4 novembre, ogni mercoledì")
-  const when = [d ? (w.tipo==="corso" ? "da " : "") + dateStr : noDateText(w), d && w.tipo==="corso" ? w.ricorrenza : "", time].filter(Boolean).join(", ");
+  // corsi con data: la data è l’inizio del percorso ("da mercoledì 4 novembre, ogni mercoledì");
+  // con data_fine: "da martedì 20 ottobre a martedì 15 dicembre" (solo qui, non sulla scheda)
+  const f=parseDate(w.data_fine);
+  const endStr = d && f ? ` a ${WD_LONG[f.getDay()]} ${f.getDate()} ${MONTHS_LONG[f.getMonth()]}` : "";
+  const when = [d ? (w.tipo==="corso" || f ? "da " : "") + dateStr + endStr : noDateText(w), d && w.tipo==="corso" ? w.ricorrenza : "", time].filter(Boolean).join(", ");
   const ask = "Non indicato" + (w.contatto ? `: chiedere a ${w.contatto}` : "");
   // senza indirizzo: si mostra almeno la zona (o "Torino") e a chi chiedere il luogo esatto
   const luogo = zonaLabel(w);
@@ -1965,6 +1978,7 @@ const WORKSHOPS = [
   "categoria": "altro",
   "contatto": "Bocciofila, +39 340 763 7042",
   "data": "2026-11-03",
+  "data_fine": "2026-12-15",
   "descrizione": "Un corso di introduzione alla Lingua dei Segni Italiana e alla comunicazione visivo-gestuale, insieme a un’apericena. Gli incontri sono il 3 e il 24 novembre e il 15 dicembre; si partecipa con un contributo volontario. Ingresso riservato ai soci ARCI, prenotazione obbligatoria al 340 763 7042.",
   "fonte": "Instagram @bocciofilavanchiglietta",
   "foto": "img/eventi/bocciofilavanchiglietta-2026-10-20-3.jpg",
@@ -2397,6 +2411,9 @@ const WORKSHOPS = [
   "id": "chocolate7-degustazione"
  },
  {
+  "altre_categorie": [
+   "famiglia"
+  ],
   "categoria": "cucina",
   "contatto": "getyourguide.com",
   "descrizione": "Un laboratorio di circa 45 minuti in cui si lavora il cioccolato con stampi e decorazioni per creare tavolette e cioccolatini da portare a casa; comprende la visita al museo con audioguida. Dai 7 anni (fino a 12 con un adulto), al massimo 10 persone. Date a scelta su GetYourGuide.",
@@ -4281,6 +4298,7 @@ const WORKSHOPS = [
   "categoria": "movimento",
   "contatto": "Proyecto Gricel, 389 905 1710",
   "data": "2027-01-22",
+  "data_fine": "2027-01-24",
   "descrizione": "Un seminario intensivo di tango per coppie di 10 ore in tre giorni (22–24 gennaio) con i maestri Mariano «Chicho» Frumboli e Juana Sepúlveda; l’ultima giornata è da Proyecto Gricel in Via Bessanese 1D. Costa 200 € a persona, le due milonghe del weekend si pagano a parte. Posti limitati, prenotazione al 389 905 1710.",
   "fonte": "allevents.in",
   "foto": "img/eventi/gricel-tango-weekend-2027-01-22.jpg",
@@ -4469,6 +4487,7 @@ const WORKSHOPS = [
   "categoria": "movimento",
   "comune": "Bardonecchia",
   "data": "2026-12-05",
+  "data_fine": "2026-12-08",
   "descrizione": "Quattro giorni, dal 5 all’8 dicembre, di salsa e bachata a Bardonecchia con workshop tenuti da maestri, serate a tema, gare Jack & Jill ed escape room. I pacchetti partono da 299 € con il soggiorno al Villaggio Olimpico; si prenota su thelatinweek.com.",
   "fonte": "eventbrite.it",
   "foto": "img/eventi/latinweek-snow-2026-12-05.jpg",
@@ -4746,7 +4765,7 @@ const WORKSHOPS = [
   "prezzo_da": true,
   "su_prenotazione": true,
   "tipo": "workshop",
-  "titolo": "Corsi di cucito: dalla pochette al kimono",
+  "titolo": "Laboratori di cucito: pochette e kimono",
   "zona": "Barriera di Milano",
   "id": "magazzinitessili-corsi-cucito"
  },
@@ -4818,6 +4837,7 @@ const WORKSHOPS = [
   "categoria": "famiglia",
   "contatto": "labs@ilmelogranocuneo.it o allo 0171 697955",
   "data": "2026-10-20",
+  "data_fine": "2026-12-15",
   "descrizione": "Un laboratorio di cucina per bambini dai 6 anni: otto martedì, dal 20 ottobre al 15 dicembre, per conoscere gli ingredienti e imparare a cucinare. Iscrizioni sul portale ilmelogranoscs.segresta.it, allo 0171 697955 o a labs@ilmelogranocuneo.it.",
   "fonte": "Instagram @il_melograno_cuneo",
   "foto": "img/eventi/melograno-barbachef-cuneo-2026-10-20.jpg",
@@ -4828,6 +4848,7 @@ const WORKSHOPS = [
   "organizzatore": "Cooperativa Il Melograno",
   "prezzo": 80,
   "prezzo_per": "per 8 incontri",
+  "ricorrenza": "ogni martedì",
   "tipo": "corso",
   "titolo": "Barbachef: cucina per bambini",
   "zona": "Cuneo",
@@ -4838,6 +4859,7 @@ const WORKSHOPS = [
   "comune": "Mondovì",
   "contatto": "labs@ilmelogranocuneo.it o allo 0171 697955",
   "data": "2026-11-12",
+  "data_fine": "2026-12-03",
   "descrizione": "Il laboratorio di cucina per bambini arriva a Mondovì: quattro giovedì, dal 12 novembre al 3 dicembre, per sperimentare ricette, impasti e creazioni golose. Iscrizioni sul portale ilmelogranoscs.segresta.it, allo 0171 697955 o a labs@ilmelogranocuneo.it.",
   "fonte": "Instagram @il_melograno_cuneo",
   "foto": "img/eventi/melograno-barbachef-mondovi-2026-11-12.jpg",
@@ -4846,6 +4868,7 @@ const WORKSHOPS = [
   "ora_fine": "18:30",
   "ora_inizio": "17:30",
   "organizzatore": "Cooperativa Il Melograno",
+  "ricorrenza": "ogni giovedì",
   "tipo": "corso",
   "titolo": "Barbachef: cucina per bambini",
   "zona": "Provincia di Cuneo",
@@ -4873,6 +4896,7 @@ const WORKSHOPS = [
   "comune": "Mondovì",
   "contatto": "labs@ilmelogranocuneo.it o allo 0171 697955",
   "data": "2026-11-04",
+  "data_fine": "2026-12-09",
   "descrizione": "Un corso di fumetti per bambini dagli 8 anni, tra disegno, personaggi e storie da inventare: sei mercoledì, dal 4 novembre al 9 dicembre. Iscrizioni sul portale ilmelogranoscs.segresta.it, allo 0171 697955 o a labs@ilmelogranocuneo.it.",
   "fonte": "Instagram @il_melograno_cuneo",
   "foto": "img/eventi/melograno-fumettiamo-2026-11-04.jpg",
@@ -4883,6 +4907,7 @@ const WORKSHOPS = [
   "organizzatore": "Cooperativa Il Melograno",
   "prezzo": 120,
   "prezzo_per": "per 6 incontri",
+  "ricorrenza": "ogni mercoledì",
   "tipo": "corso",
   "titolo": "Fumettiamo: corso di fumetti",
   "zona": "Provincia di Cuneo",
@@ -4925,6 +4950,7 @@ const WORKSHOPS = [
   "categoria": "famiglia",
   "contatto": "labs@ilmelogranocuneo.it o allo 0171 697955",
   "data": "2026-11-13",
+  "data_fine": "2026-12-04",
   "descrizione": "Un laboratorio ludico-musicale per bambini da 0 a 36 mesi insieme a un genitore, per scoprire suoni, ritmo e movimento. Quattro venerdì dal 13 novembre al 4 dicembre: 16:45–17:30 per 0–12 mesi, 17:45–18:30 per 12–36 mesi. Iscrizioni sul portale ilmelogranoscs.segresta.it, allo 0171 697955 o a labs@ilmelogranocuneo.it.",
   "fonte": "Instagram @il_melograno_cuneo",
   "foto": "img/eventi/melograno-lalababy-2026-11-13.jpg",
@@ -4933,6 +4959,7 @@ const WORKSHOPS = [
   "ora_fine": "17:30",
   "ora_inizio": "16:45",
   "organizzatore": "Cooperativa Il Melograno",
+  "ricorrenza": "ogni venerdì",
   "tipo": "corso",
   "titolo": "Lalababy: musica per i più piccoli",
   "zona": "Cuneo",
@@ -4942,6 +4969,7 @@ const WORKSHOPS = [
   "categoria": "famiglia",
   "contatto": "labs@ilmelogranocuneo.it o allo 0171 697955",
   "data": "2026-11-17",
+  "data_fine": "2026-12-15",
   "descrizione": "Un laboratorio di pasticceria per bambini dai 6 anni: quattro martedì, dal 17 novembre al 15 dicembre (escluso l’8 dicembre), per impastare e decorare dolci. Iscrizioni sul portale ilmelogranoscs.segresta.it, allo 0171 697955 o a labs@ilmelogranocuneo.it.",
   "fonte": "Instagram @il_melograno_cuneo",
   "foto": "img/eventi/melograno-pastrychef-2026-11-17.jpg",
@@ -4952,6 +4980,7 @@ const WORKSHOPS = [
   "organizzatore": "Cooperativa Il Melograno",
   "prezzo": 40,
   "prezzo_per": "per 4 incontri",
+  "ricorrenza": "ogni martedì",
   "tipo": "corso",
   "titolo": "Pastrychef: pasticceria per bambini",
   "zona": "Cuneo",
@@ -5083,6 +5112,9 @@ const WORKSHOPS = [
   "id": "museoegizio-dungeon-egizio-2026-10-23"
  },
  {
+  "altre_categorie": [
+   "famiglia"
+  ],
   "categoria": "pittura",
   "contatto": "didattica@fondazionetancredidibarolo.com o 388 474 6437",
   "data": "2026-10-24",
@@ -5153,6 +5185,7 @@ const WORKSHOPS = [
   "categoria": "movimento",
   "contatto": "Simona Evoli su Facebook",
   "data": "2026-11-21",
+  "data_fine": "2026-11-22",
   "descrizione": "Due giornate intensive di danza orientale egiziana con Nada Al Basha: sabato il baladi (storia, musica, costumi e una coreografia), domenica 22 il folklore egiziano. Ogni giorno due ore di teoria e tre di pratica; pensato per chi studia già danza orientale. Pacchetto completo di 10 ore 240 €.",
   "fonte": "allevents.in",
   "foto": "img/eventi/nada-al-basha-baladi-2026-11-21.jpg",
@@ -5349,6 +5382,7 @@ const WORKSHOPS = [
  {
   "categoria": "stampa",
   "data": "2026-11-02",
+  "data_fine": "2026-11-23",
   "descrizione": "Quattro lunedì (2, 9, 16 e 23 novembre) per imparare tutta la cianotipia: dalla soluzione fotosensibile all’esposizione e allo sviluppo, stampando su carta, stoffa e legno. Non serve esperienza; oltre al corso servono 10 € di tessera associativa e sono incluse 4 ore di uso libero degli spazi. Iscrizione a info.officinecreative@gmail.com.",
   "fonte": "officinecreativetorino.it",
   "indirizzo": "Cecchi Point, Via Antonio Cecchi 17",
@@ -5357,6 +5391,7 @@ const WORKSHOPS = [
   "ora_inizio": "18:30",
   "organizzatore": "Officine Creative Torino",
   "prezzo": 70,
+  "ricorrenza": "ogni lunedì",
   "tipo": "corso",
   "titolo": "Corso di cianotipia: stampa con la luce",
   "zona": "Aurora",
@@ -5820,6 +5855,9 @@ const WORKSHOPS = [
   "id": "parcogessostura-magie-autunno-2026-10-24"
  },
  {
+  "altre_categorie": [
+   "famiglia"
+  ],
   "categoria": "movimento",
   "comune": "Racconigi",
   "data": "2026-11-15",
@@ -6238,6 +6276,7 @@ const WORKSHOPS = [
   "categoria": "pittura",
   "contatto": "workshop@printclubtorino.it",
   "data": "2027-07-29",
+  "data_fine": "2027-08-01",
   "descrizione": "Quattro giorni, dal 29 luglio al 1° agosto, con gli illustratori Riccardo Guasco e Giovanna Giuliano sul disegno come osservazione: schizzi dal vero in un giardino botanico, esercizi per trovare un segno personale e un quaderno botanico. Un disegno diventa una stampa numerata in risograph; 26 ore, materiali inclusi.",
   "fonte": "printclubtorino.it",
   "foto": "img/eventi/printclub-masterclass-guasco-2027-07-29.jpg",
@@ -6255,6 +6294,7 @@ const WORKSHOPS = [
   "categoria": "stampa",
   "contatto": "workshop@printclubtorino.it",
   "data": "2027-02-19",
+  "data_fine": "2027-02-21",
   "descrizione": "Tre giorni con l’illustratrice Margherita Premuroso: ognuno disegna una parte di una camminata in fotogrammi, i disegni si stampano in risograph e diventano un’animazione collettiva. Venerdì sera presentazione, sabato disegno, domenica stampa e animazione (serve il proprio portatile).",
   "fonte": "printclubtorino.it",
   "foto": "img/eventi/printclub-masterclass-premuroso-2027-02-19.jpg",
@@ -6272,6 +6312,7 @@ const WORKSHOPS = [
   "categoria": "pittura",
   "contatto": "workshop@printclubtorino.it",
   "data": "2026-11-13",
+  "data_fine": "2026-11-15",
   "descrizione": "Tre giorni con l’illustratore Andrea Serio sull’uso pittorico di matite colorate e pastelli per il paesaggio: venerdì sera incontro e aperitivo, sabato e domenica 9:30–17:30 in laboratorio. Un lavoro finale viene stampato in risograph; materiali inclusi. Al momento è esaurito.",
   "fonte": "printclubtorino.it",
   "foto": "img/eventi/printclub-masterclass-serio-2026-11-13.jpg",
@@ -6680,6 +6721,9 @@ const WORKSHOPS = [
   "id": "solea-zucca-candela-2026-10-29"
  },
  {
+  "altre_categorie": [
+   "famiglia"
+  ],
   "categoria": "movimento",
   "contatto": "Somewhere Tours con Circolo Amici del Fiume su Eventbrite",
   "data": "2026-10-31",
@@ -7396,6 +7440,9 @@ const WORKSHOPS = [
   "id": "tobed-candele-2026-11-14"
  },
  {
+  "altre_categorie": [
+   "famiglia"
+  ],
   "categoria": "pittura",
   "contatto": "@si.performance.artistiche in DM",
   "data": "2026-10-31",
@@ -7634,6 +7681,9 @@ const WORKSHOPS = [
   "id": "unfilodigiustina-sciarpa-2026-10-24"
  },
  {
+  "altre_categorie": [
+   "famiglia"
+  ],
   "categoria": "giochi",
   "data": "2026-11-07",
   "descrizione": "Partita a una versione modificata del Monopoly che inserisce gentrificazione, affitti brevi, edilizia pubblica e crisi climatica, per sperimentare le disuguaglianze urbane. Dopo una breve introduzione si gioca ai tavoli; età consigliata dai 10 anni, nessuna competenza richiesta.",
@@ -7705,6 +7755,7 @@ const WORKSHOPS = [
   "categoria": "musica",
   "contatto": "Associazione Vivere d’Arte",
   "data": "2027-01-09",
+  "data_fine": "2027-01-10",
   "descrizione": "Due giornate, 9 e 10 gennaio, di teoria ed esercizi di canto con Marco Farinella, ideatore di un metodo per memorizzare le melodie, con sessioni di studio su brani. Per chi canta già, da solista o in coro, e legge le note; iscrizioni entro il 13 dicembre.",
   "fonte": "allevents.in",
   "foto": "img/eventi/viveredarte-canto-farinella-2027-01-09.jpg",
