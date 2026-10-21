@@ -90,7 +90,6 @@ header.top.shrunk .icon-btn{width:32px;height:32px}
 .hero h1 > span{display:block;white-space:nowrap}
 .hero h1 > span:last-child{white-space:normal}
 .hero h1 .nw{white-space:nowrap}
-.zone-home{margin:-6px 0 12px;font-size:14px;font-weight:600}.zone-home a{color:var(--ink-soft)}
 /* zona nel titolo: parola sottolineata, toccandola si sceglie Torino, Cuneo o Piemonte */
 .area-wrap{position:relative;display:inline-block}
 .area-pick{display:inline;padding:0;border:0;background:none;color:color-mix(in srgb,var(--ink) 72%,var(--lilac));transition:color .15s;font:inherit;letter-spacing:inherit;cursor:pointer;text-decoration:underline;text-decoration-thickness:.08em;text-underline-offset:.1em;text-decoration-color:var(--pink)}
@@ -411,7 +410,6 @@ footer a{color:inherit;font-weight:600}
 <main class="wrap">
   <section class="hero">
     <h1><span>Cosa facciamo questa</span><span>settimana <span id="areaPrep">a</span> <span class="nw"><span class="area-wrap"><button type="button" class="area-pick" id="areaBtn" aria-haspopup="listbox" aria-expanded="false" aria-controls="areaMenu" aria-label="Scegli la zona"><span id="areaLabel">Torino</span></button><span class="area-menu" id="areaMenu" role="listbox" aria-label="Zona" hidden><button type="button" role="option" data-area="to"><b>Torino</b><small>Città e provincia</small></button><button type="button" role="option" data-area="cn"><b>Cuneo</b><small>Città e provincia</small></button><button type="button" role="option" data-area="pie"><b>Piemonte</b><small>Tutte le zone</small></button></span></span>?</span></span></h1>
-    <p class="zone-home" id="zoneHome" hidden><a href="./">‹ Tutte le zone e tutte le attività</a></p>
     <div class="searchrow">
       <label class="search">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
@@ -1217,7 +1215,6 @@ document.getElementById("openFilters").addEventListener("click",openFilters);
 document.getElementById("resetAll").addEventListener("click",resetFilters);
 document.querySelectorAll("[data-tipo]").forEach(b=>b.addEventListener("click",()=>{ state.tipo = state.tipo===b.dataset.tipo ? "" : b.dataset.tipo; if(state.tipo) track("tipo/"+state.tipo); render(); }));
 document.querySelectorAll("[data-when]").forEach(b=>b.addEventListener("click",()=>{state.when = state.when===b.dataset.when?"all":b.dataset.when; if(state.when!=="all") track("filtro/"+state.when); render();}));
-if(ZONE) document.getElementById("zoneHome").hidden=false;
 // zona nel titolo: Torino (città e provincia), Cuneo (città e provincia) o Piemonte (tutto)
 (function(){
   const btn=document.getElementById("areaBtn"), menu=document.getElementById("areaMenu"), opts=[...menu.querySelectorAll("[data-area]")];
