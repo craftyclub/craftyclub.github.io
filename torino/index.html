@@ -439,7 +439,7 @@ footer a{color:inherit;font-weight:600}
   <div class="quick" role="group" aria-label="Filtri rapidi">
     <button class="pill reset" id="resetAll" type="button" hidden aria-label="Azzera tutti i filtri">✕ Azzera</button>
     <button class="pill filters" id="openFilters" type="button">Filtri <span class="count" id="fcount" hidden>0</span></button>
-    <button class="pill" data-quick="torino" aria-pressed="false" type="button">Solo Torino</button>
+    <button class="pill" data-quick="torino" aria-pressed="false" type="button">Solo Torino città</button>
     <button class="pill" data-quick="nokids" aria-pressed="false" type="button">Escludi per famiglie</button>
     <button class="pill" data-when="weekend" aria-pressed="false" type="button">Questo weekend</button>
     <button class="pill" data-when="nextweek" aria-pressed="false" type="button">Prossima settimana</button>
@@ -861,7 +861,7 @@ function render(){
   document.getElementById("areaLabel").textContent= zoneHere ? ZONE.label : {to:"Torino",cn:"Cuneo",pie:"Piemonte"}[area];
   document.getElementById("areaPrep").textContent= zoneHere ? ZONE.prep : (area==="pie" ? "in" : "a");
   const solo=document.querySelector('[data-quick="torino"]');
-  solo.hidden=!city; solo.textContent= area==="cn" ? "Solo Cuneo" : "Solo Torino";
+  solo.hidden=!city; solo.textContent= area==="cn" ? "Solo Cuneo città" : "Solo Torino città";
   solo.setAttribute("aria-pressed",String(!!city && state.places.length===1 && state.places[0]===city));
   if(!state.dbOk){ count.textContent=""; box.append(el("div",{class:"notice"},"Apri questa pagina da claude.ai per vedere i workshop.")); return; }
   if(!state.loaded){ count.textContent=""; box.append(el("div",{class:"empty"},"Carico i workshop…")); return; }
