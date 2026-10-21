@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://craftyclub.it/</loc><changefreq>daily</changefreq></url>
-  <url><loc>https://craftyclub.it/chi-siamo/</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://craftyclub.it/</loc><lastmod>2026-10-21</lastmod><changefreq>daily</changefreq></url>
+  <url><loc>https://craftyclub.it/chi-siamo/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq></url>
+  <url><loc>https://craftyclub.it/torino/</loc><lastmod>2026-10-21</lastmod><changefreq>daily</changefreq></url>
+  <url><loc>https://craftyclub.it/provincia-di-torino/</loc><lastmod>2026-10-21</lastmod><changefreq>daily</changefreq></url>
+  <url><loc>https://craftyclub.it/cuneo/</loc><lastmod>2026-10-21</lastmod><changefreq>daily</changefreq></url>
+  <url><loc>https://craftyclub.it/provincia-di-cuneo/</loc><lastmod>2026-10-21</lastmod><changefreq>daily</changefreq></url>
+  <url><loc>https://craftyclub.it/ceramica/</loc><lastmod>2026-10-21</lastmod><changefreq>daily</changefreq></url>
+  <url><loc>https://craftyclub.it/pittura/</loc><lastmod>2026-10-21</lastmod><changefreq>daily</changefreq></url>
+  <url><loc>https://craftyclub.it/stampa/</loc><lastmod>2026-10-21</lastmod><changefreq>daily</changefreq></url>
+  <url><loc>https://craftyclub.it/tessile/</loc><lastmod>2026-10-21</lastmod><changefreq>daily</changefreq></url>
+  <url><loc>https://craftyclub.it/gioielli/</loc><lastmod>2026-10-21</lastmod><changefreq>daily</changefreq></url>
+  <url><loc>https://craftyclub.it/piante/</loc><lastmod>2026-10-21</lastmod><changefreq>daily</changefreq></url>
+  <url><loc>https://craftyclub.it/cucina/</loc><lastmod>2026-10-21</lastmod><changefreq>daily</changefreq></url>
+  <url><loc>https://craftyclub.it/degustazioni/</loc><lastmod>2026-10-21</lastmod><changefreq>daily</changefreq></url>
+  <url><loc>https://craftyclub.it/musica-e-teatro/</loc><lastmod>2026-10-21</lastmod><changefreq>daily</changefreq></url>
+  <url><loc>https://craftyclub.it/movimento/</loc><lastmod>2026-10-21</lastmod><changefreq>daily</changefreq></url>
+  <url><loc>https://craftyclub.it/giochi/</loc><lastmod>2026-10-21</lastmod><changefreq>daily</changefreq></url>
+  <url><loc>https://craftyclub.it/per-famiglie/</loc><lastmod>2026-10-21</lastmod><changefreq>daily</changefreq></url>
+  <url><loc>https://craftyclub.it/altro/</loc><lastmod>2026-10-21</lastmod><changefreq>daily</changefreq></url>
 </urlset>
