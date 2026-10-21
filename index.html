@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Crafty Club · Workshops a Torino</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='47' fill='%23F6F1FF' stroke='%232A1440' stroke-width='5' stroke-dasharray='10 7.6'/%3E%3Cg stroke='%233B0043' stroke-width='12' stroke-linecap='round'%3E%3Cpath d='M50 14v72M18.8 32l62.4 36M18.8 68l62.4-36'/%3E%3C/g%3E%3Ccircle cx='50' cy='50' r='9' fill='%23FFCF3D' stroke='%232A1440' stroke-width='3'/%3E%3C/svg%3E">
+<meta name="description" content="Workshop, corsi e attività a Torino, Cuneo e dintorni: ceramica, cucina, ricamo, stampa, musica e molto altro, tutti in un posto solo e sempre aggiornati.">
+<link rel="canonical" href="https://craftyclub.it/">
 <meta property="og:title" content="The Crafty Club · Workshops a Torino">
 <meta property="og:image" content="https://craftyclub.it/img/crafty-club-logo.png">
 <script data-goatcounter="https://craftyclub.goatcounter.com/count" async src="js/count.js"></script>
@@ -226,6 +228,14 @@ footer a{color:inherit;font-weight:600}
 .legal ul{padding-left:18px;margin:4px 0}
 .legal a{color:inherit;font-weight:600}
 .legal .agg{color:var(--ink-soft);font-size:12px}
+/* «Chi siamo» */
+.about .lead{font-size:18px;line-height:1.4;font-weight:700;margin:6px 0 12px}
+.about p{font-size:15px;line-height:1.55;margin:0 0 12px}
+.about h4{margin:18px 0 8px;font-size:16px}
+.about ul{list-style:none;margin:0 0 14px;padding:0;display:flex;flex-direction:column;gap:8px}
+.about li{position:relative;padding:12px 14px 12px 40px;border:2px solid var(--line);border-radius:16px;background:var(--bg);font-size:14px;line-height:1.45}
+.about li::before{content:"✳";position:absolute;left:14px;top:11px;color:var(--pink);font-weight:800}
+.about .btn{width:100%;margin-top:6px}
 /* contatti */
 .contacts{margin:26px 0 0;text-align:center}
 .contacts h2{margin:0 0 14px;font-size:24px;font-stretch:80%}
@@ -450,7 +460,7 @@ footer a{color:inherit;font-weight:600}
       </a>
     </div>
   </section>
-  <footer>The Crafty Club · Torino<br><a href="#privacy">Privacy e cookie</a> · <a href="#note-legali">Note legali</a></footer>
+  <footer>The Crafty Club · Torino<br><a href="chi-siamo/">Chi siamo</a> · <a href="#privacy">Privacy e cookie</a> · <a href="#note-legali">Note legali</a></footer>
 </main>
 
 <button class="totop" id="toTop" type="button" aria-label="Torna su" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5.5 11.5L12 5l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -856,7 +866,7 @@ let lastFocus=null;
 // pannelli annidati (calendario → giorno → evento): chiudere un pannello riporta a quello da cui si era arrivati
 let sheetBack=null, pendingBack=null, dayCtx=null;
 function openSheet(content){ if(!sheet.classList.contains("open")) lastFocus=document.activeElement; sheetBack=pendingBack; pendingBack=null; sheet.innerHTML=""; sheet.append(el("div",{class:"grab"}), ...content.filter(Boolean)); sheet.scrollTop=0; overlay.classList.add("open"); sheet.classList.add("open"); setTimeout(()=>{const f=sheet.querySelector("button, a, input"); f&&f.focus({preventScroll:true});},50); }
-function closeSheet(force){ if(!force && sheetBack){ const back=sheetBack; sheetBack=null; back(); return; } sheetBack=null; dayCtx=null; if(location.hash.startsWith("#evento=") || location.hash==="#privacy" || location.hash==="#note-legali") history.replaceState(null,"",location.pathname+location.search); overlay.classList.remove("open"); sheet.classList.remove("open"); lastFocus&&lastFocus.focus(); }
+function closeSheet(force){ if(!force && sheetBack){ const back=sheetBack; sheetBack=null; back(); return; } sheetBack=null; dayCtx=null; if(location.hash.startsWith("#evento=") || location.hash==="#privacy" || location.hash==="#note-legali" || location.hash==="#chi-siamo" || location.hash==="#scrivici") history.replaceState(null,"",location.pathname+location.search); overlay.classList.remove("open"); sheet.classList.remove("open"); lastFocus&&lastFocus.focus(); }
 overlay.addEventListener("click",()=>closeSheet());
 // trascinando il pannello verso il basso si chiude (solo se il contenuto è già in cima)
 let drag=null;
@@ -1002,6 +1012,24 @@ function openLegal(k, fromMenu){
   if(fromMenu) pendingBack=openMenu;
   openSheet([fromMenu ? el("button",{class:"back",type:"button",onclick:()=>closeSheet()},"‹ Menu") : null, el("h3",{id:"sheetTitle"},L.titolo), box]);
 }
+// «Chi siamo» (dal menu o dal link diretto #chi-siamo)
+function openChiSiamo(fromMenu){
+  track("apri/chi-siamo");
+  const box=el("div",{class:"about"});
+  box.innerHTML=`<p class="lead">Siamo due ragazze di Torino con la passione per i workshop: ceramica, ricamo, cucina, stampa e molto altro.</p>
+<p>Ogni volta che volevamo provare qualcosa di nuovo finivamo a scorrere decine di profili Instagram, locandine e siti diversi, e spesso scoprivamo i laboratori più belli quando erano già passati. Così abbiamo deciso di mettere tutto in un posto solo.</p>
+<p>The Crafty Club raccoglie workshop, corsi e attività di Torino, Cuneo e dintorni, sempre aggiornati e con tutto quello che serve sapere: quando, dove e quanto costa.</p>
+<h4>Perché lo facciamo</h4>
+<ul>
+<li>Per chi vuole imparare qualcosa di nuovo, conoscere persone o regalarsi un pomeriggio diverso.</li>
+<li>Per i piccoli artigiani, i laboratori e le associazioni del territorio, che fanno cose bellissime ma non sempre riescono a farsi trovare.</li>
+<li>Perché crediamo che una città piena di cose da imparare e da provare sia una città più viva.</li>
+</ul>`;
+  if(fromMenu) pendingBack=openMenu;
+  openSheet([fromMenu ? el("button",{class:"back",type:"button",onclick:()=>closeSheet()},"‹ Menu") : null, el("h3",{id:"sheetTitle"},"Chi siamo"), box,
+    el("p",{class:"meta",style:"margin:4px 0 8px"},"Organizzi workshop o vuoi segnalarci qualcosa?"),
+    el("button",{class:"btn",type:"button",style:"width:100%",onclick:()=>{ closeSheet(true); openScrivici(false); }},"Scrivici")]);
+}
 // «Aggiungi al calendario»: su iPhone/iPad/Mac un file .ics (si apre il Calendario), altrove Google Calendar
 const CAL_SVG='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4M12 13v5M9.5 15.5h5"/></svg>';
 function calTimes(w){
@@ -1035,6 +1063,8 @@ function addToCalendar(w){
 }
 function openFromHash(){
   const lk=location.hash.slice(1); if(LEGAL[lk]){ openLegal(lk); return; }
+  if(lk==="chi-siamo"){ openChiSiamo(false); return; }
+  if(lk==="scrivici"){ openScrivici(false); return; }
   const m=location.hash.match(/^#evento=(.+)$/); if(!m) return;
   const id=decodeURIComponent(m[1]), w=state.all.find(x=>x.id===id);
   if(w) openDetail(w); else { history.replaceState(null,"",location.pathname+location.search); toast("Questo evento non è più in programma"); }
@@ -1219,6 +1249,7 @@ const MENU_ICONS = {
   saved:'<path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z"/>',
   cal:'<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
   write:'<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>',
+  about:'<circle cx="8.5" cy="8.5" r="3.2"/><circle cx="16.5" cy="9.5" r="2.6"/><path d="M3 19.5c.9-3.3 3.1-5 5.5-5s4.6 1.7 5.5 5"/><path d="M14.6 14.9c.6-.3 1.2-.4 1.9-.4 2 0 3.6 1.3 4.3 4"/>',
   mail:'<rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="M3.5 7l8.5 6.5L20.5 7"/>',
   shield:'<path d="M12 3l7.5 3v5.5c0 4.6-3.2 8.2-7.5 9.5-4.3-1.3-7.5-4.9-7.5-9.5V6z"/>',
   phone:'<rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 18.5h3"/>',
@@ -1240,6 +1271,7 @@ function openMenu(){
       item("saved","I tuoi salvati",()=>{ closeSheet(true); state.tab="saved"; render(); scrollToList(); },{sub: nSaved ? (nSaved===1?"1 attività salvata":nSaved+" attività salvate") : "Tocca il cuore su un workshop per salvarlo"}),
       item("cal","Calendario",()=>{ closeSheet(true); openCalendar(); }),
       el("div",{class:"menu-sep"}),
+      item("about","Chi siamo",()=>openChiSiamo(true)),
       item("write","Scrivici",()=>openScrivici(true)),
       item("mail","Contatti",()=>goToSection("contatti")),
       (isStandalone() || !isMobile()) ? null : item("phone","App",()=>startInstall(true),{sub:"Aggiungi alla schermata Home"}),
@@ -1331,7 +1363,7 @@ document.getElementById("menuBtn").addEventListener("click",openMenu);
 
 render();
 
-/* data: aggiornati al 20 ottobre 2026 */
+/* data: aggiornati al 21 ottobre 2026 */
 const WORKSHOPS = [
  {
   "categoria": "famiglia",
@@ -1914,6 +1946,38 @@ const WORKSHOPS = [
   "id": "blindbeholders-gdr-live-2026-10-25"
  },
  {
+  "categoria": "giochi",
+  "contatto": "+39 333 180 9839",
+  "data": "2026-10-28",
+  "descrizione": "Un torneo di burraco a coppie in bocciofila, con piatto aperitivo disponibile. Ingresso riservato ai soci ARCI; info e prenotazioni al 333 180 9839.",
+  "fonte": "Instagram @bocciofilavanchiglietta",
+  "foto": "img/eventi/bocciofilavanchiglietta-2026-10-20-2.jpg",
+  "indirizzo": "Bocciofila Vanchiglietta, Lungo Dora Colletta 39/A",
+  "link": "https://www.instagram.com/p/DeuRszllXpK/",
+  "ora_inizio": "19:00",
+  "organizzatore": "Bocciofila Vanchiglietta",
+  "tipo": "attivita",
+  "titolo": "Torneo di Burraco: sfida a coppie",
+  "zona": "Vanchiglietta",
+  "id": "bocciofila-burraco-2026-10-28"
+ },
+ {
+  "categoria": "altro",
+  "contatto": "Bocciofila, +39 340 763 7042",
+  "data": "2026-11-03",
+  "descrizione": "Un corso di introduzione alla Lingua dei Segni Italiana e alla comunicazione visivo-gestuale, insieme a un’apericena. Gli incontri sono il 3 e il 24 novembre e il 15 dicembre; si partecipa con un contributo volontario. Ingresso riservato ai soci ARCI, prenotazione obbligatoria al 340 763 7042.",
+  "fonte": "Instagram @bocciofilavanchiglietta",
+  "foto": "img/eventi/bocciofilavanchiglietta-2026-10-20-3.jpg",
+  "indirizzo": "Bocciofila Vanchiglietta, Lungo Dora Colletta 39/A",
+  "link": "https://www.instagram.com/p/DetWsSQFcCC/",
+  "ora_inizio": "18:30",
+  "organizzatore": "Bocciofila Vanchiglietta",
+  "tipo": "corso",
+  "titolo": "Giocare coi segni: introduzione alla LIS",
+  "zona": "Vanchiglietta",
+  "id": "bocciofila-lis-2026-11-03"
+ },
+ {
   "categoria": "movimento",
   "descrizione": "Una disciplina acrobatica di coppia che unisce yoga, acrobatica ed equilibrio: si parte dalle basi del lavoro a due per arrivare a figure semplici, sempre in sicurezza. Non serve esperienza. Abbonamenti da 170 € per 3 mesi, 320 € per 6 e 450 € per 9; la preiscrizione include la tessera UISP. Il corso parte al raggiungimento del numero minimo di iscritti; preiscrizione sul sito del Bunker.",
   "fonte": "variantebunker.com",
@@ -2351,23 +2415,6 @@ const WORKSHOPS = [
   "id": "chocostory-laboratorio-cioccolato"
  },
  {
-  "categoria": "movimento",
-  "contatto": "info@ciboetrash.it",
-  "data": "2026-10-20",
-  "descrizione": "Un torneo amatoriale di ping pong a coppie, pensato più per divertirsi e conoscere gente che per vincere: non serve saper giocare e chi arriva da solo trova un compagno sul posto. Costa 10 € con una consumazione inclusa; iscrizioni su inmoove.ciboetrash.it.",
-  "fonte": "Instagram @cibotrashtorino",
-  "foto": "img/eventi/ciboetrash-ping-pong-2026-10-20.jpg",
-  "indirizzo": "Flair, Largo Saluzzo",
-  "link": "https://inmoove.ciboetrash.it",
-  "ora_inizio": "20:00",
-  "organizzatore": "Cibo & Trash",
-  "prezzo": 10,
-  "tipo": "attivita",
-  "titolo": "Torneo di ping pong: in coppia 2 contro 2",
-  "zona": "San Salvario",
-  "id": "ciboetrash-ping-pong-2026-10-20"
- },
- {
   "categoria": "pittura",
   "data": "2026-10-30",
   "descrizione": "Drink & draw di Halloween: partendo dall’osservazione di mostri del cinema e costumi surreali si disegnano creature ibride con forme semplici, colori vivaci e pattern. Sessione guidata per tutti i livelli, materiali inclusi.",
@@ -2415,23 +2462,6 @@ const WORKSHOPS = [
   "titolo": "Masterclass: crea la tua lampada",
   "zona": "Centro",
   "id": "creative-cables-crea-lampada-2026-10-23"
- },
- {
-  "categoria": "pittura",
-  "data": "2026-10-20",
-  "descrizione": "Laboratorio esperienziale di body painting: si dipingono liberamente mani, braccia o altre parti del corpo come forma di espressione personale, nel rispetto dei confini di ciascuno. Non servono competenze artistiche; parte di Diffusissima 2026.",
-  "fonte": "eventbrite.it",
-  "foto": "img/eventi/crescita-arte-si-fa-corpo-2026-10-20.jpg",
-  "indirizzo": "Istituto RES, Via Borgosesia 63",
-  "link": "https://www.eventbrite.it/e/workshop-larte-si-fa-corpo-crescita-aps-diff-to-26-tickets-2003345890487",
-  "ora_fine": "21:00",
-  "ora_inizio": "19:00",
-  "organizzatore": "Crescita APS",
-  "prezzo": 0,
-  "tipo": "workshop",
-  "titolo": "L’arte si fa corpo: body painting",
-  "zona": "Parella",
-  "id": "crescita-arte-si-fa-corpo-2026-10-20"
  },
  {
   "categoria": "musica",
@@ -3192,7 +3222,7 @@ const WORKSHOPS = [
  {
   "categoria": "cucina",
   "data": "2026-12-10",
-  "descrizione": "Una lezione per preparare con le proprie mani le specialità da mettere in un cesto natalizio da regalare. Si prenota e si paga su eataly.it.",
+  "descrizione": "Una lezione per preparare le specialità da mettere in un cesto natalizio da regalare. Si prenota e si paga su eataly.it.",
   "fonte": "eataly.it",
   "foto": "img/eventi/eataly-2002151713672.jpg",
   "indirizzo": "Eataly Torino Lingotto, Via Fenoglietti 14",
@@ -4146,6 +4176,38 @@ const WORKSHOPS = [
   "id": "galleria-caracol-scenografia-giardino-2026-10-22"
  },
  {
+  "categoria": "cucina",
+  "data": "2026-10-24",
+  "descrizione": "Un laboratorio sul kombucha, il tè fermentato: si parla di batteri e fermentazione e si assaggiano gusti autunnali; si possono portare amici, genitori e il proprio scoby. Il contributo di 24 € si paga in anticipo con Satispay o Revolut per tenere il posto, e se è troppo alto si può chiedere una soluzione. Ingresso riservato ai soci ARCI; iscrizione con il modulo di @gizzy_kombucha. C’è anche domenica 25 ottobre alle 16 al Wine Nest.",
+  "fonte": "Instagram @gizzy_kombucha",
+  "foto": "img/eventi/gizzy-kombucha-2026-10-09-1.jpg",
+  "indirizzo": "Bocciofila Vanchiglietta, Lungo Dora Colletta 39/A",
+  "link": "https://forms.gle/iraGZ68JcVzLJoeCA",
+  "ora_inizio": "11:00",
+  "organizzatore": "Gizzy per Bocciofila Vanchiglietta",
+  "prezzo": 24,
+  "tipo": "workshop",
+  "titolo": "Kombucha Workshop: tè fermentato",
+  "zona": "Vanchiglietta",
+  "id": "gizzy-kombucha-2026-10-24"
+ },
+ {
+  "categoria": "cucina",
+  "data": "2026-10-25",
+  "descrizione": "Un laboratorio sul kombucha, il tè fermentato: si parla di batteri e fermentazione e si assaggiano gusti autunnali; si possono portare amici, genitori e il proprio scoby. Il contributo di 24 € si paga in anticipo con Satispay o Revolut per tenere il posto, e se è troppo alto si può chiedere una soluzione. Iscrizione con il modulo di @gizzy_kombucha. C’è anche sabato 24 ottobre alle 11 alla Bocciofila Vanchiglietta.",
+  "fonte": "Instagram @gizzy_kombucha",
+  "foto": "img/eventi/gizzy-kombucha-2026-10-09-1.jpg",
+  "indirizzo": "Wine Nest, Via Polonghera 57",
+  "link": "https://forms.gle/iraGZ68JcVzLJoeCA",
+  "ora_inizio": "16:00",
+  "organizzatore": "Gizzy per Wine Nest",
+  "prezzo": 24,
+  "tipo": "workshop",
+  "titolo": "Kombucha Workshop: tè fermentato",
+  "zona": "Pozzo Strada",
+  "id": "gizzy-kombucha-2026-10-25"
+ },
+ {
   "categoria": "famiglia",
   "data": "2026-10-25",
   "descrizione": "Laboratorio per bambini dai 5 ai 10 anni: si stampa in serigrafia la base di un manifesto e lo si completa con collage di lettere, forme e texture per raccontare il quartiere che si vorrebbe. I manifesti entrano nella parata collettiva.",
@@ -4319,7 +4381,7 @@ const WORKSHOPS = [
   "categoria": "cucina",
   "contatto": "@kintsugi.torino in DM",
   "data": "2026-10-22",
-  "descrizione": "Una serata in stile giapponese per mettere le mani in pasta: si preparano dango a forma di zucca e si decorano biscotti all’hōjichā, accompagnati dal tè di Kintsugi. Organizzata con Tabete Market; per partecipare si scrive in DM a @kintsugi.torino.",
+  "descrizione": "Una serata in stile giapponese in cui si preparano dango a forma di zucca e si decorano biscotti all’hōjichā, accompagnati dal tè di Kintsugi. Organizzata con Tabete Market; per partecipare si scrive in DM a @kintsugi.torino.",
   "fonte": "Instagram @kintsugi.torino",
   "foto": "img/eventi/kintsugi-torino-2026-10-15-3.jpg",
   "indirizzo": "Kintsugi Tea&Cakes, Via Monte di Pietà 17C",
@@ -4330,6 +4392,60 @@ const WORKSHOPS = [
   "titolo": "Laboratorio di Halloween: dolci giapponesi",
   "zona": "Centro",
   "id": "kintsugi-halloween-2026-10-22"
+ },
+ {
+  "categoria": "ceramica",
+  "comune": "Manta",
+  "contatto": "Paola, +39 346 111 8258",
+  "data": "2026-10-24",
+  "descrizione": "Con Paola di Komorebi Lab si ripara una ceramica rotta con la tecnica contemporanea del kintsugi, guidati passo passo dalla struttura alla finitura con polvere dorata, dopo un’introduzione alla storia e alla filosofia di quest’arte giapponese. Si chiude con un piccolo laboratorio di furoshiki per incartare l’oggetto riparato e portarlo a casa. Materiali, ceramica e tessuto inclusi. Non serve esperienza; posti limitati, si prenota al 346 111 8258 o in DM a @komorebi_di_paola_gaja.",
+  "fonte": "Instagram @komorebi_di_paola_gaja",
+  "foto": "img/eventi/komorebi-di-paola-gaja-2026-09-24-10.jpg",
+  "indirizzo": "Laboratorio di ceramica, Via Rivoira 10",
+  "link": "https://www.instagram.com/p/DdryYkCiOjS/",
+  "ora_fine": "18:00",
+  "ora_inizio": "15:00",
+  "organizzatore": "Komorebi Lab",
+  "tipo": "workshop",
+  "titolo": "Workshop di kintsugi: riparare con l’oro",
+  "zona": "Provincia di Cuneo",
+  "id": "komorebi-kintsugi-2026-10-24"
+ },
+ {
+  "categoria": "ceramica",
+  "comune": "Prunetto",
+  "contatto": "Paola, +39 346 111 8258",
+  "data": "2026-11-08",
+  "descrizione": "Un pomeriggio tra le colline dell’Alta Langa: si ripara una ceramica rotta con la tecnica contemporanea del kintsugi, guidati passo passo dalla struttura alla finitura con polvere dorata, dopo un’introduzione alla storia e alla filosofia di quest’arte giapponese. Si chiude con un piccolo laboratorio di furoshiki per incartare l’oggetto riparato e portarlo a casa. Alla fine apericena insieme; materiali, ceramica, tessuto e apericena inclusi. Non serve esperienza; posti limitati, si prenota al 346 111 8258 o in DM a @komorebi_di_paola_gaja.",
+  "fonte": "Instagram @komorebi_di_paola_gaja",
+  "foto": "img/eventi/komorebi-di-paola-gaja-2026-10-09-3.jpg",
+  "indirizzo": "Locanda del Borgo, Borgata Castello 5",
+  "link": "https://www.instagram.com/p/DeSD6G2I75_/",
+  "ora_fine": "20:00",
+  "ora_inizio": "17:00",
+  "organizzatore": "Komorebi Lab",
+  "tipo": "workshop",
+  "titolo": "Kintsugi e apericena: riparare con l’oro",
+  "zona": "Provincia di Cuneo",
+  "id": "komorebi-kintsugi-apericena-2026-11-08"
+ },
+ {
+  "categoria": "ceramica",
+  "comune": "Bra",
+  "contatto": "Paola, +39 346 111 8258",
+  "data": "2026-10-31",
+  "descrizione": "Una mattinata nel laboratorio di Komorebi Lab che comincia con un piccolo rituale del tè giapponese sul tatami; poi si ripara una ceramica rotta con la tecnica contemporanea del kintsugi, guidati passo passo dalla struttura alla finitura con polvere dorata, dopo un’introduzione alla storia e alla filosofia di quest’arte giapponese. Si chiude con un piccolo laboratorio di furoshiki per incartare l’oggetto riparato e portarlo a casa. Materiali, ceramica e tessuto inclusi. Non serve esperienza; posti limitati, si prenota al 346 111 8258 o in DM a @komorebi_di_paola_gaja.",
+  "fonte": "Instagram @komorebi_di_paola_gaja",
+  "foto": "img/eventi/komorebi-di-paola-gaja-2026-10-11-2.jpg",
+  "indirizzo": "Komorebi Lab, Via Vittorio Emanuele II 256",
+  "link": "https://www.instagram.com/p/DeW-8JcCFnf/",
+  "ora_fine": "13:00",
+  "ora_inizio": "10:00",
+  "organizzatore": "Komorebi Lab",
+  "tipo": "workshop",
+  "titolo": "Kintsugi e tè: riparare con l’oro",
+  "zona": "Provincia di Cuneo",
+  "id": "komorebi-kintsugi-te-2026-10-31"
  },
  {
   "categoria": "movimento",
@@ -4515,7 +4631,7 @@ const WORKSHOPS = [
   "categoria": "ceramica",
   "contatto": "Limaco’s su WhatsApp, +39 379 3959873",
   "data": "2026-10-29",
-  "descrizione": "Una serata con le mani nell’argilla per modellare un pezzo tutto proprio, senza bisogno di esperienza. Luogo e prezzo si chiedono prenotando: si scrive «CLAY» in DM a @limacostorino o su WhatsApp al 379 3959873.",
+  "descrizione": "Una serata in cui si modella l’argilla per creare un pezzo tutto proprio, senza bisogno di esperienza. Luogo e prezzo si chiedono prenotando: si scrive «CLAY» in DM a @limacostorino o su WhatsApp al 379 3959873.",
   "fonte": "Instagram @limacostorino",
   "foto": "img/eventi/limaco-clay-chill-2026-10-29.jpg",
   "link": "https://www.instagram.com/reel/DeOkwlYIDTl/",
@@ -4702,7 +4818,7 @@ const WORKSHOPS = [
   "categoria": "famiglia",
   "contatto": "labs@ilmelogranocuneo.it o allo 0171 697955",
   "data": "2026-10-20",
-  "descrizione": "Un laboratorio di cucina per bambini dai 6 anni: otto martedì, dal 20 ottobre al 15 dicembre, per conoscere gli ingredienti e mettere le mani in pasta. Iscrizioni sul portale ilmelogranoscs.segresta.it, allo 0171 697955 o a labs@ilmelogranocuneo.it.",
+  "descrizione": "Un laboratorio di cucina per bambini dai 6 anni: otto martedì, dal 20 ottobre al 15 dicembre, per conoscere gli ingredienti e imparare a cucinare. Iscrizioni sul portale ilmelogranoscs.segresta.it, allo 0171 697955 o a labs@ilmelogranocuneo.it.",
   "fonte": "Instagram @il_melograno_cuneo",
   "foto": "img/eventi/melograno-barbachef-cuneo-2026-10-20.jpg",
   "indirizzo": "Take5!, Via Barbaroux 1",
@@ -4879,7 +4995,7 @@ const WORKSHOPS = [
  {
   "categoria": "famiglia",
   "data": "2026-11-07",
-  "descrizione": "Mattinata all’aperto in cui si raccolgono foglie, rami e frutti d’autunno per osservarli, dar loro un nome e creare piccole opere con le mani. Gratuita su prenotazione.",
+  "descrizione": "Mattinata all’aperto in cui si raccolgono foglie, rami e frutti d’autunno per osservarli, dar loro un nome e creare piccole opere. Gratuita su prenotazione.",
   "fonte": "eventbrite.it",
   "foto": "img/eventi/momag-tavolo-naturalista-2026-11-07.jpg",
   "indirizzo": "Giardino Pellegrino, Piazza Borgo Dora",
@@ -5603,7 +5719,7 @@ const WORKSHOPS = [
   "categoria": "famiglia",
   "contatto": "info@centropaideia.org o allo 011 0462400",
   "data": "2026-10-24",
-  "descrizione": "Un Sabato Creativo a tema Halloween per costruire decorazioni spettrali con le proprie mani, insieme a tutta la famiglia. Due turni: 9:30–10:30 per bambini da 3 a 5 anni, 11:15–12:15 da 6 a 10 anni. Iscrizioni al Centro Paideia, allo 011 0462400 o a info@centropaideia.org.",
+  "descrizione": "Un Sabato Creativo a tema Halloween per costruire decorazioni spettrali insieme a tutta la famiglia. Due turni: 9:30–10:30 per bambini da 3 a 5 anni, 11:15–12:15 da 6 a 10 anni. Iscrizioni al Centro Paideia, allo 011 0462400 o a info@centropaideia.org.",
   "fonte": "Instagram @centropaideia",
   "foto": "img/eventi/paideia-decoro-da-paura-2026-10-24.jpg",
   "indirizzo": "Centro Paideia, Via Moncalvo 1",
@@ -6420,6 +6536,20 @@ const WORKSHOPS = [
   "id": "santaromero-degustazione-caffe"
  },
  {
+  "categoria": "tessile",
+  "contatto": "sassi@sassi.me",
+  "descrizione": "Nell’atelier di Sassi, marchio torinese di abiti sartoriali ispirati al mondo botanico, si tengono lezioni di modellazione e cucito con la stilista e modellista Alessandra Berardi. Giorni, livello e prezzo si concordano scrivendo a sassi@sassi.me o in DM a @sassi.ab.",
+  "fonte": "Instagram @sassi.ab",
+  "indirizzo": "Atelier Sassi, Via Berthollet 25C",
+  "link": "https://www.instagram.com/sassi.ab/",
+  "organizzatore": "Sassi",
+  "su_prenotazione": true,
+  "tipo": "corso",
+  "titolo": "Lezioni di cucito: modellazione e sartoria",
+  "zona": "San Salvario",
+  "id": "sassi-lezioni-cucito"
+ },
+ {
   "categoria": "ceramica",
   "contatto": "Scialabà su WhatsApp, +39 338 4938124",
   "descrizione": "Corsi di decorazione ceramica con tre tecniche: pennino, tecnica scandinava e cuerda seca, in cui un contorno separa i colori dello smalto in cottura. Lezioni dal martedì al sabato in tre fasce (10–12, 15:30–17:30, 18–20); info e prenotazioni su WhatsApp al +39 338 4938124.",
@@ -6705,24 +6835,6 @@ const WORKSHOPS = [
   "titolo": "Cooking class: cucina francese",
   "zona": "Centro",
   "id": "studiofood33-cucina-francese-2026-11-30"
- },
- {
-  "categoria": "cucina",
-  "data": "2026-10-20",
-  "descrizione": "Lo chef Niraj Shah guida una serata dedicata alla cucina indiana: chana masala, kulcha, aloo paratha, una salsa fresca allo yogurt e il lassi. Tra una preparazione e l’altra c’è anche un breve momento di pausa e meditazione. Iscrizione su studiofood33.com, al massimo 16–18 persone.",
-  "fonte": "Instagram @studiofood33",
-  "foto": "img/eventi/studiofood33-2026-10-06-5.jpg",
-  "indirizzo": "STUDIOFOOD33, Via dei Mille 33",
-  "link": "https://www.instagram.com/p/DeJVyxnEdPu/",
-  "ora_fine": "23:00",
-  "ora_inizio": "20:00",
-  "organizzatore": "STUDIOFOOD33 con lo chef Niraj Shah",
-  "prezzo": 85,
-  "solo_categoria": true,
-  "tipo": "workshop",
-  "titolo": "Cooking class: cucina indiana",
-  "zona": "Centro",
-  "id": "studiofood33-cucina-indiana-2026-10-20"
  },
  {
   "categoria": "cucina",
@@ -7270,7 +7382,7 @@ const WORKSHOPS = [
   "categoria": "altro",
   "contatto": "TObed su WhatsApp, +39 339 432 5090",
   "data": "2026-11-14",
-  "descrizione": "Una mattinata con Elena Aquila del Tempio Creativo per realizzare candele a mano. Esaurito: per la lista d’attesa si scrive a TObed su WhatsApp (339 432 5090).",
+  "descrizione": "Una mattinata con Elena Aquila del Tempio Creativo per realizzare candele. Esaurito: per la lista d’attesa si scrive a TObed su WhatsApp (339 432 5090).",
   "fonte": "tobed.it",
   "indirizzo": "TObed, Via Argonne 4",
   "link": "https://www.tobed.it/location.php",
@@ -7321,7 +7433,7 @@ const WORKSHOPS = [
   "categoria": "altro",
   "contatto": "TObed su WhatsApp, +39 339 432 5090",
   "data": "2026-11-28",
-  "descrizione": "Una giornata con l’illustratrice Laura Cortinovis (@icoloridilaura) per creare a mano lanterne decorative per il Natale. Si prenota a TObed su WhatsApp (339 432 5090).",
+  "descrizione": "Una giornata con l’illustratrice Laura Cortinovis (@icoloridilaura) per creare lanterne decorative per il Natale. Si prenota a TObed su WhatsApp (339 432 5090).",
   "fonte": "tobed.it",
   "indirizzo": "TObed, Via Argonne 4",
   "link": "https://www.tobed.it/location.php",
