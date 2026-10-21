@@ -794,9 +794,10 @@ function noDate(w){
   const r=(w.ricorrenza||"").trim(), n=r.match(/^ogni (\d+) (.+)$/i), g=r.match(/^ogni (.+)$/i);
   if(n) return [el("span",{class:"wd"},"ogni"), el("span",{class:"d"},n[1]), el("span",{class:"m"},n[2])];
   if(g) return [el("span",{class:"wd"},"ogni"), el("span",{class:"word"},g[1])];
-  return [el("span",{class:"wd"},"data"), el("span",{class:"word"},"a scelta")];
+  // data_da_confermare: la data non si sa ancora (diverso da «a scelta», dove la si concorda con l’organizzatore)
+  return [el("span",{class:"wd"},"data"), el("span",{class:"word"}, w.data_da_confermare ? "da confermare" : "a scelta")];
 }
-const noDateText = w => w.ricorrenza ? w.ricorrenza[0].toUpperCase()+w.ricorrenza.slice(1) : "Data a scelta";
+const noDateText = w => w.ricorrenza ? w.ricorrenza[0].toUpperCase()+w.ricorrenza.slice(1) : (w.data_da_confermare ? "Data da confermare" : "Data a scelta");
 
 const heartSvg = on => `<svg viewBox="0 1.2 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z" fill="${on?"currentColor":"none"}" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg>`;
 
@@ -1993,6 +1994,7 @@ const WORKSHOPS = [
  {
   "categoria": "pittura",
   "contatto": "@barbara_sirtoli_art in DM",
+  "data_da_confermare": true,
   "descrizione": "Corsi settimanali con l’illustratrice Barbara Sirtoli, in tre sedi. Al mattino illustrazione con china e acquerello e pastello secco al Circolo Impresa e Territorio (Via Cesalpino 11A) e alla Cascina Roccafranca (Via Rubino 45, il mercoledì dalle 10:30 alle 12); al pomeriggio pittura e acquerello, disegno a grafite, tecniche a inchiostro e pastello secco al Polo Artistico delle Rosine (Via delle Rosine 11). Giorni, orari e prezzi in DM a @barbara_sirtoli_art.",
   "fonte": "Instagram @barbara_sirtoli_art",
   "foto": "img/eventi/barbara-sirtoli-art-2026-09-03-6.jpg",
@@ -2548,6 +2550,7 @@ const WORKSHOPS = [
  {
   "categoria": "tessile",
   "contatto": "Casa nel Parco",
+  "data_da_confermare": true,
   "descrizione": "Un percorso di avvicinamento al mondo dei filati, tra ferri circolari, maglia e uncinetto, alla Casa del Quartiere di Mirafiori sud. Giorni, orari e iscrizioni sono sul sito di Casa nel Parco.",
   "fonte": "Instagram @casanelparco",
   "foto": "img/eventi/casanelparco-2026-10-02-15.jpg",
@@ -2562,6 +2565,7 @@ const WORKSHOPS = [
  {
   "categoria": "pittura",
   "contatto": "Casa nel Parco",
+  "data_da_confermare": true,
   "descrizione": "Laboratorio di pittura a terzo fuoco su porcellana e di pittura su stoffa, aperto anche a chi non ha mai disegnato e pensato soprattutto per la terza età. Si partecipa con un contributo di 20 € l’anno (o 20 ore di volontariato) alla Fondazione Mirafiori; giorni e iscrizioni sul sito di Casa nel Parco.",
   "fonte": "Instagram @casanelparco",
   "foto": "img/eventi/casanelparco-2026-10-03-14.jpg",
@@ -2585,6 +2589,7 @@ const WORKSHOPS = [
   ],
   "categoria": "altro",
   "contatto": "cascinaroccafranca.it",
+  "data_da_confermare": true,
   "descrizione": "La casa del quartiere ospita decine di corsi settimanali tenuti da associazioni e insegnanti: pittura, pasta di sale, maglia, sartoria, argilla, illustrazione, art journal, fotografia, scrittura, teatro e improvvisazione, danze (orientale, afro, folk, country, lindy hop, pizzica), chitarra, fisarmonica e giochi da tavolo, anche per bambini. Ognuno ha il suo giorno e il suo contatto: l’elenco completo è nel volantino sul sito della Cascina.",
   "fonte": "cascinaroccafranca.it (via Le Strade)",
   "indirizzo": "Cascina Roccafranca, Via Edoardo Rubino 45",
@@ -5061,6 +5066,7 @@ const WORKSHOPS = [
  {
   "categoria": "cucina",
   "contatto": "@masalastudio_torino in DM",
+  "data_da_confermare": true,
   "descrizione": "In circa tre ore si preparano tre ricette vegetali ispirate a tre Paesi diversi, con ingredienti versatili e passaggi facili da rifare a casa. Si torna a casa con il ricettario. Le date escono nelle Stories di @masalastudio_torino; si prenota in DM.",
   "fonte": "Instagram @masalastudio_torino",
   "link": "https://www.instagram.com/p/DeHC-4jALE5/",
@@ -5075,6 +5081,7 @@ const WORKSHOPS = [
  {
   "categoria": "cucina",
   "contatto": "@masalastudio_torino in DM",
+  "data_da_confermare": true,
   "descrizione": "Si parte dalla Table aux épices per conoscere le spezie con vista, tatto e olfatto, poi si cucinano tre piatti vegetali di tre Paesi legati da un filo aromatico. Ognuno crea il proprio masala da portare a casa con il ricettario. Le date escono nelle Stories di @masalastudio_torino; si prenota in DM o a fg@masalastudio.art.",
   "fonte": "Instagram @masalastudio_torino",
   "foto": "img/eventi/masalastudio-torino-2026-10-07-1.jpg",
@@ -5759,6 +5766,7 @@ const WORKSHOPS = [
  },
  {
   "categoria": "stampa",
+  "data_da_confermare": true,
   "descrizione": "Quattro lezioni da due ore, una a settimana, per imparare la serigrafia: preparazione del telaio, disegno, impressione e stampa su maglietta o carta. Oltre al corso servono 10 € di tessera associativa; incluse 4 ore di uso libero degli spazi. Iscrizione a info.officinecreative@gmail.com.",
   "fonte": "officinecreativetorino.it",
   "indirizzo": "Cecchi Point, Via Antonio Cecchi 17",
@@ -6214,6 +6222,7 @@ const WORKSHOPS = [
  },
  {
   "categoria": "ceramica",
+  "data_da_confermare": true,
   "descrizione": "Si modella a scelta un oggetto in argilla bianca e lo si decora con gli engobbi, le terre colorate. Materiale e cotture inclusi; il pezzo si ritira in studio dopo 14 giorni. Le date di novembre si chiedono in DM a @ouimiel.ceramics.",
   "fonte": "Instagram @ouimiel.ceramics",
   "foto": "img/eventi/ouimiel-ceramics-2026-10-16-2.jpg",
