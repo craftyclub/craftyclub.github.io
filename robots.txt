@@ -1,4 +1,35 @@
+# The Crafty Club · craftyclub.it
+# Tutto il sito è pubblico: motori di ricerca e assistenti AI possono leggerlo e citarlo.
+
 User-agent: *
+Allow: /
+
+# Google (Gemini e AI Overviews)
+User-agent: Google-Extended
+Allow: /
+
+# OpenAI: addestramento (GPTBot) e ricerca in ChatGPT (OAI-SearchBot)
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# Anthropic (Claude)
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
 Allow: /
 
 Sitemap: https://craftyclub.it/sitemap.xml

@@ -1,0 +1,39 @@
+# The Crafty Club
+
+> The Crafty Club (craftyclub.it) raccoglie in un posto solo workshop, corsi e attività a Torino, in provincia di Torino, a Cuneo e in provincia di Cuneo: ceramica, pittura e scrittura, stampa, cucito e maglia, gioielli, piante, cucina, degustazioni, musica e teatro, danza e movimento, giochi e laboratori per bambini. Per ogni evento indica data, orario, luogo, prezzo, organizzatore e come iscriversi. Il sito è sempre aggiornato; per iscriversi si segue il link della scheda.
+
+Il sito è in italiano. Ogni evento ha un link diretto nella forma `https://craftyclub.it/#evento=<id>`. Gli eventi passati vengono tolti; i corsi senza data fissa sono indicati come «data a scelta» o con il giorno della settimana («ogni martedì»).
+
+## Pagine principali
+
+- [Home: tutti i workshop con ricerca e filtri](https://craftyclub.it/): elenco completo degli eventi in arrivo, filtrabile per zona, data, categoria, tipo (workshop, corsi, altre attività) e prezzo.
+- [Chi siamo](https://craftyclub.it/chi-siamo/): chi c’è dietro The Crafty Club e perché esiste.
+
+## Per zona
+
+- [Workshop e corsi a Torino](https://craftyclub.it/torino/)
+- [Workshop e corsi in provincia di Torino](https://craftyclub.it/provincia-di-torino/)
+- [Workshop e corsi a Cuneo](https://craftyclub.it/cuneo/)
+- [Workshop e corsi in provincia di Cuneo](https://craftyclub.it/provincia-di-cuneo/)
+
+## Per categoria
+
+- [Corsi e workshop di ceramica](https://craftyclub.it/ceramica/): tornio, modellazione, decorazione, kintsugi.
+- [Pittura, disegno e scrittura](https://craftyclub.it/pittura/): acquerello, illustrazione, calligrafia, collage, arteterapia.
+- [Stampa](https://craftyclub.it/stampa/): serigrafia, cianotipia, incisione, risograph, stampa botanica.
+- [Cucito, maglia, uncinetto e ricamo](https://craftyclub.it/tessile/): anche tufting, rammendo e sashiko.
+- [Gioielli](https://craftyclub.it/gioielli/)
+- [Piante e fiori](https://craftyclub.it/piante/)
+- [Corsi di cucina e cooking class](https://craftyclub.it/cucina/)
+- [Degustazioni](https://craftyclub.it/degustazioni/): vino, birra, olio, caffè, cioccolato, cocktail.
+- [Musica, canto e teatro](https://craftyclub.it/musica-e-teatro/)
+- [Danza e movimento](https://craftyclub.it/movimento/): social dance, escursioni, giri in bici.
+- [Giochi](https://craftyclub.it/giochi/): tornei, giochi da tavolo, giochi di ruolo.
+- [Attività per bambini e famiglie](https://craftyclub.it/per-famiglie/)
+- [Altri laboratori](https://craftyclub.it/altro/): candele, saponi, fotografia, origami, rilegatura, fablab.
+
+## Contatti
+
+- Instagram: [@crafty.club.it](https://www.instagram.com/crafty.club.it/)
+- Email: crafty.club.info@gmail.com
+- Organizzatori che vogliono segnalare un workshop: modulo «Scrivici» su [craftyclub.it/#scrivici](https://craftyclub.it/#scrivici)
