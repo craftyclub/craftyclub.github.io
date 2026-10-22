@@ -409,7 +409,7 @@ footer a{color:inherit;font-weight:600}
   .org{padding:20px 22px;border-radius:22px}
   .org h2{font-size:22px;max-width:none}
 }
-dd a.orglink{color:inherit;font-weight:700;text-decoration:underline;text-underline-offset:3px}
+dd a.orglink{color:inherit;text-decoration:underline;text-decoration-color:var(--pink);text-decoration-thickness:2px;text-underline-offset:3px}dd a.orglink .arr{text-decoration:none;display:inline-block;margin-left:2px;font-weight:800}
 </style>
 </head>
 <body>
@@ -1144,7 +1144,7 @@ function openDetail(w){
   const dove = w.indirizzo ? [w.indirizzo,luogo].filter(Boolean).join(", ") : luogo ? luogo + (w.contatto ? `; luogo esatto: chiedere a ${w.contatto}` : "") : ask;
   const esaurito = w.posti_disponibili!=null && w.posti_disponibili!=="" && Number(w.posti_disponibili)<=0;
   const prezzo = (w.prezzo!=null && w.prezzo!=="") ? priceLabel(w) + (esaurito ? " · esaurito" : "") : ask;
-  const org=w.organizzatore ? el("span",{},w.organizzatore+" · ",el("a",{class:"orglink",href:"organizzatori/"+orgSlug(w.organizzatore)+"/"},"tutte le sue attività")) : null;
+  const org=w.organizzatore ? el("a",{class:"orglink",href:"organizzatori/"+orgSlug(w.organizzatore)+"/","aria-label":w.organizzatore+": tutte le sue attività"},w.organizzatore,el("span",{class:"arr","aria-hidden":"true"}," ›")) : null;
   const rows=[["Quando",when],["Dove",dove],["Prezzo",prezzo],["Organizzatore",org]].filter(r=>r[1]);
   const calInfo=el("div",{class:"calinfo",hidden:true},
     el("p",{}, "Salva questo evento nel calendario del tuo telefono o in Google Calendar, con data, orario, luogo e link per prenotare."),
