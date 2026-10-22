@@ -409,6 +409,7 @@ footer a{color:inherit;font-weight:600}
   .org{padding:20px 22px;border-radius:22px}
   .org h2{font-size:22px;max-width:none}
 }
+dd a.orglink{color:inherit;font-weight:700;text-decoration:underline;text-underline-offset:3px}
 </style>
 </head>
 <body>
@@ -489,6 +490,7 @@ footer a{color:inherit;font-weight:600}
     <nav class="seo-links" aria-label="Workshop per zona e categoria">
       <div><h3>Per zona</h3><ul><li><a href="torino/">Torino</a></li><li><a href="provincia-di-torino/">Provincia di Torino</a></li><li><a href="cuneo/">Cuneo</a></li><li><a href="provincia-di-cuneo/">Provincia di Cuneo</a></li></ul></div>
       <div><h3>Per categoria</h3><ul><li><a href="ceramica/">Ceramica</a></li><li><a href="pittura/">Pittura e scrittura</a></li><li><a href="stampa/">Stampa</a></li><li><a href="tessile/">Tessile</a></li><li><a href="gioielli/">Gioielli</a></li><li><a href="piante/">Piante</a></li><li><a href="cucina/">Cucina</a></li><li><a href="degustazioni/">Degustazioni</a></li><li><a href="musica-e-teatro/">Musica e teatro</a></li><li><a href="movimento/">Movimento</a></li><li><a href="giochi/">Giochi</a></li><li><a href="per-famiglie/">Per famiglie</a></li><li><a href="altro/">Altro</a></li></ul></div>
+      <div><h3>Per organizzatore</h3><ul><li><a href="organizzatori/">Laboratori, atelier e artigiani</a></li></ul></div>
     </nav>
     <div class="sf-bottom">© 2026 The Crafty Club · Torino, tutti i workshop in un posto solo.</div>
   </footer>
@@ -1028,6 +1030,7 @@ const LEGAL = {
 <li><strong>Hosting.</strong> Il sito è ospitato da GitHub Pages (GitHub Inc., USA). Come ogni server, GitHub riceve dati tecnici della connessione (ad esempio indirizzo IP e tipo di browser) per far funzionare e proteggere il servizio. Il trasferimento negli USA avviene nel quadro dell’EU-US Data Privacy Framework. Informativa di GitHub: <a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub Privacy Statement</a>.</li>
 <li><strong>Statistiche anonime.</strong> Per capire quante persone usano il sito e cosa è più utile usiamo <a href="https://www.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>, che conta le pagine e le azioni (ad esempio quali eventi vengono aperti o prenotati, quali categorie e ricerche si usano) in forma aggregata. Non usa cookie, non salva nulla nel tuo browser, non conserva l’indirizzo IP e non permette di identificarti. I dati sono conservati su server in Finlandia e Germania. Base giuridica: il nostro legittimo interesse a migliorare il sito. <a href="https://www.goatcounter.com/help/privacy" target="_blank" rel="noopener">Informativa di GoatCounter</a>.</li>
 <li><strong>Caratteri e immagini.</strong> Caratteri tipografici, immagini e lo script delle statistiche sono ospitati sul sito stesso: aprendo le pagine non ti colleghi a Google o ad altri servizi esterni (solo il conteggio anonimo viene inviato a GoatCounter e, se usi il modulo «Scrivici», il tuo messaggio a Web3Forms).</li>
+<li><strong>Pagine degli organizzatori.</strong> Nella sezione «Cerca per organizzatore» mostriamo, per chi propone eventi sul sito, il nome, una breve descrizione scritta da noi, la foto profilo o il logo e i link pubblici (Instagram, sito). Sono informazioni già pubbliche, prese dai loro profili e siti, e le usiamo solo per presentare le loro attività (legittimo interesse a informare su eventi aperti al pubblico). Se sei un organizzatore e vuoi correggere o togliere la tua pagina, la foto o la descrizione, scrivi a <a href="mailto:${MAIL}">${MAIL}</a>: lo facciamo il prima possibile.</li>
 <li><strong>Se ci scrivi.</strong> Se ci contatti per mail, su Instagram o con il modulo «Scrivici» usiamo i tuoi dati (nome, mail, messaggio) solo per risponderti e li conserviamo per il tempo necessario. Il modulo è gestito da <a href="https://web3forms.com" target="_blank" rel="noopener">Web3Forms</a> (Web3Creative, India), che inoltra il messaggio alla nostra mail usando server negli USA e può conservarne una copia per un periodo limitato. Instagram tratta i dati secondo la propria informativa.</li>
 </ul>
 <h4>Cookie</h4>
@@ -1036,21 +1039,21 @@ const LEGAL = {
 <p>Le schede rimandano ai siti degli organizzatori, a piattaforme di prenotazione e a Instagram. Quando li apri valgono le loro regole su privacy e cookie, che non dipendono da noi.</p>
 <h4>I tuoi diritti</h4>
 <p>Puoi chiedere in ogni momento di accedere ai tuoi dati, correggerli, cancellarli, limitarne l’uso od opporti al loro trattamento, scrivendo a <a href="mailto:${MAIL}">${MAIL}</a>. Puoi anche presentare reclamo al <a href="https://www.garanteprivacy.it" target="_blank" rel="noopener">Garante per la protezione dei dati personali</a>.</p>
-<p class="agg">Ultimo aggiornamento: 21 ottobre 2026 (la zona scelta non viene più salvata nel browser).</p>`},
+<p class="agg">Ultimo aggiornamento: 22 ottobre 2026 (aggiunte le pagine degli organizzatori).</p>`},
   "note-legali": {titolo:"Note legali", testo:`
 <h4>Che cos’è The Crafty Club</h4>
 <p>The Crafty Club è una raccolta gratuita di workshop, corsi e laboratori organizzati da altri a Torino, Cuneo e dintorni. Non organizziamo gli eventi, non vendiamo biglietti e non raccogliamo prenotazioni o pagamenti: per iscriversi si usa il link o il contatto dell’organizzatore.</p>
 <h4>Informazioni sugli eventi</h4>
 <p>Date, orari, prezzi e descrizioni vengono da fonti pubbliche (siti e profili social degli organizzatori, siti di eventi) e sono riassunti da noi. Possono cambiare o contenere errori: prima di andare controlla sempre con l’organizzatore. The Crafty Club non risponde dello svolgimento degli eventi, di cancellazioni o modifiche, né dei contenuti dei siti esterni.</p>
 <h4>Nomi, marchi e immagini</h4>
-<p>Nomi, marchi, loghi e immagini degli eventi appartengono ai rispettivi titolari e sono mostrati solo per presentare l’evento, con il rimando alla fonte. Se sei l’organizzatore o il titolare di un’immagine e vuoi correggere una scheda o farla togliere, scrivi a <a href="mailto:${MAIL}">${MAIL}</a>: interveniamo il prima possibile.</p>
+<p>Nomi, marchi, loghi e immagini degli eventi e degli organizzatori (comprese le foto profilo nelle pagine «Cerca per organizzatore») appartengono ai rispettivi titolari e sono mostrati solo per presentare gli eventi, con il rimando alla fonte. Se sei l’organizzatore o il titolare di un’immagine e vuoi correggere una scheda o farla togliere, scrivi a <a href="mailto:${MAIL}">${MAIL}</a>: interveniamo il prima possibile.</p>
 <h4>Uso del sito</h4>
 <p>Il sito è gratuito. Testi, selezione degli eventi, logo e grafica di The Crafty Club non possono essere copiati o riutilizzati per scopi commerciali senza il nostro permesso. Condividere i link alle schede è benvenuto.</p>
 <h4>Motori di ricerca e intelligenza artificiale</h4>
 <p>Le pagine del sito sono pubbliche: motori di ricerca e assistenti di intelligenza artificiale (come Google, ChatGPT, Claude o Perplexity) possono leggerle, indicizzarle e citarle. Le regole per i loro programmi di lettura sono nel file <a href="robots.txt">robots.txt</a>, e una descrizione del sito pensata per loro è in <a href="llms.txt">llms.txt</a>.</p>
 <h4>Legge applicabile</h4>
 <p>Queste note sono regolate dalla legge italiana.</p>
-<p class="agg">Ultimo aggiornamento: 21 ottobre 2026 (aggiunta la parte su motori di ricerca e intelligenza artificiale).</p>`}
+<p class="agg">Ultimo aggiornamento: 22 ottobre 2026 (immagini e loghi nelle pagine degli organizzatori).</p>`}
 };
 // aperta dal menu: freccia «‹ Menu» in alto e, chiudendo, si torna al menu
 function openLegal(k, fromMenu){
@@ -1116,6 +1119,8 @@ function openFromHash(){
   const id=decodeURIComponent(m[1]), w=state.all.find(x=>x.id===id);
   if(w) openDetail(w); else { history.replaceState(null,"",location.pathname+location.search); toast("Questo evento non è più in programma"); }
 }
+// pagina dell’organizzatore: «Ospite per Organizzatore» / «Organizzatore con Ospite» -> organizzatori/<slug>/
+function orgSlug(o){ const h=o.split(" per ").pop().split(" con ")[0].trim(); return h.normalize("NFKD").replace(/[^\u0000-\u007f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,""); }
 function openDetail(w){
   track("evento/"+w.id, w.titolo);
   // aperto dalla lista di un giorno del calendario: chiudendo si torna a quel giorno
@@ -1135,7 +1140,8 @@ function openDetail(w){
   const dove = w.indirizzo ? [w.indirizzo,luogo].filter(Boolean).join(", ") : luogo ? luogo + (w.contatto ? `; luogo esatto: chiedere a ${w.contatto}` : "") : ask;
   const esaurito = w.posti_disponibili!=null && w.posti_disponibili!=="" && Number(w.posti_disponibili)<=0;
   const prezzo = (w.prezzo!=null && w.prezzo!=="") ? priceLabel(w) + (esaurito ? " · esaurito" : "") : ask;
-  const rows=[["Quando",when],["Dove",dove],["Prezzo",prezzo],["Organizzatore",w.organizzatore]].filter(r=>r[1]);
+  const org=w.organizzatore ? el("span",{},w.organizzatore+" · ",el("a",{class:"orglink",href:"organizzatori/"+orgSlug(w.organizzatore)+"/"},"tutte le sue attività")) : null;
+  const rows=[["Quando",when],["Dove",dove],["Prezzo",prezzo],["Organizzatore",org]].filter(r=>r[1]);
   const calInfo=el("div",{class:"calinfo",hidden:true},
     el("p",{}, "Salva questo evento nel calendario del tuo telefono o in Google Calendar, con data, orario, luogo e link per prenotare."),
     el("button",{class:"btn",type:"button",onclick:()=>{ addToCalendar(w); calInfo.hidden=true; }},"Aggiungi al calendario"));
@@ -1320,6 +1326,7 @@ function openMenu(){
       accNote,
       item("saved","I tuoi salvati",()=>{ closeSheet(true); state.tab="saved"; render(); scrollToList(); },{sub: nSaved ? (nSaved===1?"1 attività salvata":nSaved+" attività salvate") : "Tocca il cuore su un workshop per salvarlo"}),
       item("cal","Calendario",()=>{ closeSheet(true); openCalendar(); }),
+      item("about","Cerca per organizzatore",()=>{ track("menu/organizzatori"); location.href="organizzatori/"; },{sub:"Laboratori, atelier e artigiani"}),
       el("div",{class:"menu-sep"}),
       item("about","Chi siamo",()=>openChiSiamo(true)),
       item("write","Scrivici",()=>openScrivici(true)),

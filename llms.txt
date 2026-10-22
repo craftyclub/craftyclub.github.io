@@ -32,6 +32,10 @@ Il sito è in italiano. Ogni evento ha un link diretto nella forma `https://craf
 - [Attività per bambini e famiglie](https://craftyclub.it/per-famiglie/)
 - [Altri laboratori](https://craftyclub.it/altro/): candele, saponi, fotografia, origami, rilegatura, fablab.
 
+## Per organizzatore
+
+- [Cerca per organizzatore](https://craftyclub.it/organizzatori/): laboratori, atelier, associazioni e artigiani che propongono eventi sul sito, con una breve descrizione. Ognuno ha una pagina con solo le sue attività in arrivo, nella forma `https://craftyclub.it/organizzatori/<nome>/` (ad esempio [Pottery Lab](https://craftyclub.it/organizzatori/pottery-lab/)).
+
 ## Contatti
 
 - Instagram: [@crafty.club.it](https://www.instagram.com/crafty.club.it/)
