@@ -361,7 +361,7 @@ footer a{color:inherit;font-weight:600}
 .toggle input{width:22px;height:22px;accent-color:var(--pink)}
 .detail .cover{position:relative;display:block;width:100%;height:min(54vh,460px);margin:2px 0 14px;padding:0;border:0;border-radius:18px;overflow:hidden;background:#1A0F27;cursor:pointer}
 .detail .cover .bg{position:absolute;inset:-24px;background-size:cover;background-position:center;filter:blur(20px) brightness(.65);transform:scale(1.05)}
-.detail .cover img{position:relative;display:block;width:100%;height:100%;object-fit:contain}.chip-cat{display:inline-flex;align-items:center;gap:6px;margin:2px 0 8px;padding:4px 11px 4px 7px;border:1.5px solid var(--cb);border-radius:999px;font-size:13px;font-weight:700;color:#2A1440}
+.detail .cover img{position:relative;display:block;width:100%;height:100%;object-fit:contain}.detail .cover .igtag{position:absolute;right:10px;bottom:10px;padding:5px 10px;border-radius:999px;background:rgba(20,10,30,.62);color:#fff;font-size:12px;font-weight:700;backdrop-filter:blur(4px)}.chip-cat{display:inline-flex;align-items:center;gap:6px;margin:2px 0 8px;padding:4px 11px 4px 7px;border:1.5px solid var(--cb);border-radius:999px;font-size:13px;font-weight:700;color:#2A1440}
 .detail dl{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;margin:14px 0}
 .detail dt{color:var(--ink-soft);font-size:13px}
 .detail dd{margin:0;font-weight:600;font-size:14.5px}
@@ -945,7 +945,7 @@ sheet.addEventListener("touchcancel",endDrag);
 // un tocco nello spazio vuoto in alto (maniglia, titolo, margini sopra i comandi) chiude il pannello
 sheet.addEventListener("click",e=>{
   const t=e.target;
-  if(t.closest(".detail .cover")){ closeSheet(); return; }
+  if(t.closest(".detail .cover") && !t.closest(".detail a.cover")){ closeSheet(); return; }
   if(!(t===sheet || t.classList.contains("grab") || t.id==="sheetTitle" || t.tagName==="H4")) return;
   const first=sheet.querySelector("button, a, input, label");
   if(!first || e.clientY < first.getBoundingClientRect().top) closeSheet();
@@ -1129,6 +1129,8 @@ function openFromHash(){
 }
 // pagina dell’organizzatore: «Ospite per Organizzatore» / «Organizzatore con Ospite» -> organizzatori/<slug>/
 function orgSlug(o){ const h=o.split(" per ").pop().split(" con ")[0].trim(); return h.normalize("NFKD").replace(/[^\u0000-\u007f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,""); }
+// post Instagram dell’evento: il campo «post» oppure il link, se è un post o un reel
+const igPost = w => [w.post, w.link].find(u => u && /^https:\/\/(www\.)?instagram\.com\/(p|reel)\//.test(u)) || null;
 function openDetail(w){
   track("evento/"+w.id, w.titolo);
   // aperto dalla lista di un giorno del calendario: chiudendo si torna a quel giorno
@@ -1163,9 +1165,10 @@ function openDetail(w){
   let link=null;
   if(w.link && /^https?:\/\//i.test(w.link)) link=el("a",{class:"btn",href:w.link,target:"_blank",rel:"noopener",onclick:()=>track("prenota/"+w.id, w.titolo+" · "+(w.organizzatore||""))},"Prenota sul sito dell’organizzatore");
   openSheet([el("div",{class:"detail"},
-    fotoGrande(w) ? el("div",{class:"cover"},
+    fotoGrande(w) ? el(igPost(w)?"a":"div", igPost(w) ? {class:"cover ig",href:igPost(w),target:"_blank",rel:"noopener","aria-label":"Apri il post su Instagram",onclick:()=>track("instagram/"+w.id, w.titolo)} : {class:"cover"},
       el("span",{class:"bg",style:`background-image:url('${fotoGrande(w)}')`}),
-      el("img",{src:fotoGrande(w),alt:"",onerror:e=>{ const im=e.target; if(!im.src.endsWith(fotoOf(w))) im.src=fotoOf(w); else im.closest(".cover").remove(); }})) : null,
+      el("img",{src:fotoGrande(w),alt:"",onerror:e=>{ const im=e.target; if(!im.src.endsWith(fotoOf(w))) im.src=fotoOf(w); else im.closest(".cover").remove(); }}),
+      igPost(w) ? el("span",{class:"igtag","aria-hidden":"true"},"Vedi il post ↗") : null) : null,
     el("span",{class:"chip-cat",style:`--cb:${c.b};--cc:${c.c}`}, catIcon(c.id), c.label),
     el("div",{class:"titlerow"}, el("h3",{id:"sheetTitle"},w.titolo||"Workshop"), d ? calBtn : null),
     d ? calInfo : null,
@@ -2764,6 +2767,7 @@ const WORKSHOPS = [
   "link": "https://forms.gle/Ai2Fn5PxQPFyq7my8",
   "ora_inizio": "15:00",
   "organizzatore": "Annalisa Diani per Brodo Culturale",
+  "post": "https://www.instagram.com/p/DeR-m1wjUAL/",
   "prezzo": 20,
   "tipo": "workshop",
   "titolo": "Pop-up botanico: biglietto floreale 3D",
@@ -2781,6 +2785,7 @@ const WORKSHOPS = [
   "link": "https://forms.gle/Ai2Fn5PxQPFyq7my8",
   "ora_inizio": "11:00",
   "organizzatore": "Annalisa Diani per Brodo Culturale",
+  "post": "https://www.instagram.com/p/DeR-m1wjUAL/",
   "prezzo": 20,
   "tipo": "workshop",
   "titolo": "Pop-up spaziale: biglietto tra le stelle",
@@ -5298,6 +5303,7 @@ const WORKSHOPS = [
   "link": "https://forms.gle/iraGZ68JcVzLJoeCA",
   "ora_inizio": "11:00",
   "organizzatore": "Gizzy per Bocciofila Vanchiglietta",
+  "post": "https://www.instagram.com/p/DeSEslcuxSo/",
   "prezzo": 24,
   "tipo": "workshop",
   "titolo": "Kombucha Workshop: tè fermentato",
@@ -5315,6 +5321,7 @@ const WORKSHOPS = [
   "ora_fine": "18:00",
   "ora_inizio": "16:00",
   "organizzatore": "Gizzy per Wine Nest",
+  "post": "https://www.instagram.com/p/DeSEslcuxSo/",
   "prezzo": 24,
   "tipo": "workshop",
   "titolo": "Kombucha Workshop: tè fermentato",
@@ -5913,6 +5920,7 @@ const WORKSHOPS = [
   "ora_fine": "23:00",
   "ora_inizio": "21:00",
   "organizzatore": "Laboratorio MalaErba",
+  "post": "https://www.instagram.com/reel/DeMEXiwuC7t/",
   "prezzo": 470,
   "prezzo_per": "all’anno",
   "ricorrenza": "ogni martedì",
@@ -7322,6 +7330,7 @@ const WORKSHOPS = [
   "ora_fine": "13:00",
   "ora_inizio": "10:00",
   "organizzatore": "Pintology con Laudisia Colonnelli",
+  "post": "https://www.instagram.com/p/DetooCljXmC/",
   "prezzo": 20,
   "prezzo_da": true,
   "tipo": "workshop",
@@ -9580,6 +9589,7 @@ const WORKSHOPS = [
   "ora_fine": "20:00",
   "ora_inizio": "18:30",
   "organizzatore": "Velvet Truffle Riot",
+  "post": "https://www.instagram.com/p/DeTyVY6Au5N/",
   "prezzo": 10,
   "prezzo_da": true,
   "tipo": "attivita",
