@@ -916,7 +916,7 @@ let lastFocus=null;
 // pannelli annidati (calendario → giorno → evento): chiudere un pannello riporta a quello da cui si era arrivati
 let sheetBack=null, pendingBack=null, dayCtx=null;
 function openSheet(content){ if(!sheet.classList.contains("open")) lastFocus=document.activeElement; sheetBack=pendingBack; pendingBack=null; sheet.innerHTML=""; sheet.append(el("div",{class:"grab"}), ...content.filter(Boolean)); sheet.scrollTop=0; overlay.classList.add("open"); sheet.classList.add("open"); setTimeout(()=>{const f=sheet.querySelector("button, a, input"); f&&f.focus({preventScroll:true});},50); }
-function closeSheet(force){ if(!force && sheetBack){ const back=sheetBack; sheetBack=null; back(); return; } sheetBack=null; dayCtx=null; if(location.hash.startsWith("#evento=") || location.hash==="#privacy" || location.hash==="#note-legali" || location.hash==="#chi-siamo" || location.hash==="#scrivici") history.replaceState(null,"",location.pathname+location.search); overlay.classList.remove("open"); sheet.classList.remove("open"); lastFocus&&lastFocus.focus(); }
+function closeSheet(force){ if(!force && sheetBack){ const back=sheetBack; sheetBack=null; back(); return; } if(!force && returnTo){ goReturn(); return; } returnTo=null; sheetBack=null; dayCtx=null; if(location.hash.startsWith("#evento=") || location.hash==="#privacy" || location.hash==="#note-legali" || location.hash==="#chi-siamo" || location.hash==="#scrivici") history.replaceState(null,"",location.pathname+location.search); overlay.classList.remove("open"); sheet.classList.remove("open"); lastFocus&&lastFocus.focus(); }
 overlay.addEventListener("click",()=>closeSheet());
 // trascinando il pannello verso il basso si chiude (solo se il contenuto è già in cima)
 let drag=null;
@@ -1114,11 +1114,15 @@ function addToCalendar(w){
     "END:VEVENT","END:VCALENDAR"].join("\r\n");
   location.href="data:text/calendar;charset=utf-8,"+encodeURIComponent(ics);
 }
+// aperto da una pagina di organizzatore o di categoria (#evento=<id>&torna=<pagina>/): chiudendo la scheda si torna lì
+let returnTo=null;
+function goReturn(){ const r=returnTo; returnTo=null; const u=new URL(r, document.baseURI).href; if(document.referrer===u && history.length>1) history.back(); else location.href=u; }
 function openFromHash(){
   const lk=location.hash.slice(1); if(LEGAL[lk]){ openLegal(lk); return; }
   if(lk==="chi-siamo"){ openChiSiamo(false); return; }
   if(lk==="scrivici"){ openScrivici(false); return; }
-  const m=location.hash.match(/^#evento=(.+)$/); if(!m) return;
+  const m=location.hash.match(/^#evento=([^&]+)(?:&torna=([a-z0-9\-\/]+))?$/); if(!m) return;
+  returnTo = m[2] && /^[a-z0-9-]+(\/[a-z0-9-]+)?\/$/.test(m[2]) ? m[2] : null;
   const id=decodeURIComponent(m[1]), w=state.all.find(x=>x.id===id);
   if(w) openDetail(w); else { history.replaceState(null,"",location.pathname+location.search); toast("Questo evento non è più in programma"); }
 }
