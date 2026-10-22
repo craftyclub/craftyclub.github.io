@@ -1129,7 +1129,7 @@ function openFromHash(){
   const m=location.hash.match(/^#evento=([^&]+)(?:&torna=([a-z0-9\-\/]+))?$/); if(!m) return;
   returnTo = m[2] && /^[a-z0-9-]+(\/[a-z0-9-]+)?\/$/.test(m[2]) ? m[2] : null;
   const id=decodeURIComponent(m[1]), w=state.all.find(x=>x.id===id);
-  if(w) openDetail(w); else { history.replaceState(null,"",location.pathname+location.search); toast("Questo evento non è più in programma"); }
+  if(w) openDetail(w); else { history.replaceState(null,"",location.pathname+location.search); toast("Questo evento non è più in programma"); if(EMBED) setTimeout(()=>parent.postMessage("cc-close","*"),2200); }
 }
 // pagina dell’organizzatore: «Ospite per Organizzatore» / «Organizzatore con Ospite» -> organizzatori/<slug>/
 function orgSlug(o){ const h=o.split(" per ").pop().split(" con ")[0].trim(); return h.normalize("NFKD").replace(/[^\u0000-\u007f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,""); }
