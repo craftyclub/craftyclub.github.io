@@ -362,7 +362,7 @@ footer a{color:inherit;font-weight:600}
 .toggle input{width:22px;height:22px;accent-color:var(--pink)}
 .detail .cover{position:relative;display:block;width:100%;height:min(54vh,460px);margin:2px 0 14px;padding:0;border:0;border-radius:18px;overflow:hidden;background:#1A0F27;cursor:pointer}
 .detail .cover .bg{position:absolute;inset:-24px;background-size:cover;background-position:center;filter:blur(20px) brightness(.65);transform:scale(1.05)}
-.detail .cover img{position:relative;display:block;width:100%;height:100%;object-fit:contain}.detail .cover .igtag{position:absolute;right:10px;bottom:10px;padding:5px 10px;border-radius:999px;background:rgba(20,10,30,.62);color:#fff;font-size:12px;font-weight:700;backdrop-filter:blur(4px)}.chip-cat{display:inline-flex;align-items:center;gap:6px;margin:2px 0 8px;padding:4px 11px 4px 7px;border:1.5px solid var(--cb);border-radius:999px;font-size:13px;font-weight:700;color:#2A1440}
+.detail .cover img{position:relative;display:block;width:100%;height:100%;object-fit:contain;transition:filter .25s}.detail .cover img.lo{filter:blur(6px)}.detail .cover .igtag{position:absolute;right:10px;bottom:10px;padding:5px 10px;border-radius:999px;background:rgba(20,10,30,.62);color:#fff;font-size:12px;font-weight:700;backdrop-filter:blur(4px)}.chip-cat{display:inline-flex;align-items:center;gap:6px;margin:2px 0 8px;padding:4px 11px 4px 7px;border:1.5px solid var(--cb);border-radius:999px;font-size:13px;font-weight:700;color:#2A1440}
 .detail dl{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;margin:14px 0}
 .detail dt{color:var(--ink-soft);font-size:13px}
 .detail dd{margin:0;font-weight:600;font-size:14.5px}
@@ -794,6 +794,9 @@ const priceLabel = w => (w.prezzo_da && w.prezzo ? "da " : "") + euro(w.prezzo) 
 // foto piccola (scheda) in img/eventi/, versione grande non ritagliata in img/eventi/grandi/
 const fotoOf = w => w.foto && /^img\/eventi\/[\w.-]+\.(jpe?g|png|webp)$/i.test(w.foto) ? w.foto : null;
 const fotoGrande = w => { const f=fotoOf(w); return f ? f.replace("img/eventi/","img/eventi/grandi/") : null; };
+// la foto grande si scarica in anticipo (dito o mouse sulla scheda) così il dettaglio si apre già con la foto
+const preloaded=new Set();
+function preloadBig(w){ const g=fotoGrande(w); if(g && !preloaded.has(g)){ preloaded.add(g); const i=new Image(); i.src=g; } }
 
 
 // senza data: "ogni mercoledì" / "ogni 15 giorni" (campo ricorrenza) oppure "data a scelta", su più righe come la data
@@ -816,7 +819,7 @@ function card(w){
   paint();
   const foto = fotoOf(w);
   const when=[w.ora_inizio, zonaLabel(w)].filter(Boolean).join(" · ");
-  const box = el("div",{class:"card",role:"button",tabindex:"0",style:`--cb:${c.b}`,onclick:()=>openDetail(w),onkeydown:e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openDetail(w);}}},
+  const box = el("div",{class:"card",role:"button",tabindex:"0",style:`--cb:${c.b}`,onclick:()=>openDetail(w),onpointerdown:()=>preloadBig(w),onmouseenter:()=>preloadBig(w),onkeydown:e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openDetail(w);}}},
     el("div",{class:"ticket"+(foto?" photo":""),style:foto?`background-image:url('${foto}')`:`--cc:${c.c}`},
       d ? [el("span",{class:"wd"},w.tipo==="corso"?"dal":WD[d.getDay()]), el("span",{class:"d"},String(d.getDate())), el("span",{class:"m"},MONTHS[d.getMonth()])] : noDate(w)),
     el("div",{class:"body"},
@@ -1170,8 +1173,8 @@ function openDetail(w){
   if(w.link && /^https?:\/\//i.test(w.link)) link=el("a",{class:"btn",href:w.link,target:"_blank",rel:"noopener",onclick:()=>track("prenota/"+w.id, w.titolo+" · "+(w.organizzatore||""))},"Prenota sul sito dell’organizzatore");
   openSheet([el("div",{class:"detail"},
     fotoGrande(w) ? el(igPost(w)?"a":"div", igPost(w) ? {class:"cover ig",href:igPost(w),target:"_blank",rel:"noopener","aria-label":"Apri il post su Instagram",onclick:()=>track("instagram/"+w.id, w.titolo)} : {class:"cover"},
-      el("span",{class:"bg",style:`background-image:url('${fotoGrande(w)}')`}),
-      el("img",{src:fotoGrande(w),alt:"",onerror:e=>{ const im=e.target; if(!im.src.endsWith(fotoOf(w))) im.src=fotoOf(w); else im.closest(".cover").remove(); }}),
+      el("span",{class:"bg",style:`background-image:url('${fotoOf(w)}')`}),
+      (()=>{ const im=el("img",{src:fotoOf(w),alt:"",class:"lo",onerror:()=>im.closest(".cover")&&im.closest(".cover").remove()}); const big=new Image(); big.onload=()=>{ im.src=big.src; im.classList.remove("lo"); }; big.src=fotoGrande(w); return im; })(),
       igPost(w) ? el("span",{class:"igtag","aria-hidden":"true"},"Vedi il post ↗") : null) : null,
     el("span",{class:"chip-cat",style:`--cb:${c.b};--cc:${c.c}`}, catIcon(c.id), c.label),
     el("div",{class:"titlerow"}, el("h3",{id:"sheetTitle"},w.titolo||"Workshop"), d ? calBtn : null),
