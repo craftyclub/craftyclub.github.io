@@ -1148,7 +1148,7 @@ function openDetail(w){
   // solo il nome che ha la pagina è il link: «Ospite per Organizzatore» / «Organizzatore con Ospite»
   const org=(()=>{ const o=w.organizzatore; if(!o) return null;
     // ogni nome che ha una pagina (organizzatore, e chi conduce se ha più attività) diventa un link
-    const pages=new Set(window.CC_ORGPAGES||[]), slug=n=>orgSlug(n), lk=(n,g)=>{ const t=n.trim(), sl=slug(t.replace(/^(?:lo |la |il )?chef\s+/i,"")); return pages.has(sl) && !(g && (window.CC_NOLINK||[]).includes(sl)) ? el("a",{class:"orglink",href:"organizzatori/"+sl+"/","aria-label":t+": tutte le sue attività"},t,el("span",{class:"arr","aria-hidden":"true"}," ›")) : t; };
+    const pages=new Set(window.CC_ORGPAGES||[]), slug=n=>orgSlug(n), lk=(n,g)=>{ const t=n.trim(), sl=slug(t.replace(/^(?:lo |la |il )?chef\s+/i,"")); return pages.has(sl) && !(g && (window.CC_NOLINK||[]).includes(sl)) ? el("a",{class:"orglink",href:"organizzatori/"+sl+"/","aria-label":t+": tutte le sue attività"},t) : t; };
     const i=o.lastIndexOf(" per "), guest=i>=0?o.slice(0,i):"", rest=i>=0?o.slice(i+5):o, j=rest.indexOf(" con "), host=j>=0?rest.slice(0,j):rest, guest2=j>=0?rest.slice(j+5):"";
     return el("span",{}, guest?lk(guest,1):null, guest?" per ":null, lk(host), guest2?" con ":null, guest2?lk(guest2,1):null); })();
   const rows=[["Quando",when],["Dove",dove],["Prezzo",prezzo],["Organizzatore",org]].filter(r=>r[1]);
