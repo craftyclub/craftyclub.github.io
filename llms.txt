@@ -2,7 +2,7 @@
 
 > The Crafty Club (craftyclub.it) raccoglie in un posto solo workshop, corsi e attività a Torino, in provincia di Torino, a Cuneo e in provincia di Cuneo: ceramica, pittura e scrittura, stampa, cucito e maglia, gioielli, piante, cucina, degustazioni, musica e teatro, danza e movimento, giochi e laboratori per bambini. Per ogni evento indica data, orario, luogo, prezzo, organizzatore e come iscriversi. Il sito è sempre aggiornato; per iscriversi si segue il link della scheda.
 
-Il sito è in italiano, con una versione in inglese per la home e le schede degli eventi: [craftyclub.it/en/](https://craftyclub.it/en/). Ogni evento ha un link diretto nella forma `https://craftyclub.it/#evento=<id>`. Gli eventi passati vengono tolti; i corsi senza data fissa sono indicati come «data a scelta» o con il giorno della settimana («ogni martedì»).
+Il sito è in italiano, con una versione completa in inglese su [craftyclub.it/en/](https://craftyclub.it/en/): ogni pagina ha la sua traduzione aggiungendo `en/` all’indirizzo (es. [craftyclub.it/en/ceramica/](https://craftyclub.it/en/ceramica/), [craftyclub.it/en/organizzatori/](https://craftyclub.it/en/organizzatori/)), e le schede in inglese sono `https://craftyclub.it/en/#evento=<id>`. Ogni evento ha un link diretto nella forma `https://craftyclub.it/#evento=<id>`. Gli eventi passati vengono tolti; i corsi senza data fissa sono indicati come «data a scelta» o con il giorno della settimana («ogni martedì»).
 
 ## Pagine principali
 

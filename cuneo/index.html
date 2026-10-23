@@ -8,8 +8,8 @@
 <link rel="icon" type="image/png" sizes="64x64" href="icons/favicon.png?v=2">
 <meta name="description" content="Workshop, corsi e attività a Cuneo città: laboratori creativi, cucina, musica e attività per famiglie, sempre aggiornati.">
 <link rel="canonical" href="https://craftyclub.it/cuneo/">
-<link rel="alternate" hreflang="it" href="https://craftyclub.it/">
-<link rel="alternate" hreflang="en" href="https://craftyclub.it/en/">
+<link rel="alternate" hreflang="it" href="https://craftyclub.it/cuneo/">
+<link rel="alternate" hreflang="en" href="https://craftyclub.it/en/cuneo/">
 <meta property="og:title" content="Workshop e corsi a Cuneo · The Crafty Club">
 <meta property="og:image" content="https://craftyclub.it/img/crafty-club-logo.png">
 <script>/* aperta sopra un’altra pagina del sito (pagine di organizzatore e categoria): solo il pannello, senza contare una visita */
@@ -434,7 +434,7 @@ html.embed,html.embed body{background:transparent!important}html.embed body>*:no
       </picture>
     </a>
     <div class="top-actions">
-      <div class="lang-switch"><a aria-current="page" lang="it">IT</a><a href="en/" hreflang="en" lang="en">EN</a></div>
+      <div class="lang-switch"><a aria-current="page" lang="it">IT</a><a href="en/cuneo/" hreflang="en" lang="en">EN</a></div>
       <button class="icon-btn" id="menuBtn" type="button" aria-label="Menu" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>
     </div>
   </div>
@@ -1070,7 +1070,7 @@ const LEGAL = {
 <h4>Motori di ricerca e intelligenza artificiale</h4>
 <p>Le pagine del sito sono pubbliche: motori di ricerca e assistenti di intelligenza artificiale (come Google, ChatGPT, Claude o Perplexity) possono leggerle, indicizzarle e citarle. Le regole per i loro programmi di lettura sono nel file <a href="robots.txt">robots.txt</a>, e una descrizione del sito pensata per loro è in <a href="llms.txt">llms.txt</a>.</p>
 <h4>Versione in inglese</h4>
-<p>Il sito ha anche una versione in inglese (<a href="en/">craftyclub.it/en/</a>), con le schede tradotte da noi. In caso di dubbio vale la versione italiana.</p>
+<p>Il sito ha anche una versione in inglese (<a href="en/">craftyclub.it/en/</a>), con tutte le pagine e le schede tradotte da noi. In caso di dubbio vale la versione italiana.</p>
 <h4>Legge applicabile</h4>
 <p>Queste note sono regolate dalla legge italiana.</p>
 <p class="agg">Ultimo aggiornamento: 23 ottobre 2026 (aggiunta la versione in inglese).</p>`}
@@ -1131,6 +1131,16 @@ function addToCalendar(w){
     "END:VEVENT","END:VCALENDAR"].join("\r\n");
   location.href="data:text/calendar;charset=utf-8,"+encodeURIComponent(ics);
 }
+// cambiando lingua (IT | EN) i filtri scelti restano: viaggiano nel link del selettore (#filtri=…), poi l'indirizzo torna pulito
+const FKEYS=["q","cats","tipo","when","maxPrice","noBig","noKids","from","to","pick","weekends","places"];
+function filtersFromHash(){
+  const m=location.hash.match(/^#filtri=(.+)$/); if(!m) return;
+  try{ const f=JSON.parse(decodeURIComponent(m[1])); FKEYS.forEach(k=>{ if(k in f && Array.isArray(f[k])===Array.isArray(state[k]) && typeof f[k]===typeof state[k]) state[k]=f[k]; }); document.getElementById("q").value=state.q; }catch(e){}
+  history.replaceState(null,"",location.pathname+location.search);
+}
+document.querySelectorAll(".lang-switch a[href]").forEach(a=>a.addEventListener("click",()=>{
+  const f={}; FKEYS.forEach(k=>f[k]=state[k]); a.href=a.href.split("#")[0]+"#filtri="+encodeURIComponent(JSON.stringify(f));
+}));
 // aperto da una pagina di organizzatore o di categoria (#evento=<id>&torna=<pagina>/): chiudendo la scheda si torna lì
 let returnTo=null;
 function goReturn(){ const r=returnTo; returnTo=null; const u=new URL(r, document.baseURI).href; if(document.referrer===u && history.length>1) history.back(); else location.href=u; }
@@ -1139,7 +1149,7 @@ function openFromHash(){
   if(lk==="chi-siamo"){ openChiSiamo(false); return; }
   if(lk==="scrivici"){ openScrivici(false); return; }
   const m=location.hash.match(/^#evento=([^&]+)(?:&torna=([a-z0-9\-\/]+))?$/); if(!m) return;
-  returnTo = m[2] && /^[a-z0-9-]+(\/[a-z0-9-]+)?\/$/.test(m[2]) ? m[2] : null;
+  returnTo = m[2] && /^[a-z0-9-]+(\/[a-z0-9-]+){0,2}\/$/.test(m[2]) ? m[2] : null;
   const id=decodeURIComponent(m[1]), w=state.all.find(x=>x.id===id);
   if(w) openDetail(w); else { history.replaceState(null,"",location.pathname+location.search); toast("Questo evento non è più in programma"); if(EMBED) setTimeout(()=>parent.postMessage("cc-close","*"),2200); }
 }
@@ -1179,7 +1189,7 @@ function openDetail(w){
   const calBtn=el("button",{class:"addcal",type:"button","aria-label":"Aggiungi al calendario","aria-expanded":"false",onclick:()=>{ calInfo.hidden=!calInfo.hidden; calBtn.setAttribute("aria-expanded",String(!calInfo.hidden)); }});
   calBtn.innerHTML=CAL_SVG;
   let link=null;
-  if(w.link && /^https?:\/\//i.test(w.link)) link=el("a",{class:"btn",href:w.link,target:"_blank",rel:"noopener",onclick:()=>track("prenota/"+w.id, w.titolo+" · "+(w.organizzatore||""))},"Prenota sul sito dell’organizzatore");
+  if(w.link && /^https?:\/\//i.test(w.link)) link=el("a",{class:"btn",href:w.link,target:"_blank",rel:"noopener",onclick:()=>track("prenota/"+w.id, w.titolo+" · "+(w.organizzatore||""))},w.link.includes("instagram.com") ? "Prenota su Instagram" : "Prenota sul sito dell’organizzatore");
   openSheet([el("div",{class:"detail"},
     fotoGrande(w) ? el(igPost(w)?"a":"div", igPost(w) ? {class:"cover ig",href:igPost(w),target:"_blank",rel:"noopener","aria-label":"Apri il post su Instagram",onclick:()=>track("instagram/"+w.id, w.titolo)} : {class:"cover"},
       el("span",{class:"bg",style:`background-image:url('${fotoOf(w)}')`}),
@@ -2792,7 +2802,7 @@ const WORKSHOPS = [
   "fonte": "Instagram @bricabrac_cantineludiche",
   "foto": "img/eventi/bricabrac-cantineludiche-2026-10-09-2.jpg",
   "link": "https://www.instagram.com/p/DeQ8WaDgIEP/",
-  "organizzatore": "Bric a Brac - Cantine Ludiche",
+  "organizzatore": "Bric a Brac",
   "prezzo": 3,
   "tipo": "attivita",
   "titolo": "Hallowbric: una notte da Lupus in Tabula",
@@ -8192,14 +8202,16 @@ const WORKSHOPS = [
   "categoria": "tessile",
   "contatto": "Raggomitolando su WhatsApp, +39 375 717 2431",
   "data": "2026-11-25",
-  "descrizione": "Un knit-along per avviare insieme lo scialle Clockwork di Stephen West, lavorando in compagnia. Si partecipa acquistando il filato Merino Plus di Dark Omen Yarn in negozio; prenotazione su WhatsApp al 375 717 2431.",
-  "fonte": "raggomitolando.com",
-  "foto": "img/eventi/raggomitolando-kal-clockwork.jpg",
+  "descrizione": "Un knit-along per avviare insieme ai ferri lo scialle Clockwork di Stephen West, lavorando in compagnia. È gratuito per chi compra in negozio il filato: due matasse di Merino Plus tinte a mano da Dark Omen Yarn, in tanti colori; il modello si acquista a parte su Ravelry. Serve una conoscenza base dei punti e delle tecniche ai ferri, non è adatto ai principianti assoluti; prenotazione su WhatsApp al 375 717 2431.",
+  "fonte": "Instagram @raggomitolando",
+  "foto": "img/eventi/raggomitolando-2026-10-23-1.jpg",
   "indirizzo": "Raggomitolando, Via Donizetti 12a (ingresso da via Saluzzo)",
   "link": "https://www.raggomitolando.com/novembre-2026-corsi-di-maglia-uncinetto-workshop-e-molto-altro/",
   "ora_fine": "20:00",
   "ora_inizio": "18:00",
   "organizzatore": "Raggomitolando",
+  "post": "https://www.instagram.com/p/De1rmlviBxl/",
+  "prezzo": 0,
   "tipo": "workshop",
   "titolo": "KAL Clockwork: scialle di Stephen West",
   "zona": "San Salvario",
@@ -10453,7 +10465,7 @@ const WORKSHOPS = [
   "id": "zac-laboratorio-riconnessione-2026-10-25"
  }
 ];
-state.all = WORKSHOPS; state.loaded = true; render(); openFromHash();
+state.all = WORKSHOPS; state.loaded = true; filtersFromHash(); render(); openFromHash();
 window.addEventListener("hashchange",openFromHash);
 </script>
 </body>

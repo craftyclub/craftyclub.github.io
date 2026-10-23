@@ -10,8 +10,6 @@
 <link rel="canonical" href="https://craftyclub.it/en/">
 <link rel="alternate" hreflang="it" href="https://craftyclub.it/">
 <link rel="alternate" hreflang="en" href="https://craftyclub.it/en/">
-<link rel="alternate" hreflang="it" href="https://craftyclub.it/">
-<link rel="alternate" hreflang="en" href="https://craftyclub.it/en/">
 <meta property="og:title" content="The Crafty Club · Workshops in Turin">
 <meta property="og:image" content="https://craftyclub.it/img/crafty-club-logo.png">
 <script>/* aperta sopra un’altra pagina del sito (pagine di organizzatore e categoria): solo il pannello, senza contare una visita */
@@ -496,13 +494,13 @@ html.embed,html.embed body{background:transparent!important}html.embed body>*:no
       <div class="sf-side">
         <a class="sf-write" href="en/#scrivici"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="M3.5 7l8.5 6.5L20.5 7"/></svg>Write to us</a>
         <div class="sf-social"><a href="https://www.instagram.com/crafty.club.it/" target="_blank" rel="noopener" aria-label="Instagram @crafty.club.it"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg></a><a href="mailto:crafty.club.info@gmail.com" aria-label="Mail crafty.club.info@gmail.com"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="M3.5 7l8.5 6.5L20.5 7"/></svg></a></div>
-        <ul class="sf-links"><li><a href="chi-siamo/">About us</a></li><li><a href="en/#privacy">Privacy and cookies</a></li><li><a href="en/#note-legali">Legal notes</a></li></ul>
+        <ul class="sf-links"><li><a href="en/chi-siamo/">About us</a></li><li><a href="en/#privacy">Privacy and cookies</a></li><li><a href="en/#note-legali">Legal notes</a></li></ul>
       </div>
     </div>
     <nav class="seo-links" aria-label="Workshops by area and category">
-      <div><h3>By area</h3><ul><li><a href="torino/">Turin</a></li><li><a href="provincia-di-torino/">Province of Turin</a></li><li><a href="cuneo/">Cuneo</a></li><li><a href="provincia-di-cuneo/">Province of Cuneo</a></li></ul></div>
-      <div><h3>By category</h3><ul><li><a href="ceramica/">Ceramics</a></li><li><a href="pittura/">Painting and writing</a></li><li><a href="stampa/">Printing</a></li><li><a href="tessile/">Textiles</a></li><li><a href="gioielli/">Jewellery</a></li><li><a href="piante/">Plants</a></li><li><a href="cucina/">Cooking</a></li><li><a href="degustazioni/">Tastings</a></li><li><a href="musica-e-teatro/">Music and theatre</a></li><li><a href="movimento/">Dance and movement</a></li><li><a href="giochi/">Games</a></li><li><a href="per-famiglie/">For families</a></li><li><a href="altro/">Other</a></li></ul></div>
-      <div><h3>By organizer</h3><ul><li><a href="organizzatori/">Studios, ateliers and makers</a></li></ul></div>
+      <div><h3>By area</h3><ul><li><a href="en/torino/">Turin</a></li><li><a href="en/provincia-di-torino/">Province of Turin</a></li><li><a href="en/cuneo/">Cuneo</a></li><li><a href="en/provincia-di-cuneo/">Province of Cuneo</a></li></ul></div>
+      <div><h3>By category</h3><ul><li><a href="en/ceramica/">Ceramics</a></li><li><a href="en/pittura/">Painting and writing</a></li><li><a href="en/stampa/">Printing</a></li><li><a href="en/tessile/">Textiles</a></li><li><a href="en/gioielli/">Jewellery</a></li><li><a href="en/piante/">Plants</a></li><li><a href="en/cucina/">Cooking</a></li><li><a href="en/degustazioni/">Tastings</a></li><li><a href="en/musica-e-teatro/">Music and theatre</a></li><li><a href="en/movimento/">Dance and movement</a></li><li><a href="en/giochi/">Games</a></li><li><a href="en/per-famiglie/">For families</a></li><li><a href="en/altro/">Other</a></li></ul></div>
+      <div><h3>By organizer</h3><ul><li><a href="en/organizzatori/">Studios, ateliers and makers</a></li></ul></div>
     </nav>
     <div class="sf-bottom">© 2026 The Crafty Club · Turin, all the workshops in one place.</div>
   </footer>
@@ -725,12 +723,12 @@ const norm = s => (s||"").toString().toLowerCase().normalize("NFD").replace(/[\u
 function track(path, title){ try{ if(window.goatcounter && window.goatcounter.count) window.goatcounter.count({path:path, title:title||path, event:true}); }catch(e){} }
 let searchTimer=null;
 // città fuori dal Piemonte: se si cercano, compare l’avviso «non c’è ancora»
-const OTHER_CITIES = ["Milano","Roma","Napoli","Firenze","Bologna","Venezia","Genova","Verona","Padova","Trieste","Bari","Palermo","Catania","Cagliari","Bergamo","Brescia","Monza","Pavia","Varese","Parma","Modena","Reggio Emilia","Rimini","Ravenna","Ferrara","Pisa","Lucca","Siena","Livorno","Perugia","Ancona","Pescara","Lecce","Salerno","Trento","Bolzano","Udine","Vicenza","Treviso","Aosta","Sanremo","Savona","La Spezia","Piacenza","Cremona","Mantova","Lecco","Sassari","Messina","Reggio Calabria","Taranto","Foggia","Rovigo","Londra","Parigi","Berlino","Barcellona","Madrid","Lisbona","Amsterdam","Vienna","Zurigo","Ginevra","Nizza","Lione","New York"];
+const OTHER_CITIES = ["Milano","Roma","Napoli","Firenze","Bologna","Venezia","Genova","Verona","Padova","Trieste","Bari","Palermo","Catania","Cagliari","Bergamo","Brescia","Monza","Pavia","Varese","Parma","Modena","Reggio Emilia","Rimini","Ravenna","Ferrara","Pisa","Lucca","Siena","Livorno","Perugia","Ancona","Pescara","Lecce","Salerno","Trento","Bolzano","Udine","Vicenza","Treviso","Aosta","Sanremo","Savona","La Spezia","Piacenza","Cremona","Mantova","Lecco","Sassari","Messina","Reggio Calabria","Taranto","Foggia","Rovigo","Londra","Parigi","Berlino","Barcellona","Madrid","Lisbona","Amsterdam","Vienna","Zurigo","Ginevra","Nizza","Lione","New York","Milan","Rome","Naples","Florence","Venice","Genoa","Padua","Mantua","Syracuse","London","Paris","Berlin","Barcelona","Lisbon","Zurich","Geneva","Nice","Lyon"];
 const otherCity = q => { const n=" "+norm(q).replace(/[^a-z ]/g," ").replace(/\s+/g," ").trim()+" "; return n.trim() ? OTHER_CITIES.find(c=>n.includes(" "+norm(c)+" ")) || "" : ""; };
 // corsi "ogni <giorno>": rientrano in un filtro di date se quel giorno della settimana cade nel periodo scelto
-const GIORNI = {"domenica":0,"lunedi":1,"martedi":2,"mercoledi":3,"giovedi":4,"venerdi":5,"sabato":6};
+const GIORNI = {"domenica":0,"lunedi":1,"martedi":2,"mercoledi":3,"giovedi":4,"venerdi":5,"sabato":6,"sunday":0,"monday":1,"tuesday":2,"wednesday":3,"thursday":4,"friday":5,"saturday":6};
 function recurringInWhen(w){
-  const m = norm(w.ricorrenza||"").match(/^ogni (domenica|lunedi|martedi|mercoledi|giovedi|venerdi|sabato)$/);
+  const m = norm(w.ricorrenza||"").match(/^(?:ogni|every) (domenica|lunedi|martedi|mercoledi|giovedi|venerdi|sabato|sunday|monday|tuesday|wednesday|thursday|friday|saturday)$/);
   if(!m) return false;
   const t=today0();
   for(let k=0;k<=180;k++){ const d=new Date(t); d.setDate(t.getDate()+k); if(d.getDay()===GIORNI[m[1]] && inWhen(d)) return true; }
@@ -743,7 +741,7 @@ function effDate(w){
   const d=parseDate(w.data); if(!d || !w.data_fine) return d;
   const t=today0(); if(d>=t) return d;
   const f=parseDate(w.data_fine); if(!f || f<t) return d;
-  const m=norm(w.ricorrenza||"").match(/^ogni (domenica|lunedi|martedi|mercoledi|giovedi|venerdi|sabato)/);
+  const m=norm(w.ricorrenza||"").match(/^(?:ogni|every) (domenica|lunedi|martedi|mercoledi|giovedi|venerdi|sabato|sunday|monday|tuesday|wednesday|thursday|friday|saturday)/);
   if(m){ const n=new Date(t); n.setDate(t.getDate()+((GIORNI[m[1]]-t.getDay()+7)%7)); if(n<=f) return n; }
   return t;
 }
@@ -764,7 +762,7 @@ function filtered(){
     // filtro veloce "No kids’ activities": toglie gli eventi per bambini
     if(state.noKids && w.categoria==="famiglia") return false;
     if(state.maxPrice && !(Number(w.prezzo)<=state.maxPrice)) return false;
-    if(q){ const hay=norm([w.titolo,w.organizzatore,w.zona,w.comune,w.descrizione,catOf(w.categoria).label].join(" ")); if(!hay.includes(q)) return false; }
+    if(q){ const hay=norm([w.titolo,w.organizzatore,w.zona,w.comune,w.descrizione,catOf(w.categoria).label,/cuneo/i.test(w.zona||"")?"":"Turin"].join(" ")); if(!hay.includes(q)) return false; }
     return true;
   }).sort((a,b)=>{ const k=w=>{ const d=effDate(w); return (d ? ymd(d) : "9999")+(w.ora_inizio||""); }; return k(a).localeCompare(k(b)); });
 }
@@ -808,7 +806,7 @@ function preloadBig(w){ const g=fotoGrande(w); if(g && !preloaded.has(g)){ prelo
 
 // senza data: "ogni mercoledì" / "ogni 15 giorni" (campo ricorrenza) oppure "data a scelta", su più righe come la data
 function noDate(w){
-  const r=(w.ricorrenza||"").trim(), n=r.match(/^ogni (\d+) (.+)$/i), g=r.match(/^ogni (.+)$/i);
+  const r=(w.ricorrenza||"").trim(), n=r.match(/^every (\d+) (.+)$/i), g=r.match(/^every (.+)$/i);
   if(n) return [el("span",{class:"wd"},"every"), el("span",{class:"d"},n[1]), el("span",{class:"m"},n[2])];
   if(g) return [el("span",{class:"wd"},"every"), el("span",{class:"word"},g[1])];
   // data_da_confermare: la data non si sa ancora (diverso da «a scelta», dove la si concorda con l’organizzatore)
@@ -832,7 +830,7 @@ function card(w){
     el("div",{class:"body"},
       el("h3",{}, el("span",{class:"bar-t",title:c.label,"aria-hidden":"true"}), w.titolo||"Workshop"),
       el("div",{class:"meta"}, when),
-      w.organizzatore? el("div",{class:"meta"}, "with "+w.organizzatore.replace(/ per /g," at ").replace(/ con /g," with ").replace(/ e /g," and ")):null,
+      w.organizzatore? el("div",{class:"meta"}, "with "+w.organizzatore.replace(/ per /g," at ").replace(/ con /g," with ")):null,
       el("div",{class:"row"}, el("span",{class:"price"},priceLabel(w)), seatsBadge(w), heart))
   );
   longPressShare(box, w);
@@ -891,7 +889,7 @@ function render(){
   const solo=document.querySelector('[data-quick="torino"]');
   solo.hidden=!city; solo.textContent= area==="cn" ? "Cuneo city only" : "Turin city only";
   solo.setAttribute("aria-pressed",String(!!city && state.places.length===1 && state.places[0]===city));
-  if(!state.dbOk){ count.textContent=""; box.append(el("div",{class:"notice"},"Apri questa pagina da claude.ai per vedere i workshop.")); return; }
+  if(!state.dbOk){ count.textContent=""; box.append(el("div",{class:"notice"},"Reload the page to see the workshops.")); return; }
   if(!state.loaded){ count.textContent=""; box.append(el("div",{class:"empty"},"Loading workshops…")); return; }
   // easter egg: chi cerca "schifo" riceve una frase scherzosa e tutti i workshop (la ricerca viene ignorata)
   const funny = norm(state.q).includes("schifo");
@@ -910,7 +908,7 @@ function render(){
     el("strong",{},`${away} isn’t on The Crafty Club yet, but we’re working on it.`),
     "For now we cover workshops and courses in Turin, Cuneo and around: here’s what’s on. Know studios, pages or courses we should add? Write to us on ",
     el("a",{href:"https://www.instagram.com/crafty.club.it/",target:"_blank",rel:"noopener"},"@crafty.club.it"),
-    " o a ", el("a",{href:"mailto:crafty.club.info@gmail.com"},"crafty.club.info@gmail.com"), "."));
+    " or at ", el("a",{href:"mailto:crafty.club.info@gmail.com"},"crafty.club.info@gmail.com"), "."));
   if(!list.length){
     if(!state.all.length){ box.append(el("div",{class:"empty"}, el("strong",{},"No workshops yet"), "The first ones are coming soon.")); return; }
     if(state.tab==="saved"){ box.append(el("div",{class:"empty"}, el("strong",{},"You haven’t saved anything yet"), "Tap the heart on a workshop to find it here.")); return; }
@@ -978,7 +976,7 @@ function openFilters(){
     calBox.innerHTML="";
     const t0=today0(), minM=monthStart(t0);
     const f=parseDate(draft.from), tt=parseDate(draft.to);
-    const grid=el("div",{class:"cal-grid"}, ["lun","mar","mer","gio","ven","sab","dom"].map(x=>el("div",{class:"cal-wd","aria-hidden":"true"},x)));
+    const grid=el("div",{class:"cal-grid"}, ["mon","tue","wed","thu","fri","sat","sun"].map(x=>el("div",{class:"cal-wd","aria-hidden":"true"},x)));
     for(let i=0;i<(pm.getDay()+6)%7;i++) grid.append(el("div"));
     const days=new Date(pm.getFullYear(),pm.getMonth()+1,0).getDate();
     for(let n=1;n<=days;n++){
@@ -1114,7 +1112,7 @@ function addToCalendar(w){
   track("calendario/"+w.id, w.titolo);
   const t=calTimes(w);
   const luogo=[w.indirizzo, zonaLabel(w)].filter(Boolean).join(", ");
-  const note=[w.descrizione, w.link ? "Bookings: "+w.link : "", "Su The Crafty Club: "+eventUrl(w)].filter(Boolean).join("\n\n");
+  const note=[w.descrizione, w.link ? "Bookings: "+w.link : "", "On The Crafty Club: "+eventUrl(w)].filter(Boolean).join("\n\n");
   const apple=/iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent);
   if(!apple){
     const q=new URLSearchParams({action:"TEMPLATE", text:w.titolo, dates:t.start+"/"+t.end, details:note, location:luogo, ctz:"Europe/Rome"});
@@ -1129,6 +1127,16 @@ function addToCalendar(w){
     "END:VEVENT","END:VCALENDAR"].join("\r\n");
   location.href="data:text/calendar;charset=utf-8,"+encodeURIComponent(ics);
 }
+// cambiando lingua (IT | EN) i filtri scelti restano: viaggiano nel link del selettore (#filtri=…), poi l'indirizzo torna pulito
+const FKEYS=["q","cats","tipo","when","maxPrice","noBig","noKids","from","to","pick","weekends","places"];
+function filtersFromHash(){
+  const m=location.hash.match(/^#filtri=(.+)$/); if(!m) return;
+  try{ const f=JSON.parse(decodeURIComponent(m[1])); FKEYS.forEach(k=>{ if(k in f && Array.isArray(f[k])===Array.isArray(state[k]) && typeof f[k]===typeof state[k]) state[k]=f[k]; }); document.getElementById("q").value=state.q; }catch(e){}
+  history.replaceState(null,"",location.pathname+location.search);
+}
+document.querySelectorAll(".lang-switch a[href]").forEach(a=>a.addEventListener("click",()=>{
+  const f={}; FKEYS.forEach(k=>f[k]=state[k]); a.href=a.href.split("#")[0]+"#filtri="+encodeURIComponent(JSON.stringify(f));
+}));
 // aperto da una pagina di organizzatore o di categoria (#evento=<id>&torna=<pagina>/): chiudendo la scheda si torna lì
 let returnTo=null;
 function goReturn(){ const r=returnTo; returnTo=null; const u=new URL(r, document.baseURI).href; if(document.referrer===u && history.length>1) history.back(); else location.href=u; }
@@ -1137,7 +1145,7 @@ function openFromHash(){
   if(lk==="chi-siamo"){ openChiSiamo(false); return; }
   if(lk==="scrivici"){ openScrivici(false); return; }
   const m=location.hash.match(/^#evento=([^&]+)(?:&torna=([a-z0-9\-\/]+))?$/); if(!m) return;
-  returnTo = m[2] && /^[a-z0-9-]+(\/[a-z0-9-]+)?\/$/.test(m[2]) ? m[2] : null;
+  returnTo = m[2] && /^[a-z0-9-]+(\/[a-z0-9-]+){0,2}\/$/.test(m[2]) ? m[2] : null;
   const id=decodeURIComponent(m[1]), w=state.all.find(x=>x.id===id);
   if(w) openDetail(w); else { history.replaceState(null,"",location.pathname+location.search); toast("This event is no longer scheduled"); if(EMBED) setTimeout(()=>parent.postMessage("cc-close","*"),2200); }
 }
@@ -1161,13 +1169,13 @@ function openDetail(w){
   const ask = "Not stated" + (w.contatto ? `: ask ${w.contatto}` : "");
   // senza indirizzo: si mostra almeno la zona (o "Torino") e a chi chiedere il luogo esatto
   const luogo = zonaLabel(w);
-  const dove = w.indirizzo ? [w.indirizzo,luogo].filter(Boolean).join(", ") : luogo ? luogo + (w.contatto ? `; luogo esatto: ask ${w.contatto}` : "") : ask;
+  const dove = w.indirizzo ? [w.indirizzo,luogo].filter(Boolean).join(", ") : luogo ? luogo + (w.contatto ? `; exact place: ask ${w.contatto}` : "") : ask;
   const esaurito = w.posti_disponibili!=null && w.posti_disponibili!=="" && Number(w.posti_disponibili)<=0;
   const prezzo = (w.prezzo!=null && w.prezzo!=="") ? priceLabel(w) + (esaurito ? " · sold out" : "") : ask;
   // solo il nome che ha la pagina è il link: «Ospite per Organizzatore» / «Organizzatore con Ospite»
   const org=(()=>{ const o=w.organizzatore; if(!o) return null;
     // ogni nome che ha una pagina (organizzatore, e chi conduce se ha più attività) diventa un link
-    const pages=new Set(window.CC_ORGPAGES||[]), slug=n=>orgSlug(n), lk=(n,g)=>{ const t=n.trim(), sl=slug(t.replace(/^(?:lo |la |il )?chef\s+/i,"")); return pages.has(sl) && !(g && (window.CC_NOLINK||[]).includes(sl)) ? el("a",{class:"orglink",href:"organizzatori/"+sl+"/","aria-label":t+": all their activities"},t) : t; };
+    const pages=new Set(window.CC_ORGPAGES||[]), slug=n=>orgSlug(n), lk=(n,g)=>{ const t=n.trim(), sl=slug(t.replace(/^(?:lo |la |il )?chef\s+/i,"")); return pages.has(sl) && !(g && (window.CC_NOLINK||[]).includes(sl)) ? el("a",{class:"orglink",href:"en/organizzatori/"+sl+"/","aria-label":t+": all their activities"},t) : t; };
     const i=o.lastIndexOf(" per "), guest=i>=0?o.slice(0,i):"", rest=i>=0?o.slice(i+5):o, j=rest.indexOf(" con "), host=j>=0?rest.slice(0,j):rest, guest2=j>=0?rest.slice(j+5):"";
     return el("span",{}, guest?lk(guest,1):null, guest?" at ":null, lk(host), guest2?" with ":null, guest2?lk(guest2,1):null); })();
   const rows=[["When",when],["Where",dove],["Price",prezzo],["Organizer",org]].filter(r=>r[1]);
@@ -1177,7 +1185,7 @@ function openDetail(w){
   const calBtn=el("button",{class:"addcal",type:"button","aria-label":"Add to calendar","aria-expanded":"false",onclick:()=>{ calInfo.hidden=!calInfo.hidden; calBtn.setAttribute("aria-expanded",String(!calInfo.hidden)); }});
   calBtn.innerHTML=CAL_SVG;
   let link=null;
-  if(w.link && /^https?:\/\//i.test(w.link)) link=el("a",{class:"btn",href:w.link,target:"_blank",rel:"noopener",onclick:()=>track("prenota/"+w.id, w.titolo+" · "+(w.organizzatore||""))},"Book on the organizer’s website");
+  if(w.link && /^https?:\/\//i.test(w.link)) link=el("a",{class:"btn",href:w.link,target:"_blank",rel:"noopener",onclick:()=>track("prenota/"+w.id, w.titolo+" · "+(w.organizzatore||""))},w.link.includes("instagram.com") ? "Book on Instagram" : "Book on the organizer’s website");
   openSheet([el("div",{class:"detail"},
     fotoGrande(w) ? el(igPost(w)?"a":"div", igPost(w) ? {class:"cover ig",href:igPost(w),target:"_blank",rel:"noopener","aria-label":"Open the Instagram post",onclick:()=>track("instagram/"+w.id, w.titolo)} : {class:"cover"},
       el("span",{class:"bg",style:`background-image:url('${fotoOf(w)}')`}),
@@ -1224,7 +1232,7 @@ function openCalendar(month){
   calMonth = m;
   const shift = n => { const t = new Date(m.getFullYear(), m.getMonth()+n, 1); if(t>=minM && t<=maxM) openCalendar(t); };
   const t0 = +today0();
-  const grid = el("div",{class:"cal-grid"}, ["lun","mar","mer","gio","ven","sab","dom"].map(x=>el("div",{class:"cal-wd","aria-hidden":"true"},x)));
+  const grid = el("div",{class:"cal-grid"}, ["mon","tue","wed","thu","fri","sat","sun"].map(x=>el("div",{class:"cal-wd","aria-hidden":"true"},x)));
   const lead = (m.getDay()+6)%7;
   for(let i=0;i<lead;i++) grid.append(el("div"));
   const days = new Date(m.getFullYear(), m.getMonth()+1, 0).getDate();
@@ -1313,7 +1321,7 @@ function bindScrivici(f){
     btn.disabled=true; btn.textContent="Sending…"; esito.textContent="";
     try{
       const r=await fetch("https://api.web3forms.com/submit",{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},
-        body:JSON.stringify({access_key:"dcbe1e64-d9d3-4a98-9533-c99bc639cff3", subject:"The Crafty Club · "+motivo, from_name:"The Crafty Club", name:nome||"(senza nome)", email, replyto:email, motivo, message:msg})});
+        body:JSON.stringify({access_key:"dcbe1e64-d9d3-4a98-9533-c99bc639cff3", subject:"The Crafty Club · "+motivo+" (EN)", from_name:"The Crafty Club", name:nome||"(senza nome)", email, replyto:email, motivo, message:msg})});
       const j=await r.json();
       if(j.success){ f.reset(); esito.textContent="Thanks for getting in touch! We’ll reply soon."; track("scrivici/"+norm(motivo).replace(/ +/g,"-"), motivo); }
       else esito.textContent="We couldn’t send it. Try again or write to crafty.club.info@gmail.com.";
@@ -1356,7 +1364,7 @@ function openMenu(){
       accNote,
       item("saved","Your saved events",()=>{ closeSheet(true); state.tab="saved"; render(); scrollToList(); },{sub: nSaved ? (nSaved===1?"1 saved event":nSaved+" saved events") : "Tap the heart on a workshop to save it"}),
       item("cal","Calendar",()=>{ closeSheet(true); openCalendar(); }),
-      item("about","Browse by organizer",()=>{ track("menu/organizzatori"); location.href="organizzatori/"; },{sub:"Studios, ateliers and makers"}),
+      item("about","Browse by organizer",()=>{ track("menu/organizzatori"); location.href="en/organizzatori/"; },{sub:"Studios, ateliers and makers"}),
       el("div",{class:"menu-sep"}),
       item("about","About us",()=>openChiSiamo(true)),
       item("write","Write to us",()=>openScrivici(true)),
@@ -1578,7 +1586,7 @@ const WORKSHOPS = [
   "categoria": "cucina",
   "contatto": "@gastronomialagenziadiviaggi via DM",
   "data": "2026-11-10",
-  "descrizione": "A workshop all about cassava, the root that becomes flour, tapioca, attiéké and much more: stories from the cultures that grow it, tastings and tips on how to cook it. Prices and bookings by DM or on WhatsApp with the deli.",
+  "descrizione": "A workshop all about cassava, the root that becomes flour, tapioca, attiéké and much more: stories from the cultures that grow it, tastings and tips on how to cook it. Prices and bookings via DM or on WhatsApp with the deli.",
   "fonte": "Instagram @gastronomialagenziadiviaggi",
   "indirizzo": "Gastronomia L’Agenzia di Viaggi, Via Gropello 17bis",
   "link": "https://www.instagram.com/p/DezZ-F3I3sY/",
@@ -1610,7 +1618,7 @@ const WORKSHOPS = [
  {
   "categoria": "tessile",
   "contatto": "@albergodivirtu via DM",
-  "descrizione": "A modular sewing course for complete beginners, with one-to-one or pair lessons in the San Salvario studio. You begin with the basics and a first placemat, then move on to a lined bag, a zipped pouch, a T-shirt, a skirt and palazzo trousers, choosing where to start. Two-hour modules cost 50 € and three-hour ones 70 €, including materials and a printed guide; book by DM to @albergodivirtu.",
+  "descrizione": "A modular sewing course for complete beginners, with one-to-one or pair lessons in the San Salvario studio. You begin with the basics and a first placemat, then move on to a lined bag, a zipped pouch, a T-shirt, a skirt and palazzo trousers, choosing where to start. Two-hour modules cost 50 € and three-hour ones 70 €, including materials and a printed guide; book via DM to @albergodivirtu.",
   "fonte": "Instagram @albergodivirtu",
   "foto": "img/eventi/albergodivirtu-corso-cucito.jpg",
   "link": "https://www.instagram.com/p/DeeRgwxCD_t/",
@@ -1632,7 +1640,7 @@ const WORKSHOPS = [
   "contatto": "anima.atelier@hotmail.com",
   "data": "2026-10-19",
   "data_fine": "2026-10-29",
-  "descrizione": "Three sessions with Barbara Perga, on 19, 22 and 29 October, to make a dreamcatcher and experience weaving as meditation, drawing on Castaneda’s “The Art of Dreaming”. Info, prices and bookings by DM to @atelier_anima_art or at anima.atelier@hotmail.com.",
+  "descrizione": "Three sessions with Barbara Perga, on 19, 22 and 29 October, to make a dreamcatcher and experience weaving as meditation, drawing on Castaneda’s “The Art of Dreaming”. Info, prices and bookings via DM to @atelier_anima_art or at anima.atelier@hotmail.com.",
   "fonte": "Instagram @atelier_anima_art",
   "foto": "img/eventi/atelier-anima-art-2026-10-01-13.jpg",
   "indirizzo": "Anima Atelier, Corso Orbassano 98/B",
@@ -1650,7 +1658,7 @@ const WORKSHOPS = [
   "contatto": "anima.atelier@hotmail.com",
   "data": "2026-10-13",
   "data_fine": "2026-10-27",
-  "descrizione": "Nature drawing workshops for a close look at city birds – their shapes, anatomy, curiosities and legends: blackbird, robin, swallow, sparrow, great tit, redstart and goldfinch. No drawing skills needed; the last session is on 27 October. Info, prices and bookings by DM to @atelier_anima_art or at anima.atelier@hotmail.com.",
+  "descrizione": "Nature drawing workshops for a close look at city birds – their shapes, anatomy, curiosities and legends: blackbird, robin, swallow, sparrow, great tit, redstart and goldfinch. No drawing skills needed; the last session is on 27 October. Info, prices and bookings via DM to @atelier_anima_art or at anima.atelier@hotmail.com.",
   "fonte": "Instagram @atelier_anima_art",
   "foto": "img/eventi/atelier-anima-art-2026-10-01-9.jpg",
   "indirizzo": "Anima Atelier, Corso Orbassano 98/B",
@@ -1669,7 +1677,7 @@ const WORKSHOPS = [
   "contatto": "anima.atelier@hotmail.com",
   "data": "2026-10-02",
   "data_fine": "2026-10-30",
-  "descrizione": "Exercises with Sara Venturino to unlock your creativity, get past the fear of the blank page and learn to draw any object. The last sessions are on 23 and 30 October. Info, prices and bookings by DM to @atelier_anima_art or at anima.atelier@hotmail.com.",
+  "descrizione": "Exercises with Sara Venturino to unlock your creativity, get past the fear of the blank page and learn to draw any object. The last sessions are on 23 and 30 October. Info, prices and bookings via DM to @atelier_anima_art or at anima.atelier@hotmail.com.",
   "fonte": "Instagram @atelier_anima_art",
   "foto": "img/eventi/atelier-anima-art-2026-10-01-2.jpg",
   "indirizzo": "Anima Atelier, Corso Orbassano 98/B",
@@ -1688,7 +1696,7 @@ const WORKSHOPS = [
   "contatto": "anima.atelier@hotmail.com",
   "data": "2026-10-12",
   "data_fine": "2026-11-02",
-  "descrizione": "Four sessions with Gian Guido Grassi to learn the basics of drawing from scratch: materials and proportions, hatching and shading, free line work and charcoal. The last two are on 26 October and 2 November. Info, prices and bookings by DM to @atelier_anima_art or at anima.atelier@hotmail.com.",
+  "descrizione": "Four sessions with Gian Guido Grassi to learn the basics of drawing from scratch: materials and proportions, hatching and shading, free line work and charcoal. The last two are on 26 October and 2 November. Info, prices and bookings via DM to @atelier_anima_art or at anima.atelier@hotmail.com.",
   "fonte": "Instagram @atelier_anima_art",
   "foto": "img/eventi/atelier-anima-art-2026-10-01-11.jpg",
   "indirizzo": "Anima Atelier, Corso Orbassano 98/B",
@@ -1709,7 +1717,7 @@ const WORKSHOPS = [
   "categoria": "gioielli",
   "contatto": "anima.atelier@hotmail.com",
   "data": "2026-10-24",
-  "descrizione": "Turn ceramic fragments into a necklace, bracelet or keyring, transforming the cracks into golden lines with the kintsugi technique. Info, prices and bookings by DM to @atelier_anima_art or at anima.atelier@hotmail.com.",
+  "descrizione": "Turn ceramic fragments into a necklace, bracelet or keyring, transforming the cracks into golden lines with the kintsugi technique. Info, prices and bookings via DM to @atelier_anima_art or at anima.atelier@hotmail.com.",
   "fonte": "Instagram @atelier_anima_art",
   "foto": "img/eventi/atelier-anima-art-2026-10-01-15.jpg",
   "indirizzo": "Anima Atelier, Corso Orbassano 98/B",
@@ -1727,7 +1735,7 @@ const WORKSHOPS = [
   "contatto": "anima.atelier@hotmail.com",
   "data": "2026-10-04",
   "data_fine": "2026-11-08",
-  "descrizione": "Five sessions with Ad Libitum Edizioni on the basics of graphic design – colour, typography and visual hierarchy, layouts and grids, brand identity – ending with the presentation of a small project on 8 November. Info, prices and bookings by DM to @atelier_anima_art or at anima.atelier@hotmail.com.",
+  "descrizione": "Five sessions with Ad Libitum Edizioni on the basics of graphic design – colour, typography and visual hierarchy, layouts and grids, brand identity – ending with the presentation of a small project on 8 November. Info, prices and bookings via DM to @atelier_anima_art or at anima.atelier@hotmail.com.",
   "fonte": "Instagram @atelier_anima_art",
   "foto": "img/eventi/atelier-anima-art-2026-10-01-8.jpg",
   "indirizzo": "Anima Atelier, Corso Orbassano 98/B",
@@ -1745,7 +1753,7 @@ const WORKSHOPS = [
   "categoria": "famiglia",
   "contatto": "anima.atelier@hotmail.com",
   "data": "2026-10-31",
-  "descrizione": "Picture book reading and crafts for children aged 4 to 6, with Amalia Cornea. Info, prices and bookings by DM to @atelier_anima_art or at anima.atelier@hotmail.com.",
+  "descrizione": "Picture book reading and crafts for children aged 4 to 6, with Amalia Cornea. Info, prices and bookings via DM to @atelier_anima_art or at anima.atelier@hotmail.com.",
   "fonte": "Instagram @atelier_anima_art",
   "foto": "img/eventi/atelier-anima-art-2026-10-01-7.jpg",
   "indirizzo": "Anima Atelier, Corso Orbassano 98/B",
@@ -1763,7 +1771,7 @@ const WORKSHOPS = [
   "contatto": "anima.atelier@hotmail.com",
   "data": "2026-10-02",
   "data_fine": "2026-10-30",
-  "descrizione": "Five sessions with Sara Venturino of Aprilsara Art to fill a travel sketchbook with quick ink sketches and washes of watercolour: places, food and moments. The last sessions are on 23 and 30 October. Info, prices and bookings by DM to @atelier_anima_art or at anima.atelier@hotmail.com.",
+  "descrizione": "Five sessions with Sara Venturino of Aprilsara Art to fill a travel sketchbook with quick ink sketches and washes of watercolour: places, food and moments. The last sessions are on 23 and 30 October. Info, prices and bookings via DM to @atelier_anima_art or at anima.atelier@hotmail.com.",
   "fonte": "Instagram @atelier_anima_art",
   "foto": "img/eventi/atelier-anima-art-2026-10-01-2.jpg",
   "indirizzo": "Anima Atelier, Corso Orbassano 98/B",
@@ -1781,7 +1789,7 @@ const WORKSHOPS = [
   "categoria": "gioielli",
   "contatto": "anima.atelier@hotmail.com",
   "data": "2026-10-24",
-  "descrizione": "Fold and assemble your own origami earrings, choosing Halloween-inspired shapes and colours; complete beginners welcome. Info, prices and bookings by DM to @atelier_anima_art or at anima.atelier@hotmail.com.",
+  "descrizione": "Fold and assemble your own origami earrings, choosing Halloween-inspired shapes and colours; complete beginners welcome. Info, prices and bookings via DM to @atelier_anima_art or at anima.atelier@hotmail.com.",
   "fonte": "Instagram @atelier_anima_art",
   "foto": "img/eventi/atelier-anima-art-2026-10-01-12.jpg",
   "indirizzo": "Anima Atelier, Corso Orbassano 98/B",
@@ -1798,7 +1806,7 @@ const WORKSHOPS = [
   "categoria": "pittura",
   "contatto": "anima.atelier@hotmail.com",
   "data": "2026-11-07",
-  "descrizione": "An afternoon of intuitive painting with Giulia Rabozzi (@comelenuvole.art): let go of your thoughts and follow colours and gestures – no painting skills needed. Confirm your place by Tuesday 3 November; prices and bookings by DM to @atelier_anima_art or at anima.atelier@hotmail.com.",
+  "descrizione": "An afternoon of intuitive painting with Giulia Rabozzi (@comelenuvole.art): let go of your thoughts and follow colours and gestures – no painting skills needed. Confirm your place by Tuesday 3 November; prices and bookings via DM to @atelier_anima_art or at anima.atelier@hotmail.com.",
   "fonte": "Instagram @atelier_anima_art",
   "foto": "img/eventi/atelier-anima-art-2026-10-21-1.jpg",
   "indirizzo": "Anima Atelier, Corso Orbassano 98/B",
@@ -1816,7 +1824,7 @@ const WORKSHOPS = [
   "contatto": "anima.atelier@hotmail.com",
   "data": "2026-10-14",
   "data_fine": "2026-10-28",
-  "descrizione": "A workshop with Daphne DDArt to paint your own canvas bag and turn a personal idea into something you can wear. The last sessions are on 21 and 28 October. Info, prices and bookings by DM to @atelier_anima_art or at anima.atelier@hotmail.com.",
+  "descrizione": "A workshop with Daphne DDArt to paint your own canvas bag and turn a personal idea into something you can wear. The last sessions are on 21 and 28 October. Info, prices and bookings via DM to @atelier_anima_art or at anima.atelier@hotmail.com.",
   "fonte": "Instagram @atelier_anima_art",
   "foto": "img/eventi/atelier-anima-art-2026-10-01-10.jpg",
   "indirizzo": "Anima Atelier, Corso Orbassano 98/B",
@@ -2065,7 +2073,7 @@ const WORKSHOPS = [
  {
   "categoria": "giochi",
   "data": "2026-11-13",
-  "descrizione": "A Halloween murder mystery dinner: new clues arrive with every course and each table investigates to crack the case, with a prize for the best table. It costs 20 € including a four-course dinner and a soft drink; the 31 October date is sold out, so this repeat is your last chance.",
+  "descrizione": "A Halloween murder mystery dinner: new clues arrive with every course and each table investigates to crack the case, with a prize for the best table. It costs 20 € including a four-course dinner and a soft drink; the 31 October date is sold out, but this repeat date is still available.",
   "fonte": "eventbrite.it",
   "foto": "img/eventi/arcade-cena-con-delitto-2026-11-13.jpg",
   "indirizzo": "Corso Eusebio Giambone 1",
@@ -2171,7 +2179,7 @@ const WORKSHOPS = [
   "categoria": "altro",
   "contatto": "Rašid Nikolić on WhatsApp, +39 346 579 8020",
   "data": "2026-11-10",
-  "descrizione": "Four sessions to get started with woodcarving: using gouges and chisels you draw shapes and textures out of plain boards, ending with your own bas-relief. It’s led by puppeteer and former Accademia di Belle Arti di Torino lecturer Rašid Nikolić in his workshop, in small groups, with materials and tools provided; no experience needed. Places are limited; sign up on WhatsApp at 346 579 8020.",
+  "descrizione": "Four sessions to get started with woodcarving: using gouges and chisels you bring out shapes and textures from plain boards, ending with your own bas-relief. It’s led by puppeteer and former Accademia di Belle Arti di Torino lecturer Rašid Nikolić in his workshop, in small groups, with materials and tools provided; no experience needed. Places are limited; sign up on WhatsApp at 346 579 8020.",
   "fonte": "Instagram @bagnipubblici",
   "foto": "img/eventi/bagnipubblici-DewECDYkYDJ-7.jpg",
   "link": "https://www.instagram.com/p/DewECDYkYDJ/",
@@ -2266,7 +2274,7 @@ const WORKSHOPS = [
   "comune": "Settimo Vittone",
   "contatto": "Baltea Bike, +39 349 761 6666",
   "data": "2026-10-25",
-  "descrizione": "A day-long bike ride, about 40 km with 700 m of climbing, taking in the village of Montestrutto, terraced vineyards and the Forte di Bard at the gateway to the Aosta Valley. Intermediate level, with a cycling guide. Cancelled in bad weather; the ride can also be arranged on other dates on request. Book on 349 761 6666 or by DM to @balteabike_experience.",
+  "descrizione": "A day-long bike ride, about 40 km with 700 m of climbing, taking in the village of Montestrutto, terraced vineyards and the Forte di Bard at the gateway to the Aosta Valley. Intermediate level, with a cycling guide. Cancelled in bad weather; the ride can also be arranged on other dates on request. Book on 349 761 6666 or via DM to @balteabike_experience.",
   "fonte": "Instagram @balteabike_experience",
   "foto": "img/eventi/balteabike-forte-di-bard-2026-10-25.jpg",
   "indirizzo": "Area Sportiva La Turna",
@@ -2282,7 +2290,7 @@ const WORKSHOPS = [
   "comune": "Valchiusella",
   "contatto": "Baltea Bike, +39 349 761 6666",
   "data": "2026-10-31",
-  "descrizione": "A day-long bike ride, about 45 km with 1500 m of climbing, past glacial lakes, woods, Romanesque bridges and old mines in the Valchiusella. Challenging level, with a cycling guide. Cancelled in bad weather; the ride can also be arranged on other dates on request. Book on 349 761 6666 or by DM to @balteabike_experience.",
+  "descrizione": "A day-long bike ride, about 45 km with 1500 m of climbing, past glacial lakes, woods, Romanesque bridges and old mines in the Valchiusella. Challenging level, with a cycling guide. Cancelled in bad weather; the ride can also be arranged on other dates on request. Book on 349 761 6666 or via DM to @balteabike_experience.",
   "fonte": "Instagram @balteabike_experience",
   "foto": "img/eventi/balteabike-valchiusella-2026-10-31.jpg",
   "indirizzo": "Lago di Meugliano",
@@ -2297,7 +2305,7 @@ const WORKSHOPS = [
   "categoria": "pittura",
   "contatto": "@barbara_sirtoli_art via DM",
   "data_da_confermare": true,
-  "descrizione": "Weekly courses with illustrator Barbara Sirtoli in three locations. Mornings: illustration with ink and watercolour, and soft pastel, at Circolo Impresa e Territorio (Via Cesalpino 11A) and Cascina Roccafranca (Via Rubino 45, Wednesdays 10:30–12:00). Afternoons: painting and watercolour, graphite drawing, ink techniques and soft pastel at Polo Artistico delle Rosine (Via delle Rosine 11). Days, times and prices by DM to @barbara_sirtoli_art.",
+  "descrizione": "Weekly courses with illustrator Barbara Sirtoli in three locations. Mornings: illustration with ink and watercolour, and soft pastel, at Circolo Impresa e Territorio (Via Cesalpino 11A) and Cascina Roccafranca (Via Rubino 45, Wednesdays 10:30–12:00). Afternoons: painting and watercolour, graphite drawing, ink techniques and soft pastel at Polo Artistico delle Rosine (Via delle Rosine 11). Days, times and prices via DM to @barbara_sirtoli_art.",
   "fonte": "Instagram @barbara_sirtoli_art",
   "foto": "img/eventi/barbara-sirtoli-art-2026-09-03-6.jpg",
   "link": "https://www.instagram.com/p/Dc1P43dIpH3/",
@@ -2312,7 +2320,7 @@ const WORKSHOPS = [
   "categoria": "pittura",
   "contatto": "@workshop.arte.torino via DM",
   "data": "2026-10-24",
-  "descrizione": "Two hours with illustrator Barbara Sirtoli to discover hard and soft pastels while painting cyclamens: a technique with vivid colours that blend easily, ideal even if you can’t draw. She provides the materials and a sketched outline; if you already have your own pastels you get a discount. Book by DM to @workshop.arte.torino by Thursday 22 October.",
+  "descrizione": "Two hours with illustrator Barbara Sirtoli to discover hard and soft pastels while painting cyclamens: a technique with vivid colours that blend easily, ideal even if you can’t draw. She provides the materials and a sketched outline; if you already have your own pastels you get a discount. Book via DM to @workshop.arte.torino by Thursday 22 October.",
   "fonte": "Instagram @workshop.arte.torino",
   "foto": "img/eventi/workshop-arte-torino-2026-10-16-4.jpg",
   "indirizzo": "Soul Art Evolution Studio, Via Galluppi 25",
@@ -2769,7 +2777,7 @@ const WORKSHOPS = [
   "comune": "Peveragno",
   "contatto": "@bricabrac_cantineludiche via DM",
   "data": "2026-11-05",
-  "descrizione": "The second watercolour evening with Beatrice Bianco at Bric a Brac, a small board game pub: basic techniques and an autumn subject. Aperitivo and workshop included; 12 places, sign-up required by DM to @bricabrac_cantineludiche.",
+  "descrizione": "The second watercolour evening with Beatrice Bianco at Bric a Brac, a small board game pub: basic techniques and an autumn subject. Aperitivo and workshop included; 12 places, sign-up required via DM to @bricabrac_cantineludiche.",
   "fonte": "Instagram @bricabrac_cantineludiche",
   "foto": "img/eventi/bricabrac-cantineludiche-2026-10-22-1.jpg",
   "link": "https://www.instagram.com/p/Dey34WiAKOy/",
@@ -2786,11 +2794,11 @@ const WORKSHOPS = [
   "comune": "Peveragno",
   "contatto": "@bricabrac_cantineludiche via DM",
   "data": "2026-10-31",
-  "descrizione": "A Halloween evening in the dark playing Lupus in Tabula, a Werewolf-style game, full of plot twists and unusual sandwiches. 20 places; book by DM to @bricabrac_cantineludiche and pay 3 € when you sign up.",
+  "descrizione": "A Halloween evening in the dark playing Lupus in Tabula, a Werewolf-style game, full of plot twists and unusual sandwiches. 20 places; book via DM to @bricabrac_cantineludiche and pay 3 € when you sign up.",
   "fonte": "Instagram @bricabrac_cantineludiche",
   "foto": "img/eventi/bricabrac-cantineludiche-2026-10-09-2.jpg",
   "link": "https://www.instagram.com/p/DeQ8WaDgIEP/",
-  "organizzatore": "Bric a Brac - Cantine Ludiche",
+  "organizzatore": "Bric a Brac",
   "prezzo": 3,
   "tipo": "attivita",
   "titolo": "Hallowbric: a night of Lupus in Tabula",
@@ -3286,7 +3294,7 @@ const WORKSHOPS = [
   "contatto": "prenotazioni@fondazionemirafiori.it",
   "data": "2026-10-23",
   "data_fine": "2026-11-06",
-  "descrizione": "Three sessions, on 23 and 30 October and 6 November, with photographer Alberto Nidola, to build a personal visual diary using your phone camera: point of view, light and composition. You need to attend all three. Free with the «La cultura dietro l’angolo» card (itself free and issued on site); booking required at prenotazioni@fondazionemirafiori.it or on 011 682 5390.",
+  "descrizione": "Three sessions, on 23 and 30 October and 6 November, with photographer Alberto Nidola, to build a personal visual diary using your phone camera: point of view, light and composition. You need to attend all three. Free with the “La cultura dietro l’angolo” card (itself free and issued on site); booking required at prenotazioni@fondazionemirafiori.it or on 011 682 5390.",
   "fonte": "Instagram @casanelparco",
   "foto": "img/eventi/generica-fotografia-smartphone.jpg",
   "indirizzo": "Casa nel Parco, Via Modesto Panetti 1",
@@ -3377,7 +3385,7 @@ const WORKSHOPS = [
   "categoria": "tessile",
   "contatto": "@chi_lab via DM",
   "data": "2026-10-25",
-  "descrizione": "An afternoon for beginners to learn the basic crochet stitches and make a pair of wrist warmers. Two balls of alpaca-blend yarn, an ergonomic hook and an afternoon snack are included; maximum 15 people. Book by DM to @chi_lab, who will also tell you the venue.",
+  "descrizione": "An afternoon for beginners to learn the basic crochet stitches and make a pair of wrist warmers. Two balls of alpaca-blend yarn, an ergonomic hook and an afternoon snack are included; maximum 15 people. Book via DM to @chi_lab, who will also tell you the venue.",
   "fonte": "Instagram @chi_lab",
   "foto": "img/eventi/chi-lab-2026-10-11-1.jpg",
   "link": "https://www.instagram.com/p/DeHyameoK87/",
@@ -3450,7 +3458,7 @@ const WORKSHOPS = [
  {
   "categoria": "ceramica",
   "contatto": "Chu on WhatsApp, +39 327 345 8563",
-  "descrizione": "Pottery wheel lessons in a small courtyard studio, for complete beginners and for those who want to throw on their own, with a calm, pressure-free approach. October and November slots are Mondays at 18:30 and 20:30 and Wednesdays at 18:30 (plus an extra Wednesday slot at 20:30); open studio hour packages are also available. Info and booking with Chu on 327 345 8563, also on WhatsApp.",
+  "descrizione": "Pottery wheel lessons in a small courtyard studio, for complete beginners and for those who want to throw on their own, with a calm, pressure-free approach. October and November slots are Mondays at 18:30 and 20:30 and Wednesdays at 18:30 (plus an extra Wednesday slot at 20:30); open studio hour packages are also available. Info and bookings with Chu on 327 345 8563, also on WhatsApp.",
   "fonte": "Instagram @chu_hands",
   "foto": "img/eventi/chu-hands-2026-10-13-2.jpg",
   "indirizzo": "Chu Lab, Via Carlo Vidua 11/A",
@@ -3656,7 +3664,7 @@ const WORKSHOPS = [
   "categoria": "altro",
   "contatto": "negoziotorino@creative-cables.com",
   "data": "2026-10-23",
-  "descrizione": "A masterclass at the Creative Cables shop in Turin where you learn to wire and assemble a lamp yourself. Info and booking by DM to @creativecablestores or at negoziotorino@creative-cables.com.",
+  "descrizione": "A masterclass at the Creative Cables shop in Turin where you learn to wire and assemble a lamp yourself. Info and bookings via DM to @creativecablestores or at negoziotorino@creative-cables.com.",
   "fonte": "Instagram @creativecablestores",
   "foto": "img/eventi/creativecables-lampada.jpg",
   "indirizzo": "Creative Cables Store, Via Mazzini 24/D",
@@ -3916,7 +3924,7 @@ const WORKSHOPS = [
  {
   "categoria": "cucina",
   "data": "2026-11-04",
-  "descrizione": "A hands-on lesson on cabbages and their cousins, the stars of the autumn vegetable garden, in recipes that are anything but ordinary. Book and pay on eataly.it.",
+  "descrizione": "A practical lesson on cabbages and their cousins, the stars of the autumn vegetable garden, in recipes that are anything but ordinary. Book and pay on eataly.it.",
   "fonte": "eataly.it",
   "foto": "img/eventi/eataly-2002160245190.jpg",
   "indirizzo": "Eataly Torino Lingotto, Via Fenoglietti 14",
@@ -3934,7 +3942,7 @@ const WORKSHOPS = [
  {
   "categoria": "cucina",
   "data": "2026-11-29",
-  "descrizione": "A hands-on lesson all about gnocchi, from the dough to the sauces. Book and pay on eataly.it.",
+  "descrizione": "A practical lesson all about gnocchi, from the dough to the sauces. Book and pay on eataly.it.",
   "fonte": "eataly.it",
   "foto": "img/eventi/eataly-2002151828014.jpg",
   "indirizzo": "Eataly Torino Lingotto, Via Fenoglietti 14",
@@ -3988,7 +3996,7 @@ const WORKSHOPS = [
  {
   "categoria": "cucina",
   "data": "2026-12-11",
-  "descrizione": "A hands-on lesson on struffoli, the traditional Neapolitan Christmas sweet. Book and pay on eataly.it.",
+  "descrizione": "A practical lesson on struffoli, the traditional Neapolitan Christmas sweet. Book and pay on eataly.it.",
   "fonte": "eataly.it",
   "foto": "img/eventi/eataly-2002151711666.jpg",
   "indirizzo": "Eataly Torino Lingotto, Via Fenoglietti 14",
@@ -4024,7 +4032,7 @@ const WORKSHOPS = [
  {
   "categoria": "cucina",
   "data": "2026-10-25",
-  "descrizione": "A hands-on lesson on the basic techniques of vegan baking, to make desserts without any animal products. Book and pay on eataly.it.",
+  "descrizione": "A practical lesson on the basic techniques of vegan baking, to make desserts without any animal products. Book and pay on eataly.it.",
   "fonte": "eataly.it",
   "foto": "img/eventi/eataly-2002160854011.jpg",
   "indirizzo": "Eataly Torino Lingotto, Via Fenoglietti 14",
@@ -4042,7 +4050,7 @@ const WORKSHOPS = [
  {
   "categoria": "cucina",
   "data": "2026-11-17",
-  "descrizione": "A hands-on lesson in savoury pastry, making finger food and little bites for aperitivo. Book and pay on eataly.it.",
+  "descrizione": "A practical lesson in savoury pastry, making finger food and little bites for aperitivo. Book and pay on eataly.it.",
   "fonte": "eataly.it",
   "foto": "img/eventi/eataly-2003409855809.jpg",
   "indirizzo": "Eataly Torino Lingotto, Via Fenoglietti 14",
@@ -4060,7 +4068,7 @@ const WORKSHOPS = [
  {
   "categoria": "cucina",
   "data": "2026-11-03",
-  "descrizione": "A hands-on lesson in the world of pastries, learning to make little sweets fit for a pâtisserie window. Book and pay on eataly.it.",
+  "descrizione": "A practical lesson in the world of pastries, learning to make little sweets fit for a pâtisserie window. Book and pay on eataly.it.",
   "fonte": "eataly.it",
   "foto": "img/eventi/eataly-2002206034146.jpg",
   "indirizzo": "Eataly Torino Lingotto, Via Fenoglietti 14",
@@ -4078,7 +4086,7 @@ const WORKSHOPS = [
  {
   "categoria": "cucina",
   "data": "2026-11-10",
-  "descrizione": "A hands-on lesson on the basic building blocks of pastry, from creams to sweet sauces. Book and pay on eataly.it.",
+  "descrizione": "A practical lesson on the basic building blocks of pastry, from creams to sweet sauces. Book and pay on eataly.it.",
   "fonte": "eataly.it",
   "foto": "img/eventi/eataly-2002205803456.jpg",
   "indirizzo": "Eataly Torino Lingotto, Via Fenoglietti 14",
@@ -4096,7 +4104,7 @@ const WORKSHOPS = [
  {
   "categoria": "cucina",
   "data": "2026-12-12",
-  "descrizione": "A hands-on lesson to make a cake for the Christmas holidays. Book and pay on eataly.it.",
+  "descrizione": "A practical lesson to make a cake for the Christmas holidays. Book and pay on eataly.it.",
   "fonte": "eataly.it",
   "foto": "img/eventi/eataly-2002203863654.jpg",
   "indirizzo": "Eataly Torino Lingotto, Via Fenoglietti 14",
@@ -4114,7 +4122,7 @@ const WORKSHOPS = [
  {
   "categoria": "cucina",
   "data": "2026-11-20",
-  "descrizione": "A hands-on lesson on simple everyday cakes, the kind you keep in the cupboard. Book and pay on eataly.it.",
+  "descrizione": "A practical lesson on simple everyday cakes, the kind you keep in the cupboard. Book and pay on eataly.it.",
   "fonte": "eataly.it",
   "foto": "img/eventi/eataly-2002152910251.jpg",
   "indirizzo": "Eataly Torino Lingotto, Via Fenoglietti 14",
@@ -4187,7 +4195,7 @@ const WORKSHOPS = [
  {
   "categoria": "famiglia",
   "data": "2026-12-13",
-  "descrizione": "A hands-on lesson for children and parents, who bake Christmas biscuits together. Book and pay on eataly.it.",
+  "descrizione": "A practical lesson for children and parents, who bake Christmas biscuits together. Book and pay on eataly.it.",
   "fonte": "eataly.it",
   "foto": "img/eventi/eataly-2002151906248.jpg",
   "indirizzo": "Eataly Torino Lingotto, Via Fenoglietti 14",
@@ -4205,7 +4213,7 @@ const WORKSHOPS = [
  {
   "categoria": "famiglia",
   "data": "2026-12-13",
-  "descrizione": "A hands-on lesson for children and parents, who bake Christmas biscuits together. Book and pay on eataly.it.",
+  "descrizione": "A practical lesson for children and parents, who bake Christmas biscuits together. Book and pay on eataly.it.",
   "fonte": "eataly.it",
   "foto": "img/eventi/eataly-2002151684585.jpg",
   "indirizzo": "Eataly Torino Lingotto, Via Fenoglietti 14",
@@ -4223,7 +4231,7 @@ const WORKSHOPS = [
  {
   "categoria": "famiglia",
   "data": "2026-10-25",
-  "descrizione": "A hands-on lesson for children and parents, who cook Halloween-themed recipes together. Book and pay on eataly.it.",
+  "descrizione": "A practical lesson for children and parents, who cook Halloween-themed recipes together. Book and pay on eataly.it.",
   "fonte": "eataly.it",
   "foto": "img/eventi/eataly-2002152106848.jpg",
   "indirizzo": "Eataly Torino Lingotto, Via Fenoglietti 14",
@@ -4242,7 +4250,7 @@ const WORKSHOPS = [
  {
   "categoria": "famiglia",
   "data": "2026-10-25",
-  "descrizione": "A hands-on lesson for children and parents, who cook Halloween-themed recipes together. Book and pay on eataly.it.",
+  "descrizione": "A practical lesson for children and parents, who cook Halloween-themed recipes together. Book and pay on eataly.it.",
   "fonte": "eataly.it",
   "foto": "img/eventi/eataly-2002152073749.jpg",
   "indirizzo": "Eataly Torino Lingotto, Via Fenoglietti 14",
@@ -4261,7 +4269,7 @@ const WORKSHOPS = [
  {
   "categoria": "cucina",
   "data": "2026-12-02",
-  "descrizione": "A hands-on lesson all about noodles and the many ways to prepare them. Book and pay on eataly.it.",
+  "descrizione": "A practical lesson all about noodles and the many ways to prepare them. Book and pay on eataly.it.",
   "fonte": "eataly.it",
   "foto": "img/eventi/eataly-2002151802939.jpg",
   "indirizzo": "Eataly Torino Lingotto, Via Fenoglietti 14",
@@ -4279,7 +4287,7 @@ const WORKSHOPS = [
  {
   "categoria": "cucina",
   "data": "2026-11-21",
-  "descrizione": "A hands-on lesson exploring Indian cuisine through gluten-free recipes. Book and pay on eataly.it.",
+  "descrizione": "A practical lesson exploring Indian cuisine through gluten-free recipes. Book and pay on eataly.it.",
   "fonte": "eataly.it",
   "foto": "img/eventi/eataly-2002152906239.jpg",
   "indirizzo": "Eataly Torino Lingotto, Via Fenoglietti 14",
@@ -4406,7 +4414,7 @@ const WORKSHOPS = [
  {
   "categoria": "cucina",
   "data": "2026-11-22",
-  "descrizione": "A hands-on course with Caterina Mosca to make colourful, moreish plant-based finger food. Book and pay on eataly.it.",
+  "descrizione": "A practical course with Caterina Mosca to make colourful, moreish plant-based finger food. Book and pay on eataly.it.",
   "fonte": "eataly.it",
   "foto": "img/eventi/eataly-2002152616372.jpg",
   "indirizzo": "Eataly Torino Lingotto, Via Fenoglietti 14",
@@ -4460,7 +4468,7 @@ const WORKSHOPS = [
  {
   "categoria": "cucina",
   "data": "2026-11-05",
-  "descrizione": "A hands-on lesson with Slow Food on the endless possibilities of rice, in original and surprising dishes. Book and pay on eataly.it.",
+  "descrizione": "A practical lesson with Slow Food on the endless possibilities of rice, in original and surprising dishes. Book and pay on eataly.it.",
   "fonte": "eataly.it",
   "foto": "img/eventi/eataly-2002205997035.jpg",
   "indirizzo": "Eataly Torino Lingotto, Via Fenoglietti 14",
@@ -4532,7 +4540,7 @@ const WORKSHOPS = [
  {
   "categoria": "cucina",
   "data": "2026-10-29",
-  "descrizione": "A hands-on lesson with Slow Food on autumn cooking and ingredients from the woods: warming food rooted in the local area. Book and pay on eataly.it.",
+  "descrizione": "A practical lesson with Slow Food on autumn cooking and ingredients from the woods: warming food rooted in the local area. Book and pay on eataly.it.",
   "fonte": "eataly.it",
   "foto": "img/eventi/eataly-2002160302361.jpg",
   "indirizzo": "Eataly Torino Lingotto, Via Fenoglietti 14",
@@ -4550,7 +4558,7 @@ const WORKSHOPS = [
  {
   "categoria": "cucina",
   "data": "2026-11-07",
-  "descrizione": "A hands-on lesson with Slow Food on fonduta, Piedmont’s cheese fondue, from choosing the cheeses to making it. Book and pay on eataly.it.",
+  "descrizione": "A practical lesson with Slow Food on fonduta, Piedmont’s cheese fondue, from choosing the cheeses to making it. Book and pay on eataly.it.",
   "fonte": "eataly.it",
   "foto": "img/eventi/eataly-2002205973966.jpg",
   "indirizzo": "Eataly Torino Lingotto, Via Fenoglietti 14",
@@ -4733,7 +4741,7 @@ const WORKSHOPS = [
  {
   "categoria": "famiglia",
   "data": "2026-10-24",
-  "descrizione": "A hands-on course for teenagers aged 12 to 16, who cook a full Halloween-themed menu on their own. Book and pay on eataly.it.",
+  "descrizione": "A practical course for teenagers aged 12 to 16, who cook a full Halloween-themed menu on their own. Book and pay on eataly.it.",
   "fonte": "eataly.it",
   "foto": "img/eventi/eataly-2002152074752.jpg",
   "indirizzo": "Eataly Torino Lingotto, Via Fenoglietti 14",
@@ -4751,7 +4759,7 @@ const WORKSHOPS = [
  {
   "categoria": "famiglia",
   "data": "2026-11-08",
-  "descrizione": "A hands-on course for teenagers aged 12 to 16, who cook a full menu on their own. Book and pay on eataly.it.",
+  "descrizione": "A practical course for teenagers aged 12 to 16, who cook a full menu on their own. Book and pay on eataly.it.",
   "fonte": "eataly.it",
   "foto": "img/eventi/eataly-2002152096818.jpg",
   "indirizzo": "Eataly Torino Lingotto, Via Fenoglietti 14",
@@ -4770,7 +4778,7 @@ const WORKSHOPS = [
  {
   "categoria": "famiglia",
   "data": "2026-12-13",
-  "descrizione": "A hands-on course for teenagers aged 12 to 16, who cook a full menu on their own. Book and pay on eataly.it.",
+  "descrizione": "A practical course for teenagers aged 12 to 16, who cook a full menu on their own. Book and pay on eataly.it.",
   "fonte": "eataly.it",
   "foto": "img/eventi/eataly-2002151687594.jpg",
   "indirizzo": "Eataly Torino Lingotto, Via Fenoglietti 14",
@@ -4788,7 +4796,7 @@ const WORKSHOPS = [
  {
   "categoria": "cucina",
   "data": "2026-12-15",
-  "descrizione": "A hands-on lesson making savoury snacks for aperitivos and buffets: colourful doughs, crackers and grissini. Book and pay on eataly.it.",
+  "descrizione": "A practical lesson making savoury snacks for aperitivos and buffets: colourful doughs, crackers and grissini. Book and pay on eataly.it.",
   "fonte": "eataly.it",
   "foto": "img/eventi/eataly-2002203839582.jpg",
   "indirizzo": "Eataly Torino Lingotto, Via Fenoglietti 14",
@@ -5441,7 +5449,7 @@ const WORKSHOPS = [
  {
   "categoria": "cucina",
   "contatto": "getyourguide.com",
-  "descrizione": "Cooking classes at Matteo and Ivan’s home, followed by a meal of everything you’ve made: fresh pasta or risotto with tiramisù (95 €), wood-fired pizza and tiramisù (70 €) or tagliatelle and express tiramisù (65 €). Ingredients and wine included, small groups. Choose your date on GetYourGuide.",
+  "descrizione": "Cooking classes at Matteo and Ivan’s home, followed by a meal of everything you’ve made: fresh pasta or risotto with tiramisù (95 €), wood-fired pizza and tiramisù (70 €) or tagliatelle and express tiramisù (65 €). Ingredients and wine included, small groups. Pick your date on GetYourGuide.",
   "fonte": "getyourguide.com",
   "foto": "img/eventi/forchetteasinistra-lezioni-cucina.jpg",
   "indirizzo": "Corso Belgio 71",
@@ -5618,7 +5626,7 @@ const WORKSHOPS = [
   "comune": "Settimo Torinese",
   "contatto": "Emanuela on WhatsApp, +39 339 244 8516",
   "data": "2026-11-07",
-  "descrizione": "A morning for beginners to learn the basics of sashiko, the Japanese embroidery originally used to reinforce fabric: tools, the traditional stitch, marking grids on the fabric and Hitomezashi patterns, ending with a small project to take home. Materials included. Sign up with Emanuela on WhatsApp on 339 244 8516 or via DM to @piazza.astengo.1.",
+  "descrizione": "A morning for beginners to learn the basics of sashiko, the Japanese embroidery originally used to reinforce fabric: tools, the traditional stitch, marking grids on the fabric and Hitomezashi patterns, ending with a small project to take home. Materials included. Sign up with Emanuela on WhatsApp at 339 244 8516 or via DM to @piazza.astengo.1.",
   "fonte": "Instagram @piazza.astengo.1",
   "foto": "img/eventi/piazza-astengo-1-2026-10-12-7.jpg",
   "indirizzo": "Studio Indaco, Piazza Astengo 1",
@@ -5791,7 +5799,7 @@ const WORKSHOPS = [
   "comune": "Manta",
   "contatto": "Laboratorio di Ceramica on WhatsApp, +39 347 530 3663",
   "data": "2026-11-27",
-  "descrizione": "An evening with aperitivo at Gisel López’s studio in Manta. You make a ceramic piece, which is fired and glazed in the studio and ready to collect a few weeks later. It lasts about two and a half to three hours, no experience needed; limited places, book via DM or on WhatsApp on 347 530 3663. There is another evening on 4 December, with a Christmas theme.",
+  "descrizione": "An evening with aperitivo at Gisel López’s studio in Manta. You make a ceramic piece, which is fired and glazed in the studio and ready to collect a few weeks later. It lasts about two and a half to three hours, no experience needed; limited places, book via DM or on WhatsApp at 347 530 3663. There is another evening on 4 December, with a Christmas theme.",
   "fonte": "Instagram @laboratoriodiceramica",
   "indirizzo": "Laboratorio di Ceramica Gisel López, Via Rivoira 10",
   "link": "https://www.instagram.com/p/Dd8XFFZiHmO/",
@@ -5807,7 +5815,7 @@ const WORKSHOPS = [
   "comune": "Manta",
   "contatto": "Laboratorio di Ceramica on WhatsApp, +39 347 530 3663",
   "data": "2026-12-04",
-  "descrizione": "A Christmas evening with aperitivo at Gisel López’s studio in Manta. You make a ceramic piece, which is fired and glazed in the studio and ready to collect a few weeks later. It lasts about two and a half to three hours, no experience needed; limited places, book via DM or on WhatsApp on 347 530 3663.",
+  "descrizione": "A Christmas evening with aperitivo at Gisel López’s studio in Manta. You make a ceramic piece, which is fired and glazed in the studio and ready to collect a few weeks later. It lasts about two and a half to three hours, no experience needed; limited places, book via DM or on WhatsApp at 347 530 3663.",
   "fonte": "Instagram @laboratoriodiceramica",
   "indirizzo": "Laboratorio di Ceramica Gisel López, Via Rivoira 10",
   "link": "https://www.instagram.com/p/Dd8XFFZiHmO/",
@@ -5823,7 +5831,7 @@ const WORKSHOPS = [
   "comune": "Manta",
   "contatto": "Laboratorio di Ceramica on WhatsApp, +39 347 530 3663",
   "data": "2026-11-21",
-  "descrizione": "A morning with breakfast at Gisel López’s studio in Manta. You make a ceramic piece, which is fired and glazed in the studio and ready to collect a few weeks later. It lasts about two and a half to three hours, no experience needed; limited places, book via DM or on WhatsApp on 347 530 3663. Other dates: 28 November in the morning, 27 November and 4 December in the evening.",
+  "descrizione": "A morning with breakfast at Gisel López’s studio in Manta. You make a ceramic piece, which is fired and glazed in the studio and ready to collect a few weeks later. It lasts about two and a half to three hours, no experience needed; limited places, book via DM or on WhatsApp at 347 530 3663. Other dates: 28 November in the morning, 27 November and 4 December in the evening.",
   "fonte": "Instagram @laboratoriodiceramica",
   "indirizzo": "Laboratorio di Ceramica Gisel López, Via Rivoira 10",
   "link": "https://www.instagram.com/p/Dd8XFFZiHmO/",
@@ -5839,7 +5847,7 @@ const WORKSHOPS = [
   "comune": "Manta",
   "contatto": "Laboratorio di Ceramica on WhatsApp, +39 347 530 3663",
   "data": "2026-11-28",
-  "descrizione": "A morning with breakfast at Gisel López’s studio in Manta. You make a ceramic piece, which is fired and glazed in the studio and ready to collect a few weeks later. It lasts about two and a half to three hours, no experience needed; limited places, book via DM or on WhatsApp on 347 530 3663.",
+  "descrizione": "A morning with breakfast at Gisel López’s studio in Manta. You make a ceramic piece, which is fired and glazed in the studio and ready to collect a few weeks later. It lasts about two and a half to three hours, no experience needed; limited places, book via DM or on WhatsApp at 347 530 3663.",
   "fonte": "Instagram @laboratoriodiceramica",
   "indirizzo": "Laboratorio di Ceramica Gisel López, Via Rivoira 10",
   "link": "https://www.instagram.com/p/Dd8XFFZiHmO/",
@@ -5854,7 +5862,7 @@ const WORKSHOPS = [
   "categoria": "ceramica",
   "comune": "Manta",
   "contatto": "Laboratorio di Ceramica on WhatsApp, +39 347 530 3663",
-  "descrizione": "Ceramics lessons with no fixed days: you decide when to come, once or twice a week or every 15 days. Packages of 4 lessons (125 €), 8 (220 €) or 10 (250 €); the first trial lesson is free. Info and bookings via DM or on WhatsApp on 347 530 3663.",
+  "descrizione": "Ceramics lessons with no fixed days: you decide when to come, once or twice a week or every two weeks. Packages of 4 lessons (125 €), 8 (220 €) or 10 (250 €); the first trial lesson is free. Info and bookings via DM or on WhatsApp at 347 530 3663.",
   "fonte": "Instagram @laboratoriodiceramica",
   "indirizzo": "Laboratorio di Ceramica Gisel López, Via Rivoira 10",
   "link": "https://www.instagram.com/p/DdGmq_NCGjK/",
@@ -6003,7 +6011,7 @@ const WORKSHOPS = [
   "categoria": "cucina",
   "contatto": "Limaco’s on WhatsApp, +39 379 3959873",
   "data": "2026-10-27",
-  "descrizione": "An evening decorating and painting your own mini cake, with colours, chat and new faces, even if it’s your first time. Book via DM to @limacostorino or on WhatsApp on 379 3959873.",
+  "descrizione": "An evening decorating and painting your own mini cake, with colours, chat and new faces, even if it’s your first time. Book via DM to @limacostorino or on WhatsApp at 379 3959873.",
   "fonte": "Instagram @limacostorino",
   "foto": "img/eventi/limaco-cake-chill-2026-10-27.jpg",
   "indirizzo": "Brunch Republic, Via Cesare Battisti 9A",
@@ -6018,7 +6026,7 @@ const WORKSHOPS = [
   "categoria": "ceramica",
   "contatto": "Limaco’s on WhatsApp, +39 379 3959873",
   "data": "2026-10-29",
-  "descrizione": "An evening shaping clay into a piece that’s all your own, no experience needed. Ask for the venue and price when you book: send “CLAY” via DM to @limacostorino or on WhatsApp to 379 3959873.",
+  "descrizione": "An evening shaping clay into a piece that’s all your own, no experience needed. Ask for the venue and price when you book: send “CLAY” via DM to @limacostorino or on WhatsApp at 379 3959873.",
   "fonte": "Instagram @limacostorino",
   "foto": "img/eventi/limaco-clay-chill-2026-10-29.jpg",
   "link": "https://www.instagram.com/reel/DeOkwlYIDTl/",
@@ -6066,7 +6074,7 @@ const WORKSHOPS = [
  {
   "categoria": "pittura",
   "contatto": "getyourguide.com",
-  "descrizione": "Three hours of acrylic painting on canvas in a studio with a greenhouse in the Campidoglio neighbourhood, guided by an artist, no experience needed: you take your own painting home. Canvas, paints and a drink included; ages 16 and up, maximum 6 people. Choose your date on GetYourGuide.",
+  "descrizione": "Three hours of acrylic painting on canvas in a studio with a greenhouse in the Campidoglio neighbourhood, guided by an artist, no experience needed: you take your own painting home. Canvas, paints and a drink included; ages 16 and up, maximum 6 people. Pick your date on GetYourGuide.",
   "fonte": "getyourguide.com",
   "foto": "img/eventi/luzzib-pittura-serra.jpg",
   "indirizzo": "Atelier, Via Levanna 3",
@@ -6487,7 +6495,7 @@ const WORKSHOPS = [
  {
   "categoria": "stampa",
   "contatto": "getyourguide.com",
-  "descrizione": "You learn to use linocut tools, draw a design and carve it into a personal stamp, then try it out on paper or fabric. Materials and light refreshments included; all levels, maximum 10 people, in Italian and English. Choose your date on GetYourGuide.",
+  "descrizione": "You learn to use linocut tools, draw a design and carve it into a personal stamp, then try it out on paper or fabric. Materials and light refreshments included; all levels, maximum 10 people, in Italian and English. Pick your date on GetYourGuide.",
   "fonte": "getyourguide.com",
   "foto": "img/eventi/moscabianca-linoleum.jpg",
   "indirizzo": "Mosca Bianca, Via Principe Tommaso 2",
@@ -6838,7 +6846,7 @@ const WORKSHOPS = [
   "link": "https://www.instagram.com/p/DejVIvejEiJ/",
   "ora_inizio": "18:30",
   "organizzatore": "Nikin House",
-  "ricorrenza": "every wednesday",
+  "ricorrenza": "every Wednesday",
   "tipo": "corso",
   "titolo": "Ariadne’s Thread: art therapy for women",
   "zona": "Provincia di Torino",
@@ -6901,7 +6909,7 @@ const WORKSHOPS = [
   "categoria": "tessile",
   "contatto": "tuftingtorino@gmail.com",
   "data": "2026-11-17",
-  "descrizione": "A macramé evening, part of Nodo’s «Christmas gift marathon», where you knot a present to take home. Info, prices and bookings at tuftingtorino@gmail.com.",
+  "descrizione": "A macramé evening, part of Nodo’s “Christmas gift marathon”, where you knot a present to take home. Info, prices and bookings at tuftingtorino@gmail.com.",
   "fonte": "Instagram @nodo.tuftingtorino",
   "foto": "img/eventi/generica-macrame.jpg",
   "indirizzo": "Nodo, Via Guastalla 6",
@@ -6918,7 +6926,7 @@ const WORKSHOPS = [
   "categoria": "stampa",
   "contatto": "tuftingtorino@gmail.com",
   "data": "2026-11-26",
-  "descrizione": "A screen printing evening where you print your own socks, part of Nodo’s «Christmas gift marathon». Info, prices and bookings at tuftingtorino@gmail.com.",
+  "descrizione": "A screen printing evening where you print your own socks, part of Nodo’s “Christmas gift marathon”. Info, prices and bookings at tuftingtorino@gmail.com.",
   "fonte": "Instagram @nodo.tuftingtorino",
   "foto": "img/eventi/generica-serigrafia.jpg",
   "indirizzo": "Nodo, Via Guastalla 6",
@@ -6977,7 +6985,7 @@ const WORKSHOPS = [
   "ora_inizio": "18:30",
   "organizzatore": "Officine Creative Torino",
   "prezzo": 70,
-  "ricorrenza": "every monday",
+  "ricorrenza": "every Monday",
   "tipo": "corso",
   "titolo": "Cyanotype course: printing with light",
   "zona": "Aurora",
@@ -6995,7 +7003,7 @@ const WORKSHOPS = [
   "ora_inizio": "19:00",
   "organizzatore": "Officine Creative Torino",
   "prezzo": 90,
-  "ricorrenza": "every tuesday",
+  "ricorrenza": "every Tuesday",
   "tipo": "corso",
   "titolo": "Screen printing course: T-shirts and paper",
   "zona": "Aurora",
@@ -7023,7 +7031,7 @@ const WORKSHOPS = [
   "categoria": "tessile",
   "contatto": "OPEN on WhatsApp, +39 351 708 2424",
   "data": "2027-03-20",
-  "descrizione": "An afternoon of creative sewing, beginners welcome: you learn to use a sewing machine and make a dress that’s ready to wear. Coffee break included, limited places. Info and bookings on WhatsApp at 351 708 2424, by DM to @open10125 or at openassociazione@gmail.com.",
+  "descrizione": "An afternoon of creative sewing, beginners welcome: you learn to use a sewing machine and make a dress that’s ready to wear. Coffee break included, limited places. Info and bookings on WhatsApp at 351 708 2424, via DM to @open10125 or at openassociazione@gmail.com.",
   "fonte": "Instagram @open10125",
   "foto": "img/eventi/open10125-2026-10-07-2.jpg",
   "indirizzo": "OPEN 10125, Via Principe Tommaso 27/A",
@@ -7040,7 +7048,7 @@ const WORKSHOPS = [
   "categoria": "tessile",
   "contatto": "OPEN on WhatsApp, +39 351 708 2424",
   "data": "2027-02-20",
-  "descrizione": "An afternoon of creative sewing, beginners welcome: you learn to use a sewing machine and make a Sekai jacket that’s ready to wear. Coffee break included, limited places. Info and bookings on WhatsApp at 351 708 2424, by DM to @open10125 or at openassociazione@gmail.com.",
+  "descrizione": "An afternoon of creative sewing, beginners welcome: you learn to use a sewing machine and make a Sekai jacket that’s ready to wear. Coffee break included, limited places. Info and bookings on WhatsApp at 351 708 2424, via DM to @open10125 or at openassociazione@gmail.com.",
   "fonte": "Instagram @open10125",
   "foto": "img/eventi/open10125-2026-10-07-2.jpg",
   "indirizzo": "OPEN 10125, Via Principe Tommaso 27/A",
@@ -7057,7 +7065,7 @@ const WORKSHOPS = [
   "categoria": "tessile",
   "contatto": "OPEN on WhatsApp, +39 351 708 2424",
   "data": "2026-10-24",
-  "descrizione": "An afternoon of creative sewing, beginners welcome: you learn to use a sewing machine and make a Shikaido skirt that’s ready to wear. Coffee break included, limited places. Info and bookings on WhatsApp at 351 708 2424, by DM to @open10125 or at openassociazione@gmail.com.",
+  "descrizione": "An afternoon of creative sewing, beginners welcome: you learn to use a sewing machine and make a Shikaido skirt that’s ready to wear. Coffee break included, limited places. Info and bookings on WhatsApp at 351 708 2424, via DM to @open10125 or at openassociazione@gmail.com.",
   "fonte": "Instagram @open10125",
   "foto": "img/eventi/open10125-2026-10-07-2.jpg",
   "indirizzo": "OPEN 10125, Via Principe Tommaso 27/A",
@@ -7074,7 +7082,7 @@ const WORKSHOPS = [
   "categoria": "tessile",
   "contatto": "OPEN on WhatsApp, +39 351 708 2424",
   "data": "2026-11-21",
-  "descrizione": "An afternoon of creative sewing, beginners welcome: you learn to use a sewing machine and make a kimono that’s ready to wear. Coffee break included, limited places. Info and bookings on WhatsApp at 351 708 2424, by DM to @open10125 or at openassociazione@gmail.com.",
+  "descrizione": "An afternoon of creative sewing, beginners welcome: you learn to use a sewing machine and make a kimono that’s ready to wear. Coffee break included, limited places. Info and bookings on WhatsApp at 351 708 2424, via DM to @open10125 or at openassociazione@gmail.com.",
   "fonte": "Instagram @open10125",
   "foto": "img/eventi/open10125-2026-10-07-2.jpg",
   "indirizzo": "OPEN 10125, Via Principe Tommaso 27/A",
@@ -7091,7 +7099,7 @@ const WORKSHOPS = [
   "categoria": "tessile",
   "contatto": "OPEN on WhatsApp, +39 351 708 2424",
   "data": "2026-11-07",
-  "descrizione": "An afternoon of creative sewing, beginners welcome: you learn to use a sewing machine and make a pair of palazzo trousers that are ready to wear. Coffee break included, limited places. Info and bookings on WhatsApp at 351 708 2424, by DM to @open10125 or at openassociazione@gmail.com.",
+  "descrizione": "An afternoon of creative sewing, beginners welcome: you learn to use a sewing machine and make a pair of palazzo trousers that are ready to wear. Coffee break included, limited places. Info and bookings on WhatsApp at 351 708 2424, via DM to @open10125 or at openassociazione@gmail.com.",
   "fonte": "Instagram @open10125",
   "foto": "img/eventi/open10125-2026-10-07-2.jpg",
   "indirizzo": "OPEN 10125, Via Principe Tommaso 27/A",
@@ -7108,7 +7116,7 @@ const WORKSHOPS = [
   "categoria": "tessile",
   "contatto": "OPEN on WhatsApp, +39 351 708 2424",
   "data": "2027-01-30",
-  "descrizione": "An afternoon of creative sewing, beginners welcome: you learn to use a sewing machine and make a pair of trousers with pockets that are ready to wear. Coffee break included, limited places. Info and bookings on WhatsApp at 351 708 2424, by DM to @open10125 or at openassociazione@gmail.com.",
+  "descrizione": "An afternoon of creative sewing, beginners welcome: you learn to use a sewing machine and make a pair of trousers with pockets that are ready to wear. Coffee break included, limited places. Info and bookings on WhatsApp at 351 708 2424, via DM to @open10125 or at openassociazione@gmail.com.",
   "fonte": "Instagram @open10125",
   "foto": "img/eventi/open10125-2026-10-07-2.jpg",
   "indirizzo": "OPEN 10125, Via Principe Tommaso 27/A",
@@ -7125,7 +7133,7 @@ const WORKSHOPS = [
   "categoria": "tessile",
   "contatto": "OPEN on WhatsApp, +39 351 708 2424",
   "data": "2027-01-16",
-  "descrizione": "An open day at the OPEN 10125 studio: try out a sewing machine, see the garments from the upcoming workshops and pick your course. Places for the hands-on trial are limited. Info and bookings on WhatsApp at 351 708 2424, by DM to @open10125 or at openassociazione@gmail.com.",
+  "descrizione": "An open day at the OPEN 10125 studio: try out a sewing machine, see the garments from the upcoming workshops and pick your course. Places to try the machines are limited. Info and bookings on WhatsApp at 351 708 2424, via DM to @open10125 or at openassociazione@gmail.com.",
   "fonte": "Instagram @open10125",
   "foto": "img/eventi/open10125-2026-10-07-2.jpg",
   "indirizzo": "OPEN 10125, Via Principe Tommaso 27/A",
@@ -7159,7 +7167,7 @@ const WORKSHOPS = [
   "categoria": "altro",
   "contatto": "@origami.pop via DM",
   "data": "2026-11-29",
-  "descrizione": "A whole afternoon of handwork, from scoring the paper for crisp folds to the folding itself, to build a table lamp with a frame. Sign up by DM to @origami.pop.",
+  "descrizione": "A whole afternoon of handwork, from scoring the paper for crisp folds to the folding itself, to build a table lamp with a frame. Sign up via DM to @origami.pop.",
   "fonte": "Instagram @origami.pop",
   "foto": "img/eventi/origami-pop-2026-10-17-3.jpg",
   "indirizzo": "Spazio Forme, Via Ormea 83/C",
@@ -7177,7 +7185,7 @@ const WORKSHOPS = [
   "categoria": "altro",
   "contatto": "@origami.pop via DM",
   "data": "2026-11-13",
-  "descrizione": "Margherita Rojas Melo of Origami Pop shows you how to fold a paper table lampshade by hand: it’s a folding-only class for up to 3 people. It runs again on Friday 27 November at the same time. Sign up by DM to @origami.pop.",
+  "descrizione": "Margherita Rojas Melo of Origami Pop shows you how to fold a paper table lampshade by hand: it’s a folding-only class for up to 3 people. It runs again on Friday 27 November at the same time. Sign up via DM to @origami.pop.",
   "fonte": "Instagram @origami.pop",
   "foto": "img/eventi/origami-pop-2026-10-17-3.jpg",
   "indirizzo": "Spazio Forme, Via Ormea 83/C",
@@ -7195,7 +7203,7 @@ const WORKSHOPS = [
   "categoria": "altro",
   "contatto": "@origami.pop via DM",
   "data": "2026-11-21",
-  "descrizione": "First you paint and decorate the paper however you like, then fold it together into a table lampshade that’s entirely your own. Sign up by DM to @origami.pop.",
+  "descrizione": "First you paint and decorate the paper however you like, then fold it together into a table lampshade that’s entirely your own. Sign up via DM to @origami.pop.",
   "fonte": "Instagram @origami.pop",
   "foto": "img/eventi/origami-pop-2026-10-17-3.jpg",
   "indirizzo": "Spazio Forme, Via Ormea 83/C",
@@ -7221,7 +7229,7 @@ const WORKSHOPS = [
   "organizzatore": "Orso Objetos",
   "prezzo": 30,
   "prezzo_per": "per session",
-  "ricorrenza": "every monday",
+  "ricorrenza": "every Monday",
   "su_prenotazione": true,
   "tipo": "corso",
   "titolo": "Creative mending course: visible mending",
@@ -7240,7 +7248,7 @@ const WORKSHOPS = [
   "organizzatore": "Orso Objetos",
   "prezzo": 30,
   "prezzo_per": "per session",
-  "ricorrenza": "every tuesday",
+  "ricorrenza": "every Tuesday",
   "su_prenotazione": true,
   "tipo": "corso",
   "titolo": "Sashiko course: Japanese embroidery",
@@ -7259,7 +7267,7 @@ const WORKSHOPS = [
   "organizzatore": "Orso Objetos",
   "prezzo": 30,
   "prezzo_per": "per session",
-  "ricorrenza": "every friday",
+  "ricorrenza": "every Friday",
   "su_prenotazione": true,
   "tipo": "corso",
   "titolo": "Sashiko course: Japanese embroidery",
@@ -7341,7 +7349,7 @@ const WORKSHOPS = [
   "categoria": "ceramica",
   "contatto": "@orso.objetos via DM",
   "data": "2026-10-25",
-  "descrizione": "A workshop of imagination and clay with Iranian artist Samaneh Vahabi: you model a small fantastical creature to wear as jewellery. Materials included, no experience required; book by DM to @orso.objetos.",
+  "descrizione": "A workshop of imagination and clay with Iranian artist Samaneh Vahabi: you model a small fantastical creature to wear as jewellery. Materials included, no experience required; book via DM to @orso.objetos.",
   "fonte": "Instagram @orso.objetos",
   "foto": "img/eventi/orso-strange-creatures-2026-10-25.jpg",
   "indirizzo": "Casa Orso, Via Principessa Clotilde 12",
@@ -7376,7 +7384,7 @@ const WORKSHOPS = [
   "categoria": "fiori",
   "contatto": "ortigenerali.it",
   "data": "2026-11-07",
-  "descrizione": "A day in the Orti Generali greenhouse with Sofia Costamagna of Viridarium FlowerFarm: in the morning it’s all about bulbs, and you plant a «bulb lasagne» to take home; in the afternoon you weave a wreath of dried flowers. 100 €, including handouts and a light lunch.",
+  "descrizione": "A day in the Orti Generali greenhouse with Sofia Costamagna of Viridarium FlowerFarm: in the morning it’s all about bulbs, and you plant a “bulb lasagne” to take home; in the afternoon you weave a wreath of dried flowers. 100 €, including handouts and a light lunch.",
   "fonte": "ortigenerali.it (via Le Strade)",
   "foto": "img/eventi/ortigenerali-fiori-da-taglio-2026-11-07.jpg",
   "indirizzo": "Orti Generali, Strada Castello di Mirafiori 38/15",
@@ -7409,7 +7417,7 @@ const WORKSHOPS = [
   "categoria": "fiori",
   "contatto": "ortigenerali.it",
   "data": "2026-10-24",
-  "descrizione": "A hands-on lesson in the vegetable garden with Filippo Laguzzi of R.A.M. Radici in Moncalieri: sowing, transplanting, plant care and organic pest control, useful even if you only grow on a balcony. These are the last two lessons of the year-long course, on Saturday 24 October and 7 November, and can be booked one at a time.",
+  "descrizione": "A practical lesson in the vegetable garden with Filippo Laguzzi of R.A.M. Radici in Moncalieri: sowing, transplanting, plant care and organic pest control, useful even if you only grow on a balcony. These are the last two lessons of the year-long course, on Saturday 24 October and 7 November, and can be booked one at a time.",
   "fonte": "ortigenerali.it (via Le Strade)",
   "foto": "img/eventi/ortigenerali-orticoltura-2026-10-24.jpg",
   "indirizzo": "Orti Generali, Strada Castello di Mirafiori 38/15",
@@ -7445,7 +7453,7 @@ const WORKSHOPS = [
  {
   "categoria": "ceramica",
   "data_da_confermare": true,
-  "descrizione": "Model an object of your choice in white clay and decorate it with engobes, or coloured slips. Materials and firings included; you collect your piece from the studio after 14 days. Ask for the November dates by DM to @ouimiel.ceramics.",
+  "descrizione": "Model an object of your choice in white clay and decorate it with engobes, or coloured slips. Materials and firings included; you collect your piece from the studio after 14 days. Ask for the November dates via DM to @ouimiel.ceramics.",
   "fonte": "Instagram @ouimiel.ceramics",
   "foto": "img/eventi/ouimiel-ceramics-2026-10-16-2.jpg",
   "indirizzo": "Ouimiel Studio, Via Porta Palatina 9/F",
@@ -7489,7 +7497,7 @@ const WORKSHOPS = [
   "organizzatore": "Panacea Social Farm",
   "prezzo": 50,
   "tipo": "workshop",
-  "titolo": "Sourdough bread: a hands-on class",
+  "titolo": "Sourdough bread: a baking course",
   "zona": "San Donato",
   "id": "panacea-pane-2026-10-24"
  },
@@ -7507,7 +7515,7 @@ const WORKSHOPS = [
   "organizzatore": "Panacea Social Farm",
   "prezzo": 50,
   "tipo": "workshop",
-  "titolo": "Sourdough bread: a hands-on class",
+  "titolo": "Sourdough bread: a baking course",
   "zona": "San Donato",
   "id": "panacea-pane-2026-11-21"
  },
@@ -7525,7 +7533,7 @@ const WORKSHOPS = [
   "organizzatore": "Panacea Social Farm",
   "prezzo": 50,
   "tipo": "workshop",
-  "titolo": "Sourdough bread: a hands-on class",
+  "titolo": "Sourdough bread: a baking course",
   "zona": "Barriera di Milano",
   "id": "panacea-pane-2026-12-12"
  },
@@ -7720,7 +7728,7 @@ const WORKSHOPS = [
   "prezzo": 25,
   "prezzo_da": true,
   "prezzo_per": "per lesson",
-  "ricorrenza": "every monday, wednesday and friday",
+  "ricorrenza": "every Monday, Wednesday and Friday",
   "su_prenotazione": true,
   "tipo": "corso",
   "titolo": "Kids’ workshop: clay and sculpture",
@@ -7912,7 +7920,7 @@ const WORKSHOPS = [
   "ora_inizio": "17:00",
   "organizzatore": "Pottery Lab con Diletta",
   "prezzo": 25,
-  "ricorrenza": "every thursday",
+  "ricorrenza": "every Thursday",
   "su_prenotazione": true,
   "tipo": "corso",
   "titolo": "Five o’clock tea: decorate a mug",
@@ -7949,7 +7957,7 @@ const WORKSHOPS = [
   "organizzatore": "Pottery Lab con Roberta Dalpasso",
   "prezzo": 150,
   "prezzo_per": "for 4 lessons",
-  "ricorrenza": "every tuesday, wednesday, thursday or saturday",
+  "ricorrenza": "every Tuesday, Wednesday, Thursday or Saturday",
   "su_prenotazione": true,
   "tipo": "corso",
   "titolo": "Wheel-throwing course: four sessions",
@@ -7960,7 +7968,7 @@ const WORKSHOPS = [
   "categoria": "cucina",
   "comune": "Villarbasse",
   "contatto": "getyourguide.com",
-  "descrizione": "A walk through the Prever vineyards and cellars, then a hands-on lesson making traditional Piedmontese egg tagliatelle by hand. It ends with lunch paired with the estate’s wines; four hours in all. Pick your date on GetYourGuide.",
+  "descrizione": "A walk through the Prever vineyards and cellars, then a practical lesson making traditional Piedmontese egg tagliatelle by hand. It ends with lunch paired with the estate’s wines; four hours in all. Pick your date on GetYourGuide.",
   "fonte": "getyourguide.com",
   "foto": "img/eventi/prever-pasta-fresca-villarbasse.jpg",
   "indirizzo": "Vignaiole Prever, Via Paraccia 11",
@@ -8140,7 +8148,7 @@ const WORKSHOPS = [
   "categoria": "famiglia",
   "contatto": "@qbcreazioni via DM",
   "data": "2026-10-24",
-  "descrizione": "A ceramics workshop for children aged 6 and up, alone or with an adult, to paint a plate with a funny face inspired by Picasso’s plates. Snack together at the end; book by DM to @qbcreazioni.",
+  "descrizione": "A ceramics workshop for children aged 6 and up, alone or with an adult, to paint a plate with a funny face inspired by Picasso’s plates. Snack together at the end; book via DM to @qbcreazioni.",
   "fonte": "Instagram @qbcreazioni",
   "foto": "img/eventi/qbcreazioni-2026-10-13-3.jpg",
   "indirizzo": "QB Creazioni, Piazza Fontanesi 8b",
@@ -8190,14 +8198,16 @@ const WORKSHOPS = [
   "categoria": "tessile",
   "contatto": "Raggomitolando on WhatsApp, +39 375 717 2431",
   "data": "2026-11-25",
-  "descrizione": "A knit-along to cast on Stephen West’s Clockwork shawl together and knit it in good company. To take part, buy the Dark Omen Yarn Merino Plus in the shop; booking on WhatsApp at 375 717 2431.",
-  "fonte": "raggomitolando.com",
-  "foto": "img/eventi/raggomitolando-kal-clockwork.jpg",
+  "descrizione": "A knit-along to cast on Stephen West’s Clockwork shawl together and knit it in good company. It’s free if you buy the yarn in the shop: two skeins of Merino Plus hand-dyed by Dark Omen Yarn, in lots of colours; the pattern is bought separately on Ravelry. You need basic knitting stitches and techniques, so it isn’t suitable for complete beginners; booking on WhatsApp at 375 717 2431.",
+  "fonte": "Instagram @raggomitolando",
+  "foto": "img/eventi/raggomitolando-2026-10-23-1.jpg",
   "indirizzo": "Raggomitolando, Via Donizetti 12a (ingresso da via Saluzzo)",
   "link": "https://www.raggomitolando.com/novembre-2026-corsi-di-maglia-uncinetto-workshop-e-molto-altro/",
   "ora_fine": "20:00",
   "ora_inizio": "18:00",
   "organizzatore": "Raggomitolando",
+  "post": "https://www.instagram.com/p/De1rmlviBxl/",
+  "prezzo": 0,
   "tipo": "workshop",
   "titolo": "Clockwork KAL: Stephen West’s shawl",
   "zona": "San Salvario",
@@ -8242,7 +8252,7 @@ const WORKSHOPS = [
   "categoria": "tessile",
   "contatto": "Raggomitolando on WhatsApp, +39 375 717 2431",
   "data": "2026-11-24",
-  "descrizione": "«Give it a go!»: two hours to learn to knit from scratch. There’s another date on Thursday 26 November, 17:00–19:00. 20 €, materials not included; payment in advance, and the class runs with at least 3 participants. Booking required by email, phone or WhatsApp at 375 717 2431.",
+  "descrizione": "“Give it a go!”: two hours to learn to knit from scratch. There’s another date on Thursday 26 November, 17:00–19:00. 20 €, materials not included; payment in advance, and the class runs with at least 3 participants. Booking required by email, phone or WhatsApp at 375 717 2431.",
   "fonte": "raggomitolando.com",
   "foto": "img/eventi/raggomitolando-2026-09-28-s1.jpg",
   "indirizzo": "Raggomitolando, Via Donizetti 12a (ingresso da via Saluzzo)",
@@ -8260,7 +8270,7 @@ const WORKSHOPS = [
   "categoria": "tessile",
   "contatto": "Raggomitolando on WhatsApp, +39 375 717 2431",
   "data": "2026-11-26",
-  "descrizione": "«Give it a go!»: two hours to learn to knit from scratch. 20 €, materials not included; payment in advance, and the class runs with at least 3 participants. Booking required by email, phone or WhatsApp at 375 717 2431.",
+  "descrizione": "“Give it a go!”: two hours to learn to knit from scratch. 20 €, materials not included; payment in advance, and the class runs with at least 3 participants. Booking required by email, phone or WhatsApp at 375 717 2431.",
   "fonte": "raggomitolando.com",
   "foto": "img/eventi/raggomitolando-2026-09-28-s1.jpg",
   "indirizzo": "Raggomitolando, Via Donizetti 12a (ingresso da via Saluzzo)",
@@ -8314,7 +8324,7 @@ const WORKSHOPS = [
   "categoria": "tessile",
   "contatto": "Raggomitolando on WhatsApp, +39 375 717 2431",
   "data": "2026-11-18",
-  "descrizione": "«It’s never too late»: two hours to learn crochet from scratch in the San Salvario yarn shop. There’s also a session the same day from 17:00 to 19:00. 20 €, materials not included; payment in advance, and the class runs with at least 3 participants. Booking required by email, phone or WhatsApp at 375 717 2431.",
+  "descrizione": "“It’s never too late”: two hours to learn crochet from scratch in the San Salvario yarn shop. There’s also a session the same day from 17:00 to 19:00. 20 €, materials not included; payment in advance, and the class runs with at least 3 participants. Booking required by email, phone or WhatsApp at 375 717 2431.",
   "fonte": "raggomitolando.com",
   "foto": "img/eventi/raggomitolando-2026-09-28-s1.jpg",
   "indirizzo": "Raggomitolando, Via Donizetti 12a (ingresso da via Saluzzo)",
@@ -8332,7 +8342,7 @@ const WORKSHOPS = [
   "categoria": "tessile",
   "contatto": "Raggomitolando on WhatsApp, +39 375 717 2431",
   "data": "2026-11-18",
-  "descrizione": "«It’s never too late»: two hours to learn crochet from scratch in the San Salvario yarn shop. There’s also a morning session the same day, from 10:30. 20 €, materials not included; payment in advance, and the class runs with at least 3 participants. Booking required by email, phone or WhatsApp at 375 717 2431.",
+  "descrizione": "“It’s never too late”: two hours to learn crochet from scratch in the San Salvario yarn shop. There’s also a morning session the same day, from 10:30. 20 €, materials not included; payment in advance, and the class runs with at least 3 participants. Booking required by email, phone or WhatsApp at 375 717 2431.",
   "fonte": "raggomitolando.com",
   "foto": "img/eventi/raggomitolando-2026-09-28-s1.jpg",
   "indirizzo": "Raggomitolando, Via Donizetti 12a (ingresso da via Saluzzo)",
@@ -8350,7 +8360,7 @@ const WORKSHOPS = [
   "categoria": "tessile",
   "contatto": "Raggomitolando on WhatsApp, +39 375 717 2431",
   "data": "2026-10-29",
-  "descrizione": "An intermediate workshop to learn stranded colourwork in the Fair Isle style, casting on together Valentina Cosciani’s «Vivere a colori» hat. Includes 3 skeins of Origin, Sesia’s organic wool; info and bookings on WhatsApp at 375 717 2431.",
+  "descrizione": "An intermediate workshop to learn stranded colourwork in the Fair Isle style, casting on together Valentina Cosciani’s “Vivere a colori” hat. Includes 3 skeins of Origin, Sesia’s organic wool; info and bookings on WhatsApp at 375 717 2431.",
   "fonte": "Instagram @raggomitolando",
   "foto": "img/eventi/raggomitolando-2026-09-28-s3.jpg",
   "indirizzo": "Raggomitolando, Via Donizetti 12a (ingresso da via Saluzzo)",
@@ -8497,7 +8507,7 @@ const WORKSHOPS = [
   "ora_inizio": "18:00",
   "organizzatore": "Ristoro",
   "prezzo": 0,
-  "ricorrenza": "every thursday",
+  "ricorrenza": "every Thursday",
   "su_prenotazione": true,
   "tipo": "corso",
   "titolo": "Crochet Cafè: crochet for everyone",
@@ -8618,7 +8628,7 @@ const WORKSHOPS = [
   "organizzatore": "Ruthvi Deev",
   "prezzo": 15,
   "prezzo_per": "per lesson",
-  "ricorrenza": "every tuesday",
+  "ricorrenza": "every Tuesday",
   "su_prenotazione": true,
   "tipo": "corso",
   "titolo": "Bollywood course: Indian dance",
@@ -8645,7 +8655,7 @@ const WORKSHOPS = [
  {
   "categoria": "degustazioni",
   "data": "2026-10-24",
-  "descrizione": "A hands-on mixology masterclass with Casa Martini: you learn about measures, ingredients and balance, then everyone creates their own cocktail, with a tasting at the end. Free with booking, as part of the Salone dell’Aperitivo (23–25 October); to guarantee your place, also book on xceed.me.",
+  "descrizione": "A practical mixology masterclass with Casa Martini: you learn about measures, ingredients and balance, then everyone creates their own cocktail, with a tasting at the end. Free, booking required, as part of the Salone dell’Aperitivo (23–25 October); to guarantee your place, also book on xceed.me.",
   "fonte": "eventbrite.it",
   "foto": "img/eventi/salone-aperitivo-martini-cocktail-2026-10-24.jpg",
   "indirizzo": "Combo, Corso Regina Margherita 128",
@@ -8662,7 +8672,7 @@ const WORKSHOPS = [
  {
   "categoria": "degustazioni",
   "data": "2026-10-25",
-  "descrizione": "A masterclass with bartender Dennis Zoppi on Turin’s great classic cocktails: their origins, techniques for a well-balanced drink and tastings of Zoppi Distillery products. Free with booking, as part of the Salone dell’Aperitivo (23–25 October); to guarantee your place, also book on xceed.me.",
+  "descrizione": "A masterclass with bartender Dennis Zoppi on Turin’s great classic cocktails: their origins, techniques for a well-balanced drink and tastings of Zoppi Distillery products. Free, booking required, as part of the Salone dell’Aperitivo (23–25 October); to guarantee your place, also book on xceed.me.",
   "fonte": "eventbrite.it",
   "foto": "img/eventi/salone-aperitivo-zoppi-2026-10-25.jpg",
   "indirizzo": "Combo, Corso Regina Margherita 128",
@@ -8711,7 +8721,7 @@ const WORKSHOPS = [
  {
   "categoria": "ceramica",
   "contatto": "Scialabà on WhatsApp, +39 338 4938124",
-  "descrizione": "Ceramic decoration courses in three techniques: nib pen, Scandinavian style and cuerda seca, where an outline keeps the glaze colours apart during firing. Lessons run Tuesday to Saturday in three slots (10 am–12 pm, 3:30–5:30 pm, 6–8 pm); info and bookings on WhatsApp at +39 338 4938124.",
+  "descrizione": "Ceramic decoration courses in three techniques: nib pen, Scandinavian style and cuerda seca, where an outline keeps the glaze colours apart during firing. Lessons run Tuesday to Saturday in three slots (10:00–12:00, 15:30–17:30, 18:00–20:00); info and bookings on WhatsApp at +39 338 4938124.",
   "fonte": "Messaggio WhatsApp di Scialabà (19/10/2026)",
   "foto": "img/eventi/scialaba-jewels-2026-10-05-7.jpg",
   "indirizzo": "Via Goffredo Casalis 61",
@@ -8759,7 +8769,7 @@ const WORKSHOPS = [
  },
  {
   "categoria": "ceramica",
-  "descrizione": "An ongoing ceramics course in slab building, wheel throwing or both: you learn to prepare the clay, build forms, finish them and understand firing. The price is for 4 two-hour lessons, materials and firings included, in groups of 4–8 people. Lessons run Tuesday to Saturday in three slots (10 am–12 pm, 3:30–5:30 pm, 6–8 pm), chosen on WhatsApp at +39 338 4938124.",
+  "descrizione": "An ongoing ceramics course in slab building, wheel throwing or both: you learn to prepare the clay, build forms, finish them and understand firing. The price is for 4 two-hour lessons, materials and firings included, in groups of 4–8 people. Lessons run Tuesday to Saturday in three slots (10:00–12:00, 15:30–17:30, 18:00–20:00), chosen on WhatsApp at +39 338 4938124.",
   "fonte": "scialabajewels.com",
   "foto": "img/eventi/scialaba-jewels-2026-10-05-7.jpg",
   "indirizzo": "Via Goffredo Casalis 61",
@@ -8775,7 +8785,7 @@ const WORKSHOPS = [
  {
   "categoria": "pittura",
   "contatto": "Scialabà on WhatsApp, +39 338 4938124",
-  "descrizione": "A porcelain painting course using mixed techniques, with individual guidance for everyone. Lessons run Tuesday to Saturday in three slots (10 am–12 pm, 3:30–5:30 pm, 6–8 pm); info and bookings on WhatsApp at +39 338 4938124.",
+  "descrizione": "A porcelain painting course using mixed techniques, with individual guidance for everyone. Lessons run Tuesday to Saturday in three slots (10:00–12:00, 15:30–17:30, 18:00–20:00); info and bookings on WhatsApp at +39 338 4938124.",
   "fonte": "Instagram @scialaba.jewels",
   "foto": "img/eventi/scialaba-jewels-2026-10-05-7.jpg",
   "indirizzo": "Via Goffredo Casalis 61",
@@ -8806,7 +8816,7 @@ const WORKSHOPS = [
   "categoria": "movimento",
   "contatto": "@slowtownblues via DM",
   "data": "2026-11-21",
-  "descrizione": "A three-hour blues dance workshop with American teacher Dexter Santos, for leads and follows; from 8 pm, aperitivo and social dancing with live music at Pandan, Via San Pio V 15. The full pass costs 60 €; registration opens on Tuesday 3 November at 3 pm.",
+  "descrizione": "A three-hour blues dance workshop with American teacher Dexter Santos, for leads and follows; from 20:00, aperitivo and social dancing with live music at Pandan, Via San Pio V 15. The full pass costs 60 €; registration opens on Tuesday 3 November at 15:00.",
   "fonte": "allevents.in",
   "foto": "img/eventi/slowtownblues-dexter-santos-2026-11-21.jpg",
   "indirizzo": "Belfiore Danza, Via Belfiore 24",
@@ -8934,7 +8944,7 @@ const WORKSHOPS = [
   "categoria": "ceramica",
   "contatto": "Spazio IAIA on WhatsApp, +39 378 425 9038",
   "data": "2026-10-29",
-  "descrizione": "A drop-in afternoon to shape Christmas ornaments from a slab of clay, decorate a plate or personalise baubles, moving freely between activities. Come any time from 4 pm and stay at least an hour; herbal tea and biscuits provided. Limited places, book via DM or on WhatsApp at 378 425 9038.",
+  "descrizione": "A drop-in afternoon to shape Christmas ornaments from a slab of clay, decorate a plate or personalise baubles, moving freely between activities. Come any time from 16:00 and stay at least an hour; herbal tea and biscuits provided. Limited places, book via DM or on WhatsApp at 378 425 9038.",
   "fonte": "Instagram @spazioiaia",
   "foto": "img/eventi/spazioiaia-2026-10-07-12.jpg",
   "indirizzo": "Spazio IAIA, Via Verzuolo 36",
@@ -8956,7 +8966,7 @@ const WORKSHOPS = [
   ],
   "categoria": "musica",
   "contatto": "splitteatro@gmail.com or +39 375 709 9069",
-  "descrizione": "Year-long acting courses for adults aged 17 and up (beginner, intermediate and advanced, 7–9 pm Tuesday to Thursday), musical theatre for adults, teens and juniors, plus musical theatre dance, tap, heels, Bollywood and singing. From October to January the work focuses on body and voice, then on preparing a show. Prices on request at splitteatro@gmail.com.",
+  "descrizione": "Year-long acting courses for adults aged 17 and up (beginner, intermediate and advanced, 19:00–21:00, Tuesday to Thursday), musical theatre for adults, teens and juniors, plus musical theatre dance, tap, heels, Bollywood and singing. From October to January the work focuses on body and voice, then on preparing a show. Prices on request at splitteatro@gmail.com.",
   "fonte": "splitteatro.it (via Le Strade)",
   "indirizzo": "SPLIT Teatro, Via Castelgomberto 154",
   "link": "https://www.splitteatro.it/recitazione/",
@@ -9005,7 +9015,7 @@ const WORKSHOPS = [
   "categoria": "ceramica",
   "contatto": "@lostudiobiscotto via DM",
   "data": "2026-11-03",
-  "descrizione": "A workshop to decorate three ceramic shapes to hang on the Christmas tree, using different techniques and colours, even if you’ve never tried before. Dates: 3 and 10 November (6–7:30 pm) and 15 November (10:30 am–12 pm); limited places, book via DM to @lostudiobiscotto.",
+  "descrizione": "A workshop to decorate three ceramic shapes to hang on the Christmas tree, using different techniques and colours, even if you’ve never tried before. Dates: 3 and 10 November (18:00–19:30) and 15 November (10:30–12:00); limited places, book via DM to @lostudiobiscotto.",
   "fonte": "Instagram @lostudiobiscotto",
   "foto": "img/eventi/lostudiobiscotto-2026-10-21-1.jpg",
   "indirizzo": "Studio Biscotto, Via Vincenzo Monti 26D",
@@ -9023,7 +9033,7 @@ const WORKSHOPS = [
   "categoria": "ceramica",
   "contatto": "@lostudiobiscotto via DM",
   "data": "2026-11-10",
-  "descrizione": "A workshop to decorate three ceramic shapes to hang on the Christmas tree, using different techniques and colours, even if you’ve never tried before. Dates: 3 and 10 November (6–7:30 pm) and 15 November (10:30 am–12 pm); limited places, book via DM to @lostudiobiscotto.",
+  "descrizione": "A workshop to decorate three ceramic shapes to hang on the Christmas tree, using different techniques and colours, even if you’ve never tried before. Dates: 3 and 10 November (18:00–19:30) and 15 November (10:30–12:00); limited places, book via DM to @lostudiobiscotto.",
   "fonte": "Instagram @lostudiobiscotto",
   "foto": "img/eventi/lostudiobiscotto-2026-10-21-1.jpg",
   "indirizzo": "Studio Biscotto, Via Vincenzo Monti 26D",
@@ -9041,7 +9051,7 @@ const WORKSHOPS = [
   "categoria": "ceramica",
   "contatto": "@lostudiobiscotto via DM",
   "data": "2026-11-15",
-  "descrizione": "A workshop to decorate three ceramic shapes to hang on the Christmas tree, using different techniques and colours, even if you’ve never tried before. Dates: 3 and 10 November (6–7:30 pm) and 15 November (10:30 am–12 pm); limited places, book via DM to @lostudiobiscotto.",
+  "descrizione": "A workshop to decorate three ceramic shapes to hang on the Christmas tree, using different techniques and colours, even if you’ve never tried before. Dates: 3 and 10 November (18:00–19:30) and 15 November (10:30–12:00); limited places, book via DM to @lostudiobiscotto.",
   "fonte": "Instagram @lostudiobiscotto",
   "foto": "img/eventi/lostudiobiscotto-2026-10-21-1.jpg",
   "indirizzo": "Studio Biscotto, Via Vincenzo Monti 26D",
@@ -9333,7 +9343,7 @@ const WORKSHOPS = [
  {
   "categoria": "cucina",
   "data": "2026-10-26",
-  "descrizione": "A hands-on lesson on first courses with chef Patrik Lisa, covering dough, cooking and mantecatura (the final creamy stir). On the menu: tagliolini with bread, butter and lemon anchovies, beetroot risotto and a chocolate mousse. Combine it with the 30 November evening: 150 € for both. Book on studiofood33.com; maximum 16–18 people.",
+  "descrizione": "A practical lesson on first courses with chef Patrik Lisa, covering dough, cooking and mantecatura (the final creamy stir). On the menu: tagliolini with bread, butter and lemon anchovies, beetroot risotto and a chocolate mousse. Combine it with the 30 November evening: 150 € for both. Book on studiofood33.com; maximum 16–18 people.",
   "fonte": "Instagram @studiofood33",
   "foto": "img/eventi/studiofood33-2026-10-02-9.jpg",
   "indirizzo": "STUDIOFOOD33, Via dei Mille 33",
@@ -9543,7 +9553,7 @@ const WORKSHOPS = [
  },
  {
   "categoria": "movimento",
-  "descrizione": "Surfskate lessons with certified instructors in groups of 3 to 5 people, split by level: beginners at 8:30 pm, and at 9:30 pm for those who want to improve their manoeuvres. Every Wednesday at the Parco Dora skate park. For existing members a single lesson costs 20 € and a pack of three 50 €; book on the Trafft platform via the Surf In Town link.",
+  "descrizione": "Surfskate lessons with certified instructors in groups of 3 to 5 people, split by level: beginners at 20:30, and those who want to improve their manoeuvres at 21:30. Every Wednesday at the Parco Dora skate park. For existing members a single lesson costs 20 € and a pack of three 50 €; book on the Trafft platform via the Surf In Town link.",
   "fonte": "eventbrite.it",
   "foto": "img/eventi/surfintown-surfskate-parco-dora.jpg",
   "indirizzo": "Skate park Parco Dora, Via Borgaro 2",
@@ -9552,7 +9562,7 @@ const WORKSHOPS = [
   "organizzatore": "Surf In Town Community",
   "prezzo": 20,
   "prezzo_per": "per lesson",
-  "ricorrenza": "every wednesday",
+  "ricorrenza": "every Wednesday",
   "su_prenotazione": true,
   "tipo": "corso",
   "titolo": "Surfskate: lessons at Parco Dora",
@@ -9779,7 +9789,7 @@ const WORKSHOPS = [
   "categoria": "tessile",
   "contatto": "TObed on WhatsApp, +39 339 432 5090",
   "data": "2026-11-09",
-  "descrizione": "An hour and a half of hand embroidery with Carolina of CaroLab, over breakfast. Other dates: 13, 16, 23 and 30 November, always at 10:30 am (the 26 October date is sold out). Book with TObed on WhatsApp (339 432 5090).",
+  "descrizione": "An hour and a half of hand embroidery with Carolina of CaroLab, over breakfast. Other dates: 13, 16, 23 and 30 November, always at 10:30 (the 26 October date is sold out). Book with TObed on WhatsApp (339 432 5090).",
   "fonte": "tobed.it",
   "foto": "img/eventi/my-carolab--2026-10-15-1.jpg",
   "indirizzo": "TObed, Via Argonne 4",
@@ -9866,7 +9876,7 @@ const WORKSHOPS = [
   "categoria": "movimento",
   "contatto": "Turin Cats on WhatsApp, +39 347 292 4184",
   "data": "2026-10-25",
-  "descrizione": "An open lindy hop lesson at 4 pm and a West Coast Swing one at 4:30 pm, suitable even if you’ve never danced before, then social dancing with a DJ until 8:30 pm. Free, no partner or booking needed; it happens one Sunday a month (29 November, 26 December and then through to May).",
+  "descrizione": "An open lindy hop lesson at 16:00 and a West Coast Swing one at 16:30, suitable even if you’ve never danced before, then social dancing with a DJ until 20:30. Free, no partner or booking needed; it happens one Sunday a month (29 November, 26 December and then through to May).",
   "fonte": "allevents.in",
   "foto": "img/eventi/turincats-aperiswing-2026-10-25.jpg",
   "indirizzo": "Mercato Centrale, Piazza della Repubblica 25",
@@ -9963,7 +9973,7 @@ const WORKSHOPS = [
   "ora_fine": "17:30",
   "ora_inizio": "14:30",
   "organizzatore": "Caterina Scavo per upTOyou",
-  "ricorrenza": "every saturday",
+  "ricorrenza": "every Saturday",
   "su_prenotazione": true,
   "tipo": "corso",
   "titolo": "Sewing course: patterns and dressmaking",
@@ -9982,7 +9992,7 @@ const WORKSHOPS = [
   "ora_fine": "18:00",
   "ora_inizio": "17:00",
   "organizzatore": "Sara Bertino Barbon per upTOyou",
-  "ricorrenza": "every thursday",
+  "ricorrenza": "every Thursday",
   "su_prenotazione": true,
   "tipo": "corso",
   "titolo": "Threads of Imagination: crochet for kids",
@@ -10000,7 +10010,7 @@ const WORKSHOPS = [
   "link": "https://www.instagram.com/p/DdTy1MriFvX/",
   "ora_inizio": "19:00",
   "organizzatore": "Tiziana Boccalatte per upTOyou",
-  "ricorrenza": "every wednesday",
+  "ricorrenza": "every Wednesday",
   "su_prenotazione": true,
   "tipo": "corso",
   "titolo": "The thread that binds: crochet course",
@@ -10033,7 +10043,7 @@ const WORKSHOPS = [
   "comune": "San Mauro Torinese",
   "contatto": "upTOyou, +39 352 010 0262",
   "data": "2026-10-25",
-  "descrizione": "An origami workshop for adults where you fold and assemble light, original paper earrings. At 5 pm there’s also a Halloween origami workshop for children. Info and bookings on 352 010 0262; upTOyou membership is required to take part.",
+  "descrizione": "An origami workshop for adults where you fold and assemble light, original paper earrings. At 17:00 there’s also a Halloween origami workshop for children. Info and bookings on 352 010 0262; upTOyou membership is required to take part.",
   "fonte": "Instagram @uptoyou_torino",
   "foto": "img/eventi/uptoyou-torino-2026-10-14-4.jpg",
   "indirizzo": "upTOyou, Via Torino 175",
@@ -10076,7 +10086,7 @@ const WORKSHOPS = [
   "ora_fine": "10:30",
   "ora_inizio": "09:30",
   "organizzatore": "Alessandra La Dibi per upTOyou",
-  "ricorrenza": "every wednesday",
+  "ricorrenza": "every Wednesday",
   "su_prenotazione": true,
   "tipo": "corso",
   "titolo": "Keep on dancing: music and simple steps",
@@ -10134,7 +10144,7 @@ const WORKSHOPS = [
   "organizzatore": "Noemi Venturino per Velvet Truffle Riot",
   "prezzo": 25,
   "prezzo_per": "per lesson",
-  "ricorrenza": "every tuesday",
+  "ricorrenza": "every Tuesday",
   "tipo": "corso",
   "titolo": "Calligraphy course: three evenings with a nib",
   "zona": "Aurora",
@@ -10180,7 +10190,7 @@ const WORKSHOPS = [
  {
   "categoria": "altro",
   "data": "2026-10-28",
-  "descrizione": "Ninety minutes of open studio to try out different materials and creative projects, with no lessons and no pressure about the result, chatting over a drink. There are two sessions, 6:30–8 pm and 8:30–10 pm. 15 € covers a drink, materials and whatever you make; for 10 € you bring your own project (drink included). Book via the form in the link in bio of @velvetruffleriot.",
+  "descrizione": "Ninety minutes of open studio to try out different materials and creative projects, with no lessons and no pressure about the result, chatting over a drink. There are two sessions, 18:30–20:00 and 20:30–22:00. 15 € covers a drink, materials and whatever you make; for 10 € you bring your own project (drink included). Book via the form in the link in bio of @velvetruffleriot.",
   "fonte": "Instagram @velvetruffleriot",
   "foto": "img/eventi/velvetruffleriot-2026-10-10-5.jpg",
   "indirizzo": "Le Strade Creative Studio, Via Cagliari 11",
@@ -10268,7 +10278,7 @@ const WORKSHOPS = [
   "categoria": "degustazioni",
   "contatto": "vitadasingle.net",
   "data": "2026-11-14",
-  "descrizione": "An hour for singles in the workshop of a historic Turin chocolatier: the master chocolatier explains the process, from tempering to filled chocolates, and leads the tasting. Maximum 20 people; the venue will be shared with those who have booked on 13 November.",
+  "descrizione": "An hour for singles in the workshop of a historic Turin chocolatier: the master chocolatier explains the process, from tempering to filled chocolates, and leads the tasting. Maximum 20 people; on 13 November the venue is sent to everyone who has booked.",
   "fonte": "allevents.in",
   "foto": "img/eventi/vitadasingle-cioccolatiamo-2026-11-14.jpg",
   "link": "https://www.eventbrite.it/e/biglietti-cioccolatiamo-esperienza-sensoriale-per-single-golosi-2001041417747",
@@ -10302,7 +10312,7 @@ const WORKSHOPS = [
  {
   "categoria": "degustazioni",
   "contatto": "Winelivery Torino",
-  "descrizione": "An aperitivo to discover Vermouth di Torino, born here in 1786: its history, the differences between red, white and dry, and two vermouth cocktails, with a board of cheeses and cured meats. 34 €; dates of your choice until the end of February, evenings from 6:30 pm.",
+  "descrizione": "An aperitivo to discover Vermouth di Torino, born here in 1786: its history, the differences between red, white and dry, and two vermouth cocktails, with a board of cheeses and cured meats. 34 €; dates of your choice until the end of February, evenings from 18:30.",
   "fonte": "eventbrite.it",
   "foto": "img/eventi/winelivery-vermouth.jpg",
   "indirizzo": "Winelivery, Via Maria Vittoria 23",
@@ -10318,7 +10328,7 @@ const WORKSHOPS = [
  },
  {
   "categoria": "degustazioni",
-  "descrizione": "Three glasses of Piedmontese wine chosen from a dedicated list, from mineral whites to full-bodied reds, with a board of cured meats and cheeses. 34 €; sessions every evening except Monday, from 6 to 10 pm, booked on Eventbrite.",
+  "descrizione": "Three glasses of Piedmontese wine chosen from a dedicated list, from mineral whites to full-bodied reds, with a board of cured meats and cheeses. 34 €; sessions every evening except Monday, from 18:00 to 22:00, booked on Eventbrite.",
   "fonte": "eventbrite.it",
   "foto": "img/eventi/winelivery-vini-regionali.jpg",
   "indirizzo": "Winelivery, Via Maria Vittoria 23",
@@ -10373,7 +10383,7 @@ const WORKSHOPS = [
   "comune": "Ivrea",
   "contatto": "partecipazione@lozac.it or 389 591 5390",
   "data": "2026-10-24",
-  "descrizione": "A day of collective work with wood and screws to fix up the outdoor spaces of the Movicentro, Ivrea’s station, led by PART collettivo. It starts at 9:30 am; lunch is provided for those who sign up. Registration recommended via the link in bio of @zac.ivrea; info at partecipazione@lozac.it or 389 591 5390.",
+  "descrizione": "A day of collective work with wood and screws to fix up the outdoor spaces of the Movicentro, Ivrea’s station, led by PART collettivo. It starts at 9:30; lunch is provided for those who sign up. Registration recommended via the link in bio of @zac.ivrea; info at partecipazione@lozac.it or 389 591 5390.",
   "fonte": "Instagram @zac.ivrea",
   "indirizzo": "ZAC!, Via Dora Baltea 40b",
   "link": "https://www.instagram.com/p/Dee8PDmG1Ub/",
@@ -10451,7 +10461,7 @@ const WORKSHOPS = [
   "id": "zac-laboratorio-riconnessione-2026-10-25"
  }
 ];
-state.all = WORKSHOPS; state.loaded = true; render(); openFromHash();
+state.all = WORKSHOPS; state.loaded = true; filtersFromHash(); render(); openFromHash();
 window.addEventListener("hashchange",openFromHash);
 </script>
 </body>

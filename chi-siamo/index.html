@@ -6,6 +6,8 @@
 <title>Chi siamo · The Crafty Club</title>
 <meta name="description" content="The Crafty Club nasce da due ragazze di Torino con la passione per i workshop: workshop, corsi e attività di Torino, Cuneo e dintorni, tutti in un posto solo.">
 <link rel="canonical" href="https://craftyclub.it/chi-siamo/">
+<link rel="alternate" hreflang="it" href="https://craftyclub.it/chi-siamo/">
+<link rel="alternate" hreflang="en" href="https://craftyclub.it/en/chi-siamo/">
 <link rel="icon" type="image/png" sizes="64x64" href="../icons/favicon.png?v=2">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://craftyclub.it/chi-siamo/">
@@ -33,7 +35,8 @@
 body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",ui-rounded,"Segoe UI",system-ui,sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:env(safe-area-inset-bottom,0px)}
 :focus-visible{outline:3px solid var(--cobalt);outline-offset:2px;border-radius:12px}
 .wrap{max-width:720px;margin:0 auto;padding:0 var(--gr) 0 var(--gl)}
-header{padding:12px 0}
+header{padding:12px 0;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.lang-switch{display:flex;align-items:center;border:2px solid var(--ink);border-radius:999px;overflow:hidden;font-size:12.5px;font-weight:800;letter-spacing:.02em;background:var(--surface)}.lang-switch a{padding:5px 9px;color:var(--ink);text-decoration:none;line-height:1}.lang-switch a[aria-current]{background:var(--ink);color:var(--bg)}
 .logo{display:inline-block}
 .logo img{display:block;height:62px;width:auto}
 h1{font-size:clamp(34px,9vw,56px);line-height:.95;margin:18px 0 18px;font-weight:800;font-stretch:80%;letter-spacing:-.03em}
@@ -61,6 +64,7 @@ footer a{color:inherit;font-weight:600}
         <img src="../img/logo.png?v=2" alt="The Crafty Club" width="540" height="180">
       </picture>
     </a>
+    <div class="lang-switch"><a aria-current="page" lang="it">IT</a><a href="../en/chi-siamo/" hreflang="en" lang="en">EN</a></div>
   </header>
   <main>
     <h1>Chi siamo</h1>
