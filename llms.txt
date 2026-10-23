@@ -6,7 +6,7 @@ Il sito è in italiano. Ogni evento ha un link diretto nella forma `https://craf
 
 ## Pagine principali
 
-- [Home: tutti i workshop con ricerca e filtri](https://craftyclub.it/): elenco completo degli eventi in arrivo, filtrabile per zona, data, categoria, tipo (workshop, corsi, altre attività) e prezzo.
+- [Home: tutti i workshop con ricerca e filtri](https://craftyclub.it/): elenco completo degli eventi in programma, filtrabile per zona, data, categoria, tipo (workshop, corsi, altre attività) e prezzo.
 - [Chi siamo](https://craftyclub.it/chi-siamo/): chi c’è dietro The Crafty Club e perché esiste.
 
 ## Per zona
@@ -34,7 +34,7 @@ Il sito è in italiano. Ogni evento ha un link diretto nella forma `https://craf
 
 ## Per organizzatore
 
-- [Cerca per organizzatore](https://craftyclub.it/organizzatori/): laboratori, atelier, associazioni e artigiani che propongono eventi sul sito, con una breve descrizione. Ognuno ha una pagina con solo le sue attività in arrivo, nella forma `https://craftyclub.it/organizzatori/<nome>/` (ad esempio [Pottery Lab](https://craftyclub.it/organizzatori/pottery-lab/)).
+- [Cerca per organizzatore](https://craftyclub.it/organizzatori/): laboratori, atelier, associazioni e artigiani che propongono eventi sul sito, con una breve descrizione. Ognuno ha una pagina con solo le sue attività in programma, nella forma `https://craftyclub.it/organizzatori/<nome>/` (ad esempio [Pottery Lab](https://craftyclub.it/organizzatori/pottery-lab/)).
 
 ## Contatti
 

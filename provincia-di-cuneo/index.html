@@ -470,7 +470,7 @@ html.embed,html.embed body{background:transparent!important}html.embed body>*:no
   </div>
 
   <div class="listhead">
-    <h2 id="listTitle">In arrivo a Torino</h2>
+    <h2 id="listTitle">In programma a Torino</h2>
     <small id="listCount"></small>
   </div>
   <div class="cards" id="cards"></div>
@@ -870,7 +870,7 @@ function render(){
   const box=document.getElementById("cards"); box.innerHTML="";
   const title=document.getElementById("listTitle"), count=document.getElementById("listCount");
   const where=placesWhere();
-  title.textContent = state.tab==="saved" ? "I tuoi salvati" : ((state.cats.length===1 ? catOf(state.cats[0]).label : state.cats.length ? state.cats.map(id=>catOf(id).label).join(", ") : state.tipo ? ({corso:"Corsi",workshop:"Workshop",attivita:"Altre attività"}[state.tipo]) : "In arrivo")+" "+where).trim();
+  title.textContent = state.tab==="saved" ? "I tuoi salvati" : ((state.cats.length===1 ? catOf(state.cats[0]).label : state.cats.length ? state.cats.map(id=>catOf(id).label).join(", ") : state.tipo ? ({corso:"Corsi",workshop:"Workshop",attivita:"Altre attività"}[state.tipo]) : "In programma")+" "+where).trim();
   const active = (state.maxPrice?1:0)+(state.when!=="all"?1:0)+(state.weekends?1:0)+(state.noBig?1:0);
   const fc=document.getElementById("fcount"); fc.hidden=!active; fc.textContent=active;
   document.getElementById("resetAll").hidden = !(active || state.cats.length || state.q || state.tipo || state.noKids || !samePlaces(state.places,DEFAULT_PLACES));
