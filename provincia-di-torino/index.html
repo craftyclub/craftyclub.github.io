@@ -298,6 +298,9 @@ footer a{color:inherit;font-weight:600}
 }
 #contatti,#scrivici,#installa{scroll-margin-top:72px}
 /* menu (☰) */
+.contatti-form{margin:18px 0 4px;font-size:16px}
+.menu-list.contatti a,.menu-list.contatti a *{text-decoration:none;color:var(--ink)}.menu-list.contatti .sub{color:var(--ink-soft)}
+.menu-top{display:flex;align-items:center;justify-content:space-between;gap:12px}.menu-top h3{margin:0}.menu-top .lang-switch{margin:0}
 .menu-list{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:4px}
 .menu-item{width:100%;display:flex;align-items:center;gap:12px;padding:12px 10px;border:0;border-radius:14px;background:none;color:var(--ink);font:inherit;font-size:16px;font-weight:700;text-align:left;cursor:pointer}
 .menu-item:hover,.menu-item:focus-visible{background:var(--bg)}
@@ -434,7 +437,7 @@ html.embed,html.embed body{background:transparent!important}html.embed body>*:no
       </picture>
     </a>
     <div class="top-actions">
-      <div class="lang-switch"><a aria-current="page" lang="it">IT</a><a href="en/provincia-di-torino/" hreflang="en" lang="en">EN</a></div>
+      <template id="tplLang"><div class="lang-switch"><a aria-current="page" lang="it">IT</a><a href="en/provincia-di-torino/" hreflang="en" lang="en">EN</a></div></template>
       <button class="icon-btn" id="menuBtn" type="button" aria-label="Menu" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>
     </div>
   </div>
@@ -495,7 +498,7 @@ html.embed,html.embed body{background:transparent!important}html.embed body>*:no
       </div>
       <div class="sf-side">
         <a class="sf-write" href="provincia-di-torino/#scrivici"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="M3.5 7l8.5 6.5L20.5 7"/></svg>Scrivici</a>
-        <div class="sf-social"><a href="https://www.instagram.com/crafty.club.it/" target="_blank" rel="noopener" aria-label="Instagram @crafty.club.it"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg></a><a href="mailto:crafty.club.info@gmail.com" aria-label="Mail crafty.club.info@gmail.com"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="M3.5 7l8.5 6.5L20.5 7"/></svg></a></div>
+        <div class="sf-social"><a href="https://www.instagram.com/crafty.club.it/" target="_blank" rel="noopener" aria-label="Instagram @crafty.club.it"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg></a><a href="mailto:crafty.club.info@gmail.com" aria-label="Mail crafty.club.info@gmail.com"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="M3.5 7l8.5 6.5L20.5 7"/></svg></a><a href="https://www.tiktok.com/@crafty_club.it" target="_blank" rel="noopener" aria-label="TikTok @crafty_club.it"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M14.5 3.5c.4 2.4 1.9 4 4.5 4.3v3a7.6 7.6 0 0 1-4.5-1.5v6.2a5.5 5.5 0 1 1-5.5-5.5c.3 0 .6 0 .9.1v3.1a2.5 2.5 0 1 0 1.6 2.3V3.5z"/></svg></a></div>
         <ul class="sf-links"><li><a href="chi-siamo/">Chi siamo</a></li><li><a href="provincia-di-torino/#privacy">Privacy e cookie</a></li><li><a href="provincia-di-torino/#note-legali">Note legali</a></li></ul>
       </div>
     </div>
@@ -1049,7 +1052,7 @@ const LEGAL = {
 <li><strong>Statistiche anonime.</strong> Per capire quante persone usano il sito e cosa è più utile usiamo <a href="https://www.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>, che conta le pagine e le azioni (ad esempio quali eventi vengono aperti o prenotati, quali categorie e ricerche si usano) in forma aggregata. Non usa cookie, non salva nulla nel tuo browser, non conserva l’indirizzo IP e non permette di identificarti. I dati sono conservati su server in Finlandia e Germania. Base giuridica: il nostro legittimo interesse a migliorare il sito. <a href="https://www.goatcounter.com/help/privacy" target="_blank" rel="noopener">Informativa di GoatCounter</a>.</li>
 <li><strong>Caratteri e immagini.</strong> Caratteri tipografici, immagini e lo script delle statistiche sono ospitati sul sito stesso: aprendo le pagine non ti colleghi a Google o ad altri servizi esterni (solo il conteggio anonimo viene inviato a GoatCounter e, se usi il modulo «Scrivici», il tuo messaggio a Web3Forms).</li>
 <li><strong>Pagine degli organizzatori.</strong> Nella sezione «Cerca per organizzatore» mostriamo, per chi propone eventi sul sito, il nome, una breve descrizione scritta da noi, la foto profilo o il logo e i link pubblici (Instagram, sito). Sono informazioni già pubbliche, prese dai loro profili e siti, e le usiamo solo per presentare le loro attività (legittimo interesse a informare su eventi aperti al pubblico). Se sei un organizzatore e vuoi correggere o togliere la tua pagina, la foto o la descrizione, scrivi a <a href="mailto:${MAIL}">${MAIL}</a>: lo facciamo il prima possibile.</li>
-<li><strong>Se ci scrivi.</strong> Se ci contatti per mail, su Instagram o con il modulo «Scrivici» usiamo i tuoi dati (nome, mail, messaggio) solo per risponderti e li conserviamo per il tempo necessario. Il modulo è gestito da <a href="https://web3forms.com" target="_blank" rel="noopener">Web3Forms</a> (Web3Creative, India), che inoltra il messaggio alla nostra mail usando server negli USA e può conservarne una copia per un periodo limitato. Instagram tratta i dati secondo la propria informativa.</li>
+<li><strong>Se ci scrivi.</strong> Se ci contatti per mail, su Instagram, su TikTok o con il modulo «Scrivici» usiamo i tuoi dati (nome, mail, messaggio) solo per risponderti e li conserviamo per il tempo necessario. Il modulo è gestito da <a href="https://web3forms.com" target="_blank" rel="noopener">Web3Forms</a> (Web3Creative, India), che inoltra il messaggio alla nostra mail usando server negli USA e può conservarne una copia per un periodo limitato. Instagram e TikTok trattano i dati secondo le proprie informative.</li>
 </ul>
 <h4>Cookie</h4>
 <p>The Crafty Club non usa cookie, né tecnici né di profilazione, e non usa strumenti di tracciamento: le statistiche sono anonime e senza cookie, per questo non c’è un banner dei cookie. La memoria locale usata per i salvati è strettamente necessaria a una funzione che chiedi tu e non richiede consenso.</p>
@@ -1057,7 +1060,7 @@ const LEGAL = {
 <p>Le schede rimandano ai siti degli organizzatori, a piattaforme di prenotazione e a Instagram. Quando li apri valgono le loro regole su privacy e cookie, che non dipendono da noi.</p>
 <h4>I tuoi diritti</h4>
 <p>Puoi chiedere in ogni momento di accedere ai tuoi dati, correggerli, cancellarli, limitarne l’uso od opporti al loro trattamento, scrivendo a <a href="mailto:${MAIL}">${MAIL}</a>. Puoi anche presentare reclamo al <a href="https://www.garanteprivacy.it" target="_blank" rel="noopener">Garante per la protezione dei dati personali</a>.</p>
-<p class="agg">Ultimo aggiornamento: 22 ottobre 2026 (aggiunte le pagine degli organizzatori).</p>`},
+<p class="agg">Ultimo aggiornamento: 27 ottobre 2026 (aggiunto il profilo TikTok tra i contatti).</p>`},
   "note-legali": {titolo:"Note legali", testo:`
 <h4>Che cos’è The Crafty Club</h4>
 <p>The Crafty Club è una raccolta gratuita di workshop, corsi e laboratori organizzati da altri a Torino, Cuneo e dintorni. Non organizziamo gli eventi, non vendiamo biglietti e non raccogliamo prenotazioni o pagamenti: per iscriversi si usa il link o il contatto dell’organizzatore.</p>
@@ -1138,9 +1141,9 @@ function filtersFromHash(){
   try{ const f=JSON.parse(decodeURIComponent(m[1])); FKEYS.forEach(k=>{ if(k in f && Array.isArray(f[k])===Array.isArray(state[k]) && typeof f[k]===typeof state[k]) state[k]=f[k]; }); document.getElementById("q").value=state.q; }catch(e){}
   history.replaceState(null,"",location.pathname+location.search);
 }
-document.querySelectorAll(".lang-switch a[href]").forEach(a=>a.addEventListener("click",()=>{
-  const f={}; FKEYS.forEach(k=>f[k]=state[k]); a.href=a.href.split("#")[0]+"#filtri="+encodeURIComponent(JSON.stringify(f));
-}));
+function langLink(e){
+  const a=e.currentTarget, f={}; FKEYS.forEach(k=>f[k]=state[k]); a.href=a.href.split("#")[0]+"#filtri="+encodeURIComponent(JSON.stringify(f));
+}
 // aperto da una pagina di organizzatore o di categoria (#evento=<id>&torna=<pagina>/): chiudendo la scheda si torna lì
 let returnTo=null;
 function goReturn(){ const r=returnTo; returnTo=null; const u=new URL(r, document.baseURI).href; if(document.referrer===u && history.length>1) history.back(); else location.href=u; }
@@ -1148,6 +1151,7 @@ function openFromHash(){
   const lk=location.hash.slice(1); if(LEGAL[lk]){ openLegal(lk); return; }
   if(lk==="chi-siamo"){ openChiSiamo(false); return; }
   if(lk==="scrivici"){ openScrivici(false); return; }
+  if(lk==="contatti"){ openContatti(false); return; }
   const m=location.hash.match(/^#evento=([^&]+)(?:&torna=([a-z0-9\-\/]+))?$/); if(!m) return;
   returnTo = m[2] && /^[a-z0-9-]+(\/[a-z0-9-]+){0,2}\/$/.test(m[2]) ? m[2] : null;
   const id=decodeURIComponent(m[1]), w=state.all.find(x=>x.id===id);
@@ -1333,6 +1337,20 @@ function bindScrivici(f){
     btn.disabled=false; btn.textContent="Invia";
   });
 }
+// «Contatti» (dal menu o dal link diretto #contatti): mail e profili social, e sotto il modulo «Scrivici» già aperto
+function openContatti(fromMenu){
+  const row=(icon,label,sub,href)=>{ const a=el("a",{class:"menu-item",href,target:href.startsWith("http")?"_blank":null,rel:href.startsWith("http")?"noopener":null}); a.innerHTML=menuSvg(icon); a.append(el("span",{},label, el("span",{class:"sub"},sub))); return a; };
+  const f=document.getElementById("tplScrivici").content.firstElementChild.cloneNode(true);
+  bindScrivici(f);
+  if(fromMenu) pendingBack=openMenu;
+  openSheet([fromMenu ? el("button",{class:"back",type:"button",onclick:()=>closeSheet()},"‹ Menu") : null, el("h3",{id:"sheetTitle"},"Contatti"),
+    el("div",{class:"menu-list contatti"},
+      row("mail","Mail",MAIL,"mailto:"+MAIL),
+      row("ig","Instagram","@crafty.club.it","https://www.instagram.com/crafty.club.it/"),
+      row("tiktok","TikTok","@crafty_club.it","https://www.tiktok.com/@crafty_club.it")),
+    el("h4",{class:"contatti-form"},"Scrivici da qui"), f]);
+  track("apri/contatti");
+}
 function openScrivici(fromMenu){
   const f=document.getElementById("tplScrivici").content.firstElementChild.cloneNode(true);
   bindScrivici(f);
@@ -1349,6 +1367,8 @@ const MENU_ICONS = {
   write:'<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>',
   about:'<circle cx="8.5" cy="8.5" r="3.2"/><circle cx="16.5" cy="9.5" r="2.6"/><path d="M3 19.5c.9-3.3 3.1-5 5.5-5s4.6 1.7 5.5 5"/><path d="M14.6 14.9c.6-.3 1.2-.4 1.9-.4 2 0 3.6 1.3 4.3 4"/>',
   mail:'<rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="M3.5 7l8.5 6.5L20.5 7"/>',
+  ig:'<rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>',
+  tiktok:'<path d="M14.5 3.5c.4 2.4 1.9 4 4.5 4.3v3a7.6 7.6 0 0 1-4.5-1.5v6.2a5.5 5.5 0 1 1-5.5-5.5c.3 0 .6 0 .9.1v3.1a2.5 2.5 0 1 0 1.6 2.3V3.5z"/>',
   shield:'<path d="M12 3l7.5 3v5.5c0 4.6-3.2 8.2-7.5 9.5-4.3-1.3-7.5-4.9-7.5-9.5V6z"/>',
   phone:'<rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 18.5h3"/>',
   doc:'<path d="M7 3h7l5 5v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>'
@@ -1361,7 +1381,7 @@ function openMenu(){
   const accNote=el("p",{class:"menu-note",hidden:true},"Gli account arriveranno presto: potrai iscriverti come cliente, per salvare i workshop su tutti i dispositivi e ricevere le novità, oppure come organizzatore, per pubblicare e gestire i tuoi workshop e corsi.");
   const nSaved=state.saved.size;
   openSheet([
-    el("h3",{id:"sheetTitle"},"Menu"),
+    el("div",{class:"menu-top"}, el("h3",{id:"sheetTitle"},"Menu"), (()=>{ const ls=document.getElementById("tplLang").content.firstElementChild.cloneNode(true); ls.setAttribute("aria-label","Lingua"); ls.querySelectorAll("a[href]").forEach(a=>a.addEventListener("click",langLink)); return ls; })()),
     el("div",{class:"menu-list"},
       item("home","Home",()=>{ if(ZONE){ location.href=document.baseURI; return; } closeSheet(true); state.tab="explore"; resetFilters(); window.scrollTo({top:0,behavior:"smooth"}); }),
       item("account","Account",()=>{ accNote.hidden=!accNote.hidden; track("menu/account"); },{presto:true, sub:"Cliente o organizzatore"}),
@@ -1372,7 +1392,7 @@ function openMenu(){
       el("div",{class:"menu-sep"}),
       item("about","Chi siamo",()=>openChiSiamo(true)),
       item("write","Scrivici",()=>openScrivici(true)),
-      item("mail","Contatti",()=>goToSection("contatti")),
+      item("mail","Contatti",()=>openContatti(true)),
       (isStandalone() || !isMobile()) ? null : item("phone","App",()=>startInstall(true),{sub:"Aggiungi alla schermata Home"}),
       el("div",{class:"menu-sep"}),
       item("shield","Privacy e cookie",()=>openLegal("privacy",true)),
