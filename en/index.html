@@ -443,7 +443,7 @@ html.embed,html.embed body{background:transparent!important}html.embed body>*:no
 
 <main class="wrap">
   <section class="hero">
-    <h1><span>What do we do</span><span>this week <span id="areaPrep">in</span> <span class="nw"><span class="area-wrap"><button type="button" class="area-pick" id="areaBtn" aria-haspopup="listbox" aria-expanded="false" aria-controls="areaMenu" aria-label="Choose the area"><span id="areaLabel">Turin</span></button><span class="area-menu" id="areaMenu" role="listbox" aria-label="Area" hidden><button type="button" role="option" data-area="to"><b>Turin</b><small>City and province</small></button><button type="button" role="option" data-area="cn"><b>Cuneo</b><small>City and province</small></button><button type="button" role="option" data-area="pie"><b>Piedmont</b><small>All areas</small></button></span></span>?</span></span></h1>
+    <h1><span>What to do</span><span><span id="areaPrep">in</span> <span class="nw"><span class="area-wrap"><button type="button" class="area-pick" id="areaBtn" aria-haspopup="listbox" aria-expanded="false" aria-controls="areaMenu" aria-label="Choose the area"><span id="areaLabel">Turin</span></button><span class="area-menu" id="areaMenu" role="listbox" aria-label="Area" hidden><button type="button" role="option" data-area="to"><b>Turin</b><small>City and province</small></button><button type="button" role="option" data-area="cn"><b>Cuneo</b><small>City and province</small></button><button type="button" role="option" data-area="pie"><b>Piedmont</b><small>All areas</small></button></span></span>?</span></span></h1>
     <div class="searchrow">
       <label class="search">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
@@ -748,6 +748,15 @@ function effDate(w){
   if(m){ const n=new Date(t); n.setDate(t.getDate()+((GIORNI[m[1]]-t.getDay()+7)%7)); if(n<=f) return n; }
   return t;
 }
+// ricerca: guarda titolo, organizzatore (anche il nome del profilo Instagram), luogo, zona, descrizione e categoria.
+// Basta che ci siano tutte le parole cercate, in qualsiasi ordine; spazi, @ e punteggiatura non contano («pottery lab» = «@potterylab16»)
+const squash = s => s.replace(/[^a-z0-9]+/g,"");
+function matchQ(w,q){
+  const hay=norm([w.titolo,w.organizzatore,w.indirizzo,w.zona,w.comune,w.descrizione,catOf(w.categoria).label,w.fonte,w.contatto,/cuneo/i.test(w.zona||"")?"":"Turin"].filter(Boolean).join(" "));
+  if(hay.includes(q)) return true;
+  const flat=squash(hay), words=q.split(/\s+/).filter(Boolean);
+  return words.every(x=>hay.includes(x) || (squash(x).length>2 && flat.includes(squash(x)))) || (squash(q).length>3 && flat.includes(squash(q)));
+}
 function filtered(){
   const q = norm(state.q);
   return state.all.filter(w=>{
@@ -765,7 +774,7 @@ function filtered(){
     // filtro veloce "No kids’ activities": toglie gli eventi per bambini
     if(state.noKids && w.categoria==="famiglia") return false;
     if(state.maxPrice && !(Number(w.prezzo)<=state.maxPrice)) return false;
-    if(q){ const hay=norm([w.titolo,w.organizzatore,w.zona,w.comune,w.descrizione,catOf(w.categoria).label,/cuneo/i.test(w.zona||"")?"":"Turin"].join(" ")); if(!hay.includes(q)) return false; }
+    if(q && !matchQ(w,q)) return false;
     return true;
   }).sort((a,b)=>{ const k=w=>{ const d=effDate(w); return (d ? ymd(d) : "9999")+(w.ora_inizio||""); }; return k(a).localeCompare(k(b)); });
 }
