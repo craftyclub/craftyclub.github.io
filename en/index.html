@@ -122,6 +122,10 @@ header.top.shrunk .icon-btn{width:32px;height:32px}
 .search input{border:0;outline:0;background:transparent;flex:1;font-size:16px;min-width:0}
 .search svg{flex:none}
 .searchrow{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch}
+/* la ricerca è una lente accanto al calendario: toccandola si apre il campo, la ✕ lo richiude */
+.searchrow:not(.open) .search{display:none}.searchrow.open .findbtn{display:none}
+.search input::-webkit-search-cancel-button{display:none}
+.qclose{flex:none;border:0;background:none;color:var(--ink-soft);font:inherit;font-size:17px;font-weight:700;line-height:1;padding:2px 4px;cursor:pointer}
 .searchrow .search{flex:1 1 100%;min-width:0}
 .searchrow .calbtn{height:48px}
 .tipo-seg{flex:1 1 0;display:flex;min-width:0;height:48px;border:2px solid var(--ink);border-radius:18px;overflow:hidden;background:var(--surface);box-shadow:4px 4px 0 var(--ink)}
@@ -445,10 +449,12 @@ html.embed,html.embed body{background:transparent!important}html.embed body>*:no
 <main class="wrap">
   <section class="hero">
     <h1><span>What to do</span><span><span id="areaPrep">in</span> <span class="nw"><span class="area-wrap"><button type="button" class="area-pick" id="areaBtn" aria-haspopup="listbox" aria-expanded="false" aria-controls="areaMenu" aria-label="Choose the area"><span id="areaLabel">Turin</span></button><span class="area-menu" id="areaMenu" role="listbox" aria-label="Area" hidden><button type="button" role="option" data-area="to"><b>Turin</b><small>City and province</small></button><button type="button" role="option" data-area="cn"><b>Cuneo</b><small>City and province</small></button><button type="button" role="option" data-area="pie"><b>Piedmont</b><small>All areas</small></button></span></span>?</span></span></h1>
-    <div class="searchrow">
+    <div class="searchrow" id="searchRow">
+      <button class="calbtn findbtn" id="findBtn" type="button" aria-label="Search" aria-expanded="false" aria-controls="q"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></button>
       <label class="search">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
         <input id="q" type="search" placeholder="Search an activity or a place" autocomplete="off">
+        <button type="button" class="qclose" id="qClose" aria-label="Close search">✕</button>
       </label>
       <button class="calbtn" id="calBtn" type="button" aria-label="Workshop calendar">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/><circle cx="8.5" cy="14.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="14.5" r="1" fill="currentColor" stroke="none"/><circle cx="15.5" cy="14.5" r="1" fill="currentColor" stroke="none"/></svg>
@@ -931,7 +937,7 @@ function render(){
   list.forEach(w=>box.append(card(w)));
 }
 
-function resetFilters(){ Object.assign(state,{q:"",cats:[],tipo:"",when:"all",maxPrice:0,noBig:false,noKids:false,from:"",to:"",pick:[],weekends:false}); state.places=[...DEFAULT_PLACES]; document.getElementById("q").value=""; render(); }
+function resetFilters(){ Object.assign(state,{q:"",cats:[],tipo:"",when:"all",maxPrice:0,noBig:false,noKids:false,from:"",to:"",pick:[],weekends:false}); state.places=[...DEFAULT_PLACES]; document.getElementById("q").value=""; render(); if(typeof syncFind==="function") syncFind(false); }
 
 /* sheets */
 const sheet=document.getElementById("sheet"), overlay=document.getElementById("overlay");
@@ -1294,6 +1300,11 @@ function openOrg(){
 }
 
 /* events */
+const searchRow=document.getElementById("searchRow"), qInput=document.getElementById("q");
+function syncFind(open){ const on=open===undefined ? !!state.q || searchRow.classList.contains("open") : open || !!state.q; searchRow.classList.toggle("open",on); document.getElementById("findBtn").setAttribute("aria-expanded",on); }
+document.getElementById("findBtn").addEventListener("click",()=>{ syncFind(true); qInput.focus(); track("apri/cerca"); });
+document.getElementById("qClose").addEventListener("click",()=>{ qInput.value=""; state.q=""; render(); syncFind(false); });
+qInput.addEventListener("blur",()=>setTimeout(()=>{ if(!qInput.value.trim() && document.activeElement!==qInput) syncFind(false); },150));
 document.getElementById("q").addEventListener("input",e=>{state.q=e.target.value; render(); clearTimeout(searchTimer); const t=norm(state.q).trim(); if(t.length>=3) searchTimer=setTimeout(()=>track("cerca/"+t.replace(/[^a-z0-9 ]/g,"").replace(/ +/g,"-"), "Ricerca: "+t),1500);});
 document.getElementById("openFilters").addEventListener("click",openFilters);
 document.getElementById("resetAll").addEventListener("click",resetFilters);
@@ -9716,7 +9727,7 @@ const WORKSHOPS = [
   "id": "zac-degustazione-rossotto-2026-11-06"
  }
 ];
-state.all = WORKSHOPS; state.loaded = true; filtersFromHash(); render(); openFromHash();
+state.all = WORKSHOPS; state.loaded = true; filtersFromHash(); render(); syncFind(); openFromHash();
 window.addEventListener("hashchange",openFromHash);
 </script>
 </body>
