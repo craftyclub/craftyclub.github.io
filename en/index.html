@@ -93,8 +93,9 @@ header.top.shrunk .icon-btn{width:32px;height:32px}
 /* hero */
 .hero{position:relative;padding:18px 0 8px}
 .hero h1{font-size:clamp(28px,8vw,56px);line-height:.95;margin:0 0 14px;font-weight:800;font-stretch:80%;letter-spacing:-.03em}
-.hero h1 > span{display:block;white-space:nowrap}
-.hero h1 > span:last-child{white-space:normal}
+/* «Cosa fare a Torino?» su una riga sola; va a capo solo se la zona è lunga («in provincia di Cuneo») */
+.hero h1 > span{display:inline}
+.hero h1 > span+span::before{content:" "}
 .hero h1 .nw{white-space:nowrap}
 /* zona nel titolo: parola sottolineata, toccandola si sceglie Torino, Cuneo o Piemonte */
 .area-wrap{position:relative;display:inline-block}
@@ -9212,6 +9213,24 @@ const WORKSHOPS = [
   "id": "uptoyou-cucito-creativo"
  },
  {
+  "categoria": "movimento",
+  "comune": "San Mauro Torinese",
+  "contatto": "upTOyou, +39 352 010 0262",
+  "descrizione": "A weekly dance and movement course, on Mondays 21:00–22:00 or Wednesday mornings 10:45–11:45. Info and sign-up from upTOyou at 352 010 0262.",
+  "fonte": "Instagram @uptoyou_torino",
+  "indirizzo": "upTOyou, Via Torino 175",
+  "link": "https://www.instagram.com/p/Dey5WpbiC66/",
+  "ora_fine": "22:00",
+  "ora_inizio": "21:00",
+  "organizzatore": "upTOyou",
+  "ricorrenza": "every Monday",
+  "su_prenotazione": true,
+  "tipo": "corso",
+  "titolo": "Danza la tua essenza: free movement",
+  "zona": "Provincia di Torino",
+  "id": "uptoyou-danza-essenza"
+ },
+ {
   "categoria": "famiglia",
   "comune": "San Mauro Torinese",
   "contatto": "upTOyou, +39 352 010 0262",
@@ -9239,6 +9258,7 @@ const WORKSHOPS = [
   "foto": "img/eventi/uptoyou-torino-2026-09-15-22.jpg",
   "indirizzo": "upTOyou, Via Torino 175",
   "link": "https://www.instagram.com/p/DdTy1MriFvX/",
+  "ora_fine": "21:00",
   "ora_inizio": "19:00",
   "organizzatore": "Tiziana Boccalatte per upTOyou",
   "ricorrenza": "every Wednesday",
@@ -9247,6 +9267,22 @@ const WORKSHOPS = [
   "titolo": "The thread that binds: crochet course",
   "zona": "Provincia di Torino",
   "id": "uptoyou-filo-che-unisce"
+ },
+ {
+  "categoria": "altro",
+  "comune": "San Mauro Torinese",
+  "contatto": "upTOyou, +39 352 010 0262",
+  "data_da_confermare": true,
+  "descrizione": "A photography course with Davide Furia that starts during the year; the last edition was 4 meetings on Wednesdays. To find out when it restarts and to sign up: upTOyou, 352 010 0262.",
+  "fonte": "Instagram @uptoyou_torino",
+  "indirizzo": "upTOyou, Via Torino 175",
+  "link": "https://www.instagram.com/p/Dey5WpbiC66/",
+  "organizzatore": "Davide Furia per upTOyou",
+  "su_prenotazione": true,
+  "tipo": "corso",
+  "titolo": "Photography course: capturing an emotion",
+  "zona": "Provincia di Torino",
+  "id": "uptoyou-fotografia"
  },
  {
   "altre_categorie": [
@@ -9286,6 +9322,40 @@ const WORKSHOPS = [
   "titolo": "Mo’Canto: a pop choir for everyone",
   "zona": "Provincia di Torino",
   "id": "uptoyou-mocanto"
+ },
+ {
+  "categoria": "altro",
+  "comune": "San Mauro Torinese",
+  "contatto": "upTOyou, +39 352 010 0262",
+  "data_da_confermare": true,
+  "descrizione": "Origami workshops with Golnaz Esmaeeli, the Japanese art of turning a sheet of paper into a small object: they’re usually two-hour sessions at weekends, during the year. For the next dates: upTOyou, 352 010 0262.",
+  "fonte": "Instagram @uptoyou_torino",
+  "indirizzo": "upTOyou, Via Torino 175",
+  "link": "https://www.instagram.com/p/Dey5WpbiC66/",
+  "organizzatore": "Golnaz Esmaeeli per upTOyou",
+  "su_prenotazione": true,
+  "tipo": "workshop",
+  "titolo": "Origami workshop: from paper to object",
+  "zona": "Provincia di Torino",
+  "id": "uptoyou-origami"
+ },
+ {
+  "categoria": "pittura",
+  "comune": "San Mauro Torinese",
+  "contatto": "upTOyou, +39 352 010 0262",
+  "descrizione": "A two-hour art course every Friday afternoon at upTOyou in San Mauro. Info on the content and sign-up at 352 010 0262.",
+  "fonte": "Instagram @uptoyou_torino",
+  "indirizzo": "upTOyou, Via Torino 175",
+  "link": "https://www.instagram.com/p/Dey5WpbiC66/",
+  "ora_fine": "19:00",
+  "ora_inizio": "17:00",
+  "organizzatore": "upTOyou",
+  "ricorrenza": "every Friday",
+  "su_prenotazione": true,
+  "tipo": "corso",
+  "titolo": "Art course: Friday afternoons",
+  "zona": "Provincia di Torino",
+  "id": "uptoyou-percorso-artistico"
  },
  {
   "categoria": "movimento",
