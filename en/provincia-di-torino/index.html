@@ -212,6 +212,7 @@ header.top.shrunk .icon-btn{width:32px;height:32px}
 .badge{font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--bg)}
 .badge.low{background:var(--sun);color:#2A1440}
 .badge.out{background:var(--line);color:var(--ink-soft)}
+.badge.new{background:var(--pink);color:#fff}
 .heart{margin-left:auto;flex:none;width:34px;height:34px;display:grid;place-items:center;background:none;border:0;padding:0;cursor:pointer;line-height:0}
 .heart svg{width:22px;height:22px}
 .bar-t{display:inline-block;width:4px;height:14px;border-radius:2px;margin-right:7px;vertical-align:-1px;background:var(--cb)}
@@ -754,6 +755,8 @@ function effDate(w){
 // Basta che ci siano tutte le parole cercate, in qualsiasi ordine; spazi, @ e punteggiatura non contano («pottery lab» = «@potterylab16»)
 const squash = s => s.replace(/[^a-z0-9]+/g,"");
 function matchQ(w,q){
+  // chi cerca «novità» (o «nuovi», «new») vede gli eventi appena pubblicati
+  if(/^(novita|nuov[ie]|new)$/.test(q.trim())) return isNew(w);
   const hay=norm([w.titolo,w.organizzatore,w.indirizzo,w.zona,w.comune,w.descrizione,catOf(w.categoria).label,w.fonte,w.contatto,/cuneo/i.test(w.zona||"")?"":"Turin"].filter(Boolean).join(" "));
   if(hay.includes(q)) return true;
   const flat=squash(hay), words=q.split(/\s+/).filter(Boolean);
@@ -800,6 +803,9 @@ function renderCats(){
   });
 }
 
+// campo nuovo (data di pubblicazione): etichetta «Novità» il giorno in cui l’evento esce e quello dopo
+function isNew(w){ const p=parseDate(w.nuovo); if(!p) return false; p.setDate(p.getDate()+1); return today0()<=p; }
+const newBadge = w => isNew(w) ? el("span",{class:"badge new"},"New") : null;
 function seatsBadge(w){
   const n=Number(w.posti_disponibili);
   if(w.posti_disponibili==null || w.posti_disponibili==="") return null;
@@ -845,7 +851,7 @@ function card(w){
       el("h3",{}, el("span",{class:"bar-t",title:c.label,"aria-hidden":"true"}), w.titolo||"Workshop"),
       el("div",{class:"meta"}, when),
       w.organizzatore? el("div",{class:"meta"}, "with "+w.organizzatore.replace(/ per /g," at ").replace(/ con /g," with ")):null,
-      el("div",{class:"row"}, el("span",{class:"price"},priceLabel(w)), seatsBadge(w), heart))
+      el("div",{class:"row"}, el("span",{class:"price"},priceLabel(w)), newBadge(w), seatsBadge(w), heart))
   );
   longPressShare(box, w);
   return box;
@@ -1804,6 +1810,7 @@ const WORKSHOPS = [
   "foto": "img/eventi/antro-torino-2026-10-28-1.jpg",
   "indirizzo": "Antro, Largo Saluzzo 34/E",
   "link": "https://www.instagram.com/p/DfC4oaBEXz_/",
+  "nuovo": "2026-10-29",
   "ora_inizio": "20:30",
   "organizzatore": "Isabella Sartoris per Antro",
   "prezzo": 0,
@@ -2358,6 +2365,22 @@ const WORKSHOPS = [
   "titolo": "Tropical terrarium: an ecosystem in glass",
   "zona": "Aurora",
   "id": "baonow-terrarium-2026-11-22"
+ },
+ {
+  "categoria": "pittura",
+  "contatto": "@workshop.arte.torino by DM",
+  "data": "2026-11-06",
+  "descrizione": "A few hours of watercolour with illustrator Barbara Sirtoli: choose your subject between a robin and a seagull, she prepares the drawing and the colour palette and guides you step by step. To book, write your chosen subject in the post’s comments or DM @workshop.arte.torino, who will send all the details.",
+  "fonte": "Instagram @workshop.arte.torino",
+  "foto": "img/eventi/workshop-arte-torino-2026-10-29-1.jpg",
+  "link": "https://www.instagram.com/p/DfFV9LZsGr6/",
+  "nuovo": "2026-10-29",
+  "ora_inizio": "17:00",
+  "organizzatore": "Barbara Sirtoli",
+  "tipo": "workshop",
+  "titolo": "Watercolour workshop: robin or seagull",
+  "zona": "Torino",
+  "id": "barbara-sirtoli-acquerello-2026-11-06"
  },
  {
   "categoria": "pittura",
@@ -3327,6 +3350,7 @@ const WORKSHOPS = [
   "foto": "img/eventi/camillo-quante-storie-DeOlq05tNwI.jpg",
   "indirizzo": "Circolo dei Lettori, Via Bogino 9",
   "link": "https://torino.circololettori.it/le-monellerie-di-collodi-confessioni-di-un-burattino-e-del-suo-babbo/",
+  "nuovo": "2026-10-29",
   "ora_fine": "17:30",
   "ora_inizio": "16:00",
   "organizzatore": "Claudia Bellin (Camillo quante storie) per Circolo dei Lettori",
@@ -3344,6 +3368,7 @@ const WORKSHOPS = [
   "foto": "img/eventi/camillo-quante-storie-DeOlq05tNwI.jpg",
   "indirizzo": "Circolo dei Lettori, Via Bogino 9",
   "link": "https://torino.circololettori.it/pinocchio-e-giannettino-due-monelli-a-confronto/",
+  "nuovo": "2026-10-29",
   "ora_fine": "17:30",
   "ora_inizio": "16:00",
   "organizzatore": "Claudia Bellin (Camillo quante storie) per Circolo dei Lettori",
@@ -3361,6 +3386,7 @@ const WORKSHOPS = [
   "foto": "img/eventi/camillo-quante-storie-DeOlq05tNwI.jpg",
   "indirizzo": "Circolo dei Lettori, Via Bogino 9",
   "link": "https://torino.circololettori.it/occhio-a-pinocchio/",
+  "nuovo": "2026-10-29",
   "ora_fine": "17:30",
   "ora_inizio": "16:00",
   "organizzatore": "Dario Benedetto per Circolo dei Lettori",
@@ -3378,6 +3404,7 @@ const WORKSHOPS = [
   "foto": "img/eventi/camillo-quante-storie-DeOlq05tNwI.jpg",
   "indirizzo": "Circolo dei Lettori, Via Bogino 9",
   "link": "https://torino.circololettori.it/penne-selvagge-il-gatto-la-volpe-e-il-ventre-della-balena/",
+  "nuovo": "2026-10-29",
   "ora_fine": "17:30",
   "ora_inizio": "16:00",
   "organizzatore": "Merende Selvagge per Circolo dei Lettori",
@@ -3395,6 +3422,7 @@ const WORKSHOPS = [
   "foto": "img/eventi/camillo-quante-storie-DeOlq05tNwI.jpg",
   "indirizzo": "Circolo dei Lettori, Via Bogino 9",
   "link": "https://torino.circololettori.it/penne-selvagge-la-festa-di-natale-di-collodi/",
+  "nuovo": "2026-10-29",
   "ora_fine": "17:30",
   "ora_inizio": "16:00",
   "organizzatore": "Merende Selvagge per Circolo dei Lettori",
@@ -5297,6 +5325,36 @@ const WORKSHOPS = [
   "id": "gricel-tango-weekend-2027-01-22"
  },
  {
+  "categoria": "altro",
+  "contatto": "@hiki3d by DM",
+  "data": "2026-11-21",
+  "descrizione": "A Christmas edition 3D printing workshop: design a gift box in CAD, prepare and start the print and finish the object, going through every stage from idea to finished piece. There’s a second date on 5 December. Limited places; info and booking by DM to @hiki3d.",
+  "fonte": "Instagram @hiki3d",
+  "indirizzo": "Hiki 3D Studio, Via Antonio Canova 26/B",
+  "link": "https://www.instagram.com/p/DermoGXIJFs/",
+  "nuovo": "2026-10-29",
+  "organizzatore": "Hiki3D",
+  "tipo": "workshop",
+  "titolo": "3D printing workshop: a Christmas gift box",
+  "zona": "Torino",
+  "id": "hiki3d-stampa3d-natale-2026-11-21"
+ },
+ {
+  "categoria": "altro",
+  "contatto": "@hiki3d by DM",
+  "data": "2026-12-05",
+  "descrizione": "A Christmas edition 3D printing workshop: design a gift box in CAD, prepare and start the print and finish the object, going through every stage from idea to finished piece. There’s also a date on 21 November. Limited places; info and booking by DM to @hiki3d.",
+  "fonte": "Instagram @hiki3d",
+  "indirizzo": "Hiki 3D Studio, Via Antonio Canova 26/B",
+  "link": "https://www.instagram.com/p/DermoGXIJFs/",
+  "nuovo": "2026-10-29",
+  "organizzatore": "Hiki3D",
+  "tipo": "workshop",
+  "titolo": "3D printing workshop: a Christmas gift box",
+  "zona": "Torino",
+  "id": "hiki3d-stampa3d-natale-2026-12-05"
+ },
+ {
   "categoria": "movimento",
   "comune": "Monforte d’Alba",
   "contatto": "hikingtastetour.com",
@@ -5439,6 +5497,7 @@ const WORKSHOPS = [
   "fonte": "kreativeclub.it",
   "indirizzo": "Kreative Club, Via Arvier (interno giardino Vittime di Chernobyl)",
   "link": "https://kreativeclub.it/pacchetti",
+  "nuovo": "2026-10-29",
   "organizzatore": "Kreative Club",
   "prezzo": 30,
   "su_prenotazione": true,
@@ -5453,6 +5512,7 @@ const WORKSHOPS = [
   "fonte": "kreativeclub.it",
   "indirizzo": "Kreative Club, Via Arvier (interno giardino Vittime di Chernobyl)",
   "link": "https://kreativeclub.it/pacchetti",
+  "nuovo": "2026-10-29",
   "organizzatore": "Edoardo Cipollaro per Kreative Club",
   "prezzo": 60,
   "prezzo_per": "per lesson",
@@ -5469,6 +5529,7 @@ const WORKSHOPS = [
   "fonte": "kreativeclub.it",
   "indirizzo": "Kreative Club, Via Arvier (interno giardino Vittime di Chernobyl)",
   "link": "https://kreativeclub.it/pacchetti",
+  "nuovo": "2026-10-29",
   "organizzatore": "Kreative Club",
   "prezzo": 139,
   "prezzo_per": "for 6 lessons",
@@ -5484,6 +5545,7 @@ const WORKSHOPS = [
   "fonte": "kreativeclub.it",
   "indirizzo": "Kreative Club, Via Arvier (interno giardino Vittime di Chernobyl)",
   "link": "https://kreativeclub.it/pacchetti",
+  "nuovo": "2026-10-29",
   "organizzatore": "Kreative Club",
   "prezzo": 119,
   "prezzo_per": "for 6 lessons",
@@ -5499,6 +5561,7 @@ const WORKSHOPS = [
   "fonte": "kreativeclub.it",
   "indirizzo": "Kreative Club, Via Arvier (interno giardino Vittime di Chernobyl)",
   "link": "https://kreativeclub.it/corsi",
+  "nuovo": "2026-10-29",
   "organizzatore": "Kreative Club",
   "prezzo": 30,
   "prezzo_per": "per lesson",
@@ -5514,6 +5577,7 @@ const WORKSHOPS = [
   "fonte": "kreativeclub.it",
   "indirizzo": "Kreative Club, Via Arvier (interno giardino Vittime di Chernobyl)",
   "link": "https://kreativeclub.it/corsi",
+  "nuovo": "2026-10-29",
   "organizzatore": "Kreative Club",
   "prezzo": 25,
   "prezzo_per": "per lesson",
@@ -5529,6 +5593,7 @@ const WORKSHOPS = [
   "fonte": "kreativeclub.it",
   "indirizzo": "Kreative Club, Via Arvier (interno giardino Vittime di Chernobyl)",
   "link": "https://kreativeclub.it/pacchetti",
+  "nuovo": "2026-10-29",
   "organizzatore": "Kreative Club",
   "prezzo": 129,
   "prezzo_per": "for 6 lessons",
@@ -5916,6 +5981,7 @@ const WORKSHOPS = [
   "foto": "img/eventi/maniera-factory-2026-09-11-3.jpg",
   "indirizzo": "Maniera Factory, Via Sant’Ottavio 45A",
   "link": "https://www.instagram.com/p/Dd5xINjuv69/",
+  "nuovo": "2026-10-29",
   "organizzatore": "Maccu per Maniera Factory",
   "prezzo": 45,
   "tipo": "workshop",
@@ -5932,6 +5998,7 @@ const WORKSHOPS = [
   "foto": "img/eventi/maniera-factory-2026-09-11-3.jpg",
   "indirizzo": "Maniera Factory, Via Sant’Ottavio 45A",
   "link": "https://www.instagram.com/p/Dd5xINjuv69/",
+  "nuovo": "2026-10-29",
   "organizzatore": "Maccu per Maniera Factory",
   "prezzo": 45,
   "tipo": "workshop",
@@ -5948,6 +6015,7 @@ const WORKSHOPS = [
   "foto": "img/eventi/maniera-factory-2026-09-11-3.jpg",
   "indirizzo": "Maniera Factory, Via Sant’Ottavio 45A",
   "link": "https://www.instagram.com/p/Dd5xINjuv69/",
+  "nuovo": "2026-10-29",
   "organizzatore": "Maccu per Maniera Factory",
   "prezzo": 45,
   "tipo": "workshop",
@@ -5963,6 +6031,7 @@ const WORKSHOPS = [
   "foto": "img/eventi/maniera-factory-2026-09-11-3.jpg",
   "indirizzo": "Maniera Factory, Via Sant’Ottavio 45A",
   "link": "https://docs.google.com/forms/d/1so0ZKfV5s8i7HHLUXLEbXaVkjsjPn77sLSugBFg_Fc0/viewform",
+  "nuovo": "2026-10-29",
   "ora_fine": "20:30",
   "ora_inizio": "18:30",
   "organizzatore": "Ceramiche Musso per Maniera Factory",
@@ -5980,6 +6049,7 @@ const WORKSHOPS = [
   "foto": "img/eventi/maniera-factory-2026-09-11-3.jpg",
   "indirizzo": "Maniera Factory, Via Sant’Ottavio 45A",
   "link": "https://docs.google.com/forms/d/1UpmcDkARE1qv2GVRdmdz3cKXO6UDX8wgYENO_nrGEjc/viewform",
+  "nuovo": "2026-10-29",
   "organizzatore": "Ceramiche Musso per Maniera Factory",
   "prezzo": 45,
   "prezzo_per": "per lesson",
@@ -6071,6 +6141,7 @@ const WORKSHOPS = [
   "foto": "img/eventi/il-melograno-cuneo-2026-10-28-2.jpg",
   "indirizzo": "Casa delle Generazioni, Via Valle Po 210, Madonna dell’Olmo",
   "link": "https://www.instagram.com/p/DfCGmf6BADm/",
+  "nuovo": "2026-10-29",
   "ora_fine": "20:30",
   "ora_inizio": "18:30",
   "organizzatore": "Cooperativa Il Melograno",
@@ -6149,6 +6220,7 @@ const WORKSHOPS = [
   "foto": "img/eventi/il-melograno-cuneo-2026-10-28-1.jpg",
   "indirizzo": "Officina111, Piazza Maggiore 3 (Mondovì Piazza)",
   "link": "https://www.instagram.com/p/DfCL6uWh62K/",
+  "nuovo": "2026-10-29",
   "ora_fine": "11:30",
   "ora_inizio": "09:30",
   "organizzatore": "Cooperativa Il Melograno",
@@ -6478,6 +6550,7 @@ const WORKSHOPS = [
   "foto": "img/eventi/nikin-house-2026-10-27-1.jpg",
   "indirizzo": "Nikin House, Piazza Europa 15",
   "link": "https://www.instagram.com/p/DfAqbPGsf34/",
+  "nuovo": "2026-10-29",
   "ora_inizio": "18:30",
   "organizzatore": "Nikin House",
   "prezzo": 35,
@@ -6772,6 +6845,7 @@ const WORKSHOPS = [
   "foto": "img/eventi/openlab573-2026-09-21-6.jpg",
   "indirizzo": "Openlab573, Via Petrarca 12/a",
   "link": "https://www.instagram.com/p/DdjSpinDbhp/",
+  "nuovo": "2026-10-29",
   "organizzatore": "Openlab573",
   "su_prenotazione": true,
   "tipo": "corso",
@@ -7371,6 +7445,7 @@ const WORKSHOPS = [
   "fonte": "Instagram @pottery_lab",
   "indirizzo": "Pottery Lab, Via Principe Tommaso 2bis",
   "link": "https://www.instagram.com/p/DfCI5ZPt0Iq/",
+  "nuovo": "2026-10-29",
   "ora_fine": "17:30",
   "ora_inizio": "15:00",
   "organizzatore": "Pottery Lab",
@@ -8285,6 +8360,7 @@ const WORKSHOPS = [
   "foto": "img/eventi/camillo-quante-storie-DfE-efwOuHb.jpg",
   "indirizzo": "Atelier Sassi, Via Berthollet 25C",
   "link": "https://www.instagram.com/p/DfE-efwOuHb/",
+  "nuovo": "2026-10-29",
   "ora_fine": "12:00",
   "ora_inizio": "10:30",
   "organizzatore": "Claudia Bellin (Camillo quante storie) per Sassi",
@@ -8316,6 +8392,7 @@ const WORKSHOPS = [
   "foto": "img/eventi/scialaba-jewels-2026-10-29-1.jpg",
   "indirizzo": "Via Goffredo Casalis 61",
   "link": "https://www.instagram.com/p/DfFDGTeRChb/",
+  "nuovo": "2026-10-29",
   "ora_inizio": "17:00",
   "organizzatore": "Scialabà",
   "prezzo": 50,
@@ -8347,6 +8424,7 @@ const WORKSHOPS = [
   "foto": "img/eventi/scialaba-jewels-2026-10-29-1.jpg",
   "indirizzo": "Via Goffredo Casalis 61",
   "link": "https://www.instagram.com/p/DfFDGTeRChb/",
+  "nuovo": "2026-10-29",
   "ora_inizio": "17:00",
   "organizzatore": "Scialabà",
   "prezzo": 55,
@@ -8480,6 +8558,7 @@ const WORKSHOPS = [
   "fonte": "scbproject.it",
   "indirizzo": "Villaggio Leumann",
   "link": "https://www.scbproject.it/chi-siamo/materia-escursioni/",
+  "nuovo": "2026-10-29",
   "ora_fine": "13:00",
   "ora_inizio": "10:00",
   "organizzatore": "Solo Cose Belle",
@@ -9561,6 +9640,7 @@ const WORKSHOPS = [
   "fonte": "Instagram @torino_socialknitting",
   "indirizzo": "Casa del Quartiere di San Salvario, Via Oddino Morgari 14",
   "link": "https://www.instagram.com/p/DfEvebaib_0/",
+  "nuovo": "2026-10-29",
   "ora_fine": "19:00",
   "ora_inizio": "15:00",
   "organizzatore": "Torino Social Knitting",
@@ -9577,6 +9657,7 @@ const WORKSHOPS = [
   "fonte": "Instagram @torino_socialknitting",
   "indirizzo": "Casa del Quartiere di San Salvario, Via Oddino Morgari 14",
   "link": "https://www.instagram.com/p/DfEvebaib_0/",
+  "nuovo": "2026-10-29",
   "ora_fine": "19:00",
   "ora_inizio": "15:00",
   "organizzatore": "Torino Social Knitting",
@@ -9593,6 +9674,7 @@ const WORKSHOPS = [
   "fonte": "Instagram @torino_socialknitting",
   "indirizzo": "BlaBlanche Lab, Via Beaulard 74c",
   "link": "https://www.instagram.com/p/DfEvebaib_0/",
+  "nuovo": "2026-10-29",
   "ora_fine": "19:00",
   "ora_inizio": "15:00",
   "organizzatore": "Torino Social Knitting",
