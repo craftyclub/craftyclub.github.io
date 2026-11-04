@@ -505,7 +505,7 @@ html.embed,html.embed body{background:transparent!important}html.embed body>*:no
     </div>
     <nav class="seo-links" aria-label="Workshop per zona e categoria">
       <div><h3>Per zona</h3><ul><li><a href="torino/">Torino</a></li><li><a href="provincia-di-torino/">Provincia di Torino</a></li><li><a href="cuneo/">Cuneo</a></li><li><a href="provincia-di-cuneo/">Provincia di Cuneo</a></li></ul></div>
-      <div><h3>Per categoria</h3><ul><li><a href="ceramica/">Ceramica</a></li><li><a href="pittura/">Pittura e scrittura</a></li><li><a href="stampa/">Stampa</a></li><li><a href="tessile/">Tessile</a></li><li><a href="gioielli/">Gioielli</a></li><li><a href="piante/">Piante</a></li><li><a href="cucina/">Cucina</a></li><li><a href="degustazioni/">Degustazioni</a></li><li><a href="musica-e-teatro/">Musica e teatro</a></li><li><a href="movimento/">Movimento</a></li><li><a href="giochi/">Giochi</a></li><li><a href="per-famiglie/">Per famiglie</a></li><li><a href="altro/">Altro</a></li></ul></div>
+      <div><h3>Per categoria</h3><ul><li><a href="ceramica/">Ceramica</a></li><li><a href="pittura/">Pittura</a></li><li><a href="scrittura/">Scrittura</a></li><li><a href="stampa/">Stampa</a></li><li><a href="tessile/">Tessile</a></li><li><a href="gioielli/">Gioielli</a></li><li><a href="piante/">Piante</a></li><li><a href="cucina/">Cucina</a></li><li><a href="degustazioni/">Degustazioni</a></li><li><a href="musica-e-teatro/">Musica e teatro</a></li><li><a href="movimento/">Movimento</a></li><li><a href="giochi/">Giochi</a></li><li><a href="per-famiglie/">Per famiglie</a></li><li><a href="altro/">Altro</a></li></ul></div>
       <div><h3>Per organizzatore</h3><ul><li><a href="organizzatori/">Laboratori, atelier e artigiani</a></li></ul></div>
     </nav>
     <div class="sf-bottom">© 2026 The Crafty Club · Torino, tutti i workshop in un posto solo.</div>
@@ -536,7 +536,8 @@ html.embed,html.embed body{background:transparent!important}html.embed body>*:no
 <script>
 const CATS = [
   {id:"ceramica", label:"Ceramica", em:"🏺", c:"#FFE2CF", b:"#FF9029"},
-  {id:"pittura", label:"Pittura e scrittura", em:"🎨", c:"#E7DEFF", b:"#9160F0"},
+  {id:"pittura", label:"Pittura", em:"🎨", c:"#E7DEFF", b:"#9160F0"},
+  {id:"scrittura", label:"Scrittura", em:"✒️", c:"#D9F3EA", b:"#3FB58F"},
   {id:"fiori", label:"Piante", em:"🌸", c:"#E2F5D8", b:"#5DBB63"},
   {id:"stampa", label:"Stampa", em:"🖨️", c:"#DCE8FF", b:"#3A73E6"},
   {id:"gioielli", label:"Gioielli", em:"💍", c:"#E0F6F9", b:"#1FB5CC"},
@@ -637,10 +638,12 @@ const ICONS = {
     ['<circle cx="256" cy="280" r="152" fill="%c"/>',"#3CC98F","#2CB07A"],
     ['<path d="M150 190c80 30 170 110 195 210M120 270c80 0 160 60 180 150M210 140c70 40 150 90 185 160" stroke="%c" stroke-width="14" stroke-linecap="round" fill="none"/>',"#8CE6BE","#6FD6A8"]
   ],
-  carta:[
+  scrittura:[
     ['<path d="M124 34h196l100 100v324c0 13-11 24-24 24H124c-13 0-24-11-24-24V58c0-13 11-24 24-24z" fill="%c"/>',"#FFF6E5","#F2E2CC"],
     ['<path d="M320 34v76c0 13 11 24 24 24h76z" fill="%c"/>',"#E3CFA8","#D2BB8F"],
-    ['<rect x="150" y="196" width="212" height="20" rx="10"/><rect x="150" y="252" width="212" height="20" rx="10"/><rect x="150" y="308" width="212" height="20" rx="10"/><rect x="150" y="364" width="132" height="20" rx="10"/>'.replace(/\/>/g,' fill="%c"/>'),"#7FD3B6","#5CC09E"]
+    ['<rect x="150" y="196" width="212" height="20" rx="10"/><rect x="150" y="252" width="212" height="20" rx="10"/><rect x="150" y="308" width="212" height="20" rx="10"/><rect x="150" y="364" width="132" height="20" rx="10"/>'.replace(/\/>/g,' fill="%c"/>'),"#7FD3B6","#5CC09E"],
+    ['<g transform="translate(400 330) rotate(35)"><rect x="-26" y="-150" width="52" height="190" rx="8" fill="%c"/></g>',"#5CC09E","#3FB58F"],
+    ['<g transform="translate(400 330) rotate(35)"><path d="M-26 38h52l-26 60z" fill="%c"/></g>',"#3B2E58","#2A1E40"]
   ],
   cucina:[
     ['<rect x="38" y="252" width="436" height="34" rx="17" fill="%c"/>',"#8B4434","#76362D"],
@@ -1916,7 +1919,7 @@ const WORKSHOPS = [
   "id": "antro-archeologie-divenire-2026-11-03"
  },
  {
-  "categoria": "pittura",
+  "categoria": "scrittura",
   "contatto": "@antro_torino",
   "data_da_confermare": true,
   "descrizione": "Un laboratorio di scrittura creativa in nove incontri mensili, di sabato mattina: si scrive sul quaderno che danno gli organizzatori, tra spunti di lettura e condivisione facoltativa ad alta voce, senza bisogno di essere già bravi. Massimo 12 persone; basta portare una penna. Gratis con la tessera di Antro, prenotazione dal link in bio di @antro_torino.",
@@ -1933,7 +1936,7 @@ const WORKSHOPS = [
   "id": "antro-quaderno-scrittura"
  },
  {
-  "categoria": "pittura",
+  "categoria": "scrittura",
   "contatto": "@antro_torino",
   "data_da_confermare": true,
   "descrizione": "Un ciclo di quattro incontri di due ore per scrivere a partire dai propri ricordi e dalle proprie radici: uno stimolo narrativo, mezz’ora abbondante di scrittura libera e poi lettura facoltativa in gruppo. Ci si iscrive a tutto il ciclo, massimo 15 persone, con carta e penna. Gratis con la tessera di Antro, prenotazione dal link in bio di @antro_torino.",
@@ -2228,7 +2231,7 @@ const WORKSHOPS = [
   "id": "bagnipubblici-sartoria-2026-10-14"
  },
  {
-  "categoria": "pittura",
+  "categoria": "scrittura",
   "contatto": "Bagni Pubblici, 011 553 3938",
   "data": "2026-10-16",
   "data_fine": "2027-05-28",
@@ -3114,7 +3117,7 @@ const WORKSHOPS = [
   "id": "bunker-produzione-musicale"
  },
  {
-  "categoria": "pittura",
+  "categoria": "scrittura",
   "descrizione": "Un laboratorio che usa la scrittura per osservare le piccole dinamiche di tutti i giorni: ogni settimana si scrive un testo su una traccia e lo si legge insieme, in un gruppo raccolto e senza giudizi. Il percorso è di 8 incontri e costa 100 € in tutto. Preiscrizione sul sito del Bunker.",
   "fonte": "variantebunker.com",
   "foto": "img/eventi/bunker-scrittura-creativa.jpg",
@@ -3301,7 +3304,7 @@ const WORKSHOPS = [
   "id": "casanelparco-chitarra-bambini"
  },
  {
-  "categoria": "pittura",
+  "categoria": "scrittura",
   "contatto": "giuliettavs@hotmail.it",
   "data_da_confermare": true,
   "descrizione": "Un corso di scrittura creativa in cinque incontri settimanali di un’ora e mezza per imparare a costruire e raccontare una storia; il ciclo si può ripetere. Iscrizioni a giuliettavs@hotmail.it.",
@@ -3455,6 +3458,7 @@ const WORKSHOPS = [
  {
   "altre_categorie": [
    "pittura",
+   "scrittura",
    "tessile",
    "ceramica",
    "musica",
@@ -3623,6 +3627,9 @@ const WORKSHOPS = [
   "id": "circololettori-occhio-a-pinocchio-2026-11-21"
  },
  {
+  "altre_categorie": [
+   "scrittura"
+  ],
   "categoria": "famiglia",
   "data": "2026-12-05",
   "descrizione": "Un laboratorio di scrittura per bambini dai 7 agli 11 anni: si smonta una delle Storie Allegre di Collodi per capirne la struttura e si costruisce insieme il racconto di Natale perfetto. Fa parte dei laboratori per bambini dedicati ai 200 anni di Collodi. Prenotazione obbligatoria allo 011 890 4401 o a info@circololettori.it.",
@@ -3658,6 +3665,9 @@ const WORKSHOPS = [
   "id": "cookandwalk-pasta-tiramisu"
  },
  {
+  "altre_categorie": [
+   "scrittura"
+  ],
   "categoria": "altro",
   "data": "2026-11-25",
   "descrizione": "Un incontro di Approdo Poetico Torino per leggere, ascoltare e commentare poesia: si parte dai versi di autrici e autori noti e poi chi vuole condivide una poesia propria o amata, senza competizione né giudizio. Si può venire anche solo ad ascoltare; ingresso libero con donazione facoltativa per lo spazio.",
@@ -3926,7 +3936,7 @@ const WORKSHOPS = [
   "id": "creaarti-glass-painting-vini-2026-11-22"
  },
  {
-  "categoria": "pittura",
+  "categoria": "scrittura",
   "contatto": "Atelier Crea-Arti su WhatsApp, +39 351 401 4496",
   "data": "2026-12-19",
   "descrizione": "Un workshop di lettering con Barbara Serafino per scoprire diversi stili di scrittura a mano, provare pennini e tecniche e preparare biglietti d’auguri e dettagli per Natale. Materiali inclusi, circa due ore e mezza. Posti limitati; info e prenotazioni su WhatsApp al 351 401 4496.",
@@ -5842,7 +5852,7 @@ const WORKSHOPS = [
   "id": "kreativeclub-cucito"
  },
  {
-  "categoria": "pittura",
+  "categoria": "scrittura",
   "descrizione": "Un pacchetto di sei lezioni di lettering per adulti, senza abbonamento. Il corso parte al raggiungimento del numero minimo di iscritti; ci si iscrive in sede o su kreativeclub.it.",
   "fonte": "kreativeclub.it",
   "indirizzo": "Kreative Club, Via Arvier (interno giardino Vittime di Chernobyl)",
@@ -6806,7 +6816,7 @@ const WORKSHOPS = [
   "id": "melograno-fumettiamo-2026-11-04"
  },
  {
-  "categoria": "pittura",
+  "categoria": "scrittura",
   "comune": "Mondovì",
   "contatto": "labs@ilmelogranocuneo.it o allo 0171 697955",
   "data": "2026-11-14",
@@ -6947,6 +6957,9 @@ const WORKSHOPS = [
   "id": "mercatocentrale-cucina-coreana-2026-11-14"
  },
  {
+  "altre_categorie": [
+   "scrittura"
+  ],
   "categoria": "altro",
   "contatto": "link in bio di @ilmercatocentraletorino",
   "data": "2026-11-14",
@@ -7036,7 +7049,7 @@ const WORKSHOPS = [
   "id": "moscabianca-linoleum"
  },
  {
-  "categoria": "pittura",
+  "categoria": "scrittura",
   "contatto": "m.storyteller_lab@outlook.it",
   "descrizione": "Un corso di scrittura creativa per principianti con Martina, da ottobre a dicembre: esercizi di scrittura, letture e giochi in un gruppo accogliente e senza giudizio. Ogni lezione è a offerta libera; info e iscrizioni in DM a @mstoryteller_lab o a m.storyteller_lab@outlook.it.",
   "fonte": "Instagram @mstoryteller_lab",
@@ -7608,7 +7621,8 @@ const WORKSHOPS = [
  },
  {
   "altre_categorie": [
-   "famiglia"
+   "famiglia",
+   "scrittura"
   ],
   "categoria": "pittura",
   "contatto": "novelacademy.it",
@@ -8758,7 +8772,7 @@ const WORKSHOPS = [
   "id": "progetto-slip-circo"
  },
  {
-  "categoria": "pittura",
+  "categoria": "scrittura",
   "contatto": "@_psico.lab in DM",
   "data": "2026-11-04",
   "descrizione": "Un laboratorio esperienziale condotto da tre psicologhe che usano tecniche creative e strumenti artistici per esplorare emozioni e pensieri e condividerli in gruppo. Iscrizione con il modulo nel link in bio di @_psico.lab; entro il 28 ottobre costa 25 € invece di 30 €.",
@@ -9430,7 +9444,7 @@ const WORKSHOPS = [
   "id": "rosine-cake-design-bambini"
  },
  {
-  "categoria": "pittura",
+  "categoria": "scrittura",
   "contatto": "Polo Le Rosine su WhatsApp, +39 334 749 6371",
   "descrizione": "Un incontro di due ore a settimana con il calligrafo Enrico Graziano: postura, impugnatura e strumenti (pennini, inchiostri, brush pen), poi cancelleresca, corsivo inglese e gotica, fino alla calligrafia artistica. Per ragazzi e adulti, principianti o con esperienza. Iscrizioni aperte tutto l’anno; giorni, orari e prezzi su WhatsApp al 334 749 6371.",
   "fonte": "lerosine.it",
@@ -9446,7 +9460,7 @@ const WORKSHOPS = [
   "id": "rosine-calligrafia"
  },
  {
-  "categoria": "pittura",
+  "categoria": "scrittura",
   "contatto": "Polo Le Rosine su WhatsApp, +39 334 749 6371",
   "data_da_confermare": true,
   "descrizione": "Una giornata con Enrico Graziano sulle regole del corsivo inglese e sul chiaroscuro del pennino a intinzione, con pausa pranzo libera dalle 13 alle 14. Il materiale lo fornisce il Polo, così si può continuare a esercitarsi a casa; al massimo 12 persone. Le date si fissano quando si raggiunge il numero minimo di iscritti: info e prenotazioni su WhatsApp al 334 749 6371.",
@@ -11531,7 +11545,7 @@ const WORKSHOPS = [
   "id": "velvet-block-party-2026-11-07"
  },
  {
-  "categoria": "pittura",
+  "categoria": "scrittura",
   "data": "2026-11-10",
   "data_fine": "2026-11-24",
   "descrizione": "Tre serate con Noemi Venturino, il 10, il 17 e il 24 novembre, per andare oltre le basi della calligrafia moderna e trovare il proprio stile con il pennino, settimana dopo settimana. Va bene anche per chi inizia; si può prenotare una sola lezione (25 €) o tutto il corso (60 €). In italiano e inglese; si prenota con il modulo nel link in bio di @velvetruffleriot.",
