@@ -548,7 +548,7 @@ const CATS = [
   {id:"famiglia", label:"For families", em:"🧸", c:"#F4E6DA", b:"#B07445"},
   {id:"altro", label:"Other", em:"✨", c:"#ECE6FF", b:"#7B5CE0"}
 ];
-// luoghi: nel pannello Filtri si scelgono uno o più tra Torino, Provincia di Torino, Cuneo, Provincia di Cuneo (nessuno = ovunque)
+// luoghi: nel pannello Filtri si scelgono uno o più tra Torino, Provincia di Torino, Cuneo, Provincia di Cuneo, Biella e provincia (nessuno = ovunque)
 const REGIONS = [
   {id:"all", label:"Anywhere", short:"Anywhere", where:""},
   {id:"to", label:"Turin and province", short:"Turin", where:"in Turin and province", parti:["tc","pto"]},
@@ -556,26 +556,27 @@ const REGIONS = [
   {id:"tc", label:"Turin", short:"Turin", where:"in Turin"},
   {id:"pto", label:"Province of Turin", short:"Prov. Turin", where:"in the province of Turin"},
   {id:"cc", label:"Cuneo", short:"Cuneo", where:"in Cuneo"},
-  {id:"pcn", label:"Province of Cuneo", short:"Prov. Cuneo", where:"in the province of Cuneo"}
+  {id:"pcn", label:"Province of Cuneo", short:"Prov. Cuneo", where:"in the province of Cuneo"},
+  {id:"bi", label:"Biella and province", short:"Biella", where:"in Biella and province"}
 ];
 const AREE = REGIONS.filter(r=>["all","to","cn"].includes(r.id));
-const LUOGHI = ["all","tc","pto","cc","pcn"].map(id=>REGIONS.find(r=>r.id===id));
+const LUOGHI = ["all","tc","pto","cc","pcn","bi"].map(id=>REGIONS.find(r=>r.id===id));
 // luogo preciso dell'evento dal campo zona (qualsiasi altro valore = Torino città)
-const regionOf = w => ({"Provincia di Torino":"pto","Cuneo":"cc","Provincia di Cuneo":"pcn"})[w.zona] || "tc";
+const regionOf = w => ({"Provincia di Torino":"pto","Cuneo":"cc","Provincia di Cuneo":"pcn","Biella":"bi","Provincia di Biella":"bi"})[w.zona] || "tc";
 const regionById = id => REGIONS.find(r=>r.id===id) || REGIONS[1];
 // etichetta del luogo: "San Salvario (TO)", "Cuneo (CN)", in provincia il comune: "Pinerolo (TO)", "Fossano (CN)"
-const SIGLA = {"Provincia di Torino":"TO","Cuneo":"CN","Provincia di Cuneo":"CN"};
-const zonaLabel = w => !w.zona ? "" : w.zona==="Torino" ? "Turin" : SIGLA[w.zona] ? `${w.zona==="Cuneo" ? "Cuneo" : (w.comune||w.zona)} (${SIGLA[w.zona]})` : `${w.zona} (TO)`;
+const SIGLA = {"Provincia di Torino":"TO","Cuneo":"CN","Provincia di Cuneo":"CN","Biella":"BI","Provincia di Biella":"BI"};
+const zonaLabel = w => !w.zona ? "" : w.zona==="Torino" ? "Turin" : SIGLA[w.zona] ? `${["Cuneo","Biella"].includes(w.zona) ? w.zona : (w.comune||w.zona)} (${SIGLA[w.zona]})` : `${w.zona} (TO)`;
 const inRegion = w => !state.places.length || state.places.includes(regionOf(w));
 // testo per il titolo della lista: "a Torino e provincia", "a Cuneo", "nelle zone scelte"…
 function placesWhere(){
   const P=[...state.places].sort().join(",");
-  if(!P || P==="cc,pcn,pto,tc") return "";
+  if(!P || P==="bi,cc,pcn,pto,tc") return "";
   const map={"pto,tc":"in Turin and province","cc,pcn":"in Cuneo and province"};
   if(map[P]) return map[P];
   if(state.places.length===1) return regionById(state.places[0]).where;
-  const nomi={tc:"Turin",pto:"the province of Turin",cc:"Cuneo",pcn:"the province of Cuneo"};
-  const l=["tc","pto","cc","pcn"].filter(x=>state.places.includes(x)).map(x=>nomi[x]);
+  const nomi={tc:"Turin",pto:"the province of Turin",cc:"Cuneo",pcn:"the province of Cuneo",bi:"Biella and province"};
+  const l=["tc","pto","cc","pcn","bi"].filter(x=>state.places.includes(x)).map(x=>nomi[x]);
   return "in "+l.slice(0,-1).join(", ")+" and "+l[l.length-1];
 }
 // all'apertura la zona è Torino (città e provincia); la scelta non viene ricordata tra una visita e l'altra
@@ -1031,7 +1032,7 @@ function openFilters(){
     el("h4",{},"Place"), optGroup(LUOGHI.map(r=>({v:r.id,l:r.label})), it=>it.v==="all" ? !draft.places.length : draft.places.includes(it.v), it=>{
       if(it.v==="all"){ draft.places=[]; return; }
       const i=draft.places.indexOf(it.v); i>=0 ? draft.places.splice(i,1) : draft.places.push(it.v);
-      if(draft.places.length===4) draft.places=[];
+      if(draft.places.length===LUOGHI.length-1) draft.places=[];
     }),
     el("h4",{},"When"), optGroup([...WHENS,{v:"cal",l:"Pick on the calendar"}], it=>it.v==="cal" ? ["pick","range"].includes(draft.when) : draft.when===it.v, it=>{ draft.when = it.v==="cal" ? calMode : it.v; calBox.hidden = it.v!=="cal"; }), calBox,
     el("h4",{},"Type"), optGroup(TIPI, it=>draft.tipo===it.v, it=>draft.tipo=it.v),
@@ -1899,6 +1900,23 @@ const WORKSHOPS = [
  },
  {
   "categoria": "scrittura",
+  "contatto": "@gaa_aab_collage by DM",
+  "data": "2026-11-15",
+  "descrizione": "An afternoon of collage with artist Gabriella Saiello to compose «visual oracles», images to question and interpret. No drawing skills needed; info and sign-up via the bio link of @gaa_aab_collage.",
+  "fonte": "Instagram @gaa_aab_collage",
+  "foto": "img/eventi/gaa-aab-collage-oracoli.jpg",
+  "link": "https://www.instagram.com/p/DfcLkhYi9jc/",
+  "nuovo": "2026-11-09",
+  "ora_fine": "17:30",
+  "ora_inizio": "15:30",
+  "organizzatore": "Gabriella Saiello per Antro",
+  "tipo": "workshop",
+  "titolo": "Visual oracles: collage workshop",
+  "zona": "Torino",
+  "id": "antro-oracoli-visivi-2026-11-15"
+ },
+ {
+  "categoria": "scrittura",
   "contatto": "@antro_torino",
   "data_da_confermare": true,
   "descrizione": "A creative writing workshop over nine monthly sessions on Saturday mornings: you write in a notebook provided by the organisers, with reading prompts and the option to share aloud – no need to be a seasoned writer. Maximum 12 people; just bring a pen. Free with the Antro membership card; book via the link in bio of @antro_torino.",
@@ -2012,6 +2030,40 @@ const WORKSHOPS = [
   "titolo": "Tricotin & Brunch: a knitted placemat",
   "zona": "Centro",
   "id": "aperipods-tricotin-brunch-2026-11-22"
+ },
+ {
+  "categoria": "pittura",
+  "data": "2026-11-17",
+  "descrizione": "With painter Beatrice you paint two Christmas baubles and decorate them with bows and ribbons, to hang on the tree or give as a gift; then a toast together. The price includes the aperitivo and materials; booking required by email to aperitivoartistico10100@gmail.com.",
+  "fonte": "Instagram @aperitivoartistico",
+  "foto": "img/eventi/aperitivoartistico-palline-natale.jpg",
+  "indirizzo": "Torteria Bistrò, Piazza Santa Marta",
+  "link": "https://www.instagram.com/p/Dfh5m5HDIqW/",
+  "nuovo": "2026-11-09",
+  "ora_fine": "21:30",
+  "ora_inizio": "19:00",
+  "organizzatore": "Aperitivo Artistico",
+  "prezzo": 35,
+  "tipo": "workshop",
+  "titolo": "Aperitivo Artistico: Christmas baubles",
+  "zona": "Biella",
+  "id": "aperitivoartistico-palline-natale-2026-11-17"
+ },
+ {
+  "categoria": "pittura",
+  "data": "2026-11-28",
+  "descrizione": "An evening painting a canvas together, guided by painter Beatrice in her new studio, in collaboration with Hangar Biella. It is for school and university students only; sign up with the form in the bio link of @aperitivoartistico.",
+  "fonte": "Instagram @aperitivoartistico",
+  "foto": "img/eventi/aperitivoartistico-studenti.jpg",
+  "indirizzo": "Studio di Beatrice, Via della Repubblica 40b",
+  "link": "https://www.instagram.com/p/DfM_bhsjDrx/",
+  "nuovo": "2026-11-09",
+  "organizzatore": "Aperitivo Artistico",
+  "prezzo": 27,
+  "tipo": "workshop",
+  "titolo": "Aperitivo Artistico: canvas for students",
+  "zona": "Biella",
+  "id": "aperitivoartistico-studenti-2026-11-28"
  },
  {
   "categoria": "ceramica",
@@ -3058,6 +3110,42 @@ const WORKSHOPS = [
   "id": "carillon-orecchini-2026-11-21"
  },
  {
+  "categoria": "fiori",
+  "comune": "Boves",
+  "data": "2026-11-25",
+  "descrizione": "With Esmeralda – Officina dei Fiori you put together an Advent centrepiece with candles and natural decorations to take home for the Christmas table. The workshop comes with an aperitivo; places are limited, book on 392 3555506.",
+  "fonte": "Instagram @tenutacarpediem",
+  "foto": "img/eventi/carpediem-centrotavola-avvento.jpg",
+  "indirizzo": "Tenuta Carpe Diem, Via Tetti Cavalot 13",
+  "link": "https://www.instagram.com/p/DfW9zxmuwUG/",
+  "nuovo": "2026-11-09",
+  "ora_inizio": "19:30",
+  "organizzatore": "Esmeralda Officina dei Fiori per Tenuta Carpe Diem",
+  "prezzo": 45,
+  "tipo": "workshop",
+  "titolo": "Atelier della Tenuta: Advent centrepiece",
+  "zona": "Provincia di Cuneo",
+  "id": "carpediem-centrotavola-avvento-2026-11-25"
+ },
+ {
+  "categoria": "fiori",
+  "comune": "Boves",
+  "data": "2026-11-18",
+  "descrizione": "With Esmeralda – Officina dei Fiori you make a Christmas wreath with natural decorations to take home. The workshop comes with an aperitivo; places are limited, book on 392 3555506.",
+  "fonte": "Instagram @tenutacarpediem",
+  "foto": "img/eventi/carpediem-ghirlanda-natale.jpg",
+  "indirizzo": "Tenuta Carpe Diem, Via Tetti Cavalot 13",
+  "link": "https://www.instagram.com/p/DfVMBvAuP5-/",
+  "nuovo": "2026-11-09",
+  "ora_inizio": "19:30",
+  "organizzatore": "Esmeralda Officina dei Fiori per Tenuta Carpe Diem",
+  "prezzo": 45,
+  "tipo": "workshop",
+  "titolo": "Atelier della Tenuta: Christmas wreath",
+  "zona": "Provincia di Cuneo",
+  "id": "carpediem-ghirlanda-natale-2026-11-18"
+ },
+ {
   "categoria": "degustazioni",
   "comune": "Chieri",
   "contatto": "martini.com",
@@ -3360,6 +3448,7 @@ const WORKSHOPS = [
   "contatto": "circoemisferio@gmail.com",
   "descrizione": "A movement and body-exploration course for women: through movement, listening and relationship exercises you use your body to express yourself and tell your story. Pay what you like; info at circoemisferio@gmail.com.",
   "fonte": "cecchipoint.it",
+  "foto": "img/eventi/cecchipoint-corpi-che-raccontano.jpg",
   "indirizzo": "Cecchi Point, Via Antonio Cecchi 17",
   "link": "https://www.cecchipoint.it/corpi-che-raccontano-sara-lomanto/",
   "nuovo": "2026-11-09",
@@ -3465,6 +3554,7 @@ const WORKSHOPS = [
   "contatto": "Makako on WhatsApp, +39 391 332 2273",
   "descrizione": "Aerial circus classes for all levels in the Cecchi Point gym: on Mondays and Wednesdays aerial dance 6–8 pm and aerial disciplines (trapeze, silks, hoop, rope) 8–10 pm, on Tuesdays silks and flexibility from 8:30 pm. On Thursdays there is a creative circus lab for those with aerial experience. Info and booking on WhatsApp or by text at 391 332 2273.",
   "fonte": "cecchipoint.it",
+  "foto": "img/eventi/generica-tessuti-aerei.jpg",
   "indirizzo": "Cecchi Point, Via Antonio Cecchi 17",
   "link": "https://www.cecchipoint.it/corsi-e-attivita-makako-non-ce-aps/",
   "nuovo": "2026-11-09",
@@ -3525,6 +3615,7 @@ const WORKSHOPS = [
   "contatto": "@daikormanuel_profcuba by DM",
   "descrizione": "Classes open to all levels to discover Cuban culture through dance: on Wednesdays Cuban salsa from 8:30 pm and Afro-Cuban dance from 9:30 pm, on Saturdays at 4:30 pm Cuba Urbana – Reparto, today’s Cuban street dance, for teens and adults. A 10-class pass costs €70 (€65 if you take more than one course, €50 for students and ISEE under €15,000). Info on 352 059 2777 or by DM to @daikormanuel_profcuba.",
   "fonte": "cecchipoint.it",
+  "foto": "img/eventi/cecchipoint-ritmo-di-cuba.jpg",
   "indirizzo": "Cecchi Point, Via Antonio Cecchi 17",
   "link": "https://www.cecchipoint.it/a-ritmo-di-cuba-street-dance-cubana-teen-e-adulti-daikor-manuel-rodriguez-hernandezl/",
   "nuovo": "2026-11-09",
@@ -3569,6 +3660,7 @@ const WORKSHOPS = [
   "contatto": "@uncinetto.torino by DM",
   "descrizione": "Two hours of crochet every Friday evening to learn the basic techniques and make a personalised piece, with yarn and chat. Materials included; info and booking by DM to @uncinetto.torino.",
   "fonte": "cecchipoint.it",
+  "foto": "img/eventi/cecchipoint-uncinetto.jpg",
   "indirizzo": "Cecchi Point, Via Antonio Cecchi 17",
   "link": "https://www.cecchipoint.it/workshop-di-uncinetto-fabiola-maria-cafe/",
   "nuovo": "2026-11-09",
@@ -3826,11 +3918,30 @@ const WORKSHOPS = [
   "id": "ciurma-disegno-pierino-2026-11-29"
  },
  {
+  "categoria": "cucina",
+  "comune": "Rivoli",
+  "contatto": "@claudiacakestorino by DM",
+  "data": "2026-11-15",
+  "descrizione": "With cake designer Claudia and Chichi Pastiss you decorate a mini cake as you like using piping bags, sprinkles, sugar paste and marshmallows, with an aperitivo; you take the cake home. No experience needed, places are limited: for info and bookings comment «APERICAKE» on the post or send a DM.",
+  "fonte": "Instagram @claudiacakestorino",
+  "foto": "img/eventi/claudiacakes-apericake.jpg",
+  "indirizzo": "Container Food, Corso De Gasperi 165",
+  "link": "https://www.instagram.com/reel/DfSeV0qxY_r/",
+  "nuovo": "2026-11-09",
+  "ora_inizio": "17:30",
+  "organizzatore": "Claudia Cakes",
+  "tipo": "workshop",
+  "titolo": "Apericake: decorate a mini cake",
+  "zona": "Provincia di Torino",
+  "id": "claudiacakes-apericake-2026-11-15"
+ },
+ {
   "categoria": "movimento",
   "contatto": "@comalacommunityhub by DM",
   "data": "2026-11-10",
   "descrizione": "An introductory workshop in balfolk, European folk dances in couples and circles, with Bal.Un, the university balfolk group. No experience needed.",
   "fonte": "Instagram @comalacommunityhub",
+  "foto": "img/eventi/generica-danza-folk.jpg",
   "indirizzo": "Comala, Corso Francesco Ferrucci 65/a",
   "link": "https://www.instagram.com/p/Dfhj3iGjOGg/",
   "nuovo": "2026-11-09",
@@ -3847,6 +3958,7 @@ const WORKSHOPS = [
   "data": "2026-11-14",
   "descrizione": "A collage workshop with Barbara Colognese and Serena Soro to take apart, through cut-outs and images, the false myths and taboos about femininity.",
   "fonte": "Instagram @comalacommunityhub",
+  "foto": "img/eventi/generica-collage.jpg",
   "indirizzo": "Comala, Corso Francesco Ferrucci 65/a",
   "link": "https://www.instagram.com/p/Dfhj3iGjOGg/",
   "nuovo": "2026-11-09",
@@ -3863,6 +3975,7 @@ const WORKSHOPS = [
   "data": "2026-11-13",
   "descrizione": "A board game evening with the Giochi in Taverna group, who bring the games and explain them to newcomers.",
   "fonte": "Instagram @comalacommunityhub",
+  "foto": "img/eventi/generica-giochi-di-carte.jpg",
   "indirizzo": "Comala, Corso Francesco Ferrucci 65/a",
   "link": "https://www.instagram.com/p/Dfhj3iGjOGg/",
   "nuovo": "2026-11-09",
@@ -3879,6 +3992,7 @@ const WORKSHOPS = [
   "data": "2026-11-15",
   "descrizione": "Tauromachia, a Magic: The Gathering tournament in the Duel Commander format, counting as a national qualifier, run by DuelCommander Torino.",
   "fonte": "Instagram @comalacommunityhub",
+  "foto": "img/eventi/generica-giochi-di-carte.jpg",
   "indirizzo": "Comala, Corso Francesco Ferrucci 65/a",
   "link": "https://www.instagram.com/p/Dfhj3iGjOGg/",
   "nuovo": "2026-11-09",
@@ -3895,6 +4009,7 @@ const WORKSHOPS = [
   "data": "2026-11-11",
   "descrizione": "For the feast of San Martino, a workshop to learn the steps of Salento pizzica with Sara Fusaro, before the 9:30 pm concert with Simone Campa and La Paranza del Geco. From 6:30 pm free chestnuts and wine, and Salento street food.",
   "fonte": "Instagram @comalacommunityhub",
+  "foto": "img/eventi/generica-danza-folk.jpg",
   "indirizzo": "Comala, Corso Francesco Ferrucci 65/a",
   "link": "https://www.instagram.com/p/Dfhj3iGjOGg/",
   "nuovo": "2026-11-09",
@@ -3911,6 +4026,7 @@ const WORKSHOPS = [
   "data": "2026-11-12",
   "descrizione": "An evening chess tournament run by Libero Torneificio del Borgo with the PoliTo Chess Club, in Comala’s meeting room.",
   "fonte": "Instagram @comalacommunityhub",
+  "foto": "img/eventi/generica-scacchi.jpg",
   "indirizzo": "Comala, Corso Francesco Ferrucci 65/a",
   "link": "https://www.instagram.com/p/Dfhj3iGjOGg/",
   "nuovo": "2026-11-09",
@@ -3927,6 +4043,7 @@ const WORKSHOPS = [
   "data": "2026-11-11",
   "descrizione": "For the feast of San Martino, a Salento tambourine workshop with musician Simone Campa: the ronda, old-style pizzica and some modern techniques. At 8 pm there is a pizzica dance workshop and at 9:30 pm a concert; from 6:30 pm free chestnuts and wine, and Salento street food.",
   "fonte": "Instagram @comalacommunityhub",
+  "foto": "img/eventi/generica-tamburello.jpg",
   "indirizzo": "Comala, Corso Francesco Ferrucci 65/a",
   "link": "https://www.instagram.com/p/Dfhj3iGjOGg/",
   "nuovo": "2026-11-09",
@@ -5417,6 +5534,48 @@ const WORKSHOPS = [
   "id": "favolediseta-cucito-condiviso"
  },
  {
+  "altre_categorie": [
+   "movimento"
+  ],
+  "categoria": "famiglia",
+  "comune": "Borgo San Dalmazzo",
+  "contatto": "fierafredda.it",
+  "data": "2026-11-14",
+  "data_fine": "2026-11-15",
+  "descrizione": "During WOW – Winter Outdoor Weekend, on Saturday and Sunday morning, a first taste of horse riding with the horses of Roberta Colombero of Alpeggio Valanghe Marmora, for anyone who has never been in the saddle. Programme and info at fierafredda.it.",
+  "fonte": "Instagram @fierafredda",
+  "foto": "img/eventi/fierafredda-battesimo-sella.jpg",
+  "indirizzo": "Palazzo Bertello",
+  "link": "https://www.instagram.com/p/DfhfuqyCrgD/",
+  "nuovo": "2026-11-09",
+  "organizzatore": "Roberta Colombero per Ente Fiera Fredda",
+  "tipo": "attivita",
+  "titolo": "Saddle baptism: your first time on horseback",
+  "zona": "Provincia di Cuneo",
+  "id": "fierafredda-battesimo-sella-2026-11-14"
+ },
+ {
+  "altre_categorie": [
+   "movimento"
+  ],
+  "categoria": "famiglia",
+  "comune": "Borgo San Dalmazzo",
+  "data": "2026-11-14",
+  "descrizione": "An orienteering race open to everyone, athletes and families alike, with map and compass through the streets and trails of Borgo San Dalmazzo, part of WOW – Winter Outdoor Weekend. Meet from 1:30 pm at Palazzo Bertello; children under 10 must be accompanied. Sign up at asdoricuneo@gmail.com or on 346 9747588.",
+  "fonte": "Instagram @fierafredda",
+  "foto": "img/eventi/fierafredda-orienteering.jpg",
+  "indirizzo": "Palazzo Bertello",
+  "link": "https://www.instagram.com/p/DfXMjJJDVjp/",
+  "nuovo": "2026-11-09",
+  "ora_inizio": "15:00",
+  "organizzatore": "ASD Orienteering Cuneo per Ente Fiera Fredda",
+  "prezzo": 5,
+  "tipo": "attivita",
+  "titolo": "Borgo Orienteering: map and compass",
+  "zona": "Provincia di Cuneo",
+  "id": "fierafredda-orienteering-2026-11-14"
+ },
+ {
   "categoria": "cucina",
   "data": "2026-11-09",
   "descrizione": "A workshop to discover Indian cuisine for Diwali, the festival of lights: spices such as turmeric, cumin and cardamom, and traditional dishes that blend sweet, spicy and delicate flavours. There are two sessions, 4.30–6.30pm and 7–9pm. It’s free, but booking via the link in @fiumidiculture’s bio is required.",
@@ -5504,6 +5663,25 @@ const WORKSHOPS = [
   "id": "fortango-extra-2026-11-21"
  },
  {
+  "categoria": "pittura",
+  "comune": "Fossano",
+  "contatto": "@frasygiuste by DM",
+  "data": "2026-11-12",
+  "descrizione": "An after-dinner evening at Mansarda Sessions in Fossano: you start with a small vision board about your wishes, then draw a quote at random and colour it with brushes and acrylics on a 13×18 cm drawing. Bring 10 printed images or magazine cut-outs; all other materials are provided. Tea and infusions included, no painting skills needed. Book by DM.",
+  "fonte": "Instagram @frasygiuste",
+  "foto": "img/eventi/frasygiuste-vision-board.jpg",
+  "link": "https://www.instagram.com/p/DfScfXMkfGm/",
+  "nuovo": "2026-11-09",
+  "ora_fine": "22:30",
+  "ora_inizio": "20:30",
+  "organizzatore": "Frasy Giuste",
+  "prezzo": 25,
+  "tipo": "workshop",
+  "titolo": "Frasy Giuste: vision board and a painted quote",
+  "zona": "Provincia di Cuneo",
+  "id": "frasygiuste-vision-board-2026-11-12"
+ },
+ {
   "categoria": "ceramica",
   "contatto": "@giada.ceramica by DM",
   "data": "2026-11-14",
@@ -5557,6 +5735,25 @@ const WORKSHOPS = [
   "titolo": "Clay mask: an animal character",
   "zona": "Borgo Vittoria",
   "id": "giadabiagioni-maschera-2026-11-29"
+ },
+ {
+  "categoria": "ceramica",
+  "contatto": "Gioie di Creta, 348 8169318",
+  "data": "2026-11-14",
+  "data_fine": "2026-11-21",
+  "descrizione": "Over two Saturdays, 14 and 21 November, you build a pierced lantern about 15 cm tall using the slab technique, decorating it with slips in the second session; five hours in total. Info and sign-up on 348 8169318 or at gioiedicreta.cuneo@gmail.com.",
+  "fonte": "Instagram @ceramiche_gioiedicreta",
+  "foto": "img/eventi/gioiedicreta-lanterna.jpg",
+  "indirizzo": "Gioie di Creta, Via Quintino Sella 20",
+  "link": "https://www.instagram.com/p/DfZ1-SngbVB/",
+  "nuovo": "2026-11-09",
+  "ora_fine": "20:30",
+  "ora_inizio": "18:00",
+  "organizzatore": "Gioie di Creta",
+  "tipo": "workshop",
+  "titolo": "Pottery Workshop: pierced lantern",
+  "zona": "Cuneo",
+  "id": "gioiedicreta-lanterna-2026-11-14"
  },
  {
   "categoria": "cucina",
@@ -6943,6 +7140,25 @@ const WORKSHOPS = [
   "titolo": "One mug, a thousand ideas: sublimation printing",
   "zona": "Provincia di Torino",
   "id": "marti-tazza-sublimazione-2026-11-15"
+ },
+ {
+  "categoria": "tessile",
+  "comune": "San Giorgio Canavese",
+  "data": "2026-11-23",
+  "descrizione": "Choose from the illustrations by Marta of Martilla Studio, compose your own tote bag and the images are heat-pressed on: you go home with a one-of-a-kind bag. Tote bag, illustrations and an aperitivo with a drink and a savoury platter are included; maximum 10 people, book by DM or at martillastudio@gmail.com.",
+  "fonte": "Instagram @martilla_studio",
+  "foto": "img/eventi/martilla-tote-bag.jpg",
+  "indirizzo": "Pasticceria Giovetti",
+  "link": "https://www.instagram.com/p/DfW-s5tR_Qk/",
+  "nuovo": "2026-11-09",
+  "ora_fine": "21:30",
+  "ora_inizio": "19:30",
+  "organizzatore": "Martilla Studio",
+  "prezzo": 45,
+  "tipo": "workshop",
+  "titolo": "Tote bag workshop: iron-on illustrations",
+  "zona": "Provincia di Torino",
+  "id": "martilla-tote-bag-2026-11-23"
  },
  {
   "categoria": "cucina",
@@ -8535,6 +8751,26 @@ const WORKSHOPS = [
   "titolo": "Sourdough bread: a baking course",
   "zona": "Barriera di Milano",
   "id": "panacea-pane-2026-12-12"
+ },
+ {
+  "categoria": "scrittura",
+  "comune": "Rivoli",
+  "data": "2026-11-29",
+  "descrizione": "A Gilmore Girls-themed day at Villa Antonielli, set up as the Dragonfly Inn: a Thanksgiving brunch and a workshop making paper Christmas decorations to take home, plus a themed market. The ticket includes brunch and materials; the afternoon version with a snack (3:30–6:30 pm, €38) is sold out. The event goes ahead once the minimum number of participants is reached.",
+  "fonte": "pancakesandclouds.com",
+  "foto": "img/eventi/pancakesandclouds-thanksgiving.jpg",
+  "indirizzo": "Villa Antonielli, Via Antonielli 29",
+  "link": "https://pancakesandclouds.com/products/thanksgiving-al-dragonfly-inn",
+  "nuovo": "2026-11-09",
+  "ora_fine": "15:00",
+  "ora_inizio": "11:00",
+  "organizzatore": "Pancakes and Clouds",
+  "post": "https://www.instagram.com/reel/DfcIpIDK2sE/",
+  "prezzo": 45,
+  "tipo": "workshop",
+  "titolo": "Thanksgiving at the Dragonfly Inn: Christmas decorations",
+  "zona": "Provincia di Torino",
+  "id": "pancakesandclouds-thanksgiving-2026-11-29"
  },
  {
   "categoria": "stampa",
@@ -10367,6 +10603,24 @@ const WORKSHOPS = [
   "id": "scrapsa-palline-natale-2026-11-15"
  },
  {
+  "categoria": "scrittura",
+  "contatto": "@shori.lab by DM",
+  "data": "2026-11-22",
+  "descrizione": "A day of bookbinding and printing with Shori.lab, a studio that binds notebooks and albums from reclaimed materials. Booking is required: for the programme, price and sign-up, send a DM to @shori.lab.",
+  "fonte": "Calendario novembre 2026 di @da.retrobottega",
+  "foto": "img/eventi/shori-legatoria.jpg",
+  "indirizzo": "Retrobottega, Via Bernardino Galliari 25",
+  "link": "https://www.instagram.com/da.retrobottega/",
+  "nuovo": "2026-11-09",
+  "ora_fine": "18:00",
+  "ora_inizio": "10:00",
+  "organizzatore": "Shori.lab per Retrobottega",
+  "tipo": "workshop",
+  "titolo": "Bookbinding workshop: binding and printing",
+  "zona": "San Salvario",
+  "id": "shori-legatoria-2026-11-22"
+ },
+ {
   "categoria": "movimento",
   "contatto": "@slowtownblues via DM",
   "data": "2026-11-21",
@@ -10418,6 +10672,43 @@ const WORKSHOPS = [
   "titolo": "Urban walk in Rivoli: Fondazione Cerruti and the Castle",
   "zona": "Provincia di Torino",
   "id": "solocosebelle-rivoli-2026-11-14"
+ },
+ {
+  "altre_categorie": [
+   "famiglia"
+  ],
+  "categoria": "pittura",
+  "comune": "Collegno",
+  "contatto": "soqquadro.arte@gmail.com",
+  "descrizione": "The studio of illustrators Marta Viggiani and Sara Mancuso in Collegno runs drawing, painting and comics courses for children and adults. The first trial lesson is free: book by writing to soqquadro.arte@gmail.com or by DM.",
+  "fonte": "Instagram @soqquadro_arte",
+  "foto": "img/eventi/soqquadro-corsi-disegno.jpg",
+  "indirizzo": "Soqquadro, Via Silvio Pellico 29",
+  "link": "https://www.instagram.com/p/Dd8ongQKU3P/",
+  "nuovo": "2026-11-09",
+  "organizzatore": "Soqquadro",
+  "su_prenotazione": true,
+  "tipo": "corso",
+  "titolo": "Drawing and painting courses: trial lesson",
+  "zona": "Provincia di Torino",
+  "id": "soqquadro-corsi-disegno"
+ },
+ {
+  "categoria": "pittura",
+  "comune": "Collegno",
+  "contatto": "soqquadro.arte@gmail.com",
+  "descrizione": "Twelve lessons to create a comic from scratch: drawing dynamic characters and writing a script that works. Taught by Giorgio Sommacal, artist for Lupo Alberto, Cattivik and Dylan Dog, and graphic designer Claudio Taurisano. No experience needed, ages 12 and up; ask for dates and prices on 331 1510679 or by DM.",
+  "fonte": "Instagram @soqquadro_arte",
+  "foto": "img/eventi/soqquadro-fumetto.jpg",
+  "indirizzo": "Soqquadro, Via Silvio Pellico 29",
+  "link": "https://www.instagram.com/p/DeJJrVqqjhA/",
+  "nuovo": "2026-11-09",
+  "organizzatore": "Giorgio Sommacal e Claudio Taurisano per Soqquadro",
+  "su_prenotazione": true,
+  "tipo": "corso",
+  "titolo": "Comics course: from characters to story",
+  "zona": "Provincia di Torino",
+  "id": "soqquadro-fumetto"
  },
  {
   "categoria": "famiglia",
@@ -11332,6 +11623,24 @@ const WORKSHOPS = [
   "id": "torinosocialknitting-compleanno-2026-11-14"
  },
  {
+  "categoria": "gioielli",
+  "data": "2026-11-13",
+  "descrizione": "Over an aperitivo you make a ring inspired by kindness, with the help of La Engi, a maker of handmade jewellery. Info and bookings on 339 4807284.",
+  "fonte": "Instagram @torteriabistro",
+  "foto": "img/eventi/torteria-anello-laengi.jpg",
+  "indirizzo": "Torteria Bistrò, Piazza Santa Marta",
+  "link": "https://www.instagram.com/p/DfCDgTTNVM4/",
+  "nuovo": "2026-11-09",
+  "ora_fine": "21:30",
+  "ora_inizio": "19:00",
+  "organizzatore": "La Engi per Torteria Bistrò",
+  "prezzo": 45,
+  "tipo": "workshop",
+  "titolo": "La Gentilezza: make your own ring",
+  "zona": "Biella",
+  "id": "torteria-anello-laengi-2026-11-13"
+ },
+ {
   "categoria": "famiglia",
   "comune": "Volpiano",
   "data": "2026-11-28",
@@ -11683,6 +11992,7 @@ const WORKSHOPS = [
   "ora_fine": "21:00",
   "ora_inizio": "19:00",
   "organizzatore": "Vague Bizarre",
+  "posti_disponibili": 0,
   "tipo": "workshop",
   "titolo": "Super esoteric workshop: tarot and cards",
   "zona": "San Salvario",
