@@ -833,10 +833,10 @@ function noDate(w){
   const r=(w.ricorrenza||"").trim(), n=r.match(/^every (\d+) (.+)$/i), g=r.match(/^every (.+)$/i);
   if(n) return [el("span",{class:"wd"},"every"), el("span",{class:"d"},n[1]), el("span",{class:"m"},n[2])];
   if(g) return [el("span",{class:"wd"},"every"), el("span",{class:"word"},g[1])];
-  // data_da_confermare: la data non si sa ancora (diverso da «a scelta», dove la si concorda con l’organizzatore)
-  return [el("span",{class:"wd"},"date"), el("span",{class:"word"}, w.data_da_confermare ? "to be confirmed" : "of your choice")];
+  // data_da_confermare: la data non si sa ancora (diverso da «a scelta», dove la si sceglie e si prenota con l’organizzatore)
+  return [el("span",{class:"wd"},"date"), el("span",{class:"word"}, w.data_da_confermare ? "TBD" : "of your choice")];
 }
-const noDateText = w => w.ricorrenza ? w.ricorrenza[0].toUpperCase()+w.ricorrenza.slice(1) : (w.data_da_confermare ? "Date to be confirmed" : "Date of your choice");
+const noDateText = w => w.ricorrenza ? w.ricorrenza[0].toUpperCase()+w.ricorrenza.slice(1) : (w.data_da_confermare ? "Date TBD" : "Date of your choice");
 
 const heartSvg = on => `<svg viewBox="0 1.2 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z" fill="${on?"currentColor":"none"}" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg>`;
 
@@ -6036,6 +6036,7 @@ const WORKSHOPS = [
  {
   "categoria": "musica",
   "contatto": "info@francescabecchetti.it",
+  "data_da_confermare": true,
   "descrizione": "A year-long theatre course with actress and trainer Francesca Becchetti, for women, lesbians, trans* and non-binary people, no experience needed. Starting from plays, paintings, political posters and performance exercises, the group builds an original piece about family, monstrosity and sexuality, shown to the public at the end of the year. The course started in October; days, prices and sign-up at info@francescabecchetti.it or on WhatsApp at 353 482 0265. ARCI membership required.",
   "fonte": "Instagram @kontiki_torino",
   "foto": "img/eventi/kontiki-torino-2026-09-25-22.jpg",
@@ -6051,6 +6052,7 @@ const WORKSHOPS = [
  },
  {
   "categoria": "scrittura",
+  "data_da_confermare": true,
   "descrizione": "A Saturday morning with a special breakfast and a painting and collage workshop to express yourself freely and slow down. Book at kreativeclub.it.",
   "fonte": "kreativeclub.it",
   "indirizzo": "Kreative Club, Via Arvier (interno giardino Vittime di Chernobyl)",
@@ -6099,6 +6101,7 @@ const WORKSHOPS = [
  },
  {
   "categoria": "scrittura",
+  "data_da_confermare": true,
   "descrizione": "A pack of six lettering lessons for adults, no subscription needed. The course starts once the minimum number of participants is reached; sign up on site or at kreativeclub.it.",
   "fonte": "kreativeclub.it",
   "foto": "img/eventi/kreativeclub-lettering.jpg",
@@ -8196,6 +8199,7 @@ const WORKSHOPS = [
   ],
   "categoria": "pittura",
   "contatto": "novelacademy.it",
+  "data_da_confermare": true,
   "descrizione": "Courses of 12 two-hour lessons: drawing (Monday or Tuesday), acrylic and oil painting (Wednesday or Friday), watercolour (Thursday) and calligraphy (Wednesday), in the afternoon or evening. You can enrol at any time and the first lesson is free. On Saturday afternoons there’s a course for children aged 6 to 13 (30 € per lesson), and on the occasional Sunday a life drawing session with a model (40 €).",
   "fonte": "novelacademy.it (via Le Strade)",
   "foto": "img/eventi/novel-academy-corsi-arte.jpg",
@@ -9336,6 +9340,7 @@ const WORKSHOPS = [
   ],
   "categoria": "movimento",
   "contatto": "progetto.slip@gmail.com or WhatsApp +39 351 757 1214",
+  "data_da_confermare": true,
   "descrizione": "Contemporary circus courses for beginners and experienced performers: aerial silks, hoop, rope, straps, trapeze, Chinese pole, acrobatics and flexibility, on weekday evenings from Monday to Thursday; for children and teens aged 6 to 15 in the late afternoon. Annual fees start at 190 € for one lesson a week, plus a membership card (12 €) and a medical certificate. The year started at the end of September: ask whether you can still join.",
   "fonte": "progettoslip.it (via Le Strade)",
   "indirizzo": "Progetto SLIP, Corso Giulio Cesare 338/50",
@@ -9971,6 +9976,7 @@ const WORKSHOPS = [
  {
   "categoria": "cucina",
   "contatto": "Polo Le Rosine on WhatsApp, +39 334 749 6371",
+  "data_da_confermare": true,
   "descrizione": "Weekly two-hour lessons with Maria Cocciolo to learn sugar paste modelling and decorate 2–3 themed cupcakes or biscuits, with seasonal themes. For adults from 15, no experience needed, max 6. There is also a cake decorating course with the piping bag, in three-hour lessons. Cycles of 5 or 10 lessons or a full-year course. Enrolment is open all year; days, times and prices on WhatsApp at 334 749 6371.",
   "fonte": "lerosine.it",
   "foto": "img/eventi/lerosine-p18.jpg",
@@ -9987,6 +9993,7 @@ const WORKSHOPS = [
  {
   "categoria": "famiglia",
   "contatto": "Polo Le Rosine on WhatsApp, +39 334 749 6371",
+  "data_da_confermare": true,
   "descrizione": "Two hours with Maria Cocciolo decorating 2–3 cupcakes or biscuits with sugar paste figures, with ready-made bases and seasonal themes. Groups of 6–8 children by age: 5–8 with simple decorations, 9–14 with more detailed ones. Cycles of 5 or 10 lessons or a full-year course. Enrolment is open all year; days, times and prices on WhatsApp at 334 749 6371.",
   "fonte": "lerosine.it",
   "foto": "img/eventi/lerosine-p1.jpg",
@@ -10003,6 +10010,7 @@ const WORKSHOPS = [
  {
   "categoria": "scrittura",
   "contatto": "Polo Le Rosine on WhatsApp, +39 334 749 6371",
+  "data_da_confermare": true,
   "descrizione": "One two-hour session a week with calligrapher Enrico Graziano: posture, grip and tools (nibs, inks, brush pens), then chancery, English roundhand and Gothic, up to artistic calligraphy. For teens and adults, beginners or experienced. Enrolment is open all year; days, times and prices on WhatsApp at 334 749 6371.",
   "fonte": "lerosine.it",
   "foto": "img/eventi/lerosine-p5.jpg",
@@ -10054,6 +10062,7 @@ const WORKSHOPS = [
  {
   "categoria": "musica",
   "contatto": "Polo Le Rosine on WhatsApp, +39 334 749 6371",
+  "data_da_confermare": true,
   "descrizione": "One hour a week with Vincenzo Fiumara, in groups of up to 4 or one-to-one: theory, chords, pick technique, scales and first steps in improvisation, up to learning a song of your choice. For beginners or to improve. Enrolment is open all year; days, times and prices on WhatsApp at 334 749 6371.",
   "fonte": "lerosine.it",
   "foto": "img/eventi/lerosine-p6.jpg",
@@ -10089,6 +10098,7 @@ const WORKSHOPS = [
  {
   "categoria": "tessile",
   "contatto": "Polo Le Rosine on WhatsApp, +39 334 749 6371",
+  "data_da_confermare": true,
   "descrizione": "Renewable cycles of 5 two-hour lessons to learn the sewing machine, small repairs, women’s and men’s garments and accessories, upcycling old clothes and draping on the dress form. Everyone works at their own level; there is also a course for children. Enrolment is open all year; days, times and prices on WhatsApp at 334 749 6371.",
   "fonte": "lerosine.it",
   "foto": "img/eventi/lerosine-p10.jpg",
@@ -10105,6 +10115,7 @@ const WORKSHOPS = [
  {
   "categoria": "pittura",
   "contatto": "Polo Le Rosine on WhatsApp, +39 334 749 6371",
+  "data_da_confermare": true,
   "descrizione": "Illustrator Barbara Sirtoli’s weekly courses at Le Rosine, two hours per lesson in groups of 5–7: drawing from the basics to realistic graphite portraits (16+), landscapes and still lifes in soft pastel (14+), chiaroscuro in Indian ink, watercolour in 5 lessons up to a final piece, and doodle art for children too. Enrolment is open all year; days, times and prices on WhatsApp at 334 749 6371.",
   "fonte": "lerosine.it",
   "foto": "img/eventi/lerosine-p30.jpg",
@@ -10121,6 +10132,7 @@ const WORKSHOPS = [
  {
   "categoria": "musica",
   "contatto": "Polo Le Rosine on WhatsApp, +39 334 749 6371",
+  "data_da_confermare": true,
   "descrizione": "Two hours a week with actress Giulia Cearini to correct accents and sing-song intonation, tell open and closed vowels apart, breathe from the diaphragm and read aloud articles, novels and monologues. For everyone, no experience needed. Enrolment is open all year; days, times and prices on WhatsApp at 334 749 6371.",
   "fonte": "lerosine.it",
   "foto": "img/eventi/lerosine-p11.jpg",
@@ -10137,6 +10149,7 @@ const WORKSHOPS = [
  {
   "categoria": "altro",
   "contatto": "Polo Le Rosine on WhatsApp, +39 334 749 6371",
+  "data_da_confermare": true,
   "descrizione": "Courses with portrait photographer Ivana Sunjic, a former student and assistant of Steve McCurry: the beginner level starts from scratch (technique, framing, light, using your own camera), the intermediate level covers portrait, reportage and landscape to find your own style. Certificate of attendance at the end. Enrolment is open all year; days, times and prices on WhatsApp at 334 749 6371.",
   "fonte": "lerosine.it",
   "foto": "img/eventi/lerosine-p23.jpg",
@@ -10204,6 +10217,7 @@ const WORKSHOPS = [
  {
   "categoria": "pittura",
   "contatto": "Polo Le Rosine on WhatsApp, +39 334 749 6371",
+  "data_da_confermare": true,
   "descrizione": "The basics of manga drawing with illustrator Alice Molinaro: line of action, anatomy, faces and expressions, hands and chibi style, building up to a complete original character. For beginners and for those who want to go further. Enrolment is open all year; days, times and prices on WhatsApp at 334 749 6371.",
   "fonte": "lerosine.it",
   "foto": "img/eventi/lerosine-p22.jpg",
@@ -10291,6 +10305,7 @@ const WORKSHOPS = [
  {
   "categoria": "famiglia",
   "contatto": "Polo Le Rosine on WhatsApp, +39 334 749 6371",
+  "data_da_confermare": true,
   "descrizione": "A weekly workshop where children use colour to express imagination and feelings, with activities led by painter Mery Rigo. Groups of up to 8. Enrolment is open all year; days, times and prices on WhatsApp at 334 749 6371.",
   "fonte": "lerosine.it",
   "foto": "img/eventi/lerosine-p25.jpg",
@@ -10310,6 +10325,7 @@ const WORKSHOPS = [
   ],
   "categoria": "musica",
   "contatto": "Polo Le Rosine on WhatsApp, +39 334 749 6371",
+  "data_da_confermare": true,
   "descrizione": "Theatre courses for all ages: for adults with director François-Xavier Frantz, for teens and for children aged 6 to 11 with actress Giulia Cearini. You work on characters, text, memory, energy and rhythm, including preparation for drama school auditions. Enrolment is open all year; days, times and prices on WhatsApp at 334 749 6371.",
   "fonte": "lerosine.it",
   "foto": "img/eventi/lerosine-p16.jpg",
@@ -10345,6 +10361,7 @@ const WORKSHOPS = [
  {
   "categoria": "musica",
   "contatto": "Polo Le Rosine on WhatsApp, +39 334 749 6371",
+  "data_da_confermare": true,
   "descrizione": "Cycles of sessions with musician Sandro Fiorio on theory, harmony, melody, structure and lyrics, analysing classics and today’s hits, to write your own songs. The first cycle needs no background; playing guitar or piano helps. Enrolment is open all year; days, times and prices on WhatsApp at 334 749 6371.",
   "fonte": "lerosine.it",
   "foto": "img/eventi/lerosine-p24.jpg",
@@ -10381,6 +10398,7 @@ const WORKSHOPS = [
  {
   "categoria": "famiglia",
   "contatto": "Polo Le Rosine on WhatsApp, +39 334 749 6371",
+  "data_da_confermare": true,
   "descrizione": "Five two-hour sessions for 11 to 17-year-olds with artist Manuel Cantarello (Elmanu): spray paint, markers and mixed media for a personal graffiti piece on card and a group work on a one-metre panel. Renewable packages to carry on. Enrolment is open all year; days, times and prices on WhatsApp at 334 749 6371.",
   "fonte": "lerosine.it",
   "foto": "img/eventi/lerosine-p27.jpg",
@@ -10686,6 +10704,7 @@ const WORKSHOPS = [
   "categoria": "pittura",
   "comune": "Collegno",
   "contatto": "soqquadro.arte@gmail.com",
+  "data_da_confermare": true,
   "descrizione": "The studio of illustrators Marta Viggiani and Sara Mancuso in Collegno runs drawing, painting and comics courses for children and adults. The first trial lesson is free: book by writing to soqquadro.arte@gmail.com or by DM.",
   "fonte": "Instagram @soqquadro_arte",
   "foto": "img/eventi/soqquadro-corsi-disegno.jpg",
@@ -10703,6 +10722,7 @@ const WORKSHOPS = [
   "categoria": "pittura",
   "comune": "Collegno",
   "contatto": "soqquadro.arte@gmail.com",
+  "data_da_confermare": true,
   "descrizione": "Twelve lessons to create a comic from scratch: drawing dynamic characters and writing a script that works. Taught by Giorgio Sommacal, artist for Lupo Alberto, Cattivik and Dylan Dog, and graphic designer Claudio Taurisano. No experience needed, ages 12 and up; ask for dates and prices on 331 1510679 or by DM.",
   "fonte": "Instagram @soqquadro_arte",
   "foto": "img/eventi/soqquadro-fumetto.jpg",
@@ -10984,6 +11004,7 @@ const WORKSHOPS = [
   ],
   "categoria": "musica",
   "contatto": "splitteatro@gmail.com or +39 375 709 9069",
+  "data_da_confermare": true,
   "descrizione": "Year-long acting courses for adults aged 17 and up (beginner, intermediate and advanced, 19:00–21:00, Tuesday to Thursday), musical theatre for adults, teens and juniors, plus musical theatre dance, tap, heels, Bollywood and singing. From October to January the work focuses on body and voice, then on preparing a show. Prices on request at splitteatro@gmail.com.",
   "fonte": "splitteatro.it (via Le Strade)",
   "foto": "img/eventi/split-teatro.jpg",
@@ -11002,6 +11023,7 @@ const WORKSHOPS = [
   ],
   "categoria": "movimento",
   "contatto": "studio21sds@gmail.com or +39 340 404 1035",
+  "data_da_confermare": true,
   "descrizione": "An urban dance school with weekly classes in hip hop (including for adults 30+), breakdance, afrodance, dancehall, house, popping, waacking, K-pop and choreography, split by level, Monday to Friday evenings. There are classes for children and teens aged 5 to 14 and a heels open class once a month. Prices on request at studio21sds@gmail.com.",
   "fonte": "studio21streetdanceschool.com (via Le Strade)",
   "foto": "img/eventi/studio21-street-dance.jpg",
@@ -12074,23 +12096,6 @@ const WORKSHOPS = [
   "titolo": "Stitch Happens: embroidery evening",
   "zona": "Aurora",
   "id": "velvet-stitch-happens-2026-11-26"
- },
- {
-  "categoria": "famiglia",
-  "comune": "Favria",
-  "contatto": "ilvillaggiodellazucca.it",
-  "descrizione": "A pumpkin patch in the Canavese, open every day until 1 November, with a hay maze, farm animals and a workshop where you pick a pumpkin, paint it and take it home. Entry 15 € for adults and 13 € for children up to 10, plus 4.50 € for the pumpkin and workshop; tickets online only, with a set time slot.",
-  "fonte": "TorinoToday",
-  "foto": "img/eventi/villaggio-zucca-favria.jpg",
-  "indirizzo": "Azienda Agricola La Borgheisa, Borgata Chiarabaglia 1",
-  "link": "https://www.ilvillaggiodellazucca.it",
-  "organizzatore": "Il Villaggio della Zucca",
-  "prezzo": 15,
-  "su_prenotazione": true,
-  "tipo": "attivita",
-  "titolo": "Pumpkin Village: paint your pumpkin",
-  "zona": "Provincia di Torino",
-  "id": "villaggio-zucca-favria"
  },
  {
   "altre_categorie": [

@@ -830,10 +830,10 @@ function noDate(w){
   const r=(w.ricorrenza||"").trim(), n=r.match(/^ogni (\d+) (.+)$/i), g=r.match(/^ogni (.+)$/i);
   if(n) return [el("span",{class:"wd"},"ogni"), el("span",{class:"d"},n[1]), el("span",{class:"m"},n[2])];
   if(g) return [el("span",{class:"wd"},"ogni"), el("span",{class:"word"},g[1])];
-  // data_da_confermare: la data non si sa ancora (diverso da «a scelta», dove la si concorda con l’organizzatore)
-  return [el("span",{class:"wd"},"data"), el("span",{class:"word"}, w.data_da_confermare ? "da confermare" : "a scelta")];
+  // data_da_confermare: la data non si sa ancora (diverso da «a scelta», dove la si sceglie e si prenota con l’organizzatore)
+  return [el("span",{class:"wd"},"data"), el("span",{class:"word"}, w.data_da_confermare ? "da definire" : "a scelta")];
 }
-const noDateText = w => w.ricorrenza ? w.ricorrenza[0].toUpperCase()+w.ricorrenza.slice(1) : (w.data_da_confermare ? "Data da confermare" : "Data a scelta");
+const noDateText = w => w.ricorrenza ? w.ricorrenza[0].toUpperCase()+w.ricorrenza.slice(1) : (w.data_da_confermare ? "Data da definire" : "Data a scelta");
 
 const heartSvg = on => `<svg viewBox="0 1.2 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z" fill="${on?"currentColor":"none"}" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg>`;
 
@@ -6035,6 +6035,7 @@ const WORKSHOPS = [
  {
   "categoria": "musica",
   "contatto": "info@francescabecchetti.it",
+  "data_da_confermare": true,
   "descrizione": "Un corso teatrale di un anno con l’attrice e formatrice Francesca Becchetti, per donne, lesbiche, persone trans* e non binarie, anche senza esperienza. Partendo da testi teatrali, quadri, manifesti politici ed esercizi performativi si costruisce insieme una drammaturgia originale su famiglia, mostruosità e sessualità, che a fine anno diventa una restituzione pubblica. Il corso è iniziato a ottobre; giorni, costi e iscrizioni a info@francescabecchetti.it o su WhatsApp al 353 482 0265. Ingresso con tessera ARCI.",
   "fonte": "Instagram @kontiki_torino",
   "foto": "img/eventi/kontiki-torino-2026-09-25-22.jpg",
@@ -6050,6 +6051,7 @@ const WORKSHOPS = [
  },
  {
   "categoria": "scrittura",
+  "data_da_confermare": true,
   "descrizione": "Un sabato mattina con una colazione speciale e un laboratorio di pittura e collage per esprimersi liberamente e rallentare. Si prenota su kreativeclub.it.",
   "fonte": "kreativeclub.it",
   "indirizzo": "Kreative Club, Via Arvier (interno giardino Vittime di Chernobyl)",
@@ -6098,6 +6100,7 @@ const WORKSHOPS = [
  },
  {
   "categoria": "scrittura",
+  "data_da_confermare": true,
   "descrizione": "Un pacchetto di sei lezioni di lettering per adulti, senza abbonamento. Il corso parte al raggiungimento del numero minimo di iscritti; ci si iscrive in sede o su kreativeclub.it.",
   "fonte": "kreativeclub.it",
   "foto": "img/eventi/kreativeclub-lettering.jpg",
@@ -8195,6 +8198,7 @@ const WORKSHOPS = [
   ],
   "categoria": "pittura",
   "contatto": "novelacademy.it",
+  "data_da_confermare": true,
   "descrizione": "Corsi di 12 lezioni di due ore: disegno (lunedì o martedì), pittura ad acrilico e olio (mercoledì o venerdì), acquerello (giovedì) e calligrafia (mercoledì), pomeriggio o sera, con iscrizioni sempre aperte e prima lezione gratuita. Il sabato pomeriggio c’è il corso per bambini dai 6 ai 13 anni (30 € a lezione) e ogni tanto la domenica il disegno dal vero con modella (40 €).",
   "fonte": "novelacademy.it (via Le Strade)",
   "foto": "img/eventi/novel-academy-corsi-arte.jpg",
@@ -9335,6 +9339,7 @@ const WORKSHOPS = [
   ],
   "categoria": "movimento",
   "contatto": "progetto.slip@gmail.com o WhatsApp +39 351 757 1214",
+  "data_da_confermare": true,
   "descrizione": "Corsi di circo contemporaneo per principianti ed esperti: tessuti aerei, cerchio, corda, cinghie, trapezio, palo cinese, acrobatica e flessibilità, la sera dal lunedì al giovedì; per bambini e ragazzi dai 6 ai 15 anni nel tardo pomeriggio. L’abbonamento annuale parte da 190 € per una lezione a settimana, più tessera (12 €) e certificato medico. L’anno è iniziato a fine settembre: chiedere se si può entrare a corso iniziato.",
   "fonte": "progettoslip.it (via Le Strade)",
   "indirizzo": "Progetto SLIP, Corso Giulio Cesare 338/50",
@@ -9970,6 +9975,7 @@ const WORKSHOPS = [
  {
   "categoria": "cucina",
   "contatto": "Polo Le Rosine su WhatsApp, +39 334 749 6371",
+  "data_da_confermare": true,
   "descrizione": "Lezioni settimanali di due ore con Maria Cocciolo per imparare a modellare la pasta di zucchero e decorare 2–3 cupcake o biscotti a tema, che cambia con le stagioni. Per adulti dai 15 anni, anche senza esperienza, al massimo 6. C’è anche il corso di cake decorating con la sac à poche, in lezioni di tre ore. Cicli da 5 o 10 lezioni o corso annuale. Iscrizioni aperte tutto l’anno; giorni, orari e prezzi su WhatsApp al 334 749 6371.",
   "fonte": "lerosine.it",
   "foto": "img/eventi/lerosine-p18.jpg",
@@ -9986,6 +9992,7 @@ const WORKSHOPS = [
  {
   "categoria": "famiglia",
   "contatto": "Polo Le Rosine su WhatsApp, +39 334 749 6371",
+  "data_da_confermare": true,
   "descrizione": "Due ore con Maria Cocciolo per decorare 2–3 cupcake o biscotti con soggetti in pasta di zucchero, con le basi già pronte e temi di stagione. Gruppi di 6–8 bambini divisi per età: 5–8 anni con decorazioni semplici, 9–14 anni più elaborate. Cicli da 5 o 10 lezioni o corso annuale. Iscrizioni aperte tutto l’anno; giorni, orari e prezzi su WhatsApp al 334 749 6371.",
   "fonte": "lerosine.it",
   "foto": "img/eventi/lerosine-p1.jpg",
@@ -10002,6 +10009,7 @@ const WORKSHOPS = [
  {
   "categoria": "scrittura",
   "contatto": "Polo Le Rosine su WhatsApp, +39 334 749 6371",
+  "data_da_confermare": true,
   "descrizione": "Un incontro di due ore a settimana con il calligrafo Enrico Graziano: postura, impugnatura e strumenti (pennini, inchiostri, brush pen), poi cancelleresca, corsivo inglese e gotica, fino alla calligrafia artistica. Per ragazzi e adulti, principianti o con esperienza. Iscrizioni aperte tutto l’anno; giorni, orari e prezzi su WhatsApp al 334 749 6371.",
   "fonte": "lerosine.it",
   "foto": "img/eventi/lerosine-p5.jpg",
@@ -10053,6 +10061,7 @@ const WORKSHOPS = [
  {
   "categoria": "musica",
   "contatto": "Polo Le Rosine su WhatsApp, +39 334 749 6371",
+  "data_da_confermare": true,
   "descrizione": "Un’ora a settimana con Vincenzo Fiumara, in gruppi di al massimo 4 o individuale: teoria, accordi, plettro, scale e primi passi nell’improvvisazione, fino a studiare un brano a scelta. Per principianti o per perfezionarsi. Iscrizioni aperte tutto l’anno; giorni, orari e prezzi su WhatsApp al 334 749 6371.",
   "fonte": "lerosine.it",
   "foto": "img/eventi/lerosine-p6.jpg",
@@ -10088,6 +10097,7 @@ const WORKSHOPS = [
  {
   "categoria": "tessile",
   "contatto": "Polo Le Rosine su WhatsApp, +39 334 749 6371",
+  "data_da_confermare": true,
   "descrizione": "Cicli rinnovabili di 5 lezioni di due ore per imparare a usare la macchina da cucire, fare piccole riparazioni, confezionare capi da donna e da uomo e accessori, trasformare vecchi abiti e provare il moulage sul manichino. Ognuno segue il proprio livello; c’è anche un percorso per bambini. Iscrizioni aperte tutto l’anno; giorni, orari e prezzi su WhatsApp al 334 749 6371.",
   "fonte": "lerosine.it",
   "foto": "img/eventi/lerosine-p10.jpg",
@@ -10104,6 +10114,7 @@ const WORKSHOPS = [
  {
   "categoria": "pittura",
   "contatto": "Polo Le Rosine su WhatsApp, +39 334 749 6371",
+  "data_da_confermare": true,
   "descrizione": "I corsi settimanali dell’illustratrice Barbara Sirtoli alle Rosine, due ore a lezione in gruppi di 5–7: disegno dalla base al ritratto realistico a grafite (dai 16 anni), paesaggi e nature morte con il pastello secco (dai 14 anni), chiaroscuro con inchiostro di china, acquerello in 5 lezioni fino a un elaborato finale e doodle art anche per bambini. Iscrizioni aperte tutto l’anno; giorni, orari e prezzi su WhatsApp al 334 749 6371.",
   "fonte": "lerosine.it",
   "foto": "img/eventi/lerosine-p30.jpg",
@@ -10120,6 +10131,7 @@ const WORKSHOPS = [
  {
   "categoria": "musica",
   "contatto": "Polo Le Rosine su WhatsApp, +39 334 749 6371",
+  "data_da_confermare": true,
   "descrizione": "Due ore a settimana con l’attrice Giulia Cearini per correggere inflessioni e cantilene, distinguere vocali aperte e chiuse, respirare con il diaframma e leggere ad alta voce articoli, pagine di romanzi e monologhi. Per tutti, senza esperienza. Iscrizioni aperte tutto l’anno; giorni, orari e prezzi su WhatsApp al 334 749 6371.",
   "fonte": "lerosine.it",
   "foto": "img/eventi/lerosine-p11.jpg",
@@ -10136,6 +10148,7 @@ const WORKSHOPS = [
  {
   "categoria": "altro",
   "contatto": "Polo Le Rosine su WhatsApp, +39 334 749 6371",
+  "data_da_confermare": true,
   "descrizione": "I corsi della ritrattista Ivana Sunjic, già allieva e assistente di Steve McCurry: il livello base parte da zero (tecnica, inquadratura, luce, uso della propria fotocamera), l’intermedio introduce ritratto, reportage e paesaggio per trovare uno stile personale. Attestato di partecipazione alla fine. Iscrizioni aperte tutto l’anno; giorni, orari e prezzi su WhatsApp al 334 749 6371.",
   "fonte": "lerosine.it",
   "foto": "img/eventi/lerosine-p23.jpg",
@@ -10203,6 +10216,7 @@ const WORKSHOPS = [
  {
   "categoria": "pittura",
   "contatto": "Polo Le Rosine su WhatsApp, +39 334 749 6371",
+  "data_da_confermare": true,
   "descrizione": "Le basi del disegno manga con l’illustratrice Alice Molinaro: linea d’azione, anatomia, volti ed espressioni, mani e stile chibi, fino a costruire un personaggio originale completo. Per chi parte da zero e per chi vuole approfondire. Iscrizioni aperte tutto l’anno; giorni, orari e prezzi su WhatsApp al 334 749 6371.",
   "fonte": "lerosine.it",
   "foto": "img/eventi/lerosine-p22.jpg",
@@ -10290,6 +10304,7 @@ const WORKSHOPS = [
  {
   "categoria": "famiglia",
   "contatto": "Polo Le Rosine su WhatsApp, +39 334 749 6371",
+  "data_da_confermare": true,
   "descrizione": "Un laboratorio settimanale in cui i bambini usano il colore per raccontare fantasia ed emozioni, con attività guidate dalla pittrice Mery Rigo. Gruppi di al massimo 8. Iscrizioni aperte tutto l’anno; giorni, orari e prezzi su WhatsApp al 334 749 6371.",
   "fonte": "lerosine.it",
   "foto": "img/eventi/lerosine-p25.jpg",
@@ -10309,6 +10324,7 @@ const WORKSHOPS = [
   ],
   "categoria": "musica",
   "contatto": "Polo Le Rosine su WhatsApp, +39 334 749 6371",
+  "data_da_confermare": true,
   "descrizione": "Corsi di teatro per tutte le età: per adulti con il regista François-Xavier Frantz, per ragazzi e per bambini dai 6 agli 11 anni con l’attrice Giulia Cearini. Si lavora su personaggi, testo, memoria, energia e ritmo, anche per prepararsi ai provini delle scuole di teatro. Iscrizioni aperte tutto l’anno; giorni, orari e prezzi su WhatsApp al 334 749 6371.",
   "fonte": "lerosine.it",
   "foto": "img/eventi/lerosine-p16.jpg",
@@ -10344,6 +10360,7 @@ const WORKSHOPS = [
  {
   "categoria": "musica",
   "contatto": "Polo Le Rosine su WhatsApp, +39 334 749 6371",
+  "data_da_confermare": true,
   "descrizione": "Cicli di incontri con il musicista Sandro Fiorio su teoria, armonia, melodia, struttura e testo, analizzando brani classici e hit di oggi, per arrivare a comporre canzoni proprie. Il primo ciclo non richiede basi; aiuta saper suonare chitarra o pianoforte. Iscrizioni aperte tutto l’anno; giorni, orari e prezzi su WhatsApp al 334 749 6371.",
   "fonte": "lerosine.it",
   "foto": "img/eventi/lerosine-p24.jpg",
@@ -10380,6 +10397,7 @@ const WORKSHOPS = [
  {
   "categoria": "famiglia",
   "contatto": "Polo Le Rosine su WhatsApp, +39 334 749 6371",
+  "data_da_confermare": true,
   "descrizione": "Cinque incontri di due ore per ragazze e ragazzi dagli 11 ai 17 anni con l’artista Manuel Cantarello (Elmanu): spray, pennarelli e tecniche miste per un graffito personale su cartoncino e un’opera collettiva su pannello di un metro per un metro. Pacchetti rinnovabili per continuare. Iscrizioni aperte tutto l’anno; giorni, orari e prezzi su WhatsApp al 334 749 6371.",
   "fonte": "lerosine.it",
   "foto": "img/eventi/lerosine-p27.jpg",
@@ -10685,6 +10703,7 @@ const WORKSHOPS = [
   "categoria": "pittura",
   "comune": "Collegno",
   "contatto": "soqquadro.arte@gmail.com",
+  "data_da_confermare": true,
   "descrizione": "Lo studio delle illustratrici Marta Viggiani e Sara Mancuso a Collegno propone corsi di disegno, pittura e fumetto per bambini e adulti. La prima lezione di prova è gratuita: si prenota scrivendo a soqquadro.arte@gmail.com o in DM.",
   "fonte": "Instagram @soqquadro_arte",
   "foto": "img/eventi/soqquadro-corsi-disegno.jpg",
@@ -10702,6 +10721,7 @@ const WORKSHOPS = [
   "categoria": "pittura",
   "comune": "Collegno",
   "contatto": "soqquadro.arte@gmail.com",
+  "data_da_confermare": true,
   "descrizione": "Dodici lezioni per creare un fumetto da zero: disegnare personaggi dinamici e scrivere una sceneggiatura che funzioni. Insegnano Giorgio Sommacal, disegnatore di Lupo Alberto, Cattivik e Dylan Dog, e il graphic designer Claudio Taurisano. Non servono basi, dai 12 anni in su; date e prezzi si chiedono al 331 1510679 o in DM.",
   "fonte": "Instagram @soqquadro_arte",
   "foto": "img/eventi/soqquadro-fumetto.jpg",
@@ -10983,6 +11003,7 @@ const WORKSHOPS = [
   ],
   "categoria": "musica",
   "contatto": "splitteatro@gmail.com o +39 375 709 9069",
+  "data_da_confermare": true,
   "descrizione": "Corsi annuali di recitazione per adulti dai 17 anni (base, intermedio e avanzato, 19–21 dal martedì al giovedì), musical per adulti, teen e junior, e poi danza musical, tip tap, heels, bollywood e canto. Da ottobre a gennaio si lavora su corpo e voce, poi si prepara uno spettacolo. Prezzi da chiedere a splitteatro@gmail.com.",
   "fonte": "splitteatro.it (via Le Strade)",
   "foto": "img/eventi/split-teatro.jpg",
@@ -11001,6 +11022,7 @@ const WORKSHOPS = [
   ],
   "categoria": "movimento",
   "contatto": "studio21sds@gmail.com o +39 340 404 1035",
+  "data_da_confermare": true,
   "descrizione": "Una scuola di danze urbane con corsi settimanali di hip hop (anche per adulti 30+), breakdance, afrodance, dancehall, house, popping, waacking, k-pop e choreography, divisi per livelli dal lunedì al venerdì sera. Ci sono corsi per bambini e ragazzi dai 5 ai 14 anni e una open class di heels una volta al mese. Prezzi da chiedere a studio21sds@gmail.com.",
   "fonte": "studio21streetdanceschool.com (via Le Strade)",
   "foto": "img/eventi/studio21-street-dance.jpg",
@@ -12073,23 +12095,6 @@ const WORKSHOPS = [
   "titolo": "Stitch Happens: serata di ricamo",
   "zona": "Aurora",
   "id": "velvet-stitch-happens-2026-11-26"
- },
- {
-  "categoria": "famiglia",
-  "comune": "Favria",
-  "contatto": "ilvillaggiodellazucca.it",
-  "descrizione": "Un campo di zucche in Canavese, aperto tutti i giorni fino al 1° novembre, con labirinto di fieno, animali della fattoria e un laboratorio in cui si sceglie una zucca, la si dipinge e la si porta a casa. Ingresso 15 € adulti e 13 € bambini fino a 10 anni, più 4,50 € per zucca e laboratorio; biglietti solo online con fascia oraria.",
-  "fonte": "TorinoToday",
-  "foto": "img/eventi/villaggio-zucca-favria.jpg",
-  "indirizzo": "Azienda Agricola La Borgheisa, Borgata Chiarabaglia 1",
-  "link": "https://www.ilvillaggiodellazucca.it",
-  "organizzatore": "Il Villaggio della Zucca",
-  "prezzo": 15,
-  "su_prenotazione": true,
-  "tipo": "attivita",
-  "titolo": "Villaggio della Zucca: dipingi la tua zucca",
-  "zona": "Provincia di Torino",
-  "id": "villaggio-zucca-favria"
  },
  {
   "altre_categorie": [
