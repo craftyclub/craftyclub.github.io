@@ -1071,7 +1071,8 @@ const LEGAL = {
 <li><strong>Anonymous statistics.</strong> To understand how many people use the site and what is most useful we use <a href="https://www.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>, which counts pages and actions (for example which events are opened or booked, which categories and searches are used) in aggregate form. It uses no cookies, stores nothing in your browser, does not keep your IP address and does not allow you to be identified. The data is stored on servers in Finland and Germany. Legal basis: our legitimate interest in improving the site. <a href="https://www.goatcounter.com/help/privacy" target="_blank" rel="noopener">GoatCounter’s notice</a>.</li>
 <li><strong>Fonts and images.</strong> Fonts, images and the statistics script are hosted on the site itself: opening the pages does not connect you to Google or other external services (only the anonymous count is sent to GoatCounter and, if you use the «Write to us» form, your message to Web3Forms).</li>
 <li><strong>Organizer pages.</strong> In the «Browse by organizer» section we show, for those who offer events on the site, their name, a short description written by us, their profile picture or logo and their public links (Instagram, website). This information is already public, taken from their profiles and websites, and we use it only to present their activities (legitimate interest in informing about events open to the public). If you are an organizer and want to correct or remove your page, picture or description, write to <a href="mailto:${MAIL}">${MAIL}</a>: we will do it as soon as possible.</li>
-<li><strong>If you write to us.</strong> If you contact us by email, on Instagram, on TikTok or with the «Write to us» form, we use your data (name, email, message) only to reply to you and keep it for as long as necessary. The form is handled by <a href="https://web3forms.com" target="_blank" rel="noopener">Web3Forms</a> (Web3Creative, India), which forwards the message to our email using servers in the USA and may keep a copy for a limited period. Instagram and TikTok process data according to their own notices.</li>
+<li><strong>If you write to us.</strong> If you contact us by email, on Instagram, on TikTok, on Telegram or with the «Write to us» form, we use your data (name, email, message) only to reply to you and keep it for as long as necessary. The form is handled by <a href="https://web3forms.com" target="_blank" rel="noopener">Web3Forms</a> (Web3Creative, India), which forwards the message to our email using servers in the USA and may keep a copy for a limited period. Instagram and TikTok process data according to their own notices.</li>
+<li><strong>Telegram.</strong> The Crafty Club’s Telegram channel and group are run on Telegram (Telegram FZ-LLC, United Arab Emirates): the site only links to them and loads no Telegram content in its pages. If you join or post in the group, your name, username and messages are visible to other members and are processed by Telegram under <a href="https://telegram.org/privacy" target="_blank" rel="noopener">its privacy policy</a>; we use them only to run the channel and the group.</li>
 </ul>
 <h4>Cookies</h4>
 <p>The Crafty Club uses no cookies, neither technical nor profiling, and no tracking tools: statistics are anonymous and cookie-free, which is why there is no cookie banner. The local storage used for saved events is strictly necessary for a feature you ask for and requires no consent.</p>
@@ -1079,7 +1080,7 @@ const LEGAL = {
 <p>The listings link to organizers’ websites, booking platforms and Instagram. When you open them, their own privacy and cookie rules apply, which do not depend on us.</p>
 <h4>Your rights</h4>
 <p>You can ask at any time to access, correct or delete your data, restrict its use or object to its processing, by writing to <a href="mailto:${MAIL}">${MAIL}</a>. You can also lodge a complaint with the <a href="https://www.garanteprivacy.it" target="_blank" rel="noopener">Italian Data Protection Authority (Garante per la protezione dei dati personali)</a>.</p>
-<p class="agg">Last updated: 27 October 2026 (TikTok profile added to the contacts).</p>`},
+<p class="agg">Last updated: 10 November 2026 (Telegram channel and group added).</p>`},
   "note-legali": {titolo:"Legal notes", testo:`
 <h4>What The Crafty Club is</h4>
 <p>The Crafty Club is a free collection of workshops, courses and classes organized by others in Turin, Cuneo and around. We don’t organize the events, we don’t sell tickets and we don’t take bookings or payments: to sign up you use the organizer’s link or contact. This is a translation: in case of doubt the Italian version prevails.</p>
@@ -1354,19 +1355,28 @@ function bindScrivici(f){
     btn.disabled=false; btn.textContent="Send";
   });
 }
-// «Contatti» (dal menu o dal link diretto #contatti): mail e profili social, e sotto il modulo «Scrivici» già aperto
+// «Contatti» (dal menu o dal link diretto #contatti): mail e profili social (il modulo «Scrivici» ha la sua voce nel menu)
 function openContatti(fromMenu){
   const row=(icon,label,sub,href)=>{ const a=el("a",{class:"menu-item",href,target:href.startsWith("http")?"_blank":null,rel:href.startsWith("http")?"noopener":null}); a.innerHTML=menuSvg(icon); a.append(el("span",{},label, el("span",{class:"sub"},sub))); return a; };
-  const f=document.getElementById("tplScrivici").content.firstElementChild.cloneNode(true);
-  bindScrivici(f);
   if(fromMenu) pendingBack=openMenu;
   openSheet([fromMenu ? el("button",{class:"back",type:"button",onclick:()=>closeSheet()},"‹ Menu") : null, el("h3",{id:"sheetTitle"},"Contacts"),
     el("div",{class:"menu-list contatti"},
       row("mail","Mail",MAIL,"mailto:"+MAIL),
       row("ig","Instagram","@crafty.club.it","https://www.instagram.com/crafty.club.it/"),
-      row("tiktok","TikTok","@crafty_club.it","https://www.tiktok.com/@crafty_club.it")),
-    el("h4",{class:"contatti-form"},"Write to us from here"), f]);
+      row("tiktok","TikTok","@crafty_club.it","https://www.tiktok.com/@crafty_club.it"),
+      row("tg","Telegram channel","@craftyclub","https://t.me/craftyclub"))]);
   track("apri/contatti");
+}
+// «Community» (dal menu o dal link diretto #community): il canale Telegram con le novità e il gruppo per chiacchierare
+function openCommunity(fromMenu){
+  const row=(icon,label,sub,href)=>{ const a=el("a",{class:"menu-item",href,target:"_blank",rel:"noopener",onclick:()=>track("community/"+label.toLowerCase().replace(/ +/g,"-"))}); a.innerHTML=menuSvg(icon); a.append(el("span",{},label, el("span",{class:"sub"},sub))); return a; };
+  if(fromMenu) pendingBack=openMenu;
+  openSheet([fromMenu ? el("button",{class:"back",type:"button",onclick:()=>closeSheet()},"‹ Menu") : null, el("h3",{id:"sheetTitle"},"Community"),
+    el("p",{class:"menu-note"},"Follow us on Telegram: the channel brings the news and the weekend’s workshops every week, the group is for chatting, swapping tips and sharing workshops."),
+    el("div",{class:"menu-list contatti"},
+      row("tg","Telegram channel","@craftyclub · news every week","https://t.me/craftyclub"),
+      row("about","Telegram group","@craftyclubgroup · chat and tips","https://t.me/craftyclubgroup"))]);
+  track("apri/community");
 }
 function openScrivici(fromMenu){
   const f=document.getElementById("tplScrivici").content.firstElementChild.cloneNode(true);
@@ -1386,6 +1396,7 @@ const MENU_ICONS = {
   mail:'<rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="M3.5 7l8.5 6.5L20.5 7"/>',
   ig:'<rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>',
   tiktok:'<path d="M14.5 3.5c.4 2.4 1.9 4 4.5 4.3v3a7.6 7.6 0 0 1-4.5-1.5v6.2a5.5 5.5 0 1 1-5.5-5.5c.3 0 .6 0 .9.1v3.1a2.5 2.5 0 1 0 1.6 2.3V3.5z"/>',
+  tg:'<path d="M21 4.5L3 11.5l5.5 2 2 6 3-4 4.5 3.5z"/><path d="M8.5 13.5l12.5-9"/>',
   shield:'<path d="M12 3l7.5 3v5.5c0 4.6-3.2 8.2-7.5 9.5-4.3-1.3-7.5-4.9-7.5-9.5V6z"/>',
   phone:'<rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 18.5h3"/>',
   doc:'<path d="M7 3h7l5 5v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>'
@@ -1410,6 +1421,7 @@ function openMenu(){
       item("about","About us",()=>openChiSiamo(true)),
       item("write","Write to us",()=>openScrivici(true)),
       item("mail","Contacts",()=>openContatti(true)),
+      item("tg","Community",()=>openCommunity(true),{sub:"Telegram channel and group"}),
       (isStandalone() || !isMobile()) ? null : item("phone","App",()=>startInstall(true),{sub:"Add to Home screen"}),
       el("div",{class:"menu-sep"}),
       item("shield","Privacy and cookies",()=>openLegal("privacy",true)),
@@ -2176,6 +2188,23 @@ const WORKSHOPS = [
   "titolo": "Let’s Collage: collage and tea",
   "zona": "Centro",
   "id": "arteaporte-collage-monica-2026-11-14"
+ },
+ {
+  "categoria": "ceramica",
+  "contatto": "@artto_artigianitorinesi via DM",
+  "data": "2026-11-22",
+  "descrizione": "Choose a chipped vintage porcelain piece and mend it with the Japanese kintsugi technique, highlighting the cracks with gold; you take the piece home. Two sessions, 10–12 or 14–16, up to 10 people each, with a small afternoon snack. The porcelain comes from Romantico da ristrutturare and Stooping Torino, and part of the proceeds goes to Il Ranch delle Donne and Rare n Ride, which support women undergoing cancer treatment and their families.",
+  "fonte": "Instagram @artto_artigianitorinesi",
+  "foto": "img/eventi/artto-kintsugi-2026-11-22.jpg",
+  "link": "https://www.instagram.com/p/DfjiLkLDYO7/",
+  "nuovo": "2026-11-10",
+  "ora_fine": "12:00",
+  "ora_inizio": "10:00",
+  "organizzatore": "Komorebi Lab per ArtTo",
+  "tipo": "workshop",
+  "titolo": "Kintsugi workshop: vintage porcelain",
+  "zona": "Torino",
+  "id": "artto-kintsugi-2026-11-22"
  },
  {
   "categoria": "giochi",
@@ -3555,6 +3584,27 @@ const WORKSHOPS = [
   "id": "casp-collage-ricomporre-connessioni-2026-11-16"
  },
  {
+  "altre_categorie": [
+   "scrittura"
+  ],
+  "categoria": "famiglia",
+  "contatto": "Simonetta, +39 331 1262496",
+  "descrizione": "A reading workshop for children: each child reads a few texts with a volunteer from the Amici di lettura association and picks up small tricks for understanding better what they read. A calm hour devoted to the joy of books. Book by calling Simonetta or on WhatsApp with Klaus (+39 340 7653050); more information at amicidilettura.org.",
+  "fonte": "Instagram @cecchipoint",
+  "indirizzo": "Cecchi Point, Via Antonio Cecchi 17",
+  "link": "https://www.instagram.com/p/DfU8F9aIB40/",
+  "nuovo": "2026-11-10",
+  "ora_fine": "18:00",
+  "ora_inizio": "17:00",
+  "organizzatore": "Amici di lettura per Cecchi Point",
+  "ricorrenza": "every Wednesday",
+  "su_prenotazione": true,
+  "tipo": "corso",
+  "titolo": "Reading Buddies: reading together",
+  "zona": "Aurora",
+  "id": "cecchipoint-amici-di-lettura"
+ },
+ {
   "categoria": "movimento",
   "contatto": "info@cecchipoint.it",
   "descrizione": "Biodanza evenings with facilitator Giancarlo Lodato: you dance to the music with natural movement, as a group, to release stress and rediscover the joy of moving. Suitable for all ages, no dance skills needed.",
@@ -3578,7 +3628,7 @@ const WORKSHOPS = [
   "contatto": "@gaa_aab_collage by DM",
   "data": "2026-11-14",
   "data_fine": "2026-12-19",
-  "descrizione": "One Saturday afternoon every two weeks to create fantastic creatures, gentle monsters and imaginary animals in collage, each with its own story: together they make up a collective bestiary. The next dates are 14 and 28 November and 12 and 19 December; pay what you like and book by DM to @gaa_aab_collage.",
+  "descrizione": "One Saturday afternoon every two weeks of collage with artist Gabriella Saiello: on 14 November «Possible worlds», collage with graphic work in acrylic markers. The next dates are 14 and 28 November and 12 and 19 December; pay what you like and book by DM to @gaa_aab_collage.",
   "fonte": "cecchipoint.it",
   "foto": "img/eventi/cecchipoint-collage-bestiario.jpg",
   "indirizzo": "Cecchi Point, Via Antonio Cecchi 17",
@@ -3590,7 +3640,7 @@ const WORKSHOPS = [
   "organizzatore": "Gabriella Saiello per Cecchi Point",
   "prezzo": 0,
   "tipo": "workshop",
-  "titolo": "Collective bestiary: collage workshop",
+  "titolo": "Possible worlds: collage and acrylic markers",
   "zona": "Aurora",
   "id": "cecchipoint-collage-bestiario-2026-11-14"
  },
@@ -4319,7 +4369,7 @@ const WORKSHOPS = [
   "indirizzo": "Spazio Costanza, Via Michele Buniva 9 bis C",
   "link": "https://www.instagram.com/p/DfSXomPFwYo/",
   "ora_fine": "19:00",
-  "ora_inizio": "17:00",
+  "ora_inizio": "17:30",
   "organizzatore": "Gabriella Saiello per Spazio Costanza",
   "prezzo": 25,
   "tipo": "workshop",
@@ -6074,6 +6124,27 @@ const WORKSHOPS = [
  },
  {
   "altre_categorie": [
+   "famiglia"
+  ],
+  "categoria": "movimento",
+  "comune": "Borgo San Dalmazzo",
+  "data": "2026-11-15",
+  "descrizione": "An amateur bouldering contest on 30 new problems, part of WOW – Winter Outdoor Weekend, in three categories: under 11, 11–14 and 15 and over. A race pack for those who pre-register and a final raffle; pre-register at globalwall.it/iscrizioni.",
+  "fonte": "fierafredda.it",
+  "indirizzo": "Palestra Globalwall",
+  "link": "https://fierafredda.it/globalwall-boulder-contest-2026/",
+  "nuovo": "2026-11-10",
+  "ora_fine": "19:00",
+  "ora_inizio": "10:00",
+  "organizzatore": "Globalwall per Ente Fiera Fredda",
+  "prezzo": 20,
+  "tipo": "attivita",
+  "titolo": "Globalwall Boulder Contest: climbing for all",
+  "zona": "Provincia di Cuneo",
+  "id": "fierafredda-boulder-contest-2026-11-15"
+ },
+ {
+  "altre_categorie": [
    "movimento"
   ],
   "categoria": "famiglia",
@@ -6133,6 +6204,22 @@ const WORKSHOPS = [
   "titolo": "Borgo Orienteering: map and compass",
   "zona": "Provincia di Cuneo",
   "id": "fierafredda-orienteering-2026-11-14"
+ },
+ {
+  "categoria": "famiglia",
+  "comune": "Borgo San Dalmazzo",
+  "contatto": "fierafredda.it",
+  "data": "2026-11-14",
+  "descrizione": "An activity for all ages to see birds of prey up close with the experts of LuMa Parco, part of WOW – Winter Outdoor Weekend. Times and details at fierafredda.it.",
+  "fonte": "Instagram @fierafredda",
+  "indirizzo": "Palazzo Bertello",
+  "link": "https://www.instagram.com/p/DfZxWn6D2So/",
+  "nuovo": "2026-11-10",
+  "organizzatore": "LuMa Parco per Ente Fiera Fredda",
+  "tipo": "attivita",
+  "titolo": "The world of birds of prey: meet LuMa Parco",
+  "zona": "Provincia di Cuneo",
+  "id": "fierafredda-rapaci-2026-11-14"
  },
  {
   "categoria": "altro",
@@ -7084,6 +7171,74 @@ const WORKSHOPS = [
   "titolo": "Collage workshop: a group composition",
   "zona": "Vanchiglia",
   "id": "libreriasur-collage-2026-11-15"
+ },
+ {
+  "categoria": "altro",
+  "contatto": "@libreriasur.it by DM",
+  "data": "2026-11-13",
+  "descrizione": "A relaxed meet-up in the bookshop to practise Portuguese by chatting together, whatever your level. It runs again on Friday 27 November. Book by DM or by dropping into the shop.",
+  "fonte": "Instagram @libreriasur.it",
+  "indirizzo": "Libreria Sur, Via Michele Buniva 11/B",
+  "link": "https://www.instagram.com/p/DfXToMwJrjB/",
+  "nuovo": "2026-11-10",
+  "ora_fine": "19:30",
+  "ora_inizio": "18:00",
+  "organizzatore": "Libreria Sur",
+  "tipo": "attivita",
+  "titolo": "Grupo de Conversação: Portuguese practice",
+  "zona": "Vanchiglia",
+  "id": "libreriasur-conversazione-portoghese-2026-11-13"
+ },
+ {
+  "categoria": "altro",
+  "contatto": "@libreriasur.it by DM",
+  "data": "2026-11-27",
+  "descrizione": "A relaxed meet-up in the bookshop to practise Portuguese by chatting together, whatever your level. Book by DM or by dropping into the shop.",
+  "fonte": "Instagram @libreriasur.it",
+  "indirizzo": "Libreria Sur, Via Michele Buniva 11/B",
+  "link": "https://www.instagram.com/p/DfXToMwJrjB/",
+  "nuovo": "2026-11-10",
+  "ora_fine": "19:30",
+  "ora_inizio": "18:00",
+  "organizzatore": "Libreria Sur",
+  "tipo": "attivita",
+  "titolo": "Grupo de Conversação: Portuguese practice",
+  "zona": "Vanchiglia",
+  "id": "libreriasur-conversazione-portoghese-2026-11-27"
+ },
+ {
+  "categoria": "altro",
+  "contatto": "@libreriasur.it by DM",
+  "data": "2026-11-12",
+  "descrizione": "A relaxed meet-up in the bookshop to practise Spanish by chatting together, whatever your level. It runs again on Thursday 26 November. Book by DM or by dropping into the shop.",
+  "fonte": "Instagram @libreriasur.it",
+  "indirizzo": "Libreria Sur, Via Michele Buniva 11/B",
+  "link": "https://www.instagram.com/p/DfaM0g-jA9k/",
+  "nuovo": "2026-11-10",
+  "ora_fine": "19:30",
+  "ora_inizio": "18:00",
+  "organizzatore": "Libreria Sur",
+  "tipo": "attivita",
+  "titolo": "Grupo de Conversación: Spanish practice",
+  "zona": "Vanchiglia",
+  "id": "libreriasur-conversazione-spagnolo-2026-11-12"
+ },
+ {
+  "categoria": "altro",
+  "contatto": "@libreriasur.it by DM",
+  "data": "2026-11-26",
+  "descrizione": "A relaxed meet-up in the bookshop to practise Spanish by chatting together, whatever your level. Book by DM or by dropping into the shop.",
+  "fonte": "Instagram @libreriasur.it",
+  "indirizzo": "Libreria Sur, Via Michele Buniva 11/B",
+  "link": "https://www.instagram.com/p/DfaM0g-jA9k/",
+  "nuovo": "2026-11-10",
+  "ora_fine": "19:30",
+  "ora_inizio": "18:00",
+  "organizzatore": "Libreria Sur",
+  "tipo": "attivita",
+  "titolo": "Grupo de Conversación: Spanish practice",
+  "zona": "Vanchiglia",
+  "id": "libreriasur-conversazione-spagnolo-2026-11-26"
  },
  {
   "categoria": "cucina",
@@ -9021,6 +9176,24 @@ const WORKSHOPS = [
   "id": "novel-academy-corsi-arte"
  },
  {
+  "categoria": "altro",
+  "data": "2026-11-16",
+  "descrizione": "An evening with the WeRoad community: a Moroccan aperitivo to share (baba ganoush, hummus, flatbread) and an artist decorating hands and wrists with traditional henna designs. Taking part is free: the aperitivo costs €12–15 and henna from €5 to €15 or more, paid on site. Sign up by 13 November via the bio link of @nurah.cafe.",
+  "fonte": "Instagram @nurah.cafe",
+  "indirizzo": "Nurah Café, Via Sant’Agostino 23/C",
+  "link": "https://www.instagram.com/p/DfdJGGURZ2P/",
+  "nuovo": "2026-11-10",
+  "ora_fine": "21:30",
+  "ora_inizio": "18:30",
+  "organizzatore": "Nurah Café con WeRoad",
+  "prezzo": 12,
+  "prezzo_da": true,
+  "tipo": "attivita",
+  "titolo": "Moroccan aperitivo and henna",
+  "zona": "Quadrilatero",
+  "id": "nurah-aperitivo-henne-2026-11-16"
+ },
+ {
   "categoria": "stampa",
   "data": "2026-11-02",
   "data_fine": "2026-11-23",
@@ -10626,6 +10799,21 @@ const WORKSHOPS = [
   "titolo": "Knit with Cuore di Maglia: knitting together",
   "zona": "San Salvario",
   "id": "raggomitolando-sferruzza-cuore-di-maglia"
+ },
+ {
+  "categoria": "musica",
+  "contatto": "corsi@rebootteatro.it",
+  "data": "2026-11-15",
+  "descrizione": "An experiential session on the need for control, with guided reflection, practical activities and techniques drawn from theatre and psychology, led by a psychotherapist and an improv teacher. Designed for drama students, teachers and anyone who wants to work on their emotions, no experience needed; each session stands alone. Info and sign-up at corsi@rebootteatro.it or on 375 632 5644.",
+  "fonte": "Instagram @rebootteatro",
+  "indirizzo": "CPG, Strada delle Cacce 36",
+  "link": "https://www.instagram.com/rebootteatro/",
+  "nuovo": "2026-11-10",
+  "organizzatore": "Andrea Di Ruvo e Nancy Citro per Reboot Teatro",
+  "tipo": "workshop",
+  "titolo": "Emotional detox: letting go of control",
+  "zona": "Mirafiori",
+  "id": "reboot-detox-emotivo-2026-11-15"
  },
  {
   "categoria": "musica",
@@ -13313,6 +13501,75 @@ const WORKSHOPS = [
   "titolo": "Wine tasting: Piedmontese wines",
   "zona": "Centro",
   "id": "winelivery-vini-regionali"
+ },
+ {
+  "categoria": "tessile",
+  "contatto": "federica@woolcrossing.it",
+  "data": "2026-11-12",
+  "descrizione": "Learn the Turkish cast-on and a short-row heel with magic loop, knitting a sample sock from the toe up. Federica Giudice’s «Tornanti Sock» pattern is included; sock yarn, 2.5 mm circular needles and a yarn needle should be brought or can be bought in the shop. 3 to 8 people, booking by email.",
+  "fonte": "woolcrossing.it",
+  "indirizzo": "Wool Crossing, Via Boccaccio 58bis",
+  "link": "https://woolcrossing.it/evento/corso-calzino-toe-up-con-turkish-cast-on/",
+  "nuovo": "2026-11-10",
+  "ora_fine": "21:30",
+  "ora_inizio": "19:00",
+  "organizzatore": "Wool Crossing",
+  "prezzo": 45,
+  "tipo": "workshop",
+  "titolo": "Knitting workshop: toe-up sock",
+  "zona": "Madonna del Pilone",
+  "id": "woolcrossing-calzino-toe-up-2026-11-12"
+ },
+ {
+  "categoria": "tessile",
+  "data": "2026-11-26",
+  "descrizione": "A lesson for complete beginners or for those who already knit on straight needles and want to move to circulars: you make the «Carruggio» cowl. Two skeins of Manifattura Sesia Super Echos in your chosen colour are included; the 10 mm circular needles are not, but can be bought in the shop. Up to 10 people, booking by phone on 011 2630927 or by email at federica@woolcrossing.it.",
+  "fonte": "woolcrossing.it",
+  "indirizzo": "Wool Crossing, Via Boccaccio 58bis",
+  "link": "https://woolcrossing.it/evento/knitting-academy-corso-base-con-i-ferri-circolari-2/",
+  "nuovo": "2026-11-10",
+  "ora_fine": "21:30",
+  "ora_inizio": "19:00",
+  "organizzatore": "Wool Crossing",
+  "prezzo": 65,
+  "tipo": "workshop",
+  "titolo": "Knitting lesson: circular needles",
+  "zona": "Madonna del Pilone",
+  "id": "woolcrossing-ferri-circolari-2026-11-26"
+ },
+ {
+  "categoria": "tessile",
+  "contatto": "federica@woolcrossing.it",
+  "data": "2026-11-21",
+  "descrizione": "An afternoon knit-along in the shop on Emi Bovero’s «Genepì Cardigan», a quick pattern suited to anyone starting their first knitted cardigan. Everyone works together from the cast-on.",
+  "fonte": "Instagram @wool_crossing",
+  "indirizzo": "Wool Crossing, Via Boccaccio 58bis",
+  "link": "https://www.instagram.com/p/DfXEK4GMWGL/",
+  "nuovo": "2026-11-10",
+  "ora_fine": "17:00",
+  "ora_inizio": "14:00",
+  "organizzatore": "Wool Crossing",
+  "tipo": "workshop",
+  "titolo": "Genepì KAL: your first knitted cardigan",
+  "zona": "Madonna del Pilone",
+  "id": "woolcrossing-kal-genepi-2026-11-21"
+ },
+ {
+  "categoria": "tessile",
+  "data": "2026-11-20",
+  "descrizione": "An evening in the shop to work on your own knitting or crochet projects together, with an aperitivo. It is an informal meet-up with no lesson: bring your work and chat with fellow enthusiasts.",
+  "fonte": "woolcrossing.it",
+  "indirizzo": "Wool Crossing, Via Boccaccio 58bis",
+  "link": "https://woolcrossing.it/evento/knit-night-wool-crossing-2/",
+  "nuovo": "2026-11-10",
+  "ora_fine": "23:30",
+  "ora_inizio": "19:30",
+  "organizzatore": "Wool Crossing",
+  "prezzo": 0,
+  "tipo": "attivita",
+  "titolo": "Knit Night: knitting and crochet with drinks",
+  "zona": "Madonna del Pilone",
+  "id": "woolcrossing-knit-night-2026-11-20"
  },
  {
   "categoria": "altro",
