@@ -20,7 +20,7 @@ Il sito è in italiano, con una versione completa in inglese su [craftyclub.it/e
 
 - [Corsi e workshop di ceramica](https://craftyclub.it/ceramica/): tornio, modellazione, decorazione, kintsugi.
 - [Pittura e disegno](https://craftyclub.it/pittura/): acquerello, illustrazione, fumetto, collage, arteterapia.
-- [Carta e scrittura](https://craftyclub.it/scrittura/): origami, collage, ritagli, journaling, scrittura creativa, calligrafia, lettering, poesia.
+- [Carta e scrittura](https://craftyclub.it/scrittura/): origami, collage, ritagli, journaling, scrittura creativa, calligrafia, lettering, poesia, book club.
 - [Stampa](https://craftyclub.it/stampa/): serigrafia, cianotipia, incisione, risograph, stampa botanica.
 - [Cucito, maglia, uncinetto e ricamo](https://craftyclub.it/tessile/): anche tufting, rammendo e sashiko.
 - [Gioielli](https://craftyclub.it/gioielli/)
